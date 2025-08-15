@@ -1,6 +1,7 @@
 import mathjax3 from 'markdown-it-mathjax3';
 import imageFigures from 'markdown-it-image-figures';
-import tableCaptions from 'markdown-it-table-captions'
+import tableCaptions from 'markdown-it-table-captions';
+import markdownItAttrs from 'markdown-it-attrs';
 
 const customElements = ['mjx-container'];
 
@@ -37,7 +38,8 @@ export default {
 				figcaption: 'title',
 				copyAttrs: '^class$',
 			});
-			md.use(tableCaptions)
+			md.use(tableCaptions);
+			md.use(markdownItAttrs);
 		},
 	},
 

@@ -17,7 +17,8 @@
     "yarn-audit-fix": "^10.0.7"
   },
   "dependencies": {
-    "@docsearch/js": "3"
+    "@docsearch/js": "3",
+    "markdown-it-attrs": "^4.3.1"
   },
   "packageManager": "yarn@1.22.19"
 }

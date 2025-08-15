@@ -35,10 +35,10 @@
 - [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing)
 - [Priority Queues](/lectures/20-priority-queues)
 - [B-trees](/lectures/21-b-trees)
-- [Graphs via Ajacency Matrices](/lectures/22-graphs-adjacency-matrices)
+- [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices)
 - [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists)
 - [Quadtrees](/lectures/24-quadtrees)
 
 ## Wrapping Up
 - [Project 3 Optimizations](/lectures/25-project3)
-- [Review](/lectures/26-review)
+- [Comparison of Data-Structure Performance](/lectures/26-review)

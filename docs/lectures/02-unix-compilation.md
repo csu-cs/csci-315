@@ -667,7 +667,7 @@ from the course repository?
 git remote -v
 
 # Add the course repository as a remote repository
-git remote add upstream https://github.com/csu-cs/CSCI-315-2025-Spring.git
+git remote add upstream https://github.com/csu-cs/CSCI-315-2025-Fall.git
 
 # Set the merging method for divergent branches
 git config pull.rebase false # merge

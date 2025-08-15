@@ -1,3 +1,10 @@
+---
+head:
+  - - style
+    - type: 'text/css'
+    - '#pdf { display: inline-block;position: relative; left: 50%; transform: translateX(-50%);;margin-top:0.5em; padding: 3px 6px; font-size: 14pt; background-color: var(--vp-button-brand-bg); border: var(--vp-button-brand-border) 1px solid; border-radius: 5px; color: var(--vp-button-brand-text);}'
+---
+
 Syllabus \| CSCI 315 *Data Structure Analysis*
 ==============================================
 
@@ -56,7 +63,7 @@ the cheaper 7th edition for this course.*
 
 This class is driven through [GitHub](https://github.com/). Assignments and
 lectures are located on GitHub at
-<https://github.com/csu-cs/CSCI-315-2025-Spring>. If you are not able to access
+<https://github.com/csu-cs/CSCI-315-2025-Fall>. If you are not able to access
 it, please send me an email so I can grant you access.
 
 ABET Learning Outcomes
@@ -104,37 +111,40 @@ Tentative Weekly Schedule
 
 The weekly schedule is subject to change.
 
-| Week | Lecture Slides                              | Related Assignment    |
+| Week | Lectures                                    | Related Assignment    |
 |------|---------------------------------------------|-----------------------|
-|  1A  | 01-introduction, 02-unix-commands           | Lab 01                |
-|  1B  | 03-unix-compilation                         | Lab 02                |
-|  2A  | 04-memory-management                        | Lab 03                |
-|  2B  | 05-pointers-testing                         | Lab 04, 05, & Ethics  |
-|  3A  | 06-oop (with coding practice)               |                       |
-|  3B  | 07-operator-overloading-templates           | Lab 06                |
-|  4A  | 08-performance-analysis                     | Lab 07                |
-|  4B  | 09-linked-lists                             | Lab 08                |
-|  5A  | 09-linked-lists, 10-stl-lecture             | Project 1 & Lab 09    |
-|  5B  | 11-searching-quadratic-sorting              | Lab 10                |
-|  6A  | 12-quick-and-merge-sort                     | Lab 11                |
-|  6B  | 13-stacks-and-queues, midterm study guide   | Lab 12                |
-|  7A  | Depth- and Breadth-First Search (no slides) | Project 2 & Lab 13    |
-|  7B  | Midterm Exam (take home)                    |                       |E
-|  8A  | 15-binary-trees-1                           | Lab 14                |
-|  8B  | 16-binary-trees-2                           | Lab 15                |
-|   9  | *Spring Break* (No Class)                   |                       |
-| 10A  | 17-heaps-heapsort                           | Lab 16                |
-| 10B  | 10-stl-lecture                              | Lab 17                |
-| 11A  | 18-hash-tables-chaining                     | Lab 18                |
-| 11B  | 19-hash-tables-open-addressing              | Project 3 & Lab 19    |
-| 12A  | 20-priority-queues                          | Lab 20                |
-| 12B  | 21-B-Trees                                  | Lab 21                |
-| 13A  | 22-graphs-adjacency-matrices                | Lab 22                |
-| 13B  | 23-graphs-adjacency-lists                   | Lab 23                |
-| 14A  | 24-quad-trees                               | Lab 24                |
-| 14B  | Brainstorm on Project 3 Optimizations       |                       |
-| 15A  | Comparison of Data-Structure Performance    | Make-up Work          |
-| 16   | Final Exam on 05/01 at 8 a.m. [per the Exam Schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
+|  1A  | [Introduction](/lectures/01-introduction), [Unix Commands](/lectures/01-basic-unix) | Lab 01                |
+|  1B  | [C++ Compilation is Linux](/lectures/02-unix-compilation)  | Lab 02                |
+|  2A  | [Memory Management](/lectures/03-memory-management) | Lab 03                |
+|  2B  | [Pointers and Testing](/lectures/04-pointers-testing) | Lab 04, 05, & Ethics  |
+|  3A  | [C++ Object-Oriented Programming](/lectures/05-oop) |                       |
+|  3B  | [Operator Overloading and Templates](/lectures/06-operator-overloading-templates)  | Lab 06                |
+|  4A  | [Performance Analysis](/lectures/07-performance-analysis) | Lab 07                |
+|  4B  | [Linked Lists](/lectures/08-linked-lists) | Lab 08                |
+|  5A  | [Debugging, Doubly-Linked Lists, & the STL](/lectures/09-debugging-and-doubly-linked-lists) | Project 1 & Lab 09    |
+|  5B  | [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort) | Lab 10                |
+|  6A  | [Quick and Merge Sorting](/lectures/11-quick-and-merge-sort) | Lab 11                |
+|  6B  | [Stacks & Queues](/lectures/12-stacks-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |
+|  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) | Project 2 & Lab 13    |
+|  7B  | Midterm Exam                                |                       |
+|  8A  | *Fall Break* (No Class)                     |                       |
+|  8B  | [Binary Search Trees (Part 1)](/lectures/14-binary-trees-1) | Lab 14                |
+|  9A  | [Binary Search Trees (Part 2)](/lectures/15-binary-trees-2) | Lab 15                |
+|  9B  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
+| 10A  | [Standard Template Library](/lectures/17-standard-template-library) | Lab 17                |
+| 10B  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
+| 11A  | [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | Project 3 & Lab 19    |
+| 11B  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |
+| 12A  | [B-Trees](/lectures/21-b-trees) | Lab 21                |
+| 12B  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |
+| 13A  | [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists) | Lab 23                |
+| 13B  | [Quadtrees](/lectures/24-quadtrees) | Lab 24                |
+| 14A  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |                       |
+| 14B  | *Thanksgiving Holiday* (No Class)           |                       |
+| 15A  | [Comparison of Data-Structure Performance](/lectures/26-review)    | Make-up Work          |
+| 16B  | Final Exam on 12/11 at 10:30 a.m. [per the Exam Schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
+
+{#schedule-table}
 
 ### Online Students
 
@@ -169,15 +179,15 @@ The assessment categories will be weighted as follows.
 
 Letter grades will be calculated from the following ranges.
 
-| Average  | Letter Grade |
-|:--------:|--------------|
-| 90 - 100 | A            |
-| 87 - 89  | B+           |
-| 86 - 80  | B            |
-| 77 - 79  | C+           |
-| 70 - 76  | C            |
-| 60 - 69  | D            |
-| below 60 | F            |
+| Average   | Letter Grade |
+|:---------:|--------------|
+| 90 – 100  | A            |
+| 87 – 89.9 | B+           |
+| 86 – 80.9 | B            |
+| 77 – 79.9 | C+           |
+| 70 – 76.9 | C            |
+| 60 – 69.9 | D            |
+| below 60  | F            |
 
 ### Late Work
 
@@ -236,7 +246,7 @@ Course, Department, and University Policies
 
 All students are expected to adhere to [Charleston Southern University's 
 Academic Integrity 
-Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-58-updated-Feb-2023.pdf) 
+Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-58-updated-July-2025.pdf) 
 and the [Computer Science Departmental 
 Guidelines](integrity). **All assignments** 
 are individual assignments unless explicitly specified by the professor. Do not 
@@ -258,19 +268,40 @@ you talk to me **beforehand**.
     **Do** reference code from the book, code given to you by the instructor,
     and online documentation on the C++ language.
 
--   **NEVER** exchange code in any manner or you tell someone what code they
+-   **NEVER** exchange code in any manner, or you tell someone what code they
     need.  
-    **You may** talk to your classmates about C++ or assignments as long as you
+    **You may** talk to your classmates about C++ or assignments if you
     are not sharing ideas for assignment solutions.
 
 -   **NEVER** use an AI tool to generate code for use in an assignment or exam
     without explicit permission from the instructor for that particular task. As
     an example, Visual Studio Code extensions that generate code (like GitHub 
     Copile, Tabnine, and Cody) are prohibited.  
-    **You may** use AI to generate help explain concepts or study before exams.
+    **You may** use AI to help explain concepts or study before exams, 
+    but not for any use for planning, debugging, developing, or any other use 
+    for assignments, exams, or other assessments.
+
+### AI Policy for CSCI 235
+
+**Level 1. Use of generative AI is *prohibited* in this course.**
+
+To ensure development and mastery of the concepts and skills in this
+course, the use of generative artificial intelligence (AI) tools is
+prohibited. Students who are unsure of this policy or any
+assignment-specific directions, including whether a given technology is
+considered AI, should consult the course instructor before using such
+technology to complete their assignment.
+
+While proper AI use is an important skill that will be emphasized in
+other courses, AI misuse short-circuits the learning process to give the
+illusion of proficiency without the necessary depth. It is unethical to
+take full credit for work created with the help of AI. This principle is
+the same as using someone else’s idea without citing it. 
+[Review the departmental policies for AI use in Computer Science
+coursework.](/integrity#artificial-intelligence-ai)
 
 [Click here for additional guidance on academic integrity for Computer Science
-coursework.](integrity)
+coursework.](/integrity)
 
 #### A Community of Honor
 
@@ -399,3 +430,12 @@ Please visit the [CSU Title IX webpage](https://www.charlestonsouthern.edu/offic
 See all course, department, and university policies located in
 [Blackboard](https://csuniv.blackboard.com) and the [CSU Student
 Handbook](https://www.charlestonsouthern.edu/current-students/student-resources/).
+
+<script setup>
+import { onMounted } from 'vue';
+import { appendScheduleDates } from '/.vitepress/theme/appendScheduleDates.js';
+
+onMounted(() => {
+    appendScheduleDates("2025-08-25");
+});
+</script>
