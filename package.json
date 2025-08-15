@@ -1,0 +1,23 @@
+{
+  "name": "CSCI315",
+  "author": "Sean T. Hayes",
+  "license": "MIT",
+  "homepage": "https://github.com/csu-cs/csci-315/tree/master/#readme",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "markdown-it": "*",
+    "markdown-it-image-figures": "^2.1.1",
+    "markdown-it-mathjax3": "^4.3.2",
+    "markdown-it-table-captions": "^1.0.4",
+    "vitepress": "^2.0.0-alpha.9",
+    "yarn-audit-fix": "^10.0.7"
+  },
+  "dependencies": {
+    "@docsearch/js": "3"
+  },
+  "packageManager": "yarn@1.22.19"
+}
