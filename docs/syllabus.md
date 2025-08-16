@@ -8,9 +8,11 @@ head:
 Syllabus \| CSCI 315 *Data Structure Analysis*
 ==============================================
 
-![Charleston Southern University](/images/csu_logo.svg){.light-only}
+![Charleston Southern University](images/csu_logo.svg){.light-only}
 
-![Charleston Southern University](/images/csu_logo-dark.svg){.dark-only}
+![Charleston Southern University](images/csu_logo-dark.svg){.dark-only}
+
+[Download Printable Version](syllabus.pdf){download="Syllabus-CSCI315.pdf" id="pdf"}
 
 General Information
 -------------------
@@ -248,7 +250,7 @@ All students are expected to adhere to [Charleston Southern University's
 Academic Integrity 
 Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-58-updated-July-2025.pdf) 
 and the [Computer Science Departmental 
-Guidelines](integrity). **All assignments** 
+Guidelines](/integrity). **All assignments** 
 are individual assignments unless explicitly specified by the professor. Do not 
 collaborate, search for posted solutions, or post code online. **Make sure that 
 you write every line of your own code.** You should not use **ANY** outside 
