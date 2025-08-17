@@ -150,19 +150,18 @@ The weekly schedule is subject to change.
 
 ### Online Students
 
-I understand that some students must take this class online. Be aware that the
-lack of scheduled face-to-face communication puts online students at a
-disadvantage. Therefore, communication is paramount. I will be able to answer
-your email during office hours. Please keep the timing of due dates for labs in
-mind because there will likely be a delay as I respond to questions. In short,
+Be aware that the lack of scheduled face-to-face communication puts online 
+students at a disadvantage. Therefore, communication is paramount. I will be 
+answer email during office hours. Please keep the timing of due dates in mind 
+because there will likely be a delay as I respond to questions. In short,
 get started early and stay ahead!
 
 #### Video Recording of Lectures
 
 I will video-record my in-class lectures. After class, I will upload and post a
-link on Blackboard. The video recordings are for online students so you can
-review the material. If you do not see the content within 24 hours of class,
-please email me.
+link [the course website](https://csu-cs.github.io/csci-315/). The video 
+recordings are for online students so you can review the material. The lecture
+videos from th previous semester are currently posted so you can work ahead.
 
 Grading
 -------
@@ -307,34 +306,39 @@ coursework.](/integrity)
 
 #### A Community of Honor
 
->   As a liberal arts university committed to the Christian faith, Charleston
->   Southern University seeks to develop ethical men and women of disciplined,
->   creative minds and lives that focus on leadership, service, and learning.
->   The Honor System of Charleston Southern University is designed to provide an
->   academic community of trust in which students can enjoy the opportunity to
->   grow both intellectually and personally. For these purposes, the following
->   rules and guidelines will be applied.
+>   As a liberal arts university committed to the Christian faith,
+>   Charleston Southern University seeks to develop ethical men and women
+>   of disciplined, creative minds and lives that focus on leadership,
+>   service, and learning. The Honor System of Charleston Southern
+>   University is designed to provide an academic community of trust in
+>   which students can enjoy the opportunity to grow both intellectually
+>   and personally. For these purposes, the following rules and guidelines
+>   will be applied.
 
->   "Academic Dishonesty" is the transfer, receipt, or use of academic 
+>   “*Academic Dishonesty*” is the transfer, receipt, or use of academic 
 >   information, or the attempted transfer, receipt, or use of academic 
 >   information in a manner not authorized by the instructor or by university 
->   rules. It includes, but is not limited to, cheating, plagiarism and forgery 
->   as well as aiding or encouraging another to commit academic dishonesty.
+>   rules. It includes, but is not limited to, cheating, plagiarism, and 
+>   forgery, as well as aiding or encouraging another to commit academic 
+>   dishonesty.
 
->   "Cheating" is defined as wrongfully giving, taking, or presenting any 
->   information or material borrowed from another source - including the 
->   Internet by a student with the intent of aiding himself or another on 
->   academic work. This includes, but is not limited to a test, examination, 
+>   “*Cheating*” is defined as wrongfully giving, taking, or presenting any 
+>   information or material borrowed from another source (including the 
+>   Internet) by a student with the intent of aiding himself or another in 
+>   academic work. This includes, but is not limited to, a test, examination, 
 >   presentation, experiment, or any written assignment, which is considered in 
->   any way in the determination of the final grade.
+>   any way in the determination of the final grade. Using AI in violation of a 
+>   course or assessment’s stated AI protocol is cheating.
 
->   "Plagiarism" is the taking or attempted taking of an idea, a writing, a 
->   graphic, music composition, art, or datum of another person or the use of 
->   any Artificial Intelligence (AI) platform without giving proper credit and 
->   presenting or attempting to present it as one's own with or without intent. 
->   It is also taking written materials of one's own that have been used for a 
->   previous course assignment and using it without reference to it in its 
->   original form.
+>   “*Plagiarism*” is the taking or attempted taking of an idea, a writing, a 
+>   graphic, a music composition, art, or datum of another person or Artificial 
+>   Intelligence (AI) tool without giving proper credit and presenting or 
+>   attempting to present it as one's own, with or without intent. It is also 
+>   taking written materials of one's own that have been used for a previous 
+>   course assignment and using them without reference to them in their original 
+>   form. Any use of AI models without proper citation is plagiarism. Students 
+>   are encouraged to ask their instructor(s) for clarification regarding their 
+>   academic dishonesty standards.
 
 Violations of this policy will result in academic discipline, up to and
 including expulsion from the University.
