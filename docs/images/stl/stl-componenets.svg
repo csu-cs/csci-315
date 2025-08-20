@@ -1,0 +1,35 @@
+<svg width="2636" height="1031" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden">
+ <defs>
+    <style type="text/css">
+      .algorithm {
+        stroke: black;
+		stroke-width: 8;
+		stroke-linejoin: round;
+		stroke-miterlimit: 10;
+		fill: #A89968;
+		fill-rule: evenodd;
+      }
+	  .container {
+		fill: #bcbcbc;
+		stroke: black;
+		stroke-width: 8;
+	  }
+	  text {
+		font-family: Tahoma, Tahoma_MSFontService, sans-serif;
+		font-weight: 400;
+	  }
+    </style>
+  </defs>
+<rect x="0" y="0" width="2636" height="1031" fill="black" display="none"/>
+<g transform="translate(-176 -846)">
+<rect x="568" y="974.5" width="438" height="894" class="container"/>
+<rect x="2367" y="974.5" width="438" height="894" class="container"/>
+<path d="M682.5 1134C682.5 1109.42 721.003 1089.5 768.5 1089.5 815.996 1089.5 854.5 1109.42 854.5 1134 854.5 1158.58 815.996 1178.5 768.5 1178.5 721.003 1178.5 682.5 1158.58 682.5 1134Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><path d="M759.5 1305.5C759.5 1280.65 797.78 1260.5 845 1260.5 892.22 1260.5 930.5 1280.65 930.5 1305.5 930.5 1330.35 892.22 1350.5 845 1350.5 797.78 1350.5 759.5 1330.35 759.5 1305.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><path d="M644.5 1554.5C644.5 1529.65 683.004 1509.5 730.5 1509.5 777.996 1509.5 816.5 1529.65 816.5 1554.5 816.5 1579.35 777.996 1599.5 730.5 1599.5 683.004 1599.5 644.5 1579.35 644.5 1554.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><path d="M759.5 1745.5C759.5 1720.65 797.78 1700.5 845 1700.5 892.22 1700.5 930.5 1720.65 930.5 1745.5 930.5 1770.35 892.22 1790.5 845 1790.5 797.78 1790.5 759.5 1770.35 759.5 1745.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><text fill="#000000" font-size="76" transform="matrix(1 0 0 1 609.222 947)">Container</text><path d="M-6.88582-6.88583 571.571-6.88549 571.571 6.88617-6.88583 6.88582ZM564.685-20.6571 606 0.000360892 564.685 20.6578Z" fill="#000000" transform="matrix(-1 0 0 1 1460 1127)"/><path d="M1522.89 1184 1522.89 1314.89 963.429 1314.89 963.429 1301.11 1516 1301.11 1509.11 1308 1509.11 1184ZM970.315 1328.66 929 1308 970.315 1287.34Z" fill="#000000"/><text fill="#000000" font-size="76" transform="matrix(1 0 0 1 1195.12 1081)">Iterator</text><path d="M2482.5 1162.5C2482.5 1137.65 2521 1117.5 2568.5 1117.5 2616 1117.5 2654.5 1137.65 2654.5 1162.5 2654.5 1187.35 2616 1207.5 2568.5 1207.5 2521 1207.5 2482.5 1187.35 2482.5 1162.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><path d="M2558.5 1334.5C2558.5 1309.65 2597 1289.5 2644.5 1289.5 2692 1289.5 2730.5 1309.65 2730.5 1334.5 2730.5 1359.35 2692 1379.5 2644.5 1379.5 2597 1379.5 2558.5 1359.35 2558.5 1334.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><path d="M2444.5 1582.5C2444.5 1557.65 2483 1537.5 2530.5 1537.5 2578 1537.5 2616.5 1557.65 2616.5 1582.5 2616.5 1607.35 2578 1627.5 2530.5 1627.5 2483 1627.5 2444.5 1607.35 2444.5 1582.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><path d="M2558.5 1773.5C2558.5 1748.65 2597 1728.5 2644.5 1728.5 2692 1728.5 2730.5 1748.65 2730.5 1773.5 2730.5 1798.35 2692 1818.5 2644.5 1818.5 2597 1818.5 2558.5 1798.35 2558.5 1773.5Z" stroke="#000000" stroke-width="3.37795" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd"/><text fill="#000000" font-size="76" transform="matrix(1 0 0 1 2405.11 947)">Container<tspan font-size="76" x="-407.901" y="612">Iterator</tspan></text><path d="M649.886 0 649.886 141.886 34.4291 141.886 34.4291 128.114 643 128.114 636.114 135 636.114 0ZM41.315 155.657 0 135 41.315 114.342Z" fill="#000000" transform="matrix(-1 0 0 1 2541 1203)"/><path d="M-6.85867-6.91287 219.598-6.0216 219.544 7.74994-6.91287 6.85867ZM212.767-19.8203 254 0.999672 212.604 21.4944Z" fill="#000000" transform="matrix(1 0 0 -1 505 1300)"/><path d="M477.646 1319.27 642.474 1472.51 633.097 1482.6 468.269 1329.35ZM646.808 1457.74 663 1501 618.676 1488Z" fill="#000000"/><path d="M-2.88449-9.30102 179.744 86.8659 173.328 99.0514-9.30102 2.88449ZM180.068 71.4721 207 109 160.819 108.029Z" fill="#000000" transform="matrix(1 0 0 -1 475 1254)"/><text fill="#000000" font-size="76" transform="matrix(1 0 0 1 1103.77 1403)">Iterator<tspan font-size="76" x="874.343" y="-93">Iterator</tspan></text><path d="M508.886 0 508.886 96.8859 34.4291 96.8859 34.4291 83.1142 502 83.1142 495.114 90.0001 495.114 0ZM41.315 110.658 0 90.0001 41.315 69.3426Z" fill="#000000" transform="matrix(-1 0 0 1 2427 1497)"/><path d="M-6.87283-6.8988 495.583-5.95108 495.557 7.82055-6.8988 6.87283ZM488.724-19.7357 530 0.999672 488.646 21.5792Z" fill="#000000" transform="matrix(-1 0 0 1 1459 1728)"/><text fill="#000000" font-size="76" transform="matrix(1 0 0 1 1092.32 1674)">Iterator</text>
+<path d="M1459.5 1135.5C1459.5 1085.79 1575.01 1045.5 1717.5 1045.5 1859.99 1045.5 1975.5 1085.79 1975.5 1135.5 1975.5 1185.21 1859.99 1225.5 1717.5 1225.5 1575.01 1225.5 1459.5 1185.21 1459.5 1135.5Z" class="algorithm"/>
+<path d="M1461.5 1732C1461.5 1682.57 1576.79 1642.5 1719 1642.5 1861.21 1642.5 1976.5 1682.57 1976.5 1732 1976.5 1781.43 1861.21 1821.5 1719 1821.5 1576.79 1821.5 1461.5 1781.43 1461.5 1732Z" class="algorithm"/>
+<path d="M1459.5 1446C1459.5 1396.57 1575.01 1356.5 1717.5 1356.5 1859.99 1356.5 1975.5 1396.57 1975.5 1446 1975.5 1495.43 1859.99 1535.5 1717.5 1535.5 1575.01 1535.5 1459.5 1495.43 1459.5 1446Z" class="algorithm"/>
+<text fill="#000000" font-size="76" transform="matrix(1 0 0 1 1554.99 1165)">Algorithm</text>
+<text fill="#000000" font-size="76" transform="matrix(1 0 0 1 1556.75 1762)">Algorithm</text>
+<text fill="#000000" font-size="76" transform="matrix(1 0 0 1 1554.99 1476)">Algorithm</text>
+<text fill="#000000" font-size="76" x="222" y="1318">Objects</text>
+</g></svg>
