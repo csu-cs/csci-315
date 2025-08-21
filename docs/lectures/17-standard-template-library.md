@@ -30,15 +30,9 @@ Chapter 21
 
 The STL consists of three categories of components:
 
-1.  ***Containers*** are class templates to manage objects of a given
-    type.
-
-2.  ***Iterators*** are used to step through the elements of a
-    container.
-
+1.  ***Containers*** are class templates to manage objects of a given type.
+2.  ***Iterators*** are used to step through the elements of a container.
 3.  ***Algorithms*** are used to manipulate data.
-
-### Components of the STL
 
 ![STL Components](/images/stl/stl-componenets.svg "The STL consists of three categories of components"){.light-only}
 
@@ -192,7 +186,7 @@ highlights.
 
 ### Capacity/Size of a **`vector`**
 
-|  |  |
+| Method | Description |
 |:---|:---|
 | `empty()` | returns `true` if the container is empty and `false` otherwise |
 | `size()` | returns the number of elements |
@@ -325,18 +319,19 @@ std::vector<int>::iterator intVecIter2 = vec.end();
 
 ```cpp
 template <typename Type>
-Type maxValue(const vector<Type> &vec) {
-    vector<int>::const_iterator iter = vec.cbegin();
-    Type max = *iter;
-    for (++iter; iter != vec.cend(); ++iter) {
+Type maxValue(const vector<Type> &vec)
+{
+  vector<int>::const_iterator iter = vec.cbegin();
+  Type max = *iter;
+  for (++iter; iter != vec.cend(); ++iter)
+  {
     if (*iter > max)
-        max = *iter;
-    }
-    return max;
+      max = *iter;
+  }
+  return max;
 }
 
-std::vector<std::string> words { "The", "fun", "has",
-    "just", "begun" };
+std::vector<std::string> words { "The", "fun", "has", "just", "begun" };
 cout << "max of words = " << maxValue(words);
 ```
 
@@ -429,7 +424,8 @@ Store elements in sorted order according to some ordering criteria
 
 ```cpp
 #include <set>
-int main() {
+int main()
+{
   std::set<std::string, std::less<std::string> > nameSet{ "Ole",
        "Hedvig", "Juan", "Lars", "Guido", "Ann"};
 
@@ -443,8 +439,10 @@ int main() {
     nameSet.find(searchName);
 
   cout << searchName << " is";
+
   if (iter == nameSet.end()) // check if found
      std::cout << " NOT";
+
   std::cout << " in the set!\n";
 }
 ```
@@ -454,7 +452,8 @@ int main() {
 ```cpp
 #include <set>
 
-int main() {
+int main()
+{
   std::set<std::string, std::less<std::string> > nameSet {
     "Ole", "Hedvig", "Juan", "Lars", "Guido", "Patric",
     "Maria", "Ann" };
@@ -466,6 +465,7 @@ int main() {
   // Display: Lars, Maria, Ole, Patric
   while (iter != nameSet.upper_bound("Q"))
     cout << *iter++ << ", ";
+
   std::cout << std::endl;
 }
 ```
@@ -475,7 +475,8 @@ int main() {
 ```cpp
 #include <map>
 #include <algorithm>
-int main() {
+int main()
+{
   std::map<std::string, int> contacts {
     {"Ole", 75643}, {"Hedvig", 83268}, {"Juan", 97353},
     {"Lars", 87353}, {"Guido", 19988}, {"Patric", 76455},
@@ -509,21 +510,15 @@ Containers to accommodate special situations.
 
 ![Two spans pointing to different ranges of elements in an array.](/images/stl/spans-dark.svg "Two spans pointing to different ranges of elements in an array."){.dark-only}
 
-## Algorithms
-
-### Algorithms in the STL
+## Algorithms in the STL
 
 Many algorithms that work on any STL container are found in the
 `<algorithm>` library.
 
 - Copy
-
 - Partition
-
 - Sort
-
 - Search
-
 - …
 
 These algorithms are provided generically to support many container
@@ -544,7 +539,7 @@ types.
 
 ### Non-Modifying Sequence Algorithms
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`all_of, any_of, none_of`](https://en.cppreference.com/w/cpp/algorithm/all_any_none_of) | checks if a predicate is true for all, any or none of the elements in a range |
 | [`for_each`](https://en.cppreference.com/w/cpp/algorithm/for_each) | applies a function to a range of elements |
@@ -639,7 +634,7 @@ int main() {
 
 ### Minimum/Maximum Algorithms
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`max`](https://en.cppreference.com/w/cpp/algorithm/max) | returns the greater of the given values |
 | [`max_element`](https://en.cppreference.com/w/cpp/algorithm/max_element) | returns the largest element in a range |
@@ -651,7 +646,7 @@ int main() {
 
 ### Set Algorithms (on Sorted Ranges)
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`includes`](https://en.cppreference.com/w/cpp/algorithm/includes) | returns true if one sequence is a subsequence of another |
 | [`set_difference`](https://en.cppreference.com/w/cpp/algorithm/set_difference) | computes the difference between two sets |
@@ -661,7 +656,7 @@ int main() {
 
 ### Modifying Sequence Algorithms
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`copy, copy_if`](https://en.cppreference.com/w/cpp/algorithm/copy) | copies a range of elements to a new location |
 | [`copy_n`](https://en.cppreference.com/w/cpp/algorithm/copy_n) | copies a number of elements to a new location |
@@ -699,7 +694,7 @@ int main() {
 With insert operators, you can modify the behavior of the copy
 algorithm.  
 
-|  |  |
+| Method | Description |
 |:---|:---|
 | [`back_inserter`](https://en.cppreference.com/w/cpp/iterator/back_inserter) | inserts new elements at the end |
 | [`front_inserter`](https://en.cppreference.com/w/cpp/iterator/front_inserter) | inserts new elements at the beginning |
@@ -744,7 +739,7 @@ int main() {
 
 ### Modifying Sequence Algorithms
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`remove_copy, remove_copy_if`](https://en.cppreference.com/w/cpp/algorithm/remove_copy) | copies a range of elements omitting those that satisfy specific criteria |
 | [`replace, replace_if`](https://en.cppreference.com/w/cpp/algorithm/replace) | replaces all values satisfying specific criteria with another value |
@@ -775,7 +770,7 @@ int main() {
 Numeric Algorithms in
 [`<numeric>`](https://en.cppreference.com/w/cpp/header/numeric)
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`iota`](https://en.cppreference.com/w/cpp/algorithm/iota) | fills a range with successive increments of the starting value |
 | [`accumulate`](https://en.cppreference.com/w/cpp/algorithm/accumulate) | sums up a range of elements |
@@ -795,7 +790,7 @@ Built-in heapsort.
 (You may not implement the Heap in your lab using these functions,  
 but you may use them for testing.)
 
-|  |  |
+| Method | Description |
 |---:|:---|
 | [`is_heap`](https://en.cppreference.com/w/cpp/algorithm/is_heap) | checks if the given range is a max heap |
 | [`is_heap_until`](https://en.cppreference.com/w/cpp/algorithm/is_heap_until) | finds the largest subrange that is a max heap |
