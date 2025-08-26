@@ -194,7 +194,7 @@ Letter grades will be calculated from the following ranges.
 
 If a lab or project is submitted within 7 days of the deadline (and before the
 last day of class), the work will earn 80% credit. After 7 days, the work will
-earn 0% credit. Late work will **not** be accepted after April 29, 2025. Exams
+earn 0% credit. Late work will **not** be accepted after December 8, 2025. Exams
 and papers may **not** be submitted late.
 
 ### Teamwork and Assistance
