@@ -12,6 +12,10 @@ By the end of this lecture, you should be able to:
 5.  Utilize regular expressions for pattern matching in file operations.
 6.  Locate and interpret system and user information using Unix commands.
 
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/t8TXuGYjbV0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
 ## Text Editors
 
 Choosing a text editor is an important step in your Unix/Linux journey. You will use your editor frequently, so investing time to learn one well will pay off.
