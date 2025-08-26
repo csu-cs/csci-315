@@ -27,6 +27,7 @@ Choosing a text editor is an important step in your Unix/Linux journey. You will
 
 - **Graphical editors:**  
   - [VS Code](https://code.visualstudio.com/): Popular, extensible, and user-friendly.
+  - [VSCodium](https://vscodium.com/): Free/Libre Open Source VS Code
   - gVim: Graphical version of Vim.
   - Xemacs: Graphical Emacs.
   - gedit: Simple, similar to Notepad.

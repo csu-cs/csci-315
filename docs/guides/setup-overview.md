@@ -49,6 +49,16 @@ this command.
 sudo apt upgrade
 ```
 
+Recommended Text Editor
+-----------------------
+
+I recommend installing [VSCodium](https://vscodium.com/) as your text editor. It
+is Visual Studio Code, without all the propriety Microsoft stuff. If you are
+using WSL, you may either install VSCodium in WSL (in Linux) or install it in 
+Windows and then use the [Open Remote WSL](https://github.com/jeanp413/open-remote-wsl)
+extension to open any directory in Linux under WSL. I demonstrate this in the lecture on
+[Basic Unix Commands](/lectures/01-basic-unix).
+
 Git
 ---
 
