@@ -16,9 +16,9 @@ After studying this lecture, students should be able to:
   - Describe the stages of the compilation process in C/C++.
   - Interpret and use basic `g++` command-line options.
   - Differentiate between source files, object files, and executables for modularized code.
-  - Understand the benefits of separating interface (header) with guards and implementation (source) files.
-  - Use make and basic Makefile rules to automating multi-file C++ compilation tasks.
-  - Diagnose common compiler and linker errors using output messages.
+  - Understand why C++ separates headers (with guards) for interfaces from source files for implementations.
+  - Use make and basic Makefile rules to automate multi-file C++ compilation tasks.
+  - Diagnose common compiler and linker errors.
 
 <div class="youtube">
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/0Tfb_EXSrAo?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
@@ -33,7 +33,7 @@ After studying this lecture, students should be able to:
   file](https://en.wikipedia.org/wiki/Everything_is_a_file)! Well,
   almost.
 
-- Drives, ports, devices (e.g., printers) are file descriptors.
+- Drives, ports, and devices (e.g., printers) are file descriptors.
 
 - A file has a name and an [***inode*** (index
   node)](https://en.wikipedia.org/wiki/Inode) that stores its metadata
@@ -65,8 +65,8 @@ After studying this lecture, students should be able to:
 
 - You can see the inode number for a file by using `ls -i`.
 
-- If the last link to a file is deleted, the inode and the referenced
-  data and are marked as free (soft delete).
+- If the last link to a file is deleted, the inode and referenced
+  data are marked as free (soft delete).
 
 - This allows deletion when there are multiple hard links to the same
   file to be managed correctly.
@@ -76,7 +76,7 @@ Files are arranged in directories, which may contain sub-directories.
 | Directory | Description                                        |
 |:----------|:---------------------------------------------------|
 | `/`       | Contains all of the system’s files in directories. |
-| `/home`   | Contains a sub-directory for each user’s home.     |
+| `/home`   | Contains a subdirectory for each user’s home.      |
 | `/bin`    | System programs (“binaries”)                       |
 | `/etc`    | System configuration files                         |
 | `/lib`    | System libraries                                   |
@@ -101,7 +101,7 @@ Files are arranged in directories, which may contain sub-directories.
 
   - `mkdir /media/usb-drive` \# Make a folder ot be the mount point.
 
-  - `fdisk -l` \# look at list of available drives
+  - `fdisk -l` \# look at the list of available drives
 
   - `mount /dev/sdc1 /media/usb-drive/`
 
@@ -166,7 +166,9 @@ We start with the simple case of a single source-code file.
 
 Create a `.cpp` file similar to the one listed here.
 
-```cpp
+::: code-group
+
+```cpp [greeting.cpp]
 #include <iostream>
 
 int main()
@@ -177,38 +179,40 @@ int main()
 }
 ```
 
+:::
+
 ### Compile
 
 - Compile using  
-  `g++ test.cpp`
+  `g++ greeting.cpp`
 
 - What file is generated?
 
 - Name your compiled executable by using  
-  `g++ test.cpp -o test`
+  `g++ greeting.cpp -o welcome`
 
 - Run the generated executable file.  
-  `./test`
+  `./greeting`
 
 ### Creating Debug Ready Code
 
 ```bash
-g++ -g test.cpp -o test
+g++ -g greeting.cpp -o welcome
 ```
 
 - The `-g` flag tells the compiler to use debug info.
 
-- The compile file size is much larger.
+- The compiled file size is much larger.
 
 - We may still remove this debug information using the strip command.  
-  `strip test`
+  `strip welcome`
 
 ### Sanitizers for Better Runtime Error Detection
 
-The following add additional run-time checking.
+The following arguments add additional run-time checking.
 
 ``` bash
-g++ -g -fsanitize=return -fsanitize=undefined -fsanitize=address test.cpp -o test
+g++ -g -fsanitize=return -fsanitize=undefined -fsanitize=address greeting.cpp -o welcome
 ```
 
 -   `-fsanitize=return` Shows error when returning without a value from non-void function.
@@ -223,11 +227,11 @@ See all options at
 - The compiler can help improve the performance of your code via
   optimizations.
 
-- `g++ -O test.cpp -o test`
+- `g++ -O greeting.cpp -o welcome`
 
 - The `-O` flag tells the compiler to optimize the code.
 
-- Usually can define an optimization level by adding a number to
+- Define an optimization level by adding a number to
   the `-O` flag.
 
 ### Getting Extra Compiler Warnings
@@ -240,7 +244,7 @@ See all options at
 
 - To receive extra compiler warnings, use the `-Wall -Wextra`
   arguments.  
-  `g++ -Wall -Wextra test.cpp -o test`
+  `g++ -Wall -Wextra greeting.cpp -o welcome`
 
   - Useful to improve the quality of our source code
 
@@ -249,7 +253,7 @@ See all options at
 ### Even More Compiler Warnings
 
 ``` Bash
-g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow test.cpp -o test
+g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow greeting.cpp -o welcome
 ```
 
 - `-Wall` all the warnings about constructions that some users consider questionable, and that are easy to avoid
@@ -282,7 +286,7 @@ See all options at
 ### Selective Recompilation After Isolated Changes
 
 - With the previous command, all source files are always recompiled,
-  even when only one of them changed.
+  even when only one has changed.
 
 - To overcome, we compile in multiple steps.
 
@@ -304,7 +308,7 @@ See all options at
 - A ***makefile*** is a collection of instructions that should be used
   to compile your program.
 
-- Once you modify some source files, and type the command `make` (or
+- Once you modify some source files and type the command `make` (or
   `gmake` if using GNU’s make), your program will be recompiled using as
   few compilation commands as possible.
 
@@ -398,7 +402,7 @@ clean:
   .PHONY: clean
   ```
 
-### How can we put the object files in a sub-directory?
+### How can we put the object files in a subdirectory?
 
 ``` makefile
 # Make an object folder and put a .gitignore file in it.
@@ -426,8 +430,8 @@ main: obj/main.o obj/a.o obj/b.o
 - Commands can be multiline, use tabs
 
 - Other tools:
-  - `makedepend` Finds dependencies for your program.
-  - `configure` Finds libraries your program make need.
+  - `makedepend` -- Finds dependencies for your program.
+  - `configure` -- Finds libraries your program make need.
 
 - We are going to focus only on `make` for this class.
 
@@ -450,8 +454,8 @@ main: obj/main.o obj/a.o obj/b.o
 
 ### System Calls And Device Drivers
 
-Using low-level system calls directly for input and  
-output can be very inefficient.
+Using low-level system calls directly for input and output can be very 
+inefficient.
 
 - Why?
 
@@ -514,7 +518,9 @@ output can be very inefficient.
 
 Consider this obvious memory leak:
 
-``` c++
+::: code-group
+
+``` c++ [test.cpp]
 int main()
 {
   int *pArr = new int[512];
@@ -522,6 +528,8 @@ int main()
   return 0;
 }
 ```
+
+:::
 
 ```bash
 g++ -g test.cpp && valgrind ./a.out
@@ -542,7 +550,7 @@ g++ -g test.cpp && valgrind ./a.out
 
 - ***Definitely lost*** means we lost
 
-- ***Indirectly lost*** means, we lost and it could be hard to find.
+- ***Indirectly lost*** means we lost it, and it could be hard to find.
 
 - ***Possibly lost*** means Valgrind was not able to determine if the
   memory was deallocated or not.
@@ -607,10 +615,10 @@ Do you see the error?
 ==2615==
 ==2615== HEAP SUMMARY:
 ==2615==     in use at exit: 0 bytes in 0 blocks
-==2615==   total heap usage: 1 allocs, 1 frees, 4,096 bytes allocate
+==2615==   total heap usage: 1 allocs, 1 frees, 4,096 bytes allocated
 ```
 
-Well that tells us the error, but where is it?
+Well, that tells us the error, but where is it?
 
 ### Getting A Little More Help
 
