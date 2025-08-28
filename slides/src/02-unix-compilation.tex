@@ -1,0 +1,953 @@
+% By Paul E. West and Sean T. Hayes
+\documentclass[14pt,aspectratio=1610]{beamer}
+% \documentclass[12pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{booktabs}
+\usepackage{forest}
+\usetikzlibrary{positioning,backgrounds}
+
+% for aligning items in an itemize (eqmakebox)
+\usepackage{eqparbox}
+
+% Add space between paragraphs
+\setlength{\parskip}{0.5\baselineskip}
+
+\title{\Huge{}{\ttfamily\bfseries C++} Development\\in Linux}
+\subtitle{CSCI 315: Data Structure Analysis}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+%% Comment out date to use default (today)
+%\date{January 16, 2025}
+\subject{Data Structures}
+\keywords{Linux, Unix, C++, Compilation}
+
+\graphicspath{{../imgs/compilation}}
+
+% Change font-family and color for description lists to type-writer
+\setbeamerfont{description item}{family=\ttfamily}
+\setbeamercolor{description item}{fg=codeVariable, bg=codeBackground}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Learning Outcomes}
+  Linux Philosophy
+  \begin{itemize}
+    \item Describe the core principles of the Unix/Linux philosophy.
+    \item Identify and navigate the Linux file system hierarchy.
+    \item Explain the purpose of regular files, directories, and device files in Linux.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Learning Outcomes}
+  C++ Software Development
+  \begin{itemize}
+      \item Explain the purpose and role of a compiler.
+      \item Describe the stages of the compilation process in C/C++.
+      \item Interpret and use basic g++ command-line options.
+      \item Differentiate between source files, object files, and executables for modularized code.
+      \item Understand why C++ separates headers (with guards) for interfaces from source files for implementations.
+      \item Use make and basic Makefile rules to automate multi-file C++ compilation tasks.
+      \item Diagnose common compiler and linker errors.
+  \end{itemize}
+\end{frame}
+
+\section{Linux Philosophy}
+
+\begin{frame}{The Linux File Structure and Inodes}
+\begin{itemize}
+  \item<+-> In Linux, \href{https://en.wikipedia.org/wiki/Everything_is_a_file}{everything is a file}! Well, almost.
+  \item<+-> Drives, ports, and devices (e.g., printers) are file descriptors.
+  \item<+-> A file has a name and an \href{https://en.wikipedia.org/wiki/Inode}{\emph{inode} (index node)} that stores its metadata or ``administrative information.''
+  \begin{itemize}
+    \item creation/modification date
+    \item permissions
+    \item properties are stored in the file's inode
+    \item a special block of data in the file system
+    \item contains administrative information
+    \item contains the length of the file
+    \item where on the disk it's stored
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Directories}
+\begin{itemize}[<+->]
+\item Directories (a.k.a.\ folders) are also files.
+\item A directory is a file that holds the \emph{inode} (index node) numbers and names of other files.
+\item Each directory entry is a link to a file's inode; remove the filename and you remove the link.
+\item You can see the inode number for a file by using \lstinline[language=Bash]{ls -i}.
+\item If the last link to a file is deleted, the inode and referenced data are marked as free (soft delete).
+\item This allows deletion when there are multiple hard links to the same file to be managed correctly.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Directories continued}
+Files are arranged in directories, which may contain sub-directories.
+
+\begin{tabularx}{1\textwidth}{l X}
+\toprule{}
+  Directory & Description\\
+\midrule{}
+  \texttt{/} & Contains all of the system's files in directories.\\
+  \texttt{/home} &  Contains a subdirectory for each user's home.\\
+  \texttt{/bin}  &  System programs (``binaries'')\\
+  \texttt{/etc}  &  System configuration files\\
+  \texttt{/lib}  &  System libraries\\
+  \texttt{/dev}  &  Physical devices and device interfaces\\
+\bottomrule{}
+\end{tabularx}
+
+\end{frame}
+
+\begin{frame}{Example Directories Tree}
+\centerline{%
+  \begin{forest}
+    for tree={font=\ttfamily\large}
+    [/
+      [bin]
+      [etc]
+      [dev]
+      [home
+        [olivia
+          [Documents]
+          [Downloads]
+          [School]
+        ]
+        [emma]
+      ]
+      [lib]
+    ]
+  \end{forest}
+}
+\end{frame}
+
+\begin{frame}{Files and Devices}
+\begin{itemize}
+  \item Even hardware devices are very often represented (mapped) by files.
+  \item You can mount a CD-ROM drive as a file:
+    \begin{itemize}
+      \item \lstinline[language=Bash, morekeywords=mount]{mount -t iso9660 /dev/sr0 /mnt/cdrom}
+      \item \lstinline[language=Bash]{cd /mnt/cdrom} \# navigate to the mounded drive
+    \end{itemize}\vspace{1em}
+    \item You can mount a USB drive as a file:
+    \begin{itemize}
+      \item \lstinline[language=Bash, morekeywords=mkdir]{mkdir /media/usb-drive} \# Make a folder ot be the mount point.
+      \item \lstinline[language=Bash, morekeywords=fdisk]{fdisk -l} \# look at the list of available drives
+      \item \lstinline[language=Bash, morekeywords=mount]{mount /dev/sdc1 /media/usb-drive/}
+      \item \lstinline[language=Bash]{cd /media/usb-drive}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\texttt{/dev/console}}
+\begin{itemize}
+  \item This device represents the system console.
+  \item Error messages and diagnostics are often sent to this device.
+  \item On Linux, it's usually the ``active'' virtual console.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\texttt{/dev/tty}}
+\begin{itemize}
+  \item The special file \texttt{/dev/tty} is an alias for the controlling terminal of a process.
+  \begin{itemize}
+    \item keyboard
+    \item screen
+    \item window
+  \end{itemize}
+  \item \texttt{/dev/tty} allows a program to write directly to the user, without regard to which pseudo-terminal or hardware terminal the user is using.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{/dev/null}
+\begin{itemize}
+\item This is the null device.
+\item All output written to this device is discarded.
+\item Unwanted output (a.k.a., a student's email complaint/rant) is often redirected to \texttt{/dev/null}.
+\item \lstinline[language=bash, deletekeywords=do]{echo I do not want to see this. > /dev/null}
+\item \lstinline[language=bash, morekeywords=cp]{cp /dev/null empty_file}
+\end{itemize}
+\end{frame}
+
+% \section{tmux}
+
+% \begin{frame}{tmux: Terminal Multiplexer}
+% \begin{itemize}
+% \item This allows us to attach multiple users to the same terminal or to background processes.
+% \item For this class, we may use tmux to program as a group or to help everyone follow along.
+% \item How to connect:
+% \begin{enumerate}
+% \item First, everyone must be on the CSU \textit{wired} network.
+% \item I will post the IP address in class.
+% \item SSH over to that IP address. (You may use PuTTY if you are in Windows.)
+% \item Log in is student/student
+% \item At the command line type: \\
+% \lstinline{tmux att}
+% \item To detach from the session, type \lstinline{ctrl + b} and then \lstinline{d}.
+% \end{enumerate}
+% \end{itemize}
+% \end{frame}
+
+\section{Compilation}
+
+\begin{frame}{Introduction}
+As a programmer or system administrator, you should know how to program under Linux.
+
+We are going to learn how to use\textellipsis{}\vspace{-0.8em}%
+\begin{description}[\texttt{gdb} \& \texttt{ddd~}]
+\item[\colorbox{codeBackground}{\texttt{g++}}] to compile a C++ program under Linux.
+\item[\colorbox{codeBackground}{\texttt{gdb \& \texttt{ddd}}}] to debug.
+\item[\colorbox{codeBackground}{\texttt{make}}] to automate compilation.
+\item[\colorbox{codeBackground}{\texttt{valgrind}}] to perform memory analysis.
+\item[\colorbox{codeBackground}{\texttt{gnuplot}}] to create performance graphs.
+\item[\colorbox{codeBackground}{\texttt{perf}}] to identify performance issues (time permitting).
+\end{description}
+\end{frame}
+
+\begin{frame}[fragile]{Compiling C++ Programs}
+We start with the simple case of a single source-code file.
+
+Create a \texttt{.cpp} file similar to the one listed here.
+
+\begin{lstlisting}
+#include <iostream>
+
+int main()
+{
+    std::cout << "Hello, World!\n";
+
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Compile}
+\begin{itemize}
+\item Compile using\\
+  \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ greeting.cpp}
+\item What file is generated?
+\item Name your compiled executable by using\\
+  \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ greeting.cpp -o welcome}
+\item Run the generated executable file.\\
+\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{./welcome}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Creating Debug Ready Code}
+\begin{lstlisting}[language={}, basicstyle=\ttfamily\color{codeVariable}]
+g++ -g greeting.cpp -o welcome
+\end{lstlisting}
+
+\begin{itemize}
+\item The \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-g} flag tells the compiler to use debug info.
+\item The compiled file size is much larger.
+\item We may still remove this debug information using the strip command.\\
+\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{strip welcome}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Sanitizers for Better Runtime Error Detection}
+
+The following arguments add additional run-time checking.
+\begin{lstlisting}[language={}, basicstyle=\ttfamily\small\color{codeVariable}]
+g++ -g -fsanitize=return -fsanitize=undefined -fsanitize=address greeting.cpp -o welcome
+\end{lstlisting}\vspace{-0.8em}
+\begin{description}[\texttt{-fsanitize=undefined~~}]
+  \item[\colorbox{codeBackground}{-fsanitize=return}]
+     Shows error when returning without a value from non-void function.
+  \item[\colorbox{codeBackground}{-fsanitize=undefined}]
+    Detects some undefined behaviors.
+  \item[\colorbox{codeBackground}{-fsanitize=address}]
+    Detects memory addressability issues.
+\end{description}\vspace{-0.8em}
+  \small{See all options at \url{https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html}}
+\end{frame}
+
+\begin{frame}{Adding Optimizations}
+\begin{itemize}
+\item The compiler can help improve the performance of your code via optimizations.
+\item \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ -O greeting.cpp -o welcome}
+\item The \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-O} flag tells the compiler to optimize the code.
+\item Define an optimization level by adding a number to the~\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-O} flag.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Getting Extra Compiler Warnings}
+\begin{itemize}
+\item<+->
+  \emph{Error messages} -- Erroneous code that does not \\ comply with the C++ standard.
+\item<+->
+\emph{Warnings} -- Codes that usually tend to cause errors during runtime.
+\item<+->
+  To receive extra compiler warnings, use the \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-Wall -Wextra} arguments.\\
+  \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ -Wall -Wextra greeting.cpp -o welcome}
+  \begin{itemize}
+  \item
+    Useful to improve the quality of our source code
+  \item
+    Expose bugs that will really bug us later
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile, t]{Even More Compiler Warnings}
+
+\begin{lstlisting}[language=Bash, deletekeywords={test}, basicstyle=\small\ttfamily\color{codeVariable}]
+g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wnull-dereference greeting.cpp -o welcome
+\end{lstlisting}
+
+\begin{description}[\texttt{-Wconversion~~}]
+  \alt<1>{
+    \item[\colorbox{codeBackground}{-Wall}] all the warnings about constructions that some users consider questionable, and that are easy to avoid
+    \item[\colorbox{codeBackground}{-Wextra}] some extra warning flags that are not enabled by \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-Wall}
+    \item[\colorbox{codeBackground}{-Wpedantic}] warnings demanded by strict ISO C++
+  }{
+    \item[\colorbox{codeBackground}{-Wconversion}] implicit conversions that may alter a value
+    \item[\colorbox{codeBackground}{-Wshadow}] when a local variable/type declaration shadows another variable, parameter, type, class member, etc.}
+    \item[\colorbox{codeBackground}{-Wnull-dereference}] \textit{some} null pointer dereferencing. 
+\end{description}
+\onslide<2>{}
+See all options at \url{https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html}
+
+\end{frame}
+
+\begin{frame}{Compiling Multi-Source Programs}
+\begin{itemize}
+\item Compile them with:
+\begin{itemize}
+\item \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ main.cpp a.cpp b.cpp -o hello}
+\end{itemize}
+\item Comments:
+\begin{itemize}
+\item If external symbols are needed, use the \lstinline{extern} keyword.
+\item Source file order becomes important.
+\item As program size increases, so does compilation time.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Processing a C++ Program}
+\center
+\begin{tikzpicture}[thick, every node/.style={node distance=4mm, minimum height=7mm},
+  box/.style={draw, fill=CSUcyan, text=black, minimum width=2.9cm}
+  ]
+  % Start block
+  \node[box] (block1) {Code};
+  \node[left=of block1] {Step 1};
+
+  \node[box, below=of block1] (block2) {Preprocess};
+  \node[left=of block2] {Step 2};
+
+  \node[box, below=of block2] (block3) {Compile};
+  \node[left=of block3] {Step 3};
+
+  \node[box, below=of block3] (block4) {Link};
+  \node[left=of block4] {Step 4};
+
+  \node[box, right=7mm of block4] (blockLibs) {Libraries};
+
+  \node[box, below=8mm of block4] (block5) {Load};
+  \node[left=of block5] {Step 5};
+
+  \node[box, below=of block5] (block6) {Execute};
+  \node[left=of block6] {Step 6};
+
+  % Arrows
+  \draw[->, very thick] (block1) edge (block2);
+  \draw[->, very thick] (block2) edge (block3);
+  \draw[->, very thick] (block3) edge (block4);
+  \draw[->, very thick, dashed] (block4) edge (block5);
+  \draw[->, very thick] (blockLibs) edge (block4);
+  \draw[->, very thick] (block5) edge (block6);
+
+  \draw [<-, very thick] (block1) -- ++ (5cm,0) |- node[anchor=south east]{Syntax Error} (block3);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Selective Recompilation After Isolated Changes}
+\begin{itemize}
+\item With the previous command, all source files are always recompiled, even when only one has changed.
+\item To overcome, we compile in multiple steps.
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\color{codeVariable}]
+g++ -c main.cpp # Create main.o
+g++ -c a.cpp    # Create a.o
+g++ -c b.cpp    # Create b.o
+g++ main.o a.o b.o -o hello # link files
+\end{lstlisting}
+
+\item \lstinline{-c} tells the compiler to only create an object file.
+\item The final command links the objects into an executable.
+\end{itemize}
+\end{frame}
+
+\section{Makefile}
+
+
+\begin{frame}{Automating Program Compilation}
+\begin{itemize}
+\item A \emph{makefile} is a collection of instructions that \\ should be used to compile your program.
+\item Once you modify some source files and type the command \texttt{make} (or \texttt{gmake} if using GNU's make), your program will be recompiled using as few compilation commands as possible.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Makefile Structure}
+\begin{itemize}
+\item Variable Definitions -- Define values for variables for reuse.
+\begin{lstlisting}[language=make]
+CPPFLAGS  = -Wall -Wextra -Wconversion -Wshadow -Wpedantic
+CPPFLAGS += -g -fsanitize=return -fsanitize=undefined -fsanitize=address
+SRCS = main.cpp file1.cpp file2.cpp
+CC = g++
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Makefile Structure}
+\begin{itemize}[<+->]
+\item Dependency Rules -- Define the conditions a given file needs to be recompiled, and how to compile it.
+\begin{lstlisting}[language=make]
+main.o: main.cpp
+    g++ ${CPPFLAGS} -c main.cpp
+\end{lstlisting}
+
+\begin{itemize}
+\item Recompile if any of the files after a \lstinline{:} change.
+\item You \textit{must} use hard tabs in makefiles! (Spaces will NOT work.)
+\item \lstinline[language=make]{# is a comment}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\lstset{language=make}
+
+\begin{frame}[fragile]{Single Source Makefile Example}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make]
+# First,  list your variable(s)
+CC = g++
+# First rule, which creates the program.
+#    By convention, the first rule is usually all.
+all: main
+# compiling the source file, main.o depends on main.c
+main.o: main.cpp
+        ${CC} -g -Wall -Wextra -c main.cpp
+# ${CC} uses the value of CC variable, case sensitive
+# linking the program, the program name is main
+main: main.o
+        ${CC} -g main.o -o main
+# cleaning everything that can be recreated with "make"
+# (basically, objects, the executable, and temp files).
+clean:
+        rm -f main main.o
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Multi-Source-File Example}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make]
+CPPFLAGS = -g -Wall -Wextra -Wconversion -Wshadow -Wpedantic
+# Top-level rule to compile the whole program.
+all: prog
+# The program is made of several source files.
+prog: main.o file1.o file2.o
+    g++ main.o file1.o file2.o -o prog
+# Rule for file "main.o".
+main.o: main.c file1.h file2.h
+    g++ ${CPPFLAGS} -c main.cpp
+# Rule for file "file1.o".
+file1.o: file1.c file1.h
+    g++ ${CPPFLAGS} -c file1.cpp
+# Rule for file "file2.o".
+file2.o: file2.cpp file2.h
+    g++ ${CPPFLAGS} -c file2.cpp
+# Rule for cleaning files generated during compilations.
+clean:
+    rm -f prog main.o file1.o file2.o
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Phony Targets}
+
+\begin{itemize}
+\item
+  Make assumes that all the targets are files.
+\item
+  We may want to run commands that do not represent files.\\
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make]
+# Rule for cleaning files generated during compilations.
+clean:
+    rm -f prog main.o file1.o file2.o
+\end{lstlisting}
+
+\item
+  We can identify special targets that are not files.
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make]
+# Allow the clean target to run even if there is a file named "clean"
+.PHONY: clean
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{How can we put the object files in a subdirectory?}
+
+\pause
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make, firstnumber=6]
+# Make an object folder and put a .gitignore file in it.
+obj:
+  mkdir -p obj && echo *.o > obj/.gitignore
+
+# The thing to the right of | is an order-only rule
+obj/main.o: main.cpp | obj
+  g++ ${CPPFLAGS} -c main.cpp -o obj/main.o
+
+obj/a.o : a.cpp | obj
+  g++ ${CPPFLAGS} -c a.cpp -o obj/a.o
+
+obj/b.o : b.cpp | obj
+  g++ ${CPPFLAGS} -c b.cpp -o obj/b.o
+
+main: obj/main.o obj/a.o obj/b.o
+  g++ ${CPPFLAGS} obj/main.o obj/a.o obj/b.o -o main
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Multi-Source Make}
+\begin{itemize}
+\item Commands can be anything; usually they are \\\texttt{g++} commands to compile or link.
+\item Commands can be multiline, use tabs
+\item Other tools:
+\begin{description}[GNU Autoconf]
+\item [{makedepend}] Finds dependencies for your program.
+\item [{GNU Autoconf}] Generates a script for your project (\lstinline{./configure}) that detects libraries your program may use and generates a make file.
+\end{description}
+\item We are going to focus only on \texttt{make} for this class.
+%\item make param:
+%\begin{itemize}
+%\item Runs the dependency for param
+%\item No param runs the first label found (usually all)
+%\item make clean deletes files created by make
+%\end{itemize}
+\end{itemize}
+\end{frame}
+
+%\begin{frame}[fragile]{makedepend}
+%\begin{itemize}
+%\item Program to generate dependencies
+%\item Parameters are C/C++ files to scan
+%\item It processes \# directives to check includes
+%\item Dependencies are critical, can do dependency graphs
+%\item Can be added to Makefile:\\
+%\begin{lstlisting}
+%depend: Makefile $(SRC)
+        %makedepend $(INCLUDES) $(SRC)
+%## end of Makefile
+%# DO NOT DELETE THIS LINE -- make depend depends on it.
+%
+%\end{lstlisting}
+%\item Now make depend will run makedepend and add its results directly to Makefile.  It doesn't generate the commands, but it does take care of finding dependencies for you.
+%\item Many compilers automatically run dependency checks every time-never misses a dependency, but wasted work
+%\end{itemize}
+%\end{frame}
+
+%\begin{frame}{configure}
+%\begin{itemize}
+%\item Configure is part of the autoconf GNU system
+%\item It makes Makefiles (ha!)
+%\item Finds things (like say tcl) and updates Makefile variables with their locations
+%\item Good for multi-platform Makefiles
+%\item Not needed for this class
+%\end{itemize}
+%\end{frame}
+
+
+% \section{Debugging}
+
+% \begin{frame}{Debugging}
+% \begin{itemize}
+% \item Overall being about to see the entire program and use print statements is the best debugger tool.
+% \item Nonetheless, there will be times where you simply can't see the whole picture...
+% \item A debugger is an aid, it will help you see the whole picture.
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}[fragile]{An example}
+% \begin{lstlisting}
+% #include <iostream>
+
+% int get_sum(int ary[1000]) {
+%     int sum = 0;
+%     for (int i = 0; i <= 1000; i++) {
+%         sum += ary[i];
+%     }
+%     return sum;
+% }
+
+% int main(int argc, char *argv[]) {
+%     int ary[1000];
+%     for (int i = 0; i < 1000; i++) {
+%         ary[i] = i;
+%     }
+%     std::cout << get_sum(ary) << "\n";
+% }
+%\end{lstlisting}
+%See the issue?  If yes/no lets use the debugger to help.
+%\end{frame}
+%
+%\begin{frame}{Debugging C/C++ Prrograms}
+%\begin{itemize}
+%\item Before invoking the debugger, make sure you compiled your program with the "-g" flag (for gcc or g++) \\
+%g++ -g debug\_me.cpp -o debug\_me \\
+%nemiver debug\_me
+%\end{itemize}
+%\includegraphics[width=1.0\textwidth]{nemiver1.png}
+%\end{frame}
+
+%\begin{frame}{Let go through an example}
+%\begin{itemize}
+%\item nemiver demonstration.
+%\end{itemize}
+%\end{frame}
+
+\section{System Architecture}
+
+
+\begin{frame}{System Calls And Device Drivers}
+\begin{itemize}
+\item System calls access and control files and devices.
+\item At the heart of the operating system, the kernel, are some device drivers.
+\item The low-level functions used to access the device drivers, the system calls, include:
+\begin{description}[close~]
+\item[{open}] Open a file or device
+\item[{read}] Read from an open file or device
+\item[{write}] Write to a file or device
+\item[{close}] Close the file or device
+\item[{ioctl}] Pass control information to a device driver
+\end{description}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{System Calls And Device Drivers}
+  Using low-level system calls directly for input and \\output can be very inefficient.\vspace{-0.6em}
+\begin{columns}
+\column{0.4\textwidth}
+  \begin{itemize}
+  \item Why?
+  \begin{itemize}
+  \item Performance penalty in making a system call.
+  \item The hardware has limitations
+  \end{itemize}
+  \item Standard libraries provide a higher-level interface to devices and disk files.
+  \end{itemize}
+\column{0.5\textwidth}\vspace{1em}
+  \begin{tikzpicture}[thick, every node/.style={node distance=4mm, minimum height=7mm}]
+    % Start block
+    \node[,
+      minimum width=4.1cm] (user) {User Program};
+    \node[text=black, fill=CSUcyan,
+      minimum width=3cm] (library) [below=of user.west, anchor=north west] { Library };
+
+    \node [draw, fit={(user) (library)}, inner sep=0pt] (userAll) {};
+
+    \node[right=of userAll] (userSpace) {User Space};
+
+
+    \node[text=black, fill=CSUcyan,
+      below=10mm of userAll,
+      minimum width=4.1cm] (sys) {System Calls};
+
+    \node[
+      below=of sys.center,
+      minimum width=4.1cm] (kernel) {Kernel};
+
+    \node[text=black, fill=CSUcyan,
+      below=of kernel.west, anchor=north west,
+      minimum width=3cm] (dev) {Device Drivers};
+
+
+    \node[draw, fit={(sys) (dev) (kernel)}, inner sep=0pt] (systemAll) {};
+    \node[right=of systemAll] (kernelSpace) {Kernel Space};
+
+
+    \node[draw,
+      below=of systemAll,
+      minimum width=4.1cm, align=center] (hardware) {Hardware Devices};
+
+    % Arrows
+    \draw[->, very thick] (userAll) edge node[anchor=west]{Calls} (sys);
+    \draw[->, very thick] (systemAll) edge (hardware);
+    \draw[->, very thick] (kernelSpace) edge (systemAll);
+    \draw[->, very thick] (userSpace) edge (userAll);
+
+  \end{tikzpicture}
+\end{columns}
+\end{frame}
+
+
+\section{Valgrind}
+
+\begin{frame}{What is Valgrind?}
+\begin{itemize}
+\item A tool to perform:
+\begin{itemize}
+\item memory debugging,
+\item memory leak detection, and
+\item memory profiling.
+\end{itemize}
+\item Valgrind accomplishes this by running your program inside of its virtual machine and capturing all your memory accesses/requests.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Memory Debugging: A Successful Run}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily\bfseries,identifierstyle=\color{white}]
+==2231== Memcheck, a memory error detector
+==2231== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==2231== Using Valgrind-3.10.0 and LibVEX; rerun with -h for copyright info
+==2231== Command: ./a.out
+==2231==
+==2231==
+==2231== HEAP SUMMARY:
+==2231==     in use at exit: 0 bytes in 0 blocks
+==2231==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==2231==
+==2231== All heap blocks were freed -- no leaks are possible
+==2231==
+==2231== For counts of detected and suppressed errors, rerun with: -v
+==2231== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+\end{lstlisting}
+\begin{itemize}\vspace{-1em}
+\item Notice Valgrind keeps track of:
+\begin{itemize}
+\item (heap) memory used on exit
+\item How much heap memory was allocated \& deallocated.
+\item How many memory errors (out-of-bounds memory access) were detected.
+\end{itemize}
+\item \lstinline{2231} is the process ID, which is unimportant for this course.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Memory Leak Detection}
+Consider this obvious memory leak:
+
+\begin{columns}
+\column{0.46\textwidth}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,language=C++]
+int main()
+{
+  int *pArr = new int[512];
+
+  return 0;
+}
+\end{lstlisting}
+
+\column{0.54\textwidth}
+\lstinline[basicstyle=\small\ttfamily]{g++ -g test.cpp && valgrind ./a.out}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily\bfseries,identifierstyle=\color{white}]
+==2476== HEAP SUMMARY:
+==2476==     in use at exit: 4,096 bytes in 1 blocks
+==2476==   total heap usage: 1 allocs, 0 frees, 4,096 bytes allocated
+==2476==
+==2476== LEAK SUMMARY:
+==2476==    definitely lost: 4,096 bytes in 1 blocks
+==2476==    indirectly lost: 0 bytes in 0 blocks
+==2476==      possibly lost: 0 bytes in 0 blocks
+==2476==    still reachable: 0 bytes in 0 blocks
+==2476==         suppressed: 0 bytes in 0 blocks
+\end{lstlisting}
+\end{columns}
+
+\begin{itemize}
+\item \emph{Definitely lost} means \textellipsis{} we lost \textellipsis{}
+\item \emph{Indirectly lost} means we lost it, and it could be hard to find.
+\item \emph{Possibly lost} means Valgrind was not able to determine if the memory was deallocated or not.
+\item \emph{Still reachable} means you have a dangling pointer.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Memory Usage detection}
+A better version:
+
+\begin{columns}
+\column{0.46\textwidth}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,language=C++]
+int main()
+{
+  int *ints = new int[1024];
+
+  delete[] ints;
+  return 0;
+}
+\end{lstlisting}
+\column{0.54\textwidth}
+\lstinline[basicstyle=\small\ttfamily]{g++ -g test.cpp && valgrind ./a.out}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily\bfseries,identifierstyle=\color{white}]
+==2591== HEAP SUMMARY:
+==2591==     in use at exit: 0 bytes in 0 blocks
+==2591==   total heap usage: 1 allocs, 1 frees, 4,096 bytes allocated
+==2591==
+==2591== All heap blocks were freed -- no leaks are possible
+\end{lstlisting}
+\end{columns}
+
+
+Notice that Valgrind can tell us how much heap memory we are using even though we freed (deallocated) it.
+\end{frame}
+
+\begin{frame}[fragile]{Memory Access Error Detection}
+Now let's use Valgrind to detect an off-by-one memory error.
+
+\begin{columns}
+\column{0.5\textwidth}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,language=C++]
+int main() {
+  int *ints = new int[1024];
+
+  for (int i = 0; i <= 1024; i++) {
+    ints[i] = i;
+  }
+
+  delete[] ints;
+  return 0;
+}
+\end{lstlisting}
+
+Do you see the error?
+
+\pause
+\column{0.50\textwidth}
+\begin{lstlisting}[basicstyle=\tiny\ttfamily\bfseries,identifierstyle=\color{white}]
+==2615== Invalid write of size 4
+==2615==    at 0x400673: main (in ~/t/a.out)
+==2615==  Address 0x5a03040 is 0 bytes after a block of size 4,096 alloc'd
+==2615==    at 0x4C298A0: operator new[](unsigned long) (vg_replace_malloc.c:389)
+==2615==    by 0x40064E: main (in ~/t/a.out)
+==2615==
+==2615==
+==2615== HEAP SUMMARY:
+==2615==     in use at exit: 0 bytes in 0 blocks
+==2615==   total heap usage: 1 allocs, 1 frees, 4,096 bytes allocated
+\end{lstlisting}
+
+Well, that tells us the error, but where is it?
+
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Getting A Little More Help}
+
+Compile with debug flags! \colorbox{black}{\texttt{\color{codeVariable}g++ \textcolor{white}{\textbf{\textit{-g}}} test.c \&\& valgrind ./a.out}}
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,identifierstyle=\color{white}]
+==2634== Invalid write of size 4
+==2634==    at 0x400673: main (test.c:7)
+==2634==  Address 0x5a03040 is 0 bytes after a block of size 4,096 alloc'd
+==2634==    at 0x4C298A0: operator new[](unsigned long) (vg_replace_malloc.c:389)
+==2634==    by 0x40064E: main (test.c:4)
+==2634==
+==2634==
+==2634== HEAP SUMMARY:
+==2634==     in use at exit: 0 bytes in 0 blocks
+==2634==   total heap usage: 1 allocs, 1 frees, 4,096 bytes allocated
+==2634==
+==2634== All heap blocks were freed -- no leaks are possible
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Conclusion}
+\begin{itemize}
+\item Valgrind can be used to detect memory leaks and\\ memory access errors.
+\item Valgrind provides other tools to profile memory usage and cache usage, but those are beyond the scope of this class.
+\item Why doesn't C++ does not have built-in memory debugging like Java?
+\end{itemize}
+\end{frame}
+
+\section{In the Future}
+
+\begin{frame}{Gnuplot: Generates Simple Graphs}
+\begin{center}\large
+Gnuplot command-line graphing utility for Linux.
+
+We will use it soon to observe the performance of our data structures and algorithms.
+\end{center}
+\end{frame}
+
+% \begin{frame}{Profiling}
+% \begin{itemize}
+% \item Profiling tells you where your program is spending the most time.
+% \item With that knowledge you can focus your energy on certain parts to speed up performance.  (Why?)
+% \end{itemize}
+% \begin{itemize}
+% \item perf (hopefully)
+% \end{itemize}
+% \end{frame}
+
+\section*{Lab 02}
+
+\begin{frame}{Git: Adding an Upstream Repository}
+\center{}
+  Is your forked repository missing the updates\\from the course repository?\\[1em]
+
+  \begin{tikzpicture}[thick, every node/.style={node distance=4mm, minimum height=7mm}]
+    % Start block
+    \node[text=black, fill=CSUcyan,
+      minimum width=3cm] (upstream) {upstream};
+
+    \node[text=black, fill=CSUcyan,
+      minimum width=3cm] (origin) [right=20mm of upstream.east, anchor= west] { origin };
+
+    \node [fit={(upstream) (origin)}, inner sep=1pt] (userAll) {};
+
+    \node[text=CSUgold!60!white] (githubText) at ($(upstream.north)!0.5!(origin.north)$)[yshift=5pt, anchor=south] { \textbf{GitHub} };
+
+    \begin{scope}[on background layer]
+    \node [draw=CSUgold, fit={(userAll) (githubText)}, fill=CSUslate, inner sep=1pt] (github) {};
+    \end{scope}
+
+    \node[text=black, fill=CSUcyan,
+      minimum width=3cm] (local) [below=20mm of origin.south, anchor=north] { local };
+
+    % Arrows
+    \draw[->, very thick, color=white] (upstream) edge node[text=white, anchor=south]{fork} (origin);
+    \draw[->, very thick] (origin)  to[bend right] node[anchor=east,align=right]{clone/pull} (local);
+    \draw[->, very thick] (local)  to[bend right] node[anchor=west]{push} (origin);
+
+    \onslide<2->{\draw[->, very thick] (upstream)  to[bend right] node[anchor=east]{pull} (local);}
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]{Git: Adding an Upstream Repository}
+%Add the course repository as a new remote to your local copy.
+
+\begin{lstlisting}[language=bash, basicstyle=\small\ttfamily,breakindent=2em, identifierstyle=\color{white}]
+# See your current remote repositories
+git remote -v
+
+# Add the course repository as a remote repository
+git remote add upstream https://github.com/csu-cs/CSCI-315-2025-Fall.git
+
+# Set the merging method for divergent branches
+git config pull.rebase false # merge
+
+# Get the latest updates for the class repository
+git pull upstream master
+
+# Save these changes on your GitHub fork
+git push
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}{Lab 2: Makefiles}
+\begin{center}\Large
+Let's look at the lab based on today's lecture.
+\end{center}
+\end{frame}
+
+\end{document}

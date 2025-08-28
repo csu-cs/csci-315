@@ -1,0 +1,150 @@
+\ProvidesPackage{linked-lists}[2024/3/16]
+\usepackage{tikz}
+\usetikzlibrary{calc,shapes.multipart,chains,arrows,fit}
+
+\tikzset{
+  pointer/.style = {
+    draw,
+    fill=CSUgold,
+    minimum height=6mm,
+    minimum width=6mm,
+    node distance=1mm
+  },
+  label of pointer/.style = {
+    %rectangle,
+    node distance=4pt,
+    inner sep=0pt,
+  },
+  link pointer of list/.style = {
+    draw,
+    fill=CSUgold,
+    minimum height=7mm,
+    minimum width=6mm,
+    node distance=9mm,
+    text=black
+  },
+  node of list/.style = {
+    draw,
+    fill=CSUcyan,
+    minimum height=7mm,
+    minimum width=6mm,
+    node distance=9mm,
+    text=black
+  },
+  additional node of list/.style = {
+    node of list,% Inherit properties from the base style
+    node distance=2pt,
+  },
+  link/.style = {
+    -stealth,
+    shorten >=1pt,
+    very thick
+  },
+  block/.style = {
+    rectangle, inner sep=0pt
+  },
+  outer block/.style = {
+    draw,
+    rectangle,
+    rounded corners=2pt,
+    thick,
+    inner sep=2pt
+  }
+}
+
+
+\usepackage{xparse} %  to have commands with multiple optional parameters
+
+% Define a bunch of macros create nice linked-listed figures.
+
+\NewDocumentCommand{\LinkedNode}{ O{ptr} O{true} O{ele} m }{%
+  % Support multiple elements in a node that are comma seperated
+  \foreach \element [count=\i] in {#4} {
+    \ifnum\i=1 % First element
+      \node[node of list, right = of ptr, name=firstElValue] {\element};%
+      \node[block] (lastElValue) [fit=(firstElValue)]{};%
+    \else
+      \node[additional node of list, right = of lastElValue, name=lastElValue] {\element};%
+    \fi
+  }
+
+  \node[link pointer of list, name=ptr2, anchor=west] at ([xshift=2pt] lastElValue.east) {};%
+  \node[outer block] (last) [fit=(firstElValue) (ptr2)]{};%
+  \node[block] (#3) [fit=(last)]{};%
+  \node[block] (val) [fit=(firstElValue) (lastElValue)]{};%
+  \node[block] ({el\detokenize{#4}}) [fit=(last)]{};%
+  \ifthenelse{\equal{#2}{true}}{%
+    \draw[link] (ptr) to[bend left=8] (#3);%
+  }{%
+  }
+  \coordinate (ptr) at (ptr2);%
+  \coordinate (#1) at (ptr2);%
+  \fill (#1) circle(2pt);%
+}
+
+\NewDocumentCommand{\DoublyLinkedNode}{ O{middle} O{connect} m }{%
+  \node[link pointer of list, right = of ptr, name=leftPtr] {};%
+
+  % Use xshift=-.4pt if you wan the nodes to bump up against each other
+  \node[node of list, name=val, anchor=west] at ([xshift=1pt] leftPtr.east) {#3};%
+  \node[link pointer of list, name=ptr2, anchor=west] at ([xshift=1pt] val.east) {};%
+
+  \node[outer block] (ele) [fit=(leftPtr) (val) (ptr2)]{};%
+  \ifthenelse{\equal{#2}{connect}}{%
+    \draw[link] (ptr) to[bend left=8] (ele);%
+  }
+
+  \coordinate (leftPtr) at (leftPtr);%
+  \fill (leftPtr) circle(2pt);%
+  \ifthenelse{\equal{#1}{middle}}{%
+
+    \draw[link] (leftPtr) to[bend left=8] (last); % pointer to prev
+  }{%
+  }
+  \node[block] (last) [fit=(ele)]{};%
+  \coordinate (ptr) at (ptr2);%
+  \fill (ptr) circle(2pt);%
+}
+
+\NewDocumentCommand{\LinkPtr}{ O{0} O{left} m }{%
+  \node[pointer, name=ptr2] at (0,#1) {};%
+  \node[label of pointer, #2 = of ptr2, name=head] (head) {#3};%
+  \coordinate (ptr) at (ptr2);%
+  \coordinate (headPtr) at (ptr2);%
+  \fill (ptr) circle(2pt);%
+}
+
+% \newcommand{\TailPtr}[2][ele] {%
+%   \node[pointer, anchor=north] (tEl) at ([yshift=-4mm] last.south) {};
+%   \coordinate (tPtr) at (tEl);
+%   \fill (tPtr) circle(2pt);
+%   \ifthenelse{\equal{#1}{null}}{}{%
+%     \draw[link] (tPtr) -- (#1);
+%   }
+%   \node[label of pointer, left = of tEl, name=tail, left=0mm] {#2};
+% }
+
+% parameters: [destination] [pointer loc] [line options (bend)] {title}
+\NewDocumentCommand{\TailPtr}{ d<> d<> O{ele} O{last} O{} m }{%
+  \node[pointer, anchor=north] (tEl) at ([xshift=\IfNoValueTF{#2}{0mm}{#2}, yshift=\IfNoValueTF{#1}{-4mm}{#1}] #4.south) {};%
+  \coordinate (tPtr) at (tEl);%
+  \fill (tPtr) circle(2pt);%
+  \ifthenelse{\equal{#3}{null}}{}{%
+    \draw[link] (tPtr) to[#5] (#3);%
+  }
+  \node[label of pointer, left = of tEl, name=tail, left=1pt] {#6};%
+}
+
+\newcommand{\LinkedList}[2][]{%
+  \LinkPtr{pHead}
+  \foreach \anElement in {#2} {
+     \LinkedNode{\anElement}
+  }
+
+  % Display tail
+  \ifthenelse{\equal{#1}{}}{
+    %omitted
+  }{%
+    \TailPtr{pTail}
+  }%
+}

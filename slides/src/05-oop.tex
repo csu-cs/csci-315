@@ -1,0 +1,582 @@
+% Paul E. West and Sean T. Hayes
+
+\documentclass[14pt, aspectratio=1610, hyperref={pdfpagelayout=SinglePage}]{beamer}
+% \documentclass[14pt, aspectratio=1610, hyperref={pdfpagelayout=SinglePage}, handout]{beamer}
+\usepackage{csu-theme}
+
+% for aligning items in an itemize (eqmakebox)
+\usepackage{eqparbox}
+
+\title{\Huge{}Classes, Composition, \& Inheritance in {\ttfamily\bfseries C++}}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 10 \& 11}
+%\author{}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{January 28, 2025}
+\subject{Software Programming}
+%\keywords{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Intro to Classes}
+
+
+\begin{frame}[fragile]{Syntax of Class}
+\begin{itemize}
+\item
+  The general syntax for defining a class is
+\begin{lstlisting}
+class ClassIdentifier
+{
+  // Class members (variables and functions);
+}; // <- Don't forget the semicolon.
+\end{lstlisting}
+\item<2->
+  A class member can be a variable or a function.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Syntax of Class}
+  \begin{itemize}
+  \item<+->
+    If a member of a class is a variable,
+    \begin{itemize}
+    \item
+      It is declared like any other variable.
+    \item
+      You cannot initialize a variable when you declare it.
+    \end{itemize}
+  \item<+->
+    If a member of a class is a function,
+    \begin{itemize}
+    \item
+      A function prototype declares that member.
+    \item
+      Function members can \emph{directly} access any member of the class.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Class Organization}
+  Access restrictions for members are set with the following keywords.
+  \begin{itemize}
+  \item \lstinline{public}: accessible outside the class.
+  \item \lstinline{private}: cannot be accessed outside the class.
+  \item \lstinline{protected}: access for the class and its subclasses.
+  \item \lstinline{friend}: grant member-level access to non-member functions or classes. Use sparingly (or not at all); this reduces encapsulation and increase coupling.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Class Organization}
+  \begin{itemize}
+  \item <+->
+    In Java, each member is prefixed with a keyword.
+  \item <+->
+    In C++,
+    \begin{itemize}
+    \item Each class can have public, private, and protected sections listing members with that access.
+    \item The \lstinline{friend} keyword is placed before a function/class name to indicate its access level.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{A \textbf{\texttt{struct}} versus a \textbf{\texttt{class}}}
+\begin{itemize}[<+->]
+\item
+  By default, members of a \lstinline{struct} are public.\\
+  Use the \lstinline{private} specifier to make a member private.
+\item
+  By default, the members of a \lstinline{class} are private.
+\item
+  Classes and structs have the same capabilities.
+\item
+  Use \lstinline{struct} if all member variables of a class are public and especially if there are no member functions (``plain old data'').
+\end{itemize}
+\end{frame}
+
+\section{Member Functions}
+
+\begin{frame}{Member Functions}
+\begin{itemize}
+\item \emph{Methods} are member functions, which define object behavior.
+\item Including only prototypes in class declaration keeps the class smaller and hides the implementation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Example Class}
+\begin{columns}[t]
+\column{0.45\textwidth}
+\texttt{AClass.hpp}
+\begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
+#ifndef A_CLASS
+#define A_CLASS
+class AClass {
+  public:
+    // Methods
+    int getSize() const;
+    void size(int size);
+
+  private:
+    int mSize;
+};
+#endif
+\end{lstlisting}
+\column{0.5\textwidth}
+\texttt{AClass.cpp}
+\begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
+#include "AClass.hpp"
+int AClass::getSize() const
+{
+  return mSize;
+  // "this" is implied.
+  // return this->mSize;
+}
+
+void AClass::size(int size)
+{
+  mSize = size;
+}
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Class File Organization}
+  \begin{itemize}
+  \item
+    Typically, each class declaration is in its own \texttt{.hpp} file.
+    \begin{itemize}
+    \item
+      Avoid including this code multiple times in a program,
+      by using preprocessor directives to check for a unique definition.\\[0.5em]
+      \texttt{MyClass.hpp}
+      \begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
+#ifndef MY_CLASS
+#define MY_CLASS
+//...
+#endif\end{lstlisting}
+    \end{itemize}
+  \item
+    The function definitions go in the .cpp file with the matching name and will include the header.\\
+      e.g., the top of \texttt{MyClass.cpp} has \lstinline{#include "MyClass.hpp"}.
+  \end{itemize}
+  \end{frame}
+
+\begin{frame}{Types of Class Methods (Member Functions)}
+\begin{description}[Accessor:]
+\item[\textbf{\textcolor{white}{Mutator}}:]<+->
+  modifies the value(s) of member variable(s).
+\item[\textbf{\textcolor{white}{Accessor}}:]<+->
+  only accesses the value(s) of member variable(s).
+\item[\textbf{\textcolor{white}{Constant}}:]<+->
+  cannot modify the class's member variables.
+  \begin{itemize}
+  \item
+    The function heading ends with \lstinline{const}.
+  \item
+    Most accessors should be constant.
+  \end{itemize}
+\item[\textbf{\textcolor{white}{Static}}:]<+->
+  does \textbf{not} have access to non-static members.\\Does not have access to the \texttt{this} pointer.
+\end{description}
+\end{frame}
+
+
+
+\begin{frame}{Types of Member Functions}
+\begin{itemize}
+\item<1->
+  Instance methods -- accessible through an instantiated object.
+\item<2->
+  \emph{Static} methods -- accessible using the class name and the scope resolution operator (\lstinline{::}).
+  \begin{itemize}
+    \item Use the keyword \lstinline{static} to declare a function or variable of a class as static.
+    \item No object is needed to access a static member.
+    \item Static methods do not have access not no-static members.
+    \item All objects of a class share any static member of the class.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Member Functions}
+  \begin{itemize}
+  \item<1->
+    Method \emph{overloading} -- within a class, two methods with the same name but different signatures.
+  \item<2->
+  Method \emph{overriding} -- same signatures across different classes (subclass and superclass).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{The \texttt{this} Pointer}
+  \protect\hypertarget{pointer-this}{}
+  \begin{itemize}
+  \item
+    Every object of a class maintains a (hidden) pointer to itself called
+    \lstinline{this}.
+  \item
+    When an object invokes a member function, \lstinline{this} is referenced by the member function.
+  \item
+    Within a member function, \lstinline{this} can also be used explicitly.\\
+    \lstinline{this->member;}
+  \end{itemize}
+\end{frame}
+    
+
+\section{Constructors}
+
+\begin{frame}{Constructor}
+  A \emph{constructor} contains code that initializes the object.
+
+  \begin{itemize}
+\item
+  \emph{Default Constructor} -- Requires no parameters.
+\item
+  Parameterized Constructors -- Defines the object's initialization.
+\item
+  Constructors are executed automatically.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Constructor}
+\begin{columns}[t]
+  \column{0.47\textwidth}
+  \texttt{AClass.hpp}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+class AClass {
+public:
+  // Default Constructor
+  AClass();
+
+
+  // Custom Constructor
+  AClass(int size);
+
+private:
+  // A member field
+  int mSize;
+};
+\end{lstlisting}
+\column{0.5\textwidth}
+\texttt{AClass.cpp}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include "AClass.hpp"
+
+AClass::AClass()
+{
+  mSize = 0;
+}
+
+AClass::AClass(int size)
+{
+  mSize = size;
+}
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Invoking a Constructor}
+\begin{itemize}[<+->]
+\item In Java, a constructor is invoked only through the \lstinline{new} keyword because all object variables are references.
+\item In C++, a constructor is called upon variable declaration, or explicitly through \lstinline{new} with pointers, or in other situations.\\
+\begin{lstlisting}[basicstyle=\ttfamily\bfseries\small]
+Clock myClock; // Invokes the default constructor.
+Clock *pClock = new Clock; // Invokes the default constructor
+\end{lstlisting}
+\item You can create and invoke custom constructors.
+\begin{lstlisting}[basicstyle=\ttfamily\bfseries\small]
+Clock start{12} // Invokes a constructor that accepts and int
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+
+\section{Destructors}
+
+\begin{frame}[fragile]{C++ Destructor}
+\begin{itemize}
+\item Special method whose signature is a \lstinline{~} followed by the name of the class.
+\item Particularly if the class contains pointers and the constructor contains calls to new, a destructor needs to be defined.\\
+
+\end{itemize}
+% \begin{lstlisting}[basicstyle=\small\ttfamily]
+% class SomeClass {
+%   public:
+%     SomeClass();  // Constructor
+%     ~SomeClass(); // Destructor
+%   private:
+%     int *mpArr; // Pointer to a dynamic array.
+% }
+% \end{lstlisting}
+% \begin{lstlisting}[basicstyle=\small\ttfamily]
+% SomeClass::SomeClass() { mpArr = new int[20]; }
+% SomeClass::~SomeClass() { delete [] mpArr; }
+% \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{C++ Destructor}
+  \begin{columns}[t]
+    \column{0.5\textwidth}
+    \texttt{AClass.hpp}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+class AClass {
+public:
+  // Default Constructor
+  AClass();
+
+  // Destructor
+  ~AClass();
+
+private:
+  // Pointer to a dynamic array
+  int *mpArr;
+};
+\end{lstlisting}
+  \column{0.47\textwidth}
+  \texttt{AClass.cpp}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include "AClass.hpp"
+
+AClass::AClass()
+  : mpArr{new int[20]}
+{
+}
+
+AClass::~AClass()
+{
+  delete[] mpArr;
+}
+\end{lstlisting}
+  \end{columns}
+\end{frame}
+
+\section{Copying Objects}
+
+\begin{frame}{Control Over Copy and Assignment in C++}
+The \emph{copy constructor} and \emph{assignment operator} define the semantics of \lstinline{a = b}.
+\begin{itemize}
+  \item<2->
+    The \textit{copy constructor} defines how a \emph{new} object created as a copy of an existing object (e.g., when function parameters are passed).
+  \item<3->
+    More low-level control is available (e.g., performing a deep copy instead of a shallow copy).
+    \begin{itemize}
+      \item
+        Be careful to implement a deep copy if desired.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Assignment Operator}
+  \begin{itemize}[<+->]
+    \item
+      The assignment operator (\lstinline{a = b}) where object \lstinline{a} is an existing object. Means that we are replacing the values in \lstinline{a} with a copy of the values in \lstinline{b}.
+
+    \item
+      Therefore, we must define how this should happen.
+
+    \item
+      Doing so requires \emph{overloading} the assignment operator's definition when it accepts two objects of our class.
+
+    \item
+      We will give a brief introduction to \emph{operator overloading} here but go in dept on the topic in the next lecture.
+  \end{itemize}
+\end{frame}
+
+\section{Operator Overloading}
+
+\begin{frame}[fragile]{Operator Overloading}
+\begin{itemize}
+\item In C++, operators like \texttt{=}, \texttt{+}, \texttt{*}, \texttt{==}, etc. can be defined, just like methods.
+\item Example:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+class Matrix {
+public:
+  Matrix(const Matrix& m); // Copy constructor
+  Matrix operator+(const Matrix& m); // overload + op
+  Matrix operator=(const Matrix& m); // overload = op
+  // ...
+};
+\end{lstlisting}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+Matrix a, b, c;
+c = a + b;  // equiv to c = a.operator+(b);
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Assignment Operator (\texttt{=})}
+  \begin{itemize}
+  \item
+    Function prototype:\\
+    \lstinline{const className& operator=(const className&);}
+  \item
+    Function definition:\\
+    \begin{lstlisting}[basicstyle=\small\ttfamily]
+const className& operator=(const className& rightObject)
+{
+  // local declaration, if any
+  // Avoid self-assignment
+  if (this != &rightObject)
+  {
+    // Copy rightObject into this object
+  }
+  return *this; // return the object assigned
+}\end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Stream Insertion Operator
+  (\texttt{{<}<})}
+  \protect\hypertarget{overloading-the-stream-insertion-operator}{}
+  \begin{itemize}
+  \item
+    Function prototype:\\
+\begin{lstlisting}
+friend std::ostream& operator<<(std::ostream&, const className&);
+\end{lstlisting}
+  \item
+    Function definition:\\
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+std::ostream& operator<<(std::ostream& out,
+    const className& cObject) {
+  // local declaration, if any
+  // Output the members of cObject.
+  // out << ...
+
+  return out; // return the stream object.
+}\end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Objects as Function Parameters}
+\begin{itemize}
+\item<1->
+  Objects can be passed as parameters to functions and returned as function values.
+\item<2->
+  Class objects can be passed by value or by reference.
+\item<3->
+  If an object is passed by value, the data members' values are copied (using the copy constructor).
+  \begin{itemize}
+  \item Requires additional storage space and a considerable amount of computer time
+  \end{itemize}
+\item<4->
+  \emph{Design tip}: Use reference parameters to avoid unnecessary copies. Make the parameter \lstinline{const} if the function should not modify it.
+\end{itemize}
+\end{frame}
+
+
+
+\section{Inheritance}
+
+\begin{frame}{Inheritance vs. Composition}
+Two common ways to relate two classes in a meaningful way are:
+\begin{itemize}
+\item
+  \emph{Inheritance} -- an ``is-a'' relationship.
+\item
+  \emph{Composition} or \emph{aggregation} -- a ``has-a'' relationship.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Inheritance}
+\begin{itemize}
+\item Feature that allows a class to be defined based on another class.
+\begin{itemize}
+\item Methods and attributes are inherited.
+\end{itemize}
+\item Java and C++ difference
+\begin{itemize}
+\item \eqmakebox[subclass][l]{Java}:  \lstinline[language=Java]{public class A extends B \{ \}}
+\item \eqmakebox[subclass][l]{C++}:  \lstinline{class A: public B \{ \};} \\
+(different types of inheritance)
+\end{itemize}
+\item Multiple inheritance possible in C++, not in Java.
+\item But in Java, one may implement several interfaces.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Static vs. Dynamic Binding}
+\begin{itemize}
+\item Let \texttt{Teacher} be a subclass of \texttt{Employee} \\
+\begin{itemize}
+\item Also, suppose \lstinline{promote()} is a method defined in both classes.
+\end{itemize}
+\item Employee variables can refer to Teachers
+  \begin{tabular}{l @{\hskip 4em} l}
+    \textbf{Java} & \textbf{C++}\\
+    \rowcolor{codeBackground}\lstinline[language=Java]{Employee emp;} & \lstinline{Employee *emp;}\\
+    \rowcolor{codeBackground}\lstinline[language=Java]{emp = new Teacher();} & \lstinline{emp = new Teacher;}\\
+    \rowcolor{codeBackground}\lstinline[language=Java]{emp.promote();} & \lstinline{emp->promote();}\\
+  \end{tabular}
+\item Is the Employee's or the Teachers' \lstinline{promote()} method called?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Static vs. Dynamic Binding}
+\begin{itemize}
+\item In C++, Employee's \lstinline{promote()} is called.
+\begin{itemize}
+\item As determined at compile time and deduced from the type of the variable (static binding).
+\end{itemize}
+\item In Java, Teacher's \lstinline{promote()} is called.
+\begin{itemize}
+\item As determined at run-time, because the actual type of the referred object is checked then (dynamic binding)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Static vs. Dynamic Binding}
+\begin{itemize}[<+->]
+\item
+  A function can be declared \textit{virtual} to use dynamic binding instead of static.\\
+  \begin{lstlisting}
+class Animal {
+public:
+  virtual void print() const;
+  // ...
+};\end{lstlisting}
+\item
+  With inheritance, it is a good idea to make the destructors virtual to ensure that the child object's memory is freed.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Design Principles}
+\begin{itemize}
+\item
+  \emph{Encapsulation}: combines data and operations on data in a single unit.
+\item
+  \emph{Inheritance}: creates new objects (classes) from existing objects (classes).
+\item
+  \emph{Polymorphism}: the ability to use the same expression to denote different operations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Static vs. Dynamic Polymorphism}
+\begin{itemize}
+\item
+  Inheritance provides the ability to change types at runtime (though subclasses).
+\item
+  Templates provide the ability to change types at compile time.
+  \begin{itemize}
+  \item
+    We will learn more about templates in the next set of slides (Chapter 13).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{There is more.}
+\begin{itemize}
+\item
+  We have quickly skimmed the material in Chapters 10 -- 11 in these slides.
+\item
+  Reference the textbook for details and examples.
+\end{itemize}
+\end{frame}
+
+\end{document}

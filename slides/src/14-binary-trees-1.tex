@@ -1,0 +1,779 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{binary-trees}
+\usepackage{booktabs}
+
+\usetikzlibrary{circuits.ee.IEC}
+
+\tikzset{
+  %
+  % Used for beamer overlays
+  empty/.style={ground, draw=none},
+}
+
+\forestset{
+default preamble={%
+  for leaves={%
+    justText}
+  },%
+  justText on/.style={%
+    for tree={%
+      /tikz/justText on={#1},%
+      % edge={/tikz/justText on={#1}}
+    }%
+  },
+}
+
+\newsavebox\nullNode
+\savebox\nullNode{%
+  \begin{tikzpicture}[circuit ee IEC,scale=1]
+  \node[empty,rotate=90,white, draw, thick] {};
+  \end{tikzpicture}%
+}
+
+\makeatletter\def\NullNode{%
+  \usebox{\nullNode}
+}
+
+
+\title{\Huge{} Binary Search Trees\\Insertion \& Traversal}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 19}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{March 4, 2025}
+\subject{Software Programming}
+%\keywords{}
+\graphicspath{{../imgs/binary-tree}}
+
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section*{Intro}
+
+\begin{frame}{Motivation: The Problem with Arrays}
+  \emph{Binary search} is an efficient search algorithm that relies\\ on splitting a sorted list in half with each comparison.
+
+  Binary search works well on arrays. However,
+  \begin{itemize}
+    \item 
+      Insertion in an array is impossible, requiring the data to be copied to a new array. Deletion is also slow.
+    \item
+      Finding a specific value in a linked list is slow (needed for searching, insertion, and deletion).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Motivation: The Problem with Linked Lists}
+  \emph{Linked Lists}, while great for insertion and deletion at the\\
+  ends, pose challenges for binary search due to the lack\\
+  of contiguous memory. However,
+
+  \begin{itemize}
+    \item 
+      Must start iterating from the first/last node (i.e., sequential search).
+    \item
+      Cannot jump right to the middle to perform a binary search.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Motivation: Solution}
+  \textbf{Solution}: Modify the linked-lists structure into a \emph{binary\\
+  search tree}, where the binary search can be performed \\
+  in logarithmic time (\textit{usually}).
+
+  \pause%
+  Binary Search Trees:
+  \begin{itemize}
+    \item Are \emph{binary trees} that maintain the \emph{binary-search property} (\textit{more on that in a moment}).
+    \item Have the benefits of binary search with the flexibility of linked lists.
+    \item Are fundamental in computer science and widely used in various algorithms and applications.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Objectives}
+In this lecture, we will:
+
+\begin{itemize}
+\item
+  Explore various binary-tree traversal algorithms.
+\item
+  Explore how to implement the basic operations on a binary tree.
+\item
+  Learn about binary \textit{search} trees to:
+  \begin{itemize}
+    \item
+      Organize data
+    \item
+      Insert and delete items
+  \end{itemize}
+\item
+  Explore recursive and non-recursive tree traversal algorithms.
+
+\end{itemize}
+\end{frame}
+
+\section{Binary Trees}
+
+\begin{frame}[t]{Binary Trees}
+\begin{columns}
+  \column{0.3\textwidth}
+    A \emph{binary tree} is empty or has these properties:
+    \begin{itemize}
+    \item
+      Has a root node.
+    \item
+      Has a left subtree and right subtree, which are binary trees.
+    \end{itemize}
+  \column{0.62\textwidth}
+    \centering
+    \begin{forest}
+    [root,headPtr,
+      [A
+        [B
+          [D,
+            [\NullNode]
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [E
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [C
+          [\NullNode]
+          [F
+            [H
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+    ]
+    \end{forest}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+    \centering
+    \begin{forest}
+    [,phantom, s sep=0.5cm
+      [A, name=tree1
+        [\NullNode]
+        [\NullNode]
+      ]
+      [A, name=tree2
+        [B
+          [\NullNode]
+          [\NullNode]
+        ]
+        [\NullNode]
+      ]
+      [A, name=tree3
+        [\NullNode]
+        [C
+          [\NullNode]
+          [\NullNode]
+        ]
+      ]
+      [A, name=tree4
+        [B
+          [\NullNode]
+          [\NullNode]
+        ]
+        [C
+          [\NullNode]
+          [\NullNode]
+        ]
+      ]
+    ]
+    \coordinate (labelLine) at ([yshift=1.5em]tree4);
+    \path (tree1 |- labelLine) node[anchor=south, text width=2.75cm,align=center] {(a) 1-node binary tree}
+        (tree2 |- labelLine) node[anchor=south, text width=2.5cm,align=center] {(b) 2-node binary tree}
+        (tree3 |- labelLine) node[anchor=south, text width=2.5cm,align=center] {(c) 2-node binary tree}
+        (labelLine)       node[anchor=south, text width=3cm,align=center] {(d) 3-node binary tree};
+    \end{forest}
+\end{frame}
+
+
+\begin{frame}{Other Three-Node Binary Trees}
+    \center
+    \begin{forest}
+    [,phantom, s sep=1cm, for tree={fit=tight}
+      [A, name=tree1
+        [B
+          [D
+            [\NullNode]
+            [\NullNode]
+          ]
+          [\NullNode]
+        ]
+        [\NullNode]
+      ]
+      [A, name=tree2
+        [B
+          [\NullNode]
+          [E
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [\NullNode]
+      ]
+      [A, name=tree3
+        [\NullNode]
+        [C
+          [\NullNode]
+          [F
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+      ]
+      [A, name=tree4
+        [\NullNode]
+        [C
+          [G
+            [\NullNode]
+            [\NullNode]
+          ]
+          [\NullNode]
+        ]
+      ]
+    ]
+    \coordinate (labelLine) [above=of tree4] {};
+    \path (tree1 |- labelLine) node[] {(e)}
+        (tree2 |- labelLine) node[] {(f)}
+        (tree3 |- labelLine) node[] {(g)}
+        (tree4 |- labelLine) node[] {(h)};
+    \end{forest}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+\begin{columns}
+\column{0.55\textwidth}
+  \begin{itemize}
+    \item
+      A node (called a vertex in graph theory):
+      \begin{itemize}
+      \item
+        Has at most two children.
+      \item
+        Stores its own information.
+      \item
+        Keeps track of its left subtree and right subtree using pointers\\
+        (e.g., \lstinline{left} and \lstinline{right}).
+      \end{itemize}
+    \item
+       A pointer to the root node of the binary tree is stored outside the tree.
+  \end{itemize}
+\column{0.45\textwidth}
+  \def\svgwidth{\textwidth}
+  \input{../imgs/binary-tree/binary-tree-linked.pdf_tex}
+  %\includegraphics[width=\textwidth]{binary-tree-linked}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+\begin{columns}
+  \column{0.5\textwidth}
+    \begin{itemize}[<+->]
+    \item
+      \emph{Leaf}: a node that has no children.
+    \item
+      A \emph{parent} has a branch to a \emph{child} node.
+    \item
+      There is a unique \emph{path} from the root to every node.
+    \item
+      The \emph{Path Length} is the number of branches on that path.
+    \end{itemize}
+  \column{0.5\textwidth}
+    \centering
+    \begin{forest}
+    [A, for tree={fit=tight}
+      [B
+        [D,
+          [\NullNode]
+          [G
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [E
+          [\NullNode]
+          [\NullNode]
+        ]
+      ]
+      [C
+        [\NullNode]
+        [F
+          [H
+            [\NullNode]
+            [\NullNode]
+          ]
+          [\NullNode]
+        ]
+      ]
+    ]
+    \end{forest}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}[<+->]
+      \item 
+        \emph{Edge}: The connection from a parent to a child.
+      \item
+        Node \emph{Level}: number of branches from the root to the node.
+        \begin{itemize}
+        \item
+          The root node is at level 0.
+        \end{itemize}
+      \item
+        \emph{Height} of a binary tree: number of edges on the longest path from the root to a leaf.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{forest}
+      [A, for tree={fit=tight}
+        [B
+          [D,
+            [\NullNode]
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [E
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [C
+          [\NullNode]
+          [F
+            [H
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+      \end{forest}
+  \end{columns}
+\end{frame}
+
+
+\section{Binary Search Tree}
+
+
+\begin{frame}{Binary Search Tree}
+
+\begin{columns}
+\column{0.60\textwidth}
+  Definition: A \emph{binary search tree} is either empty or has these properties:
+  \begin{itemize}[<+->]
+    \item
+      Has a root node.
+    \item
+      Has two sets of nodes: the left and right subtrees.
+    \item
+      The key in the root node is larger than every key in the left subtree and smaller than every key in the right subtree.
+    \item
+      The left subtree and right subtree are binary search trees.
+  \end{itemize}
+\column{0.29\textwidth}
+  \begin{forest}
+    [96, for tree={fit=tight}
+      [27
+        [20
+          [\NullNode]
+          [\NullNode]
+        ]
+        [45
+          [30
+            [\NullNode]
+            [\NullNode]
+          ]
+          [\NullNode]
+        ]
+      ]
+      [\NullNode]
+    ]
+  \end{forest}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Applications}
+Used when data is frequently added/removed and a quick lookup is needed (e.g., maps, sets).\\[2em]
+
+\begin{columns}[T]
+\column{0.3\textwidth}
+  Quick Operations:
+  \begin{itemize}
+    \item Insertion
+    \item Removal
+    \item Lookup existing values
+  \end{itemize}
+\pause
+\column{0.6\textwidth}
+  Example domains:
+  \begin{itemize}
+    \item The base structure for many database engines.
+    \item Computer graphics for determining object intersection.
+  \end{itemize}
+\end{columns}
+\end{frame}
+
+\section{Searching}
+
+\begin{frame}{Searching for a Value in a Binary Search Tree}
+  Can be implemented iteratively or recursively.
+
+  \begin{columns}
+\column{0.5\textwidth}
+
+If the node\ldots
+  \begin{enumerate}
+  \item
+    is null, return ``not found''.
+  \item
+    contains the key, \\return \texttt{true}.
+  \item
+    contains a value is greater, \\search the left subtree.
+  \item
+    contains a value is less, \\search the right subtree.
+  \end{enumerate}
+\column{0.4\textwidth}
+  \begin{forest}
+    [96, for tree={fit=tight}
+      [27
+        [20
+          [\NullNode]
+          [\NullNode]
+        ]
+        [45
+          [30
+            [\NullNode]
+            [\NullNode]
+          ]
+          [\NullNode]
+        ]
+      ]
+      [\NullNode]
+    ]
+  \end{forest}
+\end{columns}
+\end{frame}
+
+\section{Insertion}
+
+\begin{frame}[t]{Inserting Values into a Binary Search Tree}
+\begin{columns}[T]
+  \column{0.23\textwidth}
+    For example,
+    let's insert these values:
+    %\setbeamercolor{itemize/enumerate body}{fg=CSUGold}
+    \setbeamercovered{transparent}
+    \begin{itemize}
+      \item<1-> 59
+      \item<3-> 70
+      \item<5-> 50
+      \item<7-> 58
+      \item<9-> 30
+      \item<11-> 44
+      \item<13-> 98
+      \item<15-> 77
+    \end{itemize}
+  \column{0.75\textwidth}
+    \centering
+    \begin{forest}
+    [\texttt{pRoot},headPtr
+      [\alt<1>{\NullNode}{59}, justText on=<1>, for descendants={visible on=<2->}
+        [\alt<-5>{\NullNode}{50}, justText on=<-5>,for descendants={visible on=<6->}
+          [\alt<-9>{\NullNode}{30}, justText on=<-9>,for descendants={visible on=<10->}
+            [\NullNode]
+            [\alt<-11>{\NullNode}{44}, justText on=<-11>,for descendants={visible on=<12->}
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [\alt<-7>{\NullNode}{58}, justText on=<-7>,for descendants={visible on=<8->}
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [\alt<-3>{\NullNode}{70}, justText on=<-3>,for descendants={visible on=<4->}
+          [\NullNode]
+          [\alt<-13>{\NullNode}{98}, justText on=<-13>,for descendants={visible on=<14->}
+            [\alt<-15>{\NullNode}{77}, justText on=<-15>,for descendants={visible on=<16->}
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+    ]
+    \end{forest}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Inserting Values into a Binary Search Tree}
+  \begin{center}
+    \Large
+    The helper function for the recursive insert needs a reference to a \texttt{Node} pointer.
+
+    \href{https://pythontutor.com/render.html#code=class%20BinarySearchTree%0A%7B%0Apublic%3A%0A%20%20%20%20BinarySearchTree%28%29%20%3A%20mpRoot%7Bnullptr%7D%20%7B%7D%3B%0A%0A%20%20%20%20void%20insert%28const%20int%20val%29%3B%0A%0A%20%20%20%20~BinarySearchTree%28%29%3B%0A%0Aprivate%3A%0A%20%20%20%20struct%20Node%20%7B%0A%20%20%20%20%20%20%20%20Node%28const%20int%26%20val%29%0A%20%20%20%20%20%20%20%20%20%20%3A%20value%7Bval%7D,%20pLeft%7Bnullptr%7D,%20pRight%7Bnullptr%7D%0A%20%20%20%20%20%20%20%20%7B%7D%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20~Node%28%29%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20delete%20pLeft%3B%0A%20%20%20%20%20%20%20%20%20%20delete%20pRight%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20int%20value%3B%0A%20%20%20%20%20%20%20%20Node%20*pLeft%3B%0A%20%20%20%20%20%20%20%20Node%20*pRight%3B%0A%20%20%20%20%7D%3B%0A%0A%20%20%20%20//%20Bug%3A%20need%20a%20reference%20to%20the%20node%20pointer%0A%20%20%20%20static%20void%20insert%28const%20int%20val,%20Node*%20pRoot%29%3B%0A%20%20%20%20%0A%20%20%20%20Node%20*mpRoot%3B%0A%7D%3B%0A%0A%0Aint%20main%28%29%0A%7B%0A%20%20%20%20BinarySearchTree%20tree%3B%0A%20%20%20%20tree.insert%2859%29%3B%0A%20%20%20%20tree.insert%2870%29%3B%0A%20%20%20%20tree.insert%2850%29%3B%0A%20%20%0A%20%20%20%20return%200%3B%0A%7D%0A%0Avoid%20BinarySearchTree%3A%3Ainsert%28const%20int%20val%29%0A%7B%0A%20%20%20%20insert%28val,%20mpRoot%29%3B%0A%7D%0A%0Avoid%20BinarySearchTree%3A%3Ainsert%28const%20int%20val,%20Node*%20pRoot%29%20%7B%0A%20%20%20%20if%20%28pRoot%20%3D%3D%20nullptr%29%20%7B%0A%20%20%20%20%20%20%20%20pRoot%20%3D%20new%20Node%28val%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20if%20%28val%20%3C%20pRoot-%3Evalue%29%20%7B%0A%20%20%20%20%20%20%20%20insert%28val,%20pRoot-%3EpLeft%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20%20%20insert%28val,%20pRoot-%3EpRight%29%3B%0A%20%20%20%20%7D%0A%7D%0A%0ABinarySearchTree%3A%3A~BinarySearchTree%28%29%20%7B%0A%20%20%20%20delete%20mpRoot%3B%0A%7D&cppShowMemAddrs=true&cumulative=false&curInstr=4&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false}{Click here to visualize why.}
+  
+  \end{center}
+\end{frame}
+
+\begin{frame}{Inserting Values into a Binary Search Tree}
+\begin{center}
+  \Large
+  How do we handle duplicate keys?
+\end{center}
+\pause{}
+We must choose one of three options. The duplicate key is\ldots
+
+\begin{enumerate}
+  \item not inserted (don't permit duplicate keys).
+  \item inserted to the \emph{left} of the matching key.
+  \item inserted to the \emph{right} of the matching key.
+\end{enumerate}
+
+As long as the \lstinline{insert()} and \lstinline{contains()} functions follow the same behavior, everything will work.
+\end{frame}
+
+\section{Performance}
+
+\begin{frame}[t]{Performance Analysis for a Binary Search Tree}
+What is the Big-O performance of an operation?
+
+\begin{columns}[T]
+\centering
+\column{0.6\textwidth}\centering
+  %\begin{minipage}[c][.7\textheight][t]{\linewidth}
+
+    Best-Case (Perfectly-Balanced Tree)\\
+    \onslide<2->{$O\left(\log_2{n}\right)$}\\[0.5em]
+    \begin{forest}
+      [49, for tree={fit=tight, l sep-=2em}
+        [27
+          [20
+            [\NullNode]
+            [\NullNode]
+          ]
+          [43
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [80
+          [68
+            [\NullNode]
+            [\NullNode]
+          ]
+          [99
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+      ]
+    \end{forest}
+  %\end{minipage}
+\column{0.3\textwidth}\centering
+  \onslide<3->{
+    %\begin{minipage}[c][.7\textheight][t]{\linewidth}
+      \centering
+      Worst-Case\\
+      \onslide<4->{$O\left(n\right)$}\\[0.5em]
+      \begin{forest}
+        [99, for tree={fit=tight, l sep-=2em}
+          [20
+            [\NullNode]
+            [80
+              [27
+                [\NullNode]
+                [..., justText, text=white, font=\Large
+                  [\NullNode, phantom]
+                ]
+              ]
+              [\NullNode]
+            ]
+          ]
+          [\NullNode]
+        ]
+      \end{forest}
+    %\end{minipage}
+  }
+\end{columns}
+\end{frame}
+
+\begin{frame}{Average Performance a Binary Search Tree}
+\begin{itemize}
+  \item
+    There are $n!$ possible orderings of the keys (assuming that all orderings are possible).
+  \item
+    For both average successful and unsuccessful searches of a nonempty tree:\\
+    Number of comparisons $\approx 2.77\log_2{n} = O(\log_2{n})$\\
+    Number of nodes visited $\approx 1.39\log_2{n} = O(\log_2{n})$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Performance of a Binary Search Tree}
+What is the \textit{average-case} Big-O of the following operations on a binary search tree?\\[1em]
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\begin{tabular}{r c c c}
+\toprule
+                & \textbf{Array} & \textbf{Linked List} & \textbf{Binary Search Tree}\\
+\midrule
+  Random Access & {$O(1)$} & $O(n)$ & \onslide<2->{\textit{NA}}\\
+  Insert/Remove & {$O(n)$} & $O(n)$ & \onslide<3->{$O\left(\log_2{n}\right)$}\\
+  Search        & {$O(n)$} & $O(n)$ & \onslide<4->{$O\left(\log_2{n}\right)$}\\
+  Sort          & {$O\left(n \log_2{n}\right)$} & {$O\left(n \log_2{n}\right)$} & \onslide<5->{\textit{NA}\footnote[frame]{\onslide<5->{\small A binary-search tree is already sorted. To convert it to a \\sorted list, a inorder traversal will take $O(n)$.\\[1em]}}}\\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+
+\section{Traversal}
+\begin{frame}{Traversing the Entier Tree}
+We must ``\emph{visit}'' all the nodes in a tree determine its size, display it,
+delete it, sum the values, etc.\\[1em]
+\begin{columns}
+\onslide<2->\column{0.3\textwidth}
+  In-order
+  \begin{enumerate}
+  \item
+    Traverse the left subtree.
+  \item
+    \textbf{\color{CSUcyan}Visit the node.}
+  \item
+    Traverse the right subtree.
+  \end{enumerate}
+\onslide<3->\column{0.3\textwidth}
+  Pre-order
+  \begin{enumerate}
+  \item
+    \textbf{\color{CSUcyan}Visit the node.}
+  \item
+    Traverse the left subtree.
+  \item
+    Traverse the right subtree.
+  \end{enumerate}
+\onslide<4->\column{0.3\textwidth}
+  Post-order
+  \begin{enumerate}
+  \item
+    Traverse the left subtree.
+  \item
+    Traverse the right subtree.
+  \item
+    \textbf{\color{CSUcyan}Visit the node.}
+  \end{enumerate}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Example of Binary Tree Traversal}
+\begin{columns}
+  \onslide\column{0.5\textwidth}
+    \begin{itemize}
+    \item
+      \onslide<2->{Input (one example):\\
+      \texttt{\bfseries E C F A D H B G}}
+    \item
+      In-order sequence:\\
+      \onslide<4->{\texttt{\bfseries A B C D E F G H}}
+    \item
+      Pre-order sequence:\\
+      \onslide<5->{\texttt{\bfseries E C A B D F H G}\\
+        (Useful for copying a tree and preserving the structure.)}
+    \item
+      Post-order sequence:\\
+      \onslide<6->{\texttt{\bfseries B A D C G H F E}\\
+        (Useful for deleting a subtree.)}
+    \end{itemize}
+  \column{0.5\textwidth}
+    \centering
+    \onslide<3->{
+    \begin{forest}
+    [E, for tree={fit=tight}
+      [C
+        [A,
+          [\NullNode]
+          [B
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [D
+          [\NullNode]
+          [\NullNode]
+        ]
+      ]
+      [F
+        [\NullNode]
+        [H
+          [G
+            [\NullNode]
+            [\NullNode]
+          ]
+          [\NullNode]
+        ]
+      ]
+    ]
+    \end{forest}}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Typical Operations on Binary Tree}
+\setbeamercovered{transparent}
+\begin{itemize}[<+->]
+\item
+  Determine whether the binary tree is empty.
+\item
+  Insert an item in the binary tree.
+\item
+  Delete an item from the binary tree.
+\item
+  Search the binary tree for a particular item.
+\item
+  Find the height of the binary tree.
+\item
+  Find the number of nodes in the binary tree.
+\item
+  Find the number of leaves in the binary tree.
+\item
+  Traverse the binary tree.
+\item
+  Copy the binary tree.
+\end{itemize}
+\end{frame}
+
+\section*{Lab 14}
+\begin{frame}{Lab 14: Binary Trees (Part 1)}
+\begin{center}\Large
+Let's take a look at the lab based on today's lecture.
+\end{center}
+\end{frame}
+\end{document}

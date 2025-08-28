@@ -1,0 +1,625 @@
+\documentclass[14pt, aspectratio=1610]{beamer}
+%\documentclass[12pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{binary-trees}
+\usepackage{arrays}
+
+\title{\Huge{} Priority Queues}
+\subtitle{CSCI 315: Data Structure Analysis}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{April 1, 2025}
+\subject{Software Programming}
+%\keywords{}
+
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section*{Intro}
+
+\begin{frame}{Introduction}
+  \begin{itemize}[<+->]
+  \item
+    A stack is first in, last out.
+  \item
+    A queue is first in, first out.
+  \item
+    A priority queue is a \textit{highest-priority-first-out} container.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Introduction}
+  \begin{itemize}[<+->]
+  \item
+    The ``highest-priority'' element is the first one removed.\\
+    Priority is determined from the elements' values,\\ usually largest to smallest or vice versa.
+  \item
+    The definition of ``largest'' is up to the programmer (for example, you might define it by implementing a \href{https://en.cppreference.com/w/cpp/named_req/Compare}{Compare} function object.)
+  \item
+    If there are several ``largest'' elements, the implementer must decide which to remove first.
+    \begin{itemize}
+    \item
+      Remove any ``largest'' element (don't care which).
+    \item
+      Remove the first one added.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\setbeamercovered{transparent}
+\begin{frame}{A Priority Queue ADT}
+Here is one possible ADT\@:
+\begin{itemize}
+\item<2->
+  \lstinline{PriorityQueue()}: a constructor
+\item<3->
+  \lstinline{void add(const Type &val)}: inserts \texttt{val} into the queue
+\item<4->
+  \lstinline{Type& pop()}: removes and returns the highest-priority element
+\item<5->
+  \lstinline{const Type& top() const}: returns (but does not remove) the highest-priority element
+\item<6->
+  \lstinline{bool isEmpty() const}: returns true IFF empty
+\item<7->
+  \lstinline{unsigned int size() const}: returns the element count
+\item<8->
+  \lstinline{void clear()}: discards all elements
+
+\end{itemize}
+\end{frame}
+
+\setbeamercovered{transparent}
+
+
+\setbeamercovered{}
+
+\section{Performance}
+
+\begin{frame}{Evaluating Implementations}
+\begin{itemize}[<+->]
+\item
+  When choosing a data structure, consider \\\emph{usage patterns}.
+  \begin{itemize}
+  \item
+    If data is loaded once and searched thousands of\\
+    times, make searching fast by sorting the array.
+  \item
+    If we load a huge data and expect to do only a few searches, we probably \emph{don't} want to spend time sorting.
+  \end{itemize}
+\item
+  For almost all uses of a queue (including a priority queue), we eventually remove everything.
+\item
+  Hence, when we analyze a priority queue, neither `add' nor ``remove'' is more important --- we must look at the timing for ``add + remove''.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Array Implementations: Unsorted}
+  A priority queue could be implemented as an \emph{unsorted}\\ array (with a count of elements).
+  \pause{}
+  \begin{itemize}[<+->]
+    \item
+      Adding an element would take $O(1)$ time. (Why?)
+    \item
+      Removing an element would take $O(n)$ time. (Why?)
+    \item
+      Hence, adding and removing an element takes $O(n)$ time.
+    \item
+      This is an inefficient representation.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Array Implementations: Sorted}
+  A priority queue could be implemented as a \emph{sorted} array (again, with a count of elements).
+  \pause{}
+  \begin{itemize}[<+->]
+  \item
+    Adding an element would take $O(n)$ time. (Why?)
+  \item
+    Removing an element would take $O(1)$ time. (Why?)
+  \item
+    Hence, adding and removing an element takes $O(n)$ time.
+  \item
+    Again, this is inefficient.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Linked-List Implementations}
+  A priority queue could be implemented linked list that is\ldots{}
+\begin{itemize}[<+->]
+\item
+  \emph{Unsorted}:
+  \begin{itemize}
+  \item
+    Adding an element would take $O(1)$ time (Why?)
+  \item
+    Removing an element would take $O(n)$ time (Why?)
+  \end{itemize}
+\item
+  \emph{Sorted}:
+  \begin{itemize}
+  \item
+    Adding an element would take $O(n)$ time (Why?)
+  \item
+    Removing an element would take $O(1)$ time (Why?)
+  \end{itemize}
+\item
+  As with array representations, adding and removing an element takes $O(n)$ time.
+\item
+  Again, these are inefficient implementations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Binary Search Tree Implementations}
+\begin{itemize}
+\item<2->
+  A priority queue could be represented as an \\unbalanced \emph{binary search tree}.
+  \begin{itemize}
+  \item<3->
+    Insertion times would range from \alt<-3>{$O(?)$}{$O(\log n)$} to \alt<-3>{$O(?)$}{$O(n)$}
+  \item<5->
+    Removal times would range from \alt<-5>{$O(?)$}{$O(\log n)$} to \alt<-5>{$O(?)$}{$O(n)$}
+  \end{itemize}
+\item<7->
+  A priority queue could be represented as a \emph{balanced} binary search tree.%
+  \begin{itemize}
+  \item<8->
+    Insertion and removal could destroy the balance.
+  \item<9->
+    We need an algorithm to rebalance the binary tree.
+  \item<10->
+    Good rebalancing algorithms require only $O(\log n)$ time but are complicated.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Heap Implementation}
+  \center%
+\begin{columns}%
+  \column{0.6\textwidth}
+    A priority queue can be implemented as a \emph{heap}, which are\ldots{}
+    \begin{itemize}
+    \item
+      Balanced
+    \item
+      Left-Justified, and have
+    \item
+      The \emph{Heap Property}: values are least as large as its children.\\
+      (Or smaller if smaller values represent higher priorities.)
+    \end{itemize}
+
+  \column{0.34\textwidth}
+    \centering
+    Heap: All nodes have the heap property.
+    \begin{forest}
+    [12, for tree={inner sep=2pt, minimum size=2em}
+      [8
+        [4]
+        [7]
+      ]
+      [3]
+    ]
+    \end{forest}
+\end{columns}
+\end{frame}
+
+\section{Heaps}
+\begin{frame}{Array Representation of a Heap}
+\begin{columns}
+
+\column{0.43\textwidth}
+\begin{itemize}
+\item
+  Left child of node $i$ is at $2i + 1$; right child is at $2i + 2$.\\[0.25em]
+  %\begin{itemize}
+  %\item
+    {\small If the result is larger than the last index, there is no such child.}
+  %\end{itemize}
+\item
+  Parent of node $i$ is $\frac{1}{2}(i - 1)$, unless $i$ == $0$.
+\end{itemize}
+
+\column{0.25\textwidth}\centering
+  \begin{forest}%
+  [9, for tree={inner sep=2pt, minimum height=8mm}
+    [7
+      [6]
+      [0]
+    ]
+    [5
+      [3]
+      [, phantom]
+    ]
+  ]
+  \end{forest}
+
+\column{0.20\textwidth}
+  \begin{tikzpicture}[node of array/.append style = {minimum height=7mm, minimum width=9mm,}]
+  \ArrayLabel{}
+  \ArrayListVertical{9, 7, 5, 6, 0, 3}
+  \ArrayNodeVertical[none]{}
+  \end{tikzpicture}
+  % \begin{tabular}{|*{12}{c|}}
+  %   \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{4} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{8} & \multicolumn{1}{c}{9} & \multicolumn{1}{c}{10} & \multicolumn{1}{c}{11}\\
+  %   \hline
+  %   \texttt{9} & \texttt{7} & \texttt{5} & \texttt{6} & \texttt{0} & \texttt{3} &   &   &   &   &    &   \\
+  %   \hline
+  % \end{tabular}
+
+
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Adding Element to the Heap}
+  \begin{enumerate}
+    \item<+->
+      Increase \lstinline{lastIndex} and put the new value there.
+    \item<+->
+      Reheap the newly added element by \emph{sifting up}.
+      \begin{itemize}
+        \item
+          (a.k.a., \emph{up-heap bubbling} or \emph{percolating up}).
+        \item
+          Sifting up requires $O(\log n)$ time.
+      \end{itemize}
+  \end{enumerate}
+  \onslide<3->{
+  Thus, adding an element takes $O(\log n)$ time.}
+\end{frame}
+
+\begin{frame}{Removing Element from the Heap}
+  \begin{enumerate}
+    \item<+->
+      Remove the element at location 0.
+    \item<+->
+      Move the element at location \lstinline{lastIndex} to location 0, and decrement \lstinline{lastIndex}.
+    \item<+->
+      Reheap the new root node (the one now at location 0) by \emph{sifting down}.
+      \begin{itemize}
+        \item
+          (a.k.a., \emph{down-heap bubbling} or \emph{percolating down}).
+        \item
+          Sifting down requires $O(\log n)$ time.
+    \end{itemize}
+  \end{enumerate}
+  \onslide<4->{
+  Thus, removing an element takes $O(\log n)$ time.}
+\end{frame}
+
+\section{STL Heaps}
+
+\begin{frame}{Using the C++ STL Heap}
+\onslide<+->{This is surprising not that bad.}
+
+\begin{itemize}[<+->]
+\item
+  A heap is a vector that has been ``heapified.''
+  \begin{itemize}
+  \item
+    Use the \lstinline{make_heap()} function to ``heapifiy'' a vector.
+  \end{itemize}
+\item
+  Further pushes/pops should be done via heap functions.
+  \begin{itemize}
+  \item
+    \lstinline{push_back} + \lstinline{push_heap} / \lstinline{pop_heap}.
+  \end{itemize}
+\end{itemize}
+
+\onslide<+->{Some example code will help.}
+\end{frame}
+
+
+
+\begin{frame}[fragile, b]{C++ STL Heap: Create}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::vector<int> v1 {20, 30, 40, 25, 15}; // Initial a vector
+std::make_heap(v1.begin(), v1.end());     // Convert into a heap
+
+std::cout << "The max value is "  << v1.front() << '\n';
+\end{lstlisting}
+\pause
+\begin{columns}[T]
+  \column{0.55\textwidth}
+\begin{tikzpicture}
+  \ArrayLabel{}
+  \alt<-2>{
+    \ArrayNode{20}
+    \ArrayElLabel<-9mm>{v1.begin()}
+    \ArrayList{30, 40, 25, 15}
+  }{
+    \ArrayNode{40}
+    \ArrayElLabel<-9mm>{v1.begin()}
+    \ArrayList{30, 20, 25, 15}
+  }
+  \begin{scope}[array index/.append style={text=white!75!CSUblue}]
+    \ArrayNode[none]{}
+    \ArrayElLabel<-9mm>{v1.end()}
+    \ArrayNode[none]{}
+  \end{scope}
+  
+\end{tikzpicture}
+
+\column{0.35\textwidth}
+\onslide<4>{
+\begin{forest}
+  for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+  [40, name=root
+    [30
+      [25]
+      [15]
+    ]
+    [20, name=p2
+      [50, name=leaf, phantom]{
+        %{\draw[<->,dotted, very thick] (leaf) to[bend left] node[midway,left] {sift 1} (p2);}
+      }
+      [, phantom]
+    ]{
+      %{\draw[<->,dotted, very thick] (p2) to[bend right] node[midway,right] {sift 2} (root);}
+    }
+  ]
+\end{forest}}\\\vspace{10mm}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile, b]{C++ STL Heap: Push}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+v1.push_back(50); // Add a new element to the vector
+std::push_heap(v1.begin(), v1.end()); // reorder the elements
+
+std::cout << "The maximum after push is " << v1.front() << '\n';
+\end{lstlisting}
+
+\begin{columns}[T]
+  \column{0.55\textwidth}
+\begin{tikzpicture}
+  \ArrayLabel{}
+  \alt<-3>{
+    \ArrayNode{40}
+    \ArrayElLabel<-9mm>{v1.begin()}
+    \ArrayNode{30}
+    \ArrayNode{20}
+    \ArrayList{25, 15}
+    \alt<1> {
+      \begin{scope}[array index/.append style={text=white!75!CSUblue}]
+        \ArrayNode[none]{}
+      \end{scope}
+    }{
+      \ArrayNode{50}
+    }
+    \only<1>{\ArrayElLabel<-9mm>{v1.end()}}
+    \begin{scope}[array index/.append style={text=white!75!CSUblue}]
+      \ArrayNode[none]{}
+    \end{scope}
+    \only<2->{\ArrayElLabel<-9mm>{v1.end()}}
+  }{
+    \ArrayNode{50}
+    \ArrayElLabel<-9mm>{v1.begin()}
+    \ArrayList{30, 40, 25, 15, 20}
+    \begin{scope}[array index/.append style={text=white!75!CSUblue}]
+      \ArrayNode[none]{}
+    \end{scope}
+    \ArrayElLabel<-9mm>{v1.end()}
+  }
+  \only<3>{%
+    \ArraySwap<sift 1>{el20}{el50}
+    \ArraySwap<sift 2>{el40}{el20}
+  }%
+  \only<4>{%
+    \ArraySwap<sift 1>{el40}{el20}
+    \ArraySwap<sift 2>{el50}{el40}
+  }%
+\end{tikzpicture}
+\column{0.35\textwidth}
+\alt<1>{
+  \begin{forest}
+    for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+    [40, name=root
+      [30
+        [25]
+        [15]
+      ]
+      [20,name=p2
+        [50, name=leaf, phantom]
+        [, phantom]
+      ]
+    ]
+  \end{forest}%
+}{
+  \begin{forest}
+    for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+    [\alt<-3>{40}{50}, name=root
+      [30
+        [25]
+        [15]
+      ]
+      [\alt<-3>{20}{40},name=p2
+        [\alt<-3>{50}{20}, name=leaf]{%
+          \onslide<3->{\draw[<->,dotted, very thick] (leaf) to[bend left] node[midway,left] {sift 1} (p2);}%
+        }%
+        [, phantom]
+      ]{%
+        \onslide<3->{\draw[<->,dotted, very thick] (p2) to[bend left] node[midway,left] {sift 2} (root);}%
+      }
+    ]
+  \end{forest}%
+}\\\vspace{10mm}
+\onslide<4>{}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile, b]{C++ STL Heap: Pop}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::pop_heap(v1.begin(), v1.end());  // remove the maximum
+
+// Displaying the maximum element of the heap
+std::cout << "The maximum after pop is " << v1.front() << '\n';
+\end{lstlisting}
+\begin{columns}[T]
+  \column{0.55\textwidth}
+\begin{tikzpicture}
+  \ArrayLabel{}
+  \alt<-2>{
+    \ArrayNode{50}
+    \ArrayElLabel<-9mm>{v1.begin()}
+    \ArrayList{30, 40, 25, 15, 20}
+    \onslide<2>{\ArraySwap{el50}{el20}}%
+  }{
+    \alt<-5> {
+      \ArrayNode{20}
+      \ArrayElLabel<-9mm>{v1.begin()}
+      \ArrayList{30, 40, 25, 15}
+      \onslide<5>{\ArraySwap<sift>{el20}{el40}}%
+      \ArrayNode[CSUgold]{50}
+      \onslide<3>{\ArraySwap{el20}{el50}}%
+    } {
+      \ArrayNode{40}
+      \ArrayElLabel<-9mm>{v1.begin()}
+      \ArrayList{30, 20, 25, 15}
+      \onslide<6>{\ArraySwap<sift>{el40}{el20}}%
+      \ArrayNode[CSUgold]{50}
+    }
+  }
+  \begin{scope}[array index/.append style={text=white!75!CSUblue}]
+    \ArrayNode[none]{}
+  \end{scope}
+  \ArrayElLabel<-9mm>{v1.end()}
+  \onslide<7>{}
+\end{tikzpicture}
+\column{0.35\textwidth}
+\alt<-2>{
+\begin{forest}
+  for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+  [50, name=root
+    [30
+      [25]
+      [15]
+    ]
+    [40
+      [20, name=leaf]{%
+        \only<2>{\draw[<->,dotted, very thick] (root) to[bend right=45] node[midway,right] {swap} (leaf);}%
+      }
+      [, phantom]
+    ]
+  ]
+\end{forest}}{
+  \alt<-3>{
+    \begin{forest}
+      for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+      [20, name=root
+        [30
+          [25]
+          [15]
+        ]
+        [40
+          [50, name=leaf, fill=CSUgold]{%
+            \only<3>{\draw[<->,dotted, very thick] (root) to[bend right=45] node[midway,right] {swap} (leaf);}%
+          }
+          [, phantom]
+        ]
+      ]
+    \end{forest}%
+  }{
+    \alt<-5>{
+      \begin{forest}
+        for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+        [20, name=root
+          [30
+            [25]
+            [15]
+          ]
+          [40, name=p2
+            [50, phantom]
+            [, phantom]
+          ]{%
+            \onslide<5>{\draw[<->,dotted, very thick] (p2) to[bend left] node[midway,left] {sift} (root);}%
+          }
+        ]
+      \end{forest}%
+    }{
+      \begin{forest}
+        for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+        [40, name=root
+          [30
+            [25]
+            [15]
+          ]
+          [20, name=p2
+            [50, phantom]
+            [, phantom]
+          ]{%
+            \onslide<6>{\draw[<->,dotted, very thick] (p2) to[bend left] node[midway,left] {sift} (root);}%
+          }
+        ]
+      \end{forest}%
+    }
+  }
+}\\\vspace{10mm}
+\end{columns}
+\end{frame}
+
+\begin{frame}{C++ STL Heap Functions in \texttt{<algorithm>}}
+\begin{itemize}[<+->]
+\item
+  \href{https://en.cppreference.com/w/cpp/algorithm/make_heap}{\lstinline{make_heap()}}: function to ``heapifiy'' a vector.
+\item
+  \lstinline{push_back()} + \href{https://en.cppreference.com/w/cpp/algorithm/push_heap}{\lstinline{push_heap()}}: push to the heap.
+\item
+  \href{https://en.cppreference.com/w/cpp/algorithm/pop_heap}{\lstinline{pop_heap()}}: function to remove the first element and reheap.
+\item
+  \lstinline{front()}: get the top element (first in the heap/queue).
+\item
+  \href{https://en.cppreference.com/w/cpp/algorithm/make_heap}{\lstinline{sort_heap()}}: perform heapsort (the vector is no longer a heap afterward).
+\item
+  \href{https://en.cppreference.com/w/cpp/algorithm/is_heap}{\lstinline{is_heap()}}: quick test to see if you are still a heap.
+\item
+  \href{https://en.cppreference.com/w/cpp/algorithm/is_heap_until}{\lstinline{is_heap_until()}}: returns an iterator of what part of the vector is a heap.
+
+\end{itemize}
+\end{frame}
+
+\section{Considerations}
+\begin{frame}{Considerations}
+\begin{itemize}[<+->]
+\item
+  A \emph{priority queue} is a data structure that is designed to return elements in order of priority.
+\item
+  Efficiency is usually measured as the sum of the time it takes to add and remove elements.
+\item
+  Simple implementations take $O(n)$ time.
+\item
+  A heap implementation takes $O(\log n)$ time.
+\item
+  Thus, for any sort of heavy-duty use, a heap implementation is better.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{My Recommendation}
+  \begin{itemize}[<+->]
+    \item
+      If you need a priority queue, define it as an ADT\@.
+    \item
+      Start with a simple implementation.
+    \item
+      Keep the implementation hidden so you can change it later.
+    \item
+      If appropriate, consider the \href{https://en.cppreference.com/w/cpp/container/priority_queue}{\texttt{std::priority\_queue}} class, which is part of the C++ STL\@.
+  \end{itemize}
+\end{frame}
+
+\section*{Lab 20}
+\begin{frame}{Lab 20: Priority Queues}
+\begin{center}\Large
+Let's look at the lab based on today's lecture.
+\end{center}
+\end{frame}
+\end{document}

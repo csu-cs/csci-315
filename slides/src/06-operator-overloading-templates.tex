@@ -1,0 +1,870 @@
+% Paul E. West and Sean T. Hayes
+
+\documentclass[14pt,aspectratio=1610, hyperref={pdfpagelayout=SinglePage}]{beamer}
+% \documentclass[14pt,aspectratio=1610, hyperref={pdfpagelayout=SinglePage},handout]{beamer}
+\usepackage{csu-theme}
+
+\title{\Huge{}Operator Overloading \\\& Templates}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 13}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{January 30, 2025}
+\subject{Software Programming}
+%\keywords{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Objectives}
+
+\begin{frame}[fragile]{Objectives}
+\protect\hypertarget{objectives-1-of-2}{}
+
+In this lecture, you will:
+\begin{itemize}
+\item
+  Learn about overloading.
+\item
+  Become familiar with the restrictions on operator overloading.
+\item
+  Examine the \lstinline{this} pointer.
+\item
+  Learn about \lstinline{friend} functions.
+\item
+  Learn how to overload operators as members and nonmembers of a class.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Objectives}
+\protect\hypertarget{objectives-2-of-2}{}
+\begin{itemize}
+\item
+  Discover how to overload various operators.
+\item
+  Become familiar with the requirements for classes with pointer member
+  variables.
+\item
+  Learn about templates.
+\item
+  Explore how to construct and use function and class templates.
+\item
+  Become aware of C++11 random number generators.
+\end{itemize}
+\end{frame}
+
+\section{Operator Overloading}
+
+\begin{frame}[fragile]{Why Operator Overloading Is Needed}
+\protect\hypertarget{why-operator-overloading-is-needed-1-of-2}{}
+
+Consider the following statements:
+\begin{lstlisting}
+ClockType local{8, 23, 34};
+ClockType yourTime{4, 23, 30};
+\end{lstlisting}\vspace{1em}
+
+Which version of the C++ statements below would you prefer?
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+local.print();
+local.incrementSeconds();
+if (local.equal(yourTime))
+// ...
+\end{lstlisting}
+
+\column{0.43\textwidth}
+\begin{lstlisting}[basicstyle=\ttfamily\small, xleftmargin=0pt]
+cout << local;
+local++;
+if (local == yourTime)
+// ...
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Why Operator Overloading Is Needed}
+\protect\hypertarget{why-operator-overloading-is-needed-2-of-2}{}
+\begin{itemize}
+\item
+  Assignment and member selection are the only built-in operations on
+  classes.
+  \begin{itemize}
+  \item
+    Other operators cannot be applied directly to class objects.
+  \end{itemize}
+\item
+  \emph{Operator overloading} extends the definition of an operator to
+  work with a user-defined data type.
+  \begin{itemize}
+  \item
+    C++ allows you to extend the definitions of most of the operators to
+    work with classes.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Operator Overloading}
+\protect\hypertarget{operator-overloading}{}
+\begin{itemize}
+\item
+  Most existing C++ operators can be overloaded to manipulate class
+  objects.
+\item
+  New operators cannot be created.
+\item
+  An \emph{operator function} is a function that overloads an operator.
+  \begin{itemize}
+  \item
+    Use reserved word \lstinline{operator} followed by the operator as
+    the function name.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Syntax for Operator Functions}
+\protect\hypertarget{syntax-for-operator-functions}{}
+\begin{itemize}
+\item
+  Syntax of an operator function heading:\\
+  \lstinline{returnType operator symbol(formal parameter list)}
+  \begin{itemize}
+  \item
+    It is a value-returning function.
+  \item
+    \lstinline{operator} is a reserved word.
+  \end{itemize}
+\item
+  To overload an operator for a class:
+  \begin{itemize}
+  \item
+    Include the operator function declaration in the class definition.
+  \item
+    Write the definition of the operator function.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Friend Functions of Classes}
+\protect\hypertarget{friend-functions-of-classes}{}
+\begin{itemize}
+\item
+  A \emph{friend function} (of a class) is a nonmember function of the class 
+  that has access to all the members of the class.
+\item
+  Use the reserved word \lstinline{friend} in the function prototype in the
+  class definition.
+\item
+  Friendship is always given by the class.
+
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+class IllusFriend
+{
+    friend void two(/*parameters*/);
+    // ...
+};
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Definition of a Friend Function}
+\protect\hypertarget{definition-of-a-friend-function}{}
+\begin{itemize}
+\item
+  \lstinline{friend} does not appear in the heading of the function's
+  definition.
+\item
+  When writing the \lstinline{friend} function's definition.
+\item
+  The name of the class and the scope resolution operator are not used.
+
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+void two(/*parameters*/)
+{
+    // ...
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Operator Functions as Member and Nonmember
+Functions}
+\protect\hypertarget{operator-functions-as-member-and-nonmember-functions}{}
+\begin{itemize}
+\item
+  To overload \lstinline{()}, \lstinline{[]},
+  \lstinline{->}, or \lstinline{=} for a class,
+  the function must be a member of the class.
+\item
+  Suppose \lstinline{op} is overloaded for \lstinline{opOverClass}:
+  \begin{itemize}
+  \item
+    If the leftmost operand of \lstinline{op} is an object of a different
+    type, the overloading function must be a nonmember (friend) of the
+    class.
+  \item
+    If the overloading function for \lstinline{op} is a member of
+    \lstinline{opOverClass}, then when applying \lstinline{op} on objects of
+    type \lstinline{opOverClass}, the leftmost operand must be of type
+    \lstinline{opOverClass}.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Binary Operators}
+
+\begin{frame}[fragile]{Overloading Binary Operators}
+\protect\hypertarget{overloading-binary-operators}{}
+\begin{itemize}
+\item
+  If \texttt{\textbf\#} represents a binary operator (e.g.,
+  \lstinline{+} or \lstinline{==}) that is to be overloaded for \lstinline{rectangleType}.
+\item
+  It can be overloaded as either a member function of the class or as a
+  friend function.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Binary Operator Overloads as Methods}
+\protect\hypertarget{overloading-the-binary-operators-as-member-functions}{}
+\begin{itemize}
+\item
+  Function prototype (included in the class definition):\\
+  \lstinline{returnType operator#(const Type&) const;}
+\item
+  Function definition:\\
+  \begin{lstlisting}[basicstyle=\ttfamily\small]
+returnType operator#(const Type& otherObject) const
+{
+  // algorithm to perform the operation
+  return value;
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Binary Operator Overloads as Nonmember Functions}
+\protect\hypertarget{overloading-the-binary-operators-arithmetic-or-relational-as-nonmember-functions}{}
+\begin{itemize}
+\item
+  Function prototype (included in class definition):
+  \begin{lstlisting}
+friend returnType operator#(const Type&, const Type&) const;
+\end{lstlisting}
+\item
+  Function definition:
+  \begin{lstlisting}[basicstyle=\ttfamily\small]
+returnType operator#(const Type& leftObject, const Type& rightObject) const
+{
+  // algorithm to perform the operation
+  return value;
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Stream Insertion
+(\texttt{{<}<}) and Extraction (\texttt{{>}>}) Operators}
+\protect\hypertarget{overloading-the-stream-insertion-and-extraction-operators}{}
+\begin{itemize}
+
+\item
+  Consider the expression:\\
+  \lstinline{cout << myRectangle;}
+
+  \begin{itemize}
+  \item
+    Leftmost operand is an \lstinline{std::ostream} object, not a
+    \lstinline{rectangleType} object.
+  \end{itemize}
+\item
+  Thus, the operator function that overloads
+  \lstinline{<<} for \lstinline{rectangleType} must be a
+  nonmember function of the class.
+  \begin{itemize}
+  \item
+    The same applies to the function that overloads
+    \lstinline{>>}.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Stream Insertion Operator
+(\texttt{{<}<})}
+\protect\hypertarget{overloading-the-stream-insertion-operator}{}
+
+  Function prototype:\\
+  \begin{lstlisting}
+friend std::ostream& operator<<( std::ostream&, const Type&);
+\end{lstlisting}
+
+  Function definition:\\
+  \begin{lstlisting}
+std::ostream& operator<<(std::ostream& out,
+      const Type& cObject) {
+  // local declaration, if any
+  // Output the members of cObject.
+  // out << ...
+
+  return out; // return the stream object.
+}\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Stream Extraction Operator
+  (\texttt{{>}>})}
+
+  Function prototype:\\
+  \begin{lstlisting}
+friend std::istream& operator>>( std::istream&, Type&);
+\end{lstlisting}
+
+  Function definition:\\
+  \begin{lstlisting}
+std::istream& operator>>(std::istream& in, Type& cObject) {
+  // local declaration, if any
+  // Read the members of cObject.
+  // in >> ...
+
+  return in; // return the stream object.
+}\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Assignment Operator (\texttt{=})}
+\protect\hypertarget{overloading-the-assignment-operator}{}
+  Function prototype:\\
+  \lstinline{const Type& operator=(const Type&);}
+
+  Function definition:\\
+  \begin{lstlisting}[basicstyle=\ttfamily\small]
+const Type& operator=(const Type& rightObject)
+{
+  // local declaration, if any
+  // Avoid self-assignment
+  if (this != &rightObject)
+  {
+    // Copy rightObject into this object
+  }
+  return *this; // return the object assigned
+}\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}{Classes with Pointer Members (Revisited)}
+\protect\hypertarget{classes-and-pointer-member-variables-revisited}{}
+\begin{itemize}
+\item
+  Recall that the assignment operator copies member variables from one
+  object to another of the same type.
+  \begin{itemize}
+  \item
+    Does not work well with pointer member variables.
+  \end{itemize}
+\item
+  Classes with pointer member variables must:
+  \begin{enumerate}
+  \item
+    Explicitly overload the assignment operator.
+  \item
+    Include the copy constructor.
+  \item
+    Include the destructor.
+  \end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Member vs. Nonmember Operator Overloading}
+\protect\hypertarget{operator-overloading-member-versus-nonmember-1-of-2}{}
+\begin{itemize}
+\item
+  Some operators must be overloaded as member functions and some as nonmember (\lstinline{friend}) functions.
+\item
+  Binary arithmetic operators can be overloaded either way.\\
+  \begin{lstlisting}
+Type operator+(const Type&);
+\end{lstlisting}
+  or\\
+  \begin{lstlisting}
+friend Type operator+(const Type&, const Type&);
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Member vs. Nonmember Operator Overloading}
+Member Function for Operator Overload:
+\begin{itemize}
+  \item
+    As a member function, the operation has direct access to data
+    members of one of the objects.
+  \item
+    Need to pass only one object as a parameter.
+\end{itemize}
+
+Non-Member Function for Operator Overload:
+\begin{itemize}
+  \item
+    Both operands are included as parameters when nonmember functions that define binary operators.
+  \item
+    The code may be somewhat clearer this way.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Array Index Operator \texttt{[]}}
+\protect\hypertarget{overloading-the-array-index-subscript-operator}{}
+\begin{itemize}
+\item
+  Declaring the \lstinline{[]} operator as a class member for
+  nonconstant arrays:
+\begin{lstlisting}
+Type& operator[](int index);
+\end{lstlisting}
+\item
+  Declaring the \lstinline{[]} operator as a class member for
+  constant arrays:
+\begin{lstlisting}
+const Type& operator[](int index) const;
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\section{Unary Operator}
+
+\begin{frame}[fragile]{Overloading Unary Operators}
+\begin{itemize}
+\item
+  To overload a unary operator for a class:
+  \begin{itemize}
+  \item
+    If the operator function is a member of the class, it has no
+    parameters.
+  \item
+    If the operator function is a nonmember (i.e., a \lstinline{friend}
+    function), it has one parameter.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Pre-Increment (\texttt{++}) and
+Pre-Decrement (\texttt{{-}-})}
+
+The general syntax to overload the pre-increment operator \lstinline{++} as a member function.
+
+\begin{lstlisting}
+Type operator++() {
+  // Increment the value of the object by 1
+  return *this; //return the new value
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Post-Increment (\texttt{++}) and
+Post-Decrement (\texttt{{-}-})}
+
+The general syntax to overload the post-increment operator \lstinline{++} as
+a member function.
+
+\begin{lstlisting}
+Type operator++(int) {
+  const auto TEMP = *this; // copy old value
+
+  // Increment the value of the object by 1
+
+  return TEMP; // the copy of the old value
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Post-Increment (\texttt{++}) and
+Post-Decrement (\texttt{{-}-})}
+The general syntax to overload the post-increment operator \lstinline{++} as
+  a nonmember function.
+
+Function prototype:
+\begin{lstlisting}
+friend Type operator++(Type&, int);
+\end{lstlisting}
+
+Function definition:
+\begin{lstlisting}
+Type operator++(Type& incObj, int) {
+  const auto TEMP = incObj; // copy old
+
+  // Increment the value of the object by 1
+
+  return TEMP; // the copy of the old value
+}
+\end{lstlisting}
+\end{frame}
+
+\section*{Restrictions}
+\begin{frame}[fragile]{Overloading an Operator: Some Restrictions}
+%\protect\hypertarget{overloading-an-operator-some-restrictions}{}
+\begin{itemize}[<+->]
+\item
+  Cannot change the precedence of an operator.
+\item
+  Associativity cannot be changed.
+\item
+  Default parameters cannot be used.
+\item
+  Cannot change number of parameters.
+\item
+  Cannot create new operators.
+\item
+  Cannot overload: \lstinline{.}~~\lstinline{.*}~~\lstinline{::}~~\lstinline{?:}~~\lstinline{sizeof}
+\item
+  Operators on built-in types cannot be redefined.
+\item
+  Can overload for user-defined objects or for a combination of
+  user-defined and built-in objects.
+\end{itemize}
+\end{frame}
+
+
+% \begin{frame}[fragile]{Operator Overloading: One Final Word}
+% \protect\hypertarget{operator-overloading-one-final-word}{}
+% \begin{itemize}
+% \item
+%   If an operator \texttt{op} is overloaded for a class, e.g.,
+%   \texttt{rectangleType}
+% \item
+%   When you use \texttt{op} on objects of type \texttt{rectangleType},
+%   the body of the function that overloads the operator \texttt{op} for
+%   the \texttt{class\ rectangleType} executes
+% \item
+%   Therefore, whatever code you put in the body of the function executes
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Function Overloading}
+% \protect\hypertarget{function-overloading}{}
+% \begin{itemize}
+% \item
+%   Overloading a function refers to having several functions with the
+%   same name, but different parameters
+% \item
+%   The parameter list determines which function will execute
+% \item
+%   Must define each function
+% \end{itemize}
+% \end{frame}
+
+\section{Templates}
+
+\begin{frame}{Introduction}
+  %\protect\hypertarget{introduction}{}
+  \begin{itemize}
+  \item
+    \emph{Templates} enable you to write generic code for related
+    functions and classes.
+  \item
+    \emph{Function templates} simplify function overloading.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Templates}
+
+\begin{itemize}
+\item
+  Templates give us similar functionality as \textit{generics} in Java, but
+  also so much more!
+\item
+  We can get the C++ compiler to write code for us, based on a set of rules we
+  give it.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Templates}
+\protect\hypertarget{templates-1-of-2}{}
+\begin{itemize}
+\item
+  \emph{Template} -- a single code body for a set of related functions
+  (\emph{function template}) and related classes (\emph{class template})
+\item
+  Syntax:
+\begin{lstlisting}
+template <typename Type>
+declaration;
+\end{lstlisting}
+  \begin{itemize}
+  \item
+    \lstinline{typename} denotes that we are creating a formal type parameter
+    (\lstinline{class} can also be used).
+  \item
+    \lstinline{Type}, in this example, is the type ``placeholder'' (because it is listed after
+    \lstinline{typename}).
+  \item
+    \lstinline{declaration} is either a function declaration or a class
+    declaration.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Templates}
+\protect\hypertarget{templates-2-of-2}{}
+\begin{itemize}
+\item
+  \lstinline{typename} in the heading refers to any user-defined type or
+  built-in type.
+\item
+  \lstinline{Type} is a formal parameter to the template
+\item
+  Just as variables are parameters to functions, data types are
+  parameters to templates
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Function Templates}
+\protect\hypertarget{function-templates}{}
+\begin{itemize}
+\item
+  Syntax of the function template:
+\begin{lstlisting}
+template <typename Type>
+function declaration;
+\end{lstlisting}
+\item
+  Type is a formal parameter of the template used to:
+  \begin{itemize}
+  \item
+    Specify the parameter types of the function.
+  \item
+    Specify the return type of the function.
+  \item
+    Declare variables within the function.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Function Templates}
+\begin{itemize}
+\item
+  {\large{A function template is not an actual function!}}\footnote[frame]{\tiny Source: \href{https://youtu.be/LMP_sxOaz6g}{Back to Basics: Function and Class Templates - Dan Saks - CppCon 2019}}
+\item
+  It is a generalization of an algorithm that can generate generate similar, but distinct, function definitions.
+\item
+  Each generates function implements the algorithm for operands of different types.
+\end{itemize}
+\end{frame}
+
+% \begin{frame}{Function Templates}
+% \begin{itemize}
+% \item
+%   {\large{A function template is not an actual function!}}\footnote[frame]{\tiny Source: \href{https://youtu.be/LMP_sxOaz6g}{Back to Basics: Function and Class Templates - Dan Saks - CppCon 2019}}
+% \item
+%   It is a generalization of an algorithm that can generate generate similar, but distinct, function definitions.
+% \item
+%   Each generates function implements the algorithm for operands of different types.
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}[fragile]{Abbreviated Function Templates}
+
+As of C++20, the \lstinline{auto} keyword can be used as a shorthand for parameter type in a function template declaration.
+
+The following function declarations are identical.
+
+\begin{lstlisting}
+template <typename Type>
+void fun1(Type val);
+
+template <typename Type>
+void fun2(const Type& val);
+\end{lstlisting}
+
+\begin{lstlisting}
+void fun1(auto val);
+void fun2(const auto& val);
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Abbreviated Function Templates}
+\texttt{g++} may default to an older C++ standard. If so, add \lstinline[language=Bash, identifierstyle=\color{white}]{-std=c++20} to your compiler arguments to user template abbreviation.
+
+The auto-grader uses the C++20 when checking your code.
+\end{frame}
+
+\begin{frame}[fragile]{Class Templates}
+\protect\hypertarget{class-templates}{}
+\begin{itemize}
+\item
+  Class template: a single code segment for a set of related classes
+\item
+  Called parameterized types
+\item
+  Syntax:
+\begin{lstlisting}
+template <typename Type>
+class declaration;
+\end{lstlisting}
+\item
+  A template instantiation can be created with either a built-in or
+  user-defined type
+\item
+  The function members of a class template are considered to be function
+  templates
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Source Files for Templated Classes}
+\protect\hypertarget{header-file-and-implementation-file-of-a-class-template-1-of-2}{}
+\begin{itemize}
+\item
+  Passing a parameter to a function occurs at \emph{run time}.
+\item
+  Passing a parameter to a class template occurs at \emph{compile time}.
+\item
+  Therefore, the implementation file cannot be compiled independently of the client
+  code.
+  \begin{itemize}
+  \item
+    Can put class- and function-template definitions
+    directly in the client code.
+  \item
+    Can put class- and function-template definitions
+    in the same header file.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Source Files for Templated Classes}
+\protect\hypertarget{header-file-and-implementation-file-of-a-class-template-2-of-2}{}
+\begin{itemize}
+\item
+  Another alternative is to put class definition and function
+  definitions in separate files.
+  \begin{itemize}
+  \item
+    Include the directive to the implementation file at the end of the header
+    file.
+  \end{itemize}
+\item
+  In either case, function definitions and client code are compiled
+  together.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Array-Based Lists}
+\protect\hypertarget{array-based-lists-revisited}{}
+\begin{itemize}
+\item
+  Using class templates allows the creation of generic code.
+\item
+  Can create abstract class \lstinline{ArrayList} as an abstract data type (ADT).
+  \begin{itemize}
+  \item
+    Must overload the assignment operator.
+  \end{itemize}
+\item
+  Can derive \lstinline{UnorderedArrayList} or \lstinline{OrderedArrayList} from
+  \lstinline{ArrayList}.
+\end{itemize}
+\end{frame}
+
+\section{Random Numbers}
+\begin{frame}[fragile]{C++11 Random-Number Generator}
+\begin{itemize}
+\item
+  To use C++ 11 random-number generator functions, we use an engine and a
+  distributor.
+  \begin{itemize}
+  \item
+    An engine returns unpredictable (random) bits.
+  \item
+    A distribution returns random numbers whose likelihoods correspond to
+    a specific shape such as a uniform or normal distribution.
+  \end{itemize}
+\item
+  The C++11 standard library provides 25 distribution types in five
+  categories.
+  \begin{itemize}
+  \item
+    \lstinline{uniform_int_distribution} and
+    \lstinline{uniform_real_distribution} fall in the category of uniform
+    distributions.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{C++11 Random-Number Generator}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+#include <random>
+
+int main() {
+  std::random_device randDevice;
+  std::default_random_engine num{ randDevice() };
+  std::uniform_int_distribution<int> dist{1, 6};
+
+  // Generate 10 ints that are between 1 and 6.
+  for (int count = 1; count <= 10; ++count) {
+    std::cout << dist(num) << ' ';
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\section{Review}
+\begin{frame}[fragile]{Quick Review}
+\begin{itemize}[<+->]
+\item
+  \emph{Overloaded} operator -- an operator that has different meanings with different data types.
+\item
+  Operator function -- a function that overloads an operator.
+\item
+  Operator functions are value-returning.
+\item
+  Operator overloading provides the same concise notation for
+  user-defined data types as for built-in data types.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Quick Review}
+\begin{itemize}[<+->]
+\item
+  Only existing operators can be overloaded.
+\item
+  The \lstinline{this} pointer refers to the object.
+\item
+  A \lstinline{friend} function is a nonmember of a class.
+\item
+  If an operator function is a member of a class,
+  the leftmost operand of the operator must be a class object (or a
+  reference to a class object) of that operator's class.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Quick Review}
+\begin{itemize}[<+->]
+\item
+  Classes with pointer variables \emph{must} overload the assignment operator,
+  and include both the copy constructor and the destructor.
+\item
+  In C++, \lstinline{template} is a reserved word.
+\item
+  Function template: a single code segment for a set of related
+  functions.
+\item
+  Class template: a single code segment for a set of related classes.
+\item
+  Are called \emph{parameterized types}.
+\item
+  C++11 provides many functions to implement random number generators.
+\end{itemize}
+\end{frame}
+
+\section*{Lab 6}
+\begin{frame}{Lab 6: Templates and Operator Overloading}
+\begin{center}\Large
+Let's take a look at Lab 6.
+\end{center}
+\end{frame}
+
+\end{document}

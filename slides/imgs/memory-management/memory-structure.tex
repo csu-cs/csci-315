@@ -1,0 +1,61 @@
+% % A table representing the layout of runtime memory.
+% % Requires \usepackage{arydshln} % for dashed lines in the table
+% % Requires \usepackage{hhline} for horizontal lines that show up with \columncolor
+% \begin{tabular}{r |>{\columncolor{CSUslate}}c|}
+% % \begin{tabular}{r |c|}
+%   %\cline{2-2}
+%   \hhline{~|-|}
+%   $0$ & \textbf{Static}\\
+%   $1$ & \\
+%       & \\\hhline{~-}
+%       & \textbf{Stack}\\
+%   $a - 1$ & \\\hhline{~-}
+%   \multicolumn{1}{r:}{$a$} &
+%     \multicolumn{1}{>{\columncolor{CSUslate}}c:}{$\Downarrow$}\\
+%     \multicolumn{1}{r:}{}  & \multicolumn{1}{>{\columncolor{CSUslate}}r:}{} \\\hhline{~-}
+%   $h$ & \textbf{Heap}\\
+%       &  \\
+%   $n$ & \\\hhline{~-}
+% \end{tabular}
+
+\begin{tikzpicture}[memory_type/.style={minimum width=2.5cm, minimum height=1.25cm, fill=CSUcyan, text=black}, line/.style={dashed, very thick}, address/.style={font=\small, inner ysep=1pt}]
+  % % Define colors for sections
+  % \definecolor{staticcolor}{RGB}{173, 216, 230} % Light blue
+  % \definecolor{stackcolor}{RGB}{255, 182, 193}  % Light pink
+  % \definecolor{heapcolor}{RGB}{144, 238, 144}   % Light green
+
+  % Static Memory Section
+  \node[memory_type, fill=CSUcyan!50!white] (static) at (0, 0) {Static};
+
+  % Heap Node (above Static)
+  \node[memory_type, anchor=south] (heap) at (static.north) {Heap};
+
+  % Free Node (above Heap)
+  \node[memory_type, fill=none, text=white, anchor=south, align=center, font={\small\itshape}, minimum height=1.5cm] (Free) at (heap.north) {unallocated};
+
+  % Stack Node (above Heap)
+  \node[memory_type, anchor=south, align=center] (stack) at (Free.north) {Stack};
+
+  \node[fit=(static) (stack), draw, inner sep=0pt, very thick] (Memory) {};
+
+  % % Dashed lines where stack and heap grow.
+  % \draw[line] (heap.north-|heap.west)--(heap.north-|heap.east) (stack.south-|stack.west)--(stack.south-|stack.east);
+  \draw[thick] (static.north-|static.west)--(static.north-|static.east);
+
+  % Arrows
+  \draw[draw=CSUcyan, line width=3pt, ->] ([yshift=2pt] stack.south) -- ([yshift=-0.4cm]stack.south);
+  \draw[draw=CSUcyan, line width=3pt, ->] ([yshift=-2pt] heap.north) -- ([yshift=0.4cm]heap.north);
+
+  % Numbers
+  \node[address, anchor=east] (0) at (static.south west) {$0$};
+  \node[address, anchor=south east] (1) at (0.north east) {$1$};
+  \node[address, anchor=south] (2) at (1.north) {$\vdots$};
+
+  \node[address, anchor=north east] (h_prev) at (heap.north west) {$h-1$};
+  \node[address, anchor=south east] (h) at (heap.north west) {$h$};
+  \node[address, anchor=north east] (a) at (stack.south west) {$a$};
+  \node[address, anchor=south east] (a_prev) at (stack.south west) {$a - 1$};
+
+  \node[address, anchor=east] (n) at (stack.north west) {$n$};
+
+\end{tikzpicture}

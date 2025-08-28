@@ -1,0 +1,13 @@
+objs/
+*.aux
+*.fls
+*.fdb_latexmk
+*.log
+*.nav
+*.out
+*.pdf
+*.snm
+*.synctex(busy)
+*.synctex.gz
+*.toc
+*.vrb

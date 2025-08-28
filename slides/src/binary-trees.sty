@@ -1,0 +1,71 @@
+% Set the style and provide helper functions for binary trees
+% by Sean T. Hayes
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{binary-trees}[2022/08/01]
+
+\RequirePackage{forest}
+\usetikzlibrary{positioning}
+
+
+
+\definecolor{highlightColor}{HTML}{ffd7aa}
+
+\tikzset{
+  %
+  % Used for beamer overlays
+  invisible/.style={opacity=0,text opacity=0},
+  visible on/.style={alt=#1{}{invisible}},
+  invisible on/.style={alt=#1{invisible}{}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+  justText/.style={ellipse,draw=none, inner sep=0, fill=none, minimum size=1em},
+  justText on/.style={alt=#1{justText}{}},
+  %
+  % The following is used to highlight edges as an overlay
+  highlight/.style={draw, ultra thick, color=highlightColor},
+  highlight on/.style={alt=#1{highlight}{}},
+}
+
+\forestset{
+  treeNode/.style={%
+    circle, % node shape
+    draw=white, %line and border color
+    edge=->, % show arrow to child
+    edge=very thick, %edge weight
+    very thick, % node boarder
+    fill=CSUcyan, % node fill
+    text=black,% text color
+    %fit=rectangle, % the resulting tree will usually be wide
+    fit=band,%
+    %inner sep=0.3em,
+    l sep=0em,% distnace between levels
+  },
+  default preamble={%
+    for tree={%
+      treeNode%
+    },%
+  },%
+  %
+  headPtr/.style={
+    anchor=north,l sep=0.5em,%
+    ellipse,draw=none, inner sep=0, fill=none, text=white
+  },
+  %
+  % Used for beamer overlays
+  visible on/.style={
+    for tree={
+      /tikz/visible on={#1},
+      edge+={/tikz/visible on={#1}}}},
+  %
+  % Hide just the node, not it's children (and the edges connecting it)
+  node visible on/.style={
+      /tikz/visible on={#1},
+      edge+={/tikz/visible on={#1}},
+      for children={edge+={/tikz/visible on={#1}}}%
+  },%
+  %
+  edge highlight on/.style={
+    edge+={/tikz/highlight on={#1}}
+  }
+}

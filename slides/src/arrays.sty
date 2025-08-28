@@ -1,0 +1,231 @@
+\RequirePackage{tikz}
+\usepackage{xparse}
+\usepackage{xstring}
+\usetikzlibrary{positioning,fit,decorations.pathreplacing}
+\usetikzlibrary{math} %needed tikz library
+%\usetikzlibrary{calc,shapes.multipart,chains,arrows,fit}
+\tikzset{
+  node of array/.style = {
+     draw,
+     fill=CSUcyan,
+     minimum height=8mm,
+     minimum width=10mm,
+     node distance=0mm,
+     text=black,
+     very thick,
+     align=center,
+     %font=\ttfamily\bfseries\large
+   },
+  subcomponent of array el/.style = {
+    node of array,
+    node distance=2pt,
+  },
+  additional subcomponent of array el/.style = {
+    subcomponent of array el,% Inherit properties from the base style
+    node distance=1pt and 2pt, % Different values for vertical and horizontal distances
+  },
+  link/.style = {
+     -stealth,
+     shorten >=1pt,
+     shorten <=1pt,
+     very thick
+     },
+  block/.style = {
+    rectangle, inner sep=0pt,
+    align=center
+  },
+  array index/.style = {
+    font=\ttfamily\bfseries
+  },
+  label of array el/.style = {
+    font=\ttfamily,
+    inner sep=0pt,
+    anchor=north,
+    align=center
+  },
+  span of array/.style = {
+    node of array,
+    minimum height=18mm,
+  }, 
+  horizontal span of array/.style = {
+    node of array,
+    minimum width=20mm,
+  }
+}
+
+\newcounter{arrayIndex} % counter for array indexes
+
+\NewDocumentCommand{\ArrayLabel}{ O{0} O{0} m }{%
+  \setcounter{arrayIndex}{0}
+  \node[, name=prev] at (#2, #1) {#3};
+}
+
+\NewDocumentCommand{\ArrayNode}{ d<> o m }{%
+  \IfNoValueTF{#2}{ % set fill only if the optional parameter is present
+    \node[node of array, anchor=west, name=val] at ([xshift=-1.4pt] prev.east) {#3};
+  }{
+    \node[node of array, anchor=west, name=val, fill=#2] at ([xshift=-1.4pt] prev.east) {#3};
+  }
+  \IfNoValueTF{#1}{
+    \node[array index, anchor=south, name=index] at ([yshift=1pt] val.north) {\textcolor{white!75!CSUblue}{[}\thearrayIndex\textcolor{white!75!CSUblue}{]}};
+  }{
+    \node[array index, anchor=south, name=index] at ([yshift=1pt] val.north) {#1};
+  }
+  \node[block] (prev) [fit=(val)]{};
+  \node[block] (\detokenize{el#3}) [fit=(val)]{};
+  \node[block] ({el#3}) [fit=(val)]{};
+  \stepcounter{arrayIndex}
+}
+
+\NewDocumentCommand{\ArrayNodeSpan}{ O{$\cdots$} m }{
+  \node[horizontal span of array, anchor=west, name=prev] at ([xshift=-1pt] prev.east) {#1};
+  \node[array index, anchor=south] at ([yshift=1pt] prev.north) {$\cdots$};
+  \node[block] (space) [fit=(prev)]{};
+  \addtocounter{arrayIndex}{#2}
+}
+
+\NewDocumentCommand{\ArrayNodeVerticalSpan}{ O{$\vdots$} m }{
+  \node[span of array, anchor=north, name=prev] at ([yshift=1.4pt] prev.south) {#1};
+  \node[array index, anchor=east] at ([xshift=-1pt] prev.west) {$\vdots$};
+  \node[block] (space) [fit=(prev)]{};
+  \addtocounter{arrayIndex}{#2}
+}
+
+
+% \NewDocumentCommand{\ArrayNode}{ O{CSUcyan} m }{%
+%   \node[node of array, anchor=west, name=val, fill=#1] at ([xshift=-1pt] prev.east) {#2};
+%   \node[array index, anchor=south] at ([yshift=1pt] val.north) {[\thearrayIndex] };
+%   \node[block] (prev) [fit=(val)]{};
+%   \node[block] (el#2) [fit=(val)]{};
+%   \stepcounter{arrayIndex}
+% }
+
+
+\NewDocumentCommand{\ArrayList}{ O{CSUcyan} m }{%
+  \foreach \element in {#2} {
+    \ArrayNode[#1]{\element}
+  }
+}
+
+\NewDocumentCommand{\ArrayGroup}{ d<> m m m }{%
+
+  % Set the height of the text
+  \tikzmath{
+    \amp=\IfNoValueTF{#1}{8pt}{#1};
+  }
+  
+  % If the height of the text is changed with #1, adjust the amplitude to match
+  \dimendef\textAbove=0
+  \pgfmathsetlength{\textAbove}{13mm+\amp-8pt}%\the\textAbove
+
+  \draw [decorate, decoration = {brace,raise=2em + 4pt,amplitude=\IfNoValueTF{#1}{\amp}{#1}}, very thick] ([xshift=2pt] #2.west) -- ([xshift=-2pt] #3.east) node [pos=0.5,above=\textAbove, name=groupLabel] {#4};
+}
+
+\NewDocumentCommand{\ArrayElLabel}{ d<> d<> O{val} m }{%
+  \node[label of array el, name=label] at ([xshift=\IfNoValueTF{#2}{0mm}{#2},yshift=\IfNoValueTF{#1}{-4mm}{#1}] #3.south) {#4};
+  \draw[link] (label) -- (#3);
+}
+
+\NewDocumentCommand{\ArraySwap}{ d<> O{} m m } {
+  \draw[link, <->] ([xshift=-2mm] #3.south east) to[bend right=#2] node[below] {\IfNoValueTF{#1}{swap}{#1}} ([xshift=2mm] #4.south west);
+}
+
+
+\NewDocumentCommand{\ArrayNodeVertical}{ o m }{%
+
+  % Extract the first element value
+  \StrBefore{#2,}{,}[\FirstValue]
+
+  \IfNoValueTF{#1}{ % set fill only if the optional parameter is present
+    \node[node of array, anchor=north, name=val] at ([yshift=1pt] prev.south) {\FirstValue};
+  }{
+    \node[node of array, anchor=north, name=val, fill=#1] at ([yshift=1pt] prev.south) {\FirstValue};
+  }
+  \node[block] (lastElValue) [fit=(val)]{};%
+
+  \foreach \element [count=\i] in {#2} {
+    \ifnum\i=1 % First element
+    \else
+      \node[subcomponent of array el, right = of lastElValue, name=lastElValue] {\element};%
+    \fi
+  }
+
+  \node[array index, anchor=east] at ([xshift=-1pt] val.west) {\textcolor{white!75!CSUblue}{[}\thearrayIndex\textcolor{white!75!CSUblue}{]}};
+  \node[block] (prev) [fit=(val)]{};
+  \node[block] (\detokenize{el#2}) [fit=(val)]{};
+  % \node[block] (el#2) [fit=(val)]{};
+  \coordinate (valPtr) at (val);
+  \stepcounter{arrayIndex}
+}
+
+% % Unused: This funciton was an attempt for hash table visualizations.
+% \NewDocumentCommand{\ArrayNodeNestedVertical}{ m }{%
+
+%   \if\relax\detokenize{#1}\relax % If the sequence is empty
+%     \node[node of array, anchor=north, name=val] at ([yshift=1pt] prev.south) {};
+%   \else%
+%     % Support multiple elements in a node that are comma seperated
+%     \node[node of array, anchor=north, name=val] at ([yshift=1pt] prev.south) {};
+%     \foreach \element [count=\i] in {#1} {
+%       \ifnum\i=1 % First element
+%         \node[subcomponent of array el, right = of val.west, name=firstArrayElValue] {\element};
+%         % \node[subcomponent of array el, anchor=west, name=firstArrayElValue] at ([xshift=4pt] val.west) {\element};
+%         \node[block] (lastArrayElValue) [fit=(firstArrayElValue)]{};
+%       \else
+%         \node[additional subcomponent of array el, right = of lastArrayElValue, name=lastArrayElValue] {\element};
+%       \fi
+%     }
+%     % \begin{scope}[on background layer]
+%     %   \node[node of array] (val) [anchor=west, fit=(firstArrayElValue) (lastArrayElValue)]{};
+%     % \end{scope}
+%   \fi%
+
+%   \node[array index, anchor=east] at ([xshift=-1pt] val.west) {[\thearrayIndex]};
+%   \node[block] (prev) [fit=(val)]{};
+%   \node[block] (\detokenize{el#1}) [fit=(val)]{};
+%   % \node[block] (el#2) [fit=(val)]{};
+%   \coordinate (valPtr) at (val);
+%   \stepcounter{arrayIndex}
+% }
+
+\NewDocumentCommand{\ArrayListVertical}{ O{CSUcyan} m }{%
+  \foreach \element in {#2} {
+    \ArrayNodeVertical[#1]{\element}
+  }
+}
+
+\NewDocumentCommand{\ArrayGroupVerticle}{ m m m }{%
+  \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]#2.south west) -- ([xshift=-1cm]#1.north west) node [pos=0.5,left=12pt] {#3};
+}
+
+\NewDocumentCommand{\ArrayGroupVerticleRight}{ m m m }{%
+  \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([yshift=-1pt]#1.north east) -- ([yshift=1pt]#2.south east) node [pos=0.5,right=12pt,align={left}] {#3};
+}
+
+\newcommand{\ArrayElLabelVerticle}[2][val] {%
+  \node[label of array el, anchor=west, name=label, align=center] at ([xshift=6mm] #1.east) {#2};
+  \draw[link] (label) -- (#1);
+}
+
+\NewDocumentCommand{\ArraySwapVerticle}{ d<> O{} m m } {
+  \draw[link, <->] ([yshift=-1mm]#3.east) to[bend left=#2] node[right] {\IfNoValueTF{#1}{swap}{#1}} ([yshift=1mm]#4.east);
+}
+
+\NewDocumentCommand{\ArrayNodeStack}{ o O{[\thearrayIndex]} m }{%
+  \IfNoValueTF{#1}{ % set fill only if the optional parameter is present
+    \node[node of array, anchor=south, name=val] at ([yshift=-1pt] prev.north) {#3};
+  }{
+    \node[node of array, anchor=south, name=val, fill=#1] at ([yshift=-1pt] prev.north) {#3};
+  }
+  \node[array index, anchor=east, name=index] at ([xshift=-1pt] val.west) {#2};
+  \node[block] (prev) [fit=(val)]{};
+  % \node[block] (\detokenize{el#3}) [fit=(val)]{};
+  \node[block] (el#3) [fit=(val)]{};
+  \node[block] (#2) [fit=(index) (val)]{};
+  \stepcounter{arrayIndex}
+}
+
+\NewDocumentCommand{\ArrayNodeStackSpan}{ O{$\vdots$}  }{
+  \node[span of array, anchor=south, name=prev] at ([yshift=-1pt] prev.north) {#1};
+  \node[block] (space) [fit=(prev)]{};
+}

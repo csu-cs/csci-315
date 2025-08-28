@@ -1,0 +1,46 @@
+<svg width="1946" height="880" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+<style type="text/css">
+text, tspan {
+	font-family: Times New Roman, Times New Roman_MSFontService, sans-serif;
+}
+
+g.array text {
+	font-family: Consolas, Monotype, monospace;
+	fill: black;
+	font-weight: 400;
+	font-size: 92;
+}
+</style>
+
+
+<defs></defs>
+
+<g transform="translate(-695 -1108)">
+<circle r="326" cx="1134" cy="1511" stroke="#FFFFFF" stroke-width="10.3125" stroke-linecap="square" stroke-miterlimit="8" fill="#5eb6cd" fill-rule="evenodd" />
+
+<text fill="#FFFFFF" font-weight="700" font-size="107" transform="matrix(1 0 0 1 759.446 1217)">U
+<tspan font-weight="400" font-size="92" x="11.9358" y="711">(universe of keys)</tspan>
+</text>
+<text fill="black" font-weight="700" font-size="107" transform="matrix(1 0 0 1 759.446 1217)"><tspan font-weight="400" font-size="76" x="230.122" y="109">k</tspan><tspan font-weight="400" font-size="51" x="268.507" y="127">1</tspan><tspan font-weight="400" font-size="76" x="426.059" y="109">k</tspan><tspan font-weight="400" font-size="51" x="464.445" y="127">2</tspan><tspan font-weight="400" font-size="76" x="267.934" y="292">k</tspan><tspan font-weight="400" font-size="51" x="306.319" y="310">3</tspan><tspan font-weight="400" font-size="76" x="407.153" y="292">k</tspan><tspan font-weight="400" font-size="51" x="445.538" y="310">4 </tspan><tspan font-weight="400" font-size="76" x="343.559" y="476">k</tspan><tspan font-weight="400" font-size="51" x="381.944" y="494">6</tspan></text><path d="M1260.36 1254.86 1850.64 1296.06 1849.92 1306.35 1259.64 1265.14ZM1258.92 1275.43C1250.4 1274.84 1243.97 1267.45 1244.57 1258.92 1245.16 1250.4 1252.55 1243.97 1261.08 1244.57 1269.6 1245.16 1276.03 1252.55 1275.43 1261.08 1274.84 1269.6 1267.45 1276.03 1258.92 1275.43ZM1846.21 1285.41 1876 1303 1844.06 1316.28Z" fill="#FFFFFF"/><path d="M1054 1369.84 1873.22 1369.84 1873.22 1380.16 1054 1380.16ZM1054 1390.47C1045.46 1390.47 1038.53 1383.54 1038.53 1375 1038.53 1366.46 1045.46 1359.53 1054 1359.53 1062.54 1359.53 1069.47 1366.46 1069.47 1375 1069.47 1383.54 1062.54 1390.47 1054 1390.47ZM1868.06 1359.53 1899 1375 1868.06 1390.47Z" fill="#FFFFFF"/><path d="M0.306824-5.14711 796.573 42.319 795.959 52.6132-0.306824 5.14711ZM-0.920472 15.4413C-9.44849 14.933-15.9497 7.60754-15.4413-0.920472-14.933-9.44849-7.60754-15.9497 0.920472-15.4413 9.44849-14.933 15.9497-7.60754 15.4413 0.920472 14.933 9.44849 7.60754 15.9497-0.920472 15.4413ZM792.038 31.7179 822 49.0002 790.197 62.6006Z" fill="#FFFFFF" transform="matrix(1 0 0 -1 1077 1444)"/><path d="M1239.73 1530.14 1853.44 1748.5 1849.98 1758.22 1236.27 1539.86ZM1232.81 1549.57C1224.77 1546.71 1220.56 1537.86 1223.43 1529.81 1226.29 1521.77 1235.14 1517.56 1243.19 1520.43 1251.23 1523.29 1255.44 1532.14 1252.57 1540.19 1249.71 1548.23 1240.86 1552.44 1232.81 1549.57ZM1852.04 1737.06 1876 1762 1841.67 1766.2Z" fill="#FFFFFF"/><path d="M0.686676-5.11032 682.135 86.4562 680.762 96.6769-0.686676 5.11032ZM-2.06004 15.331C-10.5271 14.1932-16.4687 6.40702-15.331-2.06004-14.1932-10.5271-6.40702-16.4687 2.06004-15.331 10.5271-14.1932 16.4687-6.40702 15.331 2.06004 14.1932 10.5271 6.40702 16.4687-2.06004 15.331ZM678.398 75.5488 707 94.9999 674.278 106.211Z" fill="#FFFFFF" transform="matrix(1 0 0 -1 1192 1673)"/>
+
+<g transform="translate(0, 89)" class="array">
+<rect x="1902.5" y="1077.5"  width="203" height="731" stroke="none" fill="#5eb6cd" />
+<rect x="1902.5" y="1535.5" width="203" height="89" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="none"/>
+<text font-size="92" transform="matrix(1 0 0 1 1978.28 1614)">5</text>
+<rect x="1902.5" y="1169.5" width="203" height="89" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="#A89968"/>
+<text font-size="92" transform="matrix(1 0 0 1 1978.28 1247)">1</text>
+<rect x="1902.5" y="1260.5" width="203" height="89" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="#A89968"/>
+<text font-size="92" transform="matrix(1 0 0 1 1978.28 1337)">2</text>
+<rect x="1902.5" y="1352.5" width="203" height="88.9996" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="none"/>
+<text font-size="92" transform="matrix(1 0 0 1 1978.28 1429)">3</text>
+<rect x="1902.5" y="1444.5" width="203" height="89" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="#A89968"/>
+<text font-weight="400" font-size="92" transform="matrix(1 0 0 1 1978.28 1522)">4</text>
+<rect x="1902.5" y="1077.5" width="203" height="88.9996" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="none"/>
+<text font-weight="400" font-size="92" transform="matrix(1 0 0 1 1978.28 1155)">0</text>
+<rect x="1902.5" y="1627.5" width="203" height="88.9996" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="#A89968"/>
+<text font-weight="400" font-size="92" transform="matrix(1 0 0 1 1978.28 1705)">6</text>
+<rect x="1902.5" y="1719.5" width="203" height="89" stroke="#FFFFFF" stroke-width="6.875" stroke-linecap="square" stroke-miterlimit="8" fill="none"/>
+<text font-weight="400" font-size="92" transform="matrix(1 0 0 1 1978.28 1796)">7</text>
+</g>
+<text fill="#FFFFFF" font-style="italic" font-weight="400" font-size="76" transform="matrix(1 0 0 1 2135.4 1320)">h <tspan font-style="normal" font-size="76" x="50.4168" y="0">(k</tspan><tspan font-style="normal" font-size="51" x="114.011" y="18">2</tspan><tspan font-style="normal" font-size="76" x="139.219" y="0">) = 1</tspan><tspan font-size="76" x="0" y="91">h </tspan><tspan font-style="normal" font-size="76" x="50.4168" y="91">(k</tspan><tspan font-style="normal" font-size="51" x="114.011" y="109">1</tspan><tspan font-style="normal" font-size="76" x="139.219" y="91">)=</tspan><tspan font-size="76" x="207.396" y="91">h </tspan><tspan font-style="normal" font-size="76" x="257.813" y="91">(k</tspan><tspan font-style="normal" font-size="51" x="321.406" y="109">3</tspan><tspan font-style="normal" font-size="76" x="346.615" y="91">) = 2</tspan><tspan font-size="76" x="0" y="275">h </tspan><tspan font-style="normal" font-size="76" x="50.4168" y="275">(k</tspan><tspan font-style="normal" font-size="51" x="114.011" y="293">6</tspan><tspan font-style="normal" font-size="76" x="139.219" y="275">) = 4</tspan><tspan font-size="76" x="0" y="458">h </tspan><tspan font-style="normal" font-size="76" x="50.4168" y="458">(k</tspan><tspan font-style="normal" font-size="51" x="114.011" y="476">4</tspan><tspan font-style="normal" font-size="76" x="139.219" y="458">) = 6</tspan></text>
+</g></svg>

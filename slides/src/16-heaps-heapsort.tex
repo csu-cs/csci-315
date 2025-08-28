@@ -1,0 +1,1044 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{binary-trees}
+\usepackage{arrays}
+
+\definecolor{MyGreen}{HTML}{61ff7e}
+
+\title{\Huge{} Binary Heaps \& Heapsort}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 10 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{March 18, 2025}
+\subject{Software Programming}
+%\keywords{}
+
+\setlength{\parskip}{0.5em}
+\tikzset{
+array index/.style = {
+  font=\small\ttfamily\bfseries
+},
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section*{Intro}
+
+\begin{frame}{Why study Heapsort?}
+\begin{itemize}[<+->]
+\item
+  Heapsort is a well-known, traditional sorting\\
+  algorithm you are expected to know.
+\item
+  Heapsort is \emph{always} $O(n \log n)$.
+\item
+  Learn about binary \textit{search} trees to:
+  \begin{itemize}
+  \item
+    Quicksort is usually $O(n \log n)$ but $O(n^2)$ in the worst case.
+  \item
+    Quicksort is sometimes faster, but Heapsort is better in time-critical applications.
+  \item
+    Merge Sort is also $O(n \log n)$, but requires additional memory to sort an array.
+  \end{itemize}
+\item
+  Can improve our Priority Queue design (in certain situations).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What is a ``heap''?}
+\begin{itemize}[<+->]
+\item
+  There are two definitions of \emph{heap}.
+  \begin{enumerate}
+  \item
+    \emph{Memory}: A large area of memory from which the programmer can allocate blocks as needed, and deallocate them (or allow them to be garbage collected) when no longer needed.
+  \item
+    \emph{Data Structure}: A balanced, left-justified binary tree in which no node has a value greater than its parent (binary heap).
+  \end{enumerate}
+\item
+  These two definitions have little in common.
+\item
+  Heapsort uses the second definition.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Three Properties of a Binary Heap}
+The heap data structure is a binary tree that maintains three properties, which we will discuss.\\[1em]
+\begin{enumerate}
+\item
+  Balanced
+\item
+  Left Justified
+\item
+  Heap Property
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Balanced Binary Trees}
+\begin{itemize}
+\item<2->
+  Recall:
+  \begin{itemize}
+  \item
+    The \emph{depth of a node} is its distance from the root.
+  \item<3->
+    The \emph{depth of a tree} is the depth of the deepest node.
+  \end{itemize}
+\item<4->
+  A binary tree of depth $n$ is \emph{balanced} if all the nodes at depths 0
+  through $n-2$ have two children.
+\end{itemize}
+\begin{columns}[T]
+\column{0.4\textwidth}%
+\onslide<5->{%
+  \begin{forest}
+    [, for tree={fit=tight, l=7mm, inner sep=0.2em, s sep-=1mm}, name=root
+      [, name=lev1
+        [, name=lev2
+          [, name=levN]
+          []
+        ]
+        [
+          []
+          []
+        ]
+      ]
+      [
+        [
+          []
+          []
+        ]
+        [
+          []
+          []
+        ]
+      ]
+    ]
+    \coordinate (labelLine) at ([yshift=0.25em]root);
+    \path (root |- labelLine) node[anchor=south,align=center] {(a) Balanced};
+    \onslide<6->{ % Show levels
+      \coordinate (levelLine) at ([left,xshift=-1mm]levN);
+      \path (levelLine |- root) node[anchor=east, align=right] {\footnotesize $0$};
+      \path (levelLine |- lev1) node[anchor=east, align=right] {\footnotesize $n-2$};
+      \path (levelLine |- lev2) node[anchor=east, align=right] {\footnotesize $n-1$};
+      \path (levelLine |- levN) node[anchor=east, align=right] {\footnotesize $n$};
+    }
+  \end{forest}}
+
+\column{0.3\textwidth}%
+\only<7->{%
+  \begin{forest}
+    [, for tree={fit=tight, l=7mm, inner sep=0.2em, s sep-=1mm}, name=root
+      [
+        [
+          []
+          []
+        ]
+        [
+          []
+          []
+        ]
+      ]
+      [
+        [
+          [, phantom]
+          []
+        ]
+        [
+          []
+          [, phantom]
+        ]
+      ]
+    ]
+    \coordinate (labelLine) at ([yshift=0.25em]root);
+    \path (root |- labelLine) node[anchor=south,align=center] {(b) Balanced};
+  \end{forest}}
+
+\column{0.3\textwidth}%
+\only<8->{%
+  \begin{forest}
+    [, for tree={fit=tight, l=7mm, inner sep=0.2em, s sep-=1mm}, name=root
+      [
+        [
+          []
+          []
+        ]
+        [
+          []
+          []
+        ]
+      ]
+      [
+        [
+          []
+          []
+        ]
+        [, phantom]
+      ]
+    ]
+    \coordinate (labelLine) at ([yshift=0.25em]root);
+    \path (root |- labelLine) node[anchor=south,align=center] {(c) Unbalanced};
+  \end{forest}}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Left-Justified Binary Trees}
+A balanced binary tree is \emph{left-justified} if:
+\begin{itemize}
+\item<2->
+  All levels, except possibly at depth $n$ (deepest), are filled.
+\item<3->
+  All leaves at depth $n$ are to the left (without any missing).\\
+  (All leaves at depth $n - 1$ are to the right of all the nodes at depth $n$.)
+\end{itemize}
+\begin{columns}[T]
+\centering
+
+\onslide<4->{\column{0.5\textwidth}\centering
+  \begin{forest}
+    [, for tree={fit=tight, l=7mm, inner sep=0.25em}, name=root
+      [
+        [
+          []
+          []
+        ]
+        [
+          []
+          []
+        ]
+      ]
+      [
+        [
+          []
+          [, phantom]
+        ]
+        [
+          [, phantom]
+          [, phantom]
+        ]
+      ]
+    ]
+    \coordinate (labelLine) at ([yshift=0.25em]root);
+    \path (root |- labelLine) node[anchor=south,align=center] {(a) Left-Justified};
+  \end{forest}}
+
+\onslide<5->{\column{0.5\textwidth}\centering
+  \begin{forest}
+    [, for tree={fit=tight, l=7mm, inner sep=0.25em}, name=root
+      [
+        [
+          []
+          []
+        ]
+        [
+          [, phantom]
+          []
+        ]
+      ]
+      [
+        [
+          []
+          [, phantom]
+        ]
+        [
+          []
+          []
+        ]
+      ]
+    ]
+    \coordinate (labelLine) at ([yshift=0.25em]root);
+    \path (root |- labelLine) node[anchor=south,align=center] {(b) Not Left-Justified};
+  \end{forest}}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The Heap Property}
+\begin{itemize}[<+->]
+\item
+  A node has the \emph{heap property} if the value in the node\\
+  is at least as large as its children's values.
+\item
+  All leaves automatically have the heap property.
+\item
+  A binary tree is a \emph{heap} if all nodes in it have the heap property.
+\end{itemize}
+
+\begin{columns}[T]
+\centering
+\onslide<4->{\column{0.18\textwidth}\centering
+  \begin{forest}
+    for tree={fit=tight, minimum size=1.8em, l sep=1em, inner sep=0}
+    [12,name=root, draw=CSUcyan,fill=white,
+      [8]
+      [3]
+    ]
+    \node[anchor=south,align=center,above=0.2em of root] {(a) heap};
+  \end{forest}}
+
+\onslide<5->{\column{0.18\textwidth}\centering
+  \begin{forest}
+    for tree={fit=tight, minimum size=1.8em, l sep=1em, inner sep=0}
+    [12,name=root, draw=CSUcyan,fill=white,
+      [8]
+      [12]
+    ]
+    \node[anchor=south,align=center,above=0.2em of root] {(b) heap};
+  \end{forest}}
+
+\onslide<6->{\column{0.18\textwidth}\centering
+  \begin{forest}
+    for tree={fit=tight, minimum size=1.8em, l sep=1em, inner sep=0}
+    [12,name=root, draw=CSUcyan,fill=white,
+      [8]
+      [14]
+    ]
+    \node[anchor=south,align=center,above=0.2em of root] {(c) not heap};
+  \end{forest}}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Example Heap}
+\centering
+  \begin{forest}
+    for tree={minimum size=1.8em, l sep=1em, inner sep=0}
+    [14,name=root
+      [12
+        [5
+          [1]
+          [, phantom]
+        ]
+        [12]
+      ]
+      [4
+        [2]
+        [3]
+      ]
+    ]
+  \end{forest}
+\end{frame}
+
+\begin{frame}{Shift Up}
+If a node is without the heap property, exchange \\
+its value with the larger child's value.
+
+\begin{columns}[T]
+\centering
+\onslide<2->{\column{0.25\textwidth}\centering
+  \begin{forest}
+    for tree={fit=tight, minimum size=1.8em, l sep=1em, inner sep=0}
+    [12,name=root, draw=CSUcyan,fill=white,
+      [8]
+      [14]{
+        \onslide<3->{\draw[<->,dotted, very thick] () to[bend right] node[midway,right] {sift} (root);}
+      }
+    ]
+    \node[anchor=south,align=center,above=0.2em of root] {(a) not heap};
+  \end{forest}}
+
+\onslide<4->{\column{0.25\textwidth}\centering
+  \begin{forest}
+    for tree={fit=tight, minimum size=1.8em, l sep=1em, inner sep=0}
+    [14,name=root, draw=CSUcyan,fill=white,
+      [8]
+      [12]
+    ]
+    \node[anchor=south,align=center,above=0.2em of root] {(b) heap};
+  \end{forest}}
+\end{columns}
+
+\begin{itemize}
+\item<5->
+  This is sometimes called \emph{sifting up} or bubble up.
+\item<6->
+  Notice that the child may have \emph{lost} the heap property during shifting.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Plan of Attack}
+We will discover:\\[1em]
+\begin{enumerate}
+\item<2->
+  How to turn a binary tree into a heap.
+\item<3->
+  After particular changes, how to turn a binary tree \emph{back} into a heap.
+\item<4->
+  How to use these ideas to sort an \emph{array}.\\
+  (This is the cool part.)
+\end{enumerate}
+\end{frame}
+
+\section{Insert}
+
+\begin{frame}{Inserting into a Heap}
+\begin{itemize}[<+->]
+\item
+  A single-node tree is automatically a heap.
+\item
+  We construct a heap by adding nodes one at a time:
+  \begin{itemize}
+  \item
+    Add the node just to the right of the rightmost node in the deepest level.
+  \item
+    If the deepest level is full, start a new level.
+  \end{itemize}
+\item
+  Example:\\
+  \centerline{%
+    \begin{forest}
+      [, name=root, for tree={fit=tight, l=8mm, inner sep=0.25em},
+        for descendants={visible on=<5->}
+        [, for tree={visible on=<6->}
+          [, for tree={visible on=<8->}
+            [, for tree={visible on=<12->}]
+            [, phantom]
+          ]
+          [, for tree={visible on=<9->}
+            [, phantom]
+            [, phantom]
+          ]
+        ]
+        [, for tree={visible on=<7->}
+          [, for tree={visible on=<10->}
+            [, phantom]
+            [, phantom]
+          ]
+          [, for tree={visible on=<11->}
+            [, phantom]
+            [, phantom]
+          ]
+        ]
+      ]
+  \end{forest}%
+  }
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Inserting into a Heap}
+\begin{itemize}[<+->]
+\item
+  Problem: Each time we add a node, we may destroy \\the heap property of its parent node.
+\item
+  Solution: \emph{Sift up} (a.k.a., bubble up).
+\item
+  But each time we sift up, the value of the topmost node in the sift may increase, and this may destroy the heap property of its parent node.
+\item
+  We repeat the sifting up process, moving up in the tree, until either:
+  \begin{itemize}
+  \item
+    We reach a node whose value doesn't need to be swapped (because the parent is larger than both children), or
+  \item
+    We reach the root.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Inserting into a Heap}
+Insert 8, 10, 5, 11, 6, 14, and 12.
+\begin{center}
+  \begin{forest}
+    for tree={fit=band, minimum size=1.8em, l sep=1em, inner sep=0}
+    [\alt<-4>{8}{\alt<-11>{10}{\alt<-18>{11}{14}}}, name=root, for tree={visible on=<2->}
+      [\alt<-4>{10}{\alt<-9>{8}{\alt<-11>{11}{10}}}, name=1_1, for tree={visible on=<3->}
+        [\alt<-9>{11}{8}, for tree={visible on=<8->}]{
+          \onslide<9-10>{\draw[<->,dotted, very thick] () to[bend left] node[midway,left] {sift} (1_1);}}
+        [6, for tree={visible on=<14->}]
+      ]{
+        \onslide<4-5,11-12>{\draw[<->,dotted, very thick] () to[bend left] node[midway,left] {sift} (root);}}
+      [\alt<-16>{5}{\alt<-18>{14}{\alt<-22>{11}{12}}}, name=1_2, for tree={visible on=<7->}
+        [\alt<-16>{14}{5}, for tree={visible on=<15->}]{
+          \onslide<16-17>{\draw[<->,dotted, very thick] () to[bend right] node[midway,right] {sift} (1_2);}}
+        [\alt<-22>{12}{11}, visible on=<21->]{
+          \onslide<22-23>{\draw[<->,dotted, very thick] () to[bend right] node[midway,right] {sift} (1_2);}}
+      ]{
+        \onslide<18-19>{\draw[<->,dotted, very thick] () to[bend right] node[midway,right] {sift} (root);}}
+    ]\onslide<24>{}
+  \end{forest}
+\end{center}
+\onslide<20->{}
+\end{frame}
+
+\begin{frame}{A Sample Heap}
+\begin{columns}
+\column{0.4\textwidth}
+Here is a sample \emph{heapified} binary tree.
+\begin{itemize}
+\item<2->
+  Heapified does \emph{not} mean sorted.
+\item<3->
+  Heapifying does \emph{not} change the shape of the binary tree.
+\item<3->
+  This binary tree was always balanced and left-justified.
+\end{itemize}
+
+\column{0.6\textwidth}
+  \centerline{%
+    \begin{forest}
+      for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+      [25
+        [22
+          [19
+            [18]
+            [14]
+          ]
+          [22
+            [21]
+            [3]
+          ]
+        ]
+        [17
+          [14
+            [9]
+            [11]
+          ]
+          [15]
+        ]
+      ]
+    \end{forest}%
+  }
+\end{columns}
+\end{frame}
+
+
+\section{Remove}
+
+\begin{frame}[t]{Removing the Root}
+\begin{columns}[T]
+\column{0.4\textwidth}
+\begin{itemize}
+\item<2->
+  The largest number is now in the root.
+\item<3->
+  Suppose we \emph{discard} the root.
+\item<5->
+  Problem: The tree becomes \emph{unbalanced} and \emph{un-left-justified}.
+\item<6->
+  Solution: Make the rightmost leaf the new root.
+\end{itemize}
+\column{0.6\textwidth}
+\vspace{1.5cm}
+  \centerline{%
+    \begin{forest}
+      for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+      [\alt<-7>{25}{11}, /tikz/invisible on=<5-7> %\alt<-3>{25}{\alt<-7>{}{11}}, name=root, justText on=<4-7>, minimum size=2.1em
+        [22
+          [19
+            [18]
+            [14]
+          ]
+          [22
+            [21]
+            [3]
+          ]
+        ]
+        [17
+          [14
+            [9]
+            [11, visible on=<-7>]{
+              \onslide<7>{\draw[->,dotted, very thick] () to[bend right] node[midway,left] {replace} (root);}}
+          ]
+          [15]
+        ]
+      ]
+      \onslide<8>{}% Make root show up again at the end
+    \end{forest}%
+  }
+\end{columns}
+\end{frame}
+
+\begin{frame}[t]{Re-Heap by Sifting Down}
+\begin{columns}[T]
+  \column{0.4\textwidth}
+  \begin{itemize}
+  \item<2->
+    Our tree is balanced and left-justified, but no longer a heap.
+  \item<3->
+    Only the root lacks the heap property.
+  \item<4->
+    We \emph{sift down} (or trickle down) the root.
+  \item<8->
+    Now, only one child may have lost the heap property.
+  \end{itemize}
+\column{0.6\textwidth}
+\vspace{1.5cm}
+  \centerline{%
+    \begin{forest}
+      for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+      [\alt<-5>{11}{22}, name=root
+        [\alt<-5>{22}{11}, name=1_1
+          [19
+            [18]
+            [14]
+          ]
+          [22
+            [21]
+            [3]
+          ]
+        ]{
+          \onslide<5-6>{\draw[<->,dotted, very thick] () to[bend left] node[midway,left] {sift} (root);}}
+        [17
+          [14
+            [9]
+            [, phantom]
+          ]
+          [15]
+        ]
+      ]
+    \end{forest}%
+  }
+\end{columns}
+\end{frame}
+
+\begin{frame}[t]{Re-Heap (Sift-Down)}
+\begin{columns}[T]
+  \column{0.4\textwidth}
+  \begin{itemize}
+  \item<2->
+    Now, the left child of the root (currently 11) lacks the heap property.
+  \item<3->
+    We can sift down this node.
+  \item<6->
+    Now, only one of its children may have lost the heap property.
+  \end{itemize}
+\column{0.6\textwidth}
+\vspace{1.5cm}
+  \centerline{%
+    \begin{forest}
+      for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+      [22, name=root
+        [\alt<-4>{11}{22}, name=1_1
+          [19
+            [18]
+            [14]
+          ]
+          [\alt<-4>{22}{11}
+            [21]
+            [3]
+          ]{
+            \onslide<4-5>{\draw[<->,dotted, very thick] () to[bend right] node[midway,right] {sift} (1_1);}}
+        ]
+        [17
+          [14
+            [9]
+            [, phantom]
+          ]
+          [15]
+        ]
+      ]
+    \end{forest}%
+  }
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[t]{Re-Heap (Sift-Down)}
+\begin{columns}[T]
+  \column{0.4\textwidth}
+  \begin{itemize}
+  \item<2->
+    Now, the right child of the left child of the root (currently 11) lacks the heap property.
+  \item<3->
+    We can sift down this node.
+  \item<6->
+    It is a leaf, so not children can lost the heap property.
+  \end{itemize}
+\column{0.6\textwidth}
+\vspace{1.5cm}
+  \centerline{%
+    \begin{forest}
+      for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+      [22, name=root
+        [22, name=1_1
+          [19
+            [18]
+            [14]
+          ]
+          [\alt<-4>{11}{21}, name=2_2
+            [\alt<-4>{21}{11}]{
+              \onslide<4-5>{\draw[<->,dotted, very thick] () to[bend left] node[midway,left] {sift} (2_2);}}
+            [3]
+          ]
+        ]
+        [17
+          [14
+            [9]
+            [, phantom]
+          ]
+          [15]
+        ]
+      ]
+    \end{forest}%
+  }
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[t]{Re-Heap (Sift-Down)}
+\begin{columns}[T]
+\column{0.4\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    Every node again has the heap property.
+  \item
+    The largest value is at the root.
+  \item
+    Repeating until the tree is empty will produce produces a sequence ordered from largest to smallest.
+  \end{itemize}
+\column{0.6\textwidth}
+\vspace{1.5cm}
+  \centerline{%
+    \begin{forest}
+      for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+      [22, name=root
+        [22, name=1_1
+          [19
+            [18]
+            [14]
+          ]
+          [21, name=2_2
+            [11]
+            [3]
+          ]
+        ]
+        [17
+          [14
+            [9]
+            [, phantom]
+          ]
+          [15]
+        ]
+      ]
+    \end{forest}%
+  }
+\end{columns}
+\end{frame}
+
+\section{Sorting}
+
+% \defverbatim{\LstHeapPseudocode}{%
+% \begin{lstlisting}[language={}]
+% Heapify the array.
+% While the array isn't empty:
+% {
+%   Remove and replace the root.
+%   Reheap the new root node.
+% }
+% \end{lstlisting}}
+\begin{frame}{Sorting}
+\begin{columns}[T]
+  \column{0.4\textwidth}
+  What do heaps have to do with sorting an array?
+  \begin{itemize}
+  \item<2->
+    Because the binary tree is balanced and left-justified, it can be represented as an array!
+  \item<3->
+    All our operations on binary trees can be represented as operations on arrays.
+  \end{itemize}
+\column{0.6\textwidth}
+\only<4->{%
+\begin{block}{Algorithm Pseudocode}\texttt{%
+Heapify the array.\\
+While the array isn't empty:\\
+\{\\
+\hspace{2em}Remove and replace the root.\\
+\hspace{2em}Re-heap the new root node.\\
+\}}
+\end{block}}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Mapping into an Array}
+\begin{columns}
+  \column{0.43\textwidth}
+    \begin{itemize}
+    \item<3->
+      The left child of index, $i$, is at $2 \times i + 1$
+    \item<4->
+      The right child of index, $i$, is at $2 \times i + 2$
+    \item<5->
+      Ex: Children of $3$ ($19$) are $7$ ($18$) and $8$ ($14$).
+    \item<6->
+      Given a child, what is it's parent's index?
+    \end{itemize}
+  \column{0.57\textwidth}
+    \centerline{%
+      \begin{forest}
+        for tree={fit=band, l sep=1em, inner sep=0em, minimum size=1.8em}
+        [25
+          [22
+            [19
+              [18]
+              [14]
+            ]
+            [22
+              [21]
+              [3]
+            ]
+          ]
+          [17
+            [14
+              [9]
+              [11]
+            ]
+            [15]
+          ]
+        ]
+      \end{forest}%
+    }
+\end{columns}
+\pause
+\begin{tikzpicture}
+  \ArrayLabel{}
+  \ArrayList{25, 22, 17, 19, 22, 14, 15, 18, 14, 21, 3, 9, 11}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[t]{Removing and Replacing the Root}
+\vspace{2em}
+\begin{tikzpicture}
+  \ArrayLabel{}
+  \alt<-5>{
+    \ArrayList{25, 22, 17, 19, 22, 14, 15, 18, 14, 21, 3, 9, 11}
+    \onslide<5> {%
+      \draw[link, <->] ([xshift=-2mm] el25.south east) to[bend right=18] node[below] {swap} ([xshift=2mm] el11.south west);%
+    }
+  }{%
+    \ArrayList{11, 22, 17, 19, 22, 14, 15, 18, 14, 21, 3, 9}
+    \alt<-7> {
+      \ArrayNode{25}
+    }{
+      \ArrayNode[MyGreen]{25}
+    }
+
+    \onslide<6> {%
+      \draw[link, <->] ([xshift=-2mm] el11.south east) to[bend right=18] node[below] {swap} ([xshift=2mm] el25.south west);%
+    }
+  }
+\end{tikzpicture}
+\vspace{-1em}
+\begin{itemize}
+\item<2->
+  The ``root'' is the first element in the array.
+\item<3->
+  The ``deepest rightmost node'' is the last element.
+\item<4->
+  Remove the root by swapping the first and last values.
+\item<8->
+  \ldots{}pretend that the last element in the array no \\longer exists --- the ``last index'' is 11 (9).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Reheap and Repeat}
+  \vspace{2em}
+\begin{minipage}[h][3cm][t]{\textwidth} % keeps array from shifting based on swap arrows
+\begin{tikzpicture}
+  \ArrayLabel{}
+  \alt<-3>{%
+    \ArrayNode{11} %
+    \node[block] (root) [fit=(prev)]{};
+    \ArrayNode{22} %
+    \onslide<3>{\ArraySwap{el11}{el22}}%
+  }{%
+    \alt<-13>{
+      \ArrayNode{22}
+    }{
+      \alt<-18>{
+        \ArrayNode{9}
+      }{
+        \ArrayNode{22}
+      }
+    } %
+    \node[block] (root) [fit=(prev)]{};
+    \alt<-6>{
+      \ArrayNode{11}
+    }{
+      \alt<-18>{
+        \ArrayNode{22}
+      }{
+        \alt<-21>{
+          \ArrayNode{9}
+        }{
+          \ArrayNode{21}
+        }
+      }
+    } %
+    \onslide<4>{\ArraySwap{el22}{el11}}%
+    \only<18>{\ArraySwap{el9}{el22}}%
+    \only<19>{\ArraySwap{el22}{el9}}%
+  }
+
+  \alt<-6>{
+    \ArrayList{17, 19, 22, 14, 15, 18, 14, 21, 3}
+    \onslide<6>{\ArraySwap{el11}{el22}}
+  }{
+    \alt<-9>{
+      \ArrayList{17, 19, 11, 14, 15, 18, 14, 21, 3}
+      \only<7>{\ArraySwap{el22}{el11}}
+      \only<9>{\ArraySwap{el11}{el21}}
+    }{
+      \alt<-21>{
+        \ArrayList{17, 19, 21, 14, 15, 18, 14, 11, 3}
+      }{
+        \alt<-24>{
+          \ArrayList{17, 19, 9, 14, 15, 18, 14, 11, 3}
+        }{
+          \ArrayList{17, 19, 11, 14, 15, 18, 14, 9, 3}
+        }
+      }
+      \only<10>{\ArraySwap{el21}{el11}}
+      \only<21>{\ArraySwap{el9}{el21}}
+      \only<22>{\ArraySwap{el21}{el9}}
+      \only<24>{\ArraySwap{el9}{el11}}
+      \only<25>{\ArraySwap{el11}{el9}}
+    }
+  }
+
+  % Second-to-last element
+  \alt<-13>{\ArrayNode{9}}{\alt<-15>{\ArrayNode{22}}{\ArrayNode[MyGreen]{22}}}
+  \onslide<13-14>{\ArraySwap[18]{root}{prev}}
+
+  \ArrayNode[MyGreen]{25} % Last element
+  \onslide<26>{}
+\end{tikzpicture}
+\end{minipage}
+\begin{itemize}
+\item<2->
+  Re-heap the root node (index 0, containing 11).
+\item<12->
+  Again, remove and replace the root node.
+\item<15->
+  Remember, though, that the ``last'' array index is changed.
+\item<17->
+  Repeat until the last becomes first, and the array is sorted!
+\end{itemize}
+\end{frame}
+
+\section*{Implementation}
+
+\begin{frame}{Analysis}\Large\centering
+Let's start implementing a heap structure.
+\end{frame}
+
+\section{Analysis}
+
+\begin{frame}{Analysis: Step 1, Heapify the Array}
+The sorting algorithm starts by \emph{heapifying the array}.
+\begin{itemize}[<+->]
+\item
+  We add each of $n$ nodes.
+  \begin{itemize}
+  \item
+    Each node must be sifted up, possibly as far as the root.\\
+    Because the binary tree is perfectly balanced, sifting up a single node takes $O(\log n)$ time.
+  \item
+    Because we iterate $n$ times, heapifying takes $n \times O(\log n)$ time, that is, $O(n \log n)$ time.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analysis: Step 2, Remove}
+\begin{itemize}
+\item<1->
+  Here's the rest of the algorithm:
+  \begin{columns}\column{0.6\textwidth}
+  \begin{block}{Algorithm Pseudocode (Part 2)}\texttt{%
+    While the array isn't empty: \{\\
+    \hspace{2em}Remove and replace the root.\\
+    \hspace{2em}Reheap the new root node.\\
+    \}}
+  \end{block}
+  \end{columns}
+
+\item<2->
+  We do the while loop $n$ times (actually, $n-1$ times), because we remove one of the $n$ nodes each time.
+\item<3->
+  Removing and replacing the root takes $O(1)$ time.
+\item<4->
+  Therefore, the total time is $n$ times however long it takes the re-heap method.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Analysis: Step 3, Re-heap}
+\begin{itemize}[<+->]
+\item
+  To re-heap the root node, we must follow \emph{one path} from the root to a leaf node (and we might stop before we reach a leaf).
+\item
+  The binary tree is perfectly balanced.
+\item
+  Therefore, this path is $O(\log n)$ long.
+  \begin{itemize}
+  \item
+    And we only do $O(1)$ operations at each node.
+  \item
+    Therefore, re-heaping takes $O(\log n)$ times.
+  \end{itemize}
+\item
+  Since we re-heap inside a while loop that we do $n$ times, the total time for the while loop is $n \times O(\log n)$, or $O(n \log n$).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analysis: Performance of All Steps}
+\begin{columns}\column{0.6\textwidth}
+  \begin{block}{Algorithm Pseudocode}\texttt{%
+    Heapify the array.\\
+    While the array isn't empty: \{\\
+    \hspace{2em}Remove and replace the root.\\
+    \hspace{2em}Reheap the new root node.\\
+    \}}
+  \end{block}
+\end{columns}
+\begin{itemize}
+\item<+->
+  We have seen that heapifying takes $O(n \log n)$ time.
+\item<+->
+  The while loop takes $O(n \log n)$ time.
+\item<+->
+  Therefore, the total time is $O(n \log n) + O(n \log n)$.
+\item<+->
+  Which is $O(n \log n)$ time (average- and worst-case).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary of Benefits}
+\begin{itemize}[<+->]
+  \item
+    \emph{Efficient Operations}: Insertion and deletion are $O(\log n)$. Retrieval of the minimum (or maximum) element is $O(1)$.
+  \item
+    \emph{Space Efficiency}: Binary heaps can be implemented using arrays, removing the need for pointers.
+  \item
+    \emph{Ease of Implementation}: With arrays, the algorithms for insertion, deletion, and heapifying are intuitive.
+  \end{itemize}
+\end{frame}
+\begin{frame}{Summary of Benefits}
+  \begin{itemize}[<+->]
+    \item
+    \emph{Heap Sort}: An always $O(n \log{n})$ in-place sorting algorithm (i.e., $O(1)$ additional space and with predictable performance).
+  \item
+    \emph{Priority Queue}: Many algorithms require elements with higher (or lower) priority to be processed first.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Visual Comparison of Sorting Algorithms}
+  \begin{center}\Large
+    \href{https://www.toptal.com/developers/sorting-algorithms}{Sorting Algorithms Animations}
+  \end{center}
+\end{frame}
+
+\section*{Lab 16}
+\begin{frame}{Lab 16: Binary Heap and Heapsort}
+\begin{center}\Large
+Let's take a look at the lab based on today's lecture.
+\end{center}
+\end{frame}
+\end{document}

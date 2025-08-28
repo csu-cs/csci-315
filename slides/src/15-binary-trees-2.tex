@@ -1,0 +1,780 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+% \usepackage{linked-lists}
+\usepackage{binary-trees}
+\usepackage{booktabs}
+
+\usetikzlibrary{circuits.ee.IEC}
+
+\tikzset{
+  %
+  % Used for beamer overlays
+  empty/.style={ground, draw=none},
+}
+
+\forestset{
+  default preamble={%
+    for tree={%
+      treeNode,%
+      font=\small,%
+      inner sep=3pt,%
+      % l sep=0.2em,%
+      % level distance=0.5em,%
+      % outer sep=0pt,
+      % outer ysep=0pt,
+      l=2.5em,
+    },%
+    for leaves={%
+      justText
+    }
+  },%
+  justText on/.style={%
+    for tree={%
+      /tikz/justText on={#1},%
+      % edge={/tikz/justText on={#1}}
+    }%
+  },
+}
+
+\newsavebox\nullNode
+\savebox\nullNode{%
+  \begin{tikzpicture}[circuit ee IEC,scale=1]
+  \node[empty,rotate=90,white, draw, thick] {};
+  \end{tikzpicture}%
+}
+
+\makeatletter\def\NullNode{%
+  \usebox{\nullNode}
+}
+
+
+\title{\Huge{} Binary Search Trees\\Deletion \& Generic Traversal}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 19}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{March 6, 2025}
+\subject{Software Programming}
+%\keywords{}
+\graphicspath{{../imgs/binary-tree}}
+
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section{Review}
+\begin{frame}[t]{Binary Trees}
+  \begin{columns}
+    \column{0.3\textwidth}
+      A \emph{binary tree} is empty or has these properties:
+      \begin{itemize}
+      \item
+        Has a root node.
+      \item
+        Has a left subtree and right subtree, which are binary trees.
+      \end{itemize}
+    \column{0.62\textwidth}
+      \centering
+      \begin{forest}
+      [root,headPtr,
+        [A
+          [B
+            [D,
+              [\NullNode]
+              [G
+                [\NullNode]
+                [\NullNode]
+              ]
+            ]
+            [E
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [C
+            [\NullNode]
+            [F
+              [H
+                [\NullNode]
+                [\NullNode]
+              ]
+              [\NullNode]
+            ]
+          ]
+        ]
+      ]
+      \end{forest}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+  \begin{columns}
+  \column{0.55\textwidth}
+    \begin{itemize}
+      \item
+        A node (called a vertex in graph theory):
+        \begin{itemize}
+        \item
+          Has at most two children.
+        \item
+          Stores its own information.
+        \item
+          Keeps track of its left subtree and right subtree using pointers\\
+          (e.g., \lstinline{left} and \lstinline{right}).
+        \end{itemize}
+      \item
+         A pointer to the root node of the binary tree is stored outside the tree.
+    \end{itemize}
+  \column{0.45\textwidth}
+    \def\svgwidth{\textwidth}
+    \input{../imgs/binary-tree/binary-tree-linked.pdf_tex}
+    %\includegraphics[width=\textwidth]{binary-tree-linked}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}[<+->]
+      \item
+        \emph{Leaf}: a node that has no children.
+      \item
+        A \emph{parent} has a branch to a \emph{child} node.
+      \item
+        There is a unique \emph{path} from the root to every node.
+      \item
+        The \emph{Path Length} is the number of branches on that path.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{forest}
+      [A, for tree={fit=tight}
+        [B
+          [D,
+            [\NullNode]
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [E
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [C
+          [\NullNode]
+          [F
+            [H
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+      \end{forest}
+  \end{columns}
+\end{frame}
+  
+\begin{frame}{Binary Trees}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}[<+->]
+      \item
+        Node \emph{Level}: number of branches from the root to the node.
+        \begin{itemize}
+        \item
+          The root node is at level 0.
+        \end{itemize}
+      \item
+        \emph{Height} of a binary tree: number of edges on the longest path from the root to a leaf.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{forest}
+      [A, for tree={fit=tight}
+        [B
+          [D,
+            [\NullNode]
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [E
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [C
+          [\NullNode]
+          [F
+            [H
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+      \end{forest}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Binary Search Tree}
+
+  \begin{columns}
+  \column{0.60\textwidth}
+    Definition: A \emph{binary search tree} is either empty or has these properties:
+    \begin{itemize}
+      \item
+        Has a root node.
+      \item
+        Has two sets of nodes: the left and right subtrees.
+      \item
+        The key in the root node is larger than every key in the left subtree and smaller than every key in the right subtree.
+      \item
+        The left subtree and right subtree are binary search trees.
+    \end{itemize}
+  \column{0.29\textwidth}
+    \begin{forest}
+      [96, for tree={fit=tight}
+        [27
+          [20
+            [\NullNode]
+            [\NullNode]
+          ]
+          [45
+            [30
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+        [\NullNode]
+      ]
+    \end{forest}
+  \end{columns}
+\end{frame}
+  
+\begin{frame}{Performance of a Binary Search Tree}
+  What is the \textit{average-case} Big-O of the following operations on a binary search tree?\\[1em]
+  
+  \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+  \begin{tabular}{r c c c}
+  \toprule
+                  & \textbf{Array} & \textbf{Linked List} & \textbf{Binary Search Tree}\\
+  \midrule
+    Random Access & {$O(1)$} & $O(n)$ & {\textit{NA}}\\
+    Insert/Remove & {$O(n)$} & $O(n)$ & {$O\left(\log_2{n}\right)$}\\
+    Search        & {$O(n)$} & $O(n)$ & {$O\left(\log_2{n}\right)$}\\
+    Sort          & {$O\left(n \log_2{n}\right)$} & {$O\left(n \log_2{n}\right)$} & {\textit{NA}\footnote[frame]{{\small A binary-search tree is already sorted. To convert it to a \\sorted list, a inorder traversal will take $O(n)$.\\[1em]}}}\\
+  \bottomrule
+  \end{tabular}
+\end{frame}
+
+\section{Delete}
+\begin{frame}{Deleting a Node}
+\begin{columns}
+% \setbeamercovered{transparent}
+\column{0.6\textwidth}
+  %\begin{center}
+    \begin{forest}
+      [root,headPtr, for tree={fit=tight}%l sep?
+        [60
+          [\alt<-9>{50}{40},name=delType4
+            [30,
+              [\NullNode]
+              [35
+                [32
+                  [\NullNode]
+                  [\NullNode]
+                ]
+                [\alt<-9>{40}{\NullNode}, justText on=<10->, for descendants={visible on=<-9>},name=delType4Leaf
+                  [\NullNode]
+                  [\NullNode]
+                ]
+              ]
+            ]
+            [53, node visible on=<-4> %\alt<-4>{53}{57}
+              [\NullNode, node visible on=<-4>]
+              [57, name=delType2Child%\alt<-4>{57}{\NullNode}, justText on=<5->, for descendants={visible on=<-4>},
+                [\NullNode]
+                [\NullNode]
+              ]
+            ]
+          ]
+          [70, name=delType4Parent
+            [\NullNode]
+            [80, node visible on=<-6> %\alt<-6>{80}{75}
+              [75, name=delType4Child %\alt<-6>{75}{\NullNode}, justText on=<7->, for descendants={visible on=<-6>}
+                [\NullNode]
+                [\alt<-2>{77}{\NullNode}, justText on=<3->, for descendants={visible on=<-2>}
+                  [\NullNode]
+                  [\NullNode]
+                ]
+              ]
+              [\NullNode, node visible on=<-6>]
+            ]
+          ]
+        ]
+      ]
+      \onslide<5->{
+        \draw[->, very thick] (delType4) to[bend left=20] node[midway,left]{} (delType2Child);
+      }
+      \onslide<7->{
+        \draw[->, very thick] (delType4Parent) to[bend left] node[midway,left]{} (delType4Child);
+      }
+      \onslide<9>{
+        \draw[->,dotted, very thick] (delType4Leaf) to[bend right=15] node[midway,left] {\small{}move} (delType4);
+      }
+    \end{forest}
+%\end{center}
+
+\column{0.4\textwidth}
+  The four cases of delete depend on the node to be deleted\textellipsis
+  \begin{enumerate}
+    \item<2-> Is a leaf (e.g., 77)
+    \item<4-> Has an empty left subtree (e.g., 53)
+    \item<6-> Has an empty right subtree (e.g., 80)
+    \item<8-> Has nonempty left and right subtrees (e.g., 50)
+  \end{enumerate}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Example Tree}
+%\begin{columns}
+% \setbeamercovered{transparent}
+%\column{0.6\textwidth}
+  %\begin{center}
+  \centering{}
+    % \forestset{
+    %   treeNode/.append style={inner sep=2pt}
+    % }
+    \begin{forest}
+      for tree={fit=tight, s sep=7mm}
+      [root,headPtr%, l sep=0mm, for tree={fit=tight, l sep=-5mm}, for leaves={l sep=0mm}
+        [60,l sep=0mm
+          [50
+            [30
+              [\NullNode]
+              [35
+                [32
+                  [\NullNode]
+                  [\NullNode]
+                ]
+                [40
+                  [\NullNode]
+                  [\NullNode]
+                ]
+              ]
+            ]
+            [53
+              [\NullNode]
+              [57
+                [\NullNode]
+                [\NullNode]
+              ]
+            ]
+          ]
+          [70
+            [\NullNode]
+            [80
+              [75
+                [\NullNode]
+                [77
+                  [\NullNode]
+                  [\NullNode]
+                ]
+              ]
+              [\NullNode]
+            ]
+          ]
+        ]
+      ]
+    \end{forest}
+%\end{center}
+\end{frame}
+
+%% To Do: Add an example of removing a node with two children.
+
+\begin{frame}{Example Tree: Remove 50}
+%\begin{columns}
+%\column{0.6\textwidth}
+  %\begin{center}
+    % \forestset{
+    %   treeNode/.append style={inner sep=2pt}
+    % }
+    %\centering{}
+    \begin{forest}
+      for tree={s sep=2mm}
+      %[root,headPtr, l sep=0mm
+        [60,%l sep=0mm, for tree={fit=tight, l sep=-5mm}, for leaves={l sep=0mm}
+          [50, name=el50, edge highlight on=<2->
+            [30, %edge highlight on=<2>
+              [\NullNode]
+              [35, name=el35%, edge highlight on=<2>
+                [32
+                  [31
+                    [\NullNode]
+                    [\NullNode]
+                  ]
+                  [\NullNode]
+                ]
+                [40, name=el40, edge highlight on=<3->, edge+={/tikz/visible on=<-3>}
+                  [39, name=el39
+                    [\NullNode]
+                    [\NullNode]
+                  ]
+                  [\NullNode]
+                ]
+              ]
+            ]
+            [53
+              [\NullNode]
+              [57
+                [\NullNode]
+                [\NullNode]
+              ]
+            ]
+          ]
+          [70
+            [\NullNode]
+            [80
+              [75
+                [\NullNode]
+                [77
+                  [\NullNode]
+                  [\NullNode]
+                ]
+              ]
+              [\NullNode]
+            ]
+          ]
+        ]
+      %]
+            % \node[] at (el50.north west) (deletePtr) {toDelete};
+      \begin{scope}[->,very thick,white]
+        % \draw[->,dotted, very thick] () to[bend left] node[midway,left] {rotate} (p2);
+        \onslide<2->{
+          \node[anchor=east, inner sep=1pt] (txtLabel) at ([shift={(-0.4,0.4)}]el50.north west) {\texttt{\small pREMOVE}};
+          \draw(txtLabel.east) to[bend left] (el50);
+        }
+        \onslide<3->{
+          \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.45)}]el35.north east) {\texttt{\small pToMoveParent}};
+          \draw(txtLabel.west) to[bend right] (el35);
+          \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.45)}]el40.north east) {\texttt{\small pToMove}};
+          \draw(txtLabel.west) to[bend right] (el40);
+        }
+        \onslide<4->{
+          \draw[highlight] (el35) to[bend left] (el39);
+        }
+      \end{scope}
+    \end{forest}
+%\end{center}
+\end{frame}
+
+
+\begin{frame}{Example Tree: Remove 35}
+  %\begin{columns}
+  %\column{0.6\textwidth}
+    %\begin{center}
+      % \forestset{
+      %   treeNode/.append style={inner sep=2pt}
+      % }
+      %\centering{}
+      \begin{forest}
+        for tree={s sep=2mm}
+        %[root,headPtr, l sep=0mm
+          [60,%l sep=0mm, for tree={fit=tight, l sep=-5mm}, for leaves={l sep=0mm}
+            [50, name=el50
+              [30, %edge highlight on=<2>
+                [\NullNode]
+                [35, name=el35, edge highlight on=<2->
+                  [32, name=el32, edge highlight on=<3->, edge+={/tikz/visible on=<-3>}
+                    [31, name=el31
+                      [\NullNode]
+                      [\NullNode]
+                    ]
+                    [\NullNode]
+                  ]
+                  [40, name=el40
+                    [39, name=el39
+                      [\NullNode]
+                      [\NullNode]
+                    ]
+                    [\NullNode]
+                  ]
+                ]
+              ]
+              [53
+                [\NullNode]
+                [57
+                  [\NullNode]
+                  [\NullNode]
+                ]
+              ]
+            ]
+            [70
+              [\NullNode]
+              [80
+                [75
+                  [\NullNode]
+                  [77
+                    [\NullNode]
+                    [\NullNode]
+                  ]
+                ]
+                [\NullNode]
+              ]
+            ]
+          ]
+        %]
+              % \node[] at (el50.north west) (deletePtr) {toDelete};
+        \begin{scope}[->,very thick,white]
+          % \draw[->,dotted, very thick] () to[bend left] node[midway,left] {rotate} (p2);
+          \onslide<2->{
+            \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.45)}]el35.north east) {\texttt{\small pREMOVE}};
+            \draw(txtLabel.west) to[bend right] (el35);
+          }
+          \onslide<3->{
+            % \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.45)}]el35.north east) {\texttt{\small pToMoveParent}};
+            % \draw(txtLabel.west) to[bend right] (el35);
+            \node[anchor=east, inner sep=1pt] (txtLabel) at ([shift={(-0.2,0.45)}]el32.north west) {\texttt{\small pToMove}};
+            \draw(txtLabel.east) to[bend left] (el32);
+          }
+          \onslide<4->{
+            \draw[highlight] (el35) to[bend left] (el31);
+          }
+        \end{scope}
+      \end{forest}
+  %\end{center}
+\end{frame}
+
+\begin{frame}{Performance of Delete}
+  \centering{}\Large
+  What is the Big-$O$ performance of delete?
+\end{frame}
+
+\section{Generic Traversal}
+\begin{frame}{Generic Traversal}
+  \begin{itemize}[<+->]
+    \item
+      In a traversal algorithm, ``visiting'' may mean different things.
+      \begin{itemize}
+        \item For example, outputting the values, updating the values, and calculating results.
+      \end{itemize}
+    \item
+      \emph{Problems}:
+      \begin{itemize}
+        \item
+          Repeatedly implementing a specific traversal algorithm for each function.
+        \item 
+          Must have access to the internals of the tree.
+      \end{itemize}
+    \item
+      \emph{The Solution}: Write a generic traversal function that accepts a function as a parameter.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Generic Traversal}
+  \begin{itemize}[<+->]
+    \item
+      In C++, a function name without parentheses is considered a pointer to the function.
+    \item
+      To specify a function as a formal parameter to another function,
+      \begin{enumerate}
+        \item specify the function type (e.g., \lstinline{void}),
+        \item the name as a pointer (e.g., \lstinline{(*visit)}),
+        \item the parameter types (e.g., \lstinline{(int, double)}).
+      \end{enumerate}
+    \item For example,\\
+      \lstinline{void funcParamFunc1(void (*visit) (int));}\\[1em]
+      \lstinline{template<typename Type>}\\
+      \lstinline{void funcParamFunc2(void (*visit) (Type&));}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Generic Traversal Example}
+A recursive member function that accepts a node to tree to traverse and a function to call at each node.
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+template<typename Type>
+void BinarySearchTree<Type>::inorder(Node *root,
+      void (*visit)(Type& value)) {
+  if (root != nullptr)  {
+    inorder(root->left, visit);
+
+    visit(root->info);
+
+    inorder(root->right, visit);
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\section{Function Objects}
+\begin{frame}{Function Objects (a.k.a. Functors)}
+  \begin{itemize}[<+->]
+    \item
+      In short, and object that looks like a function, but that\\
+      can maintain state.
+    \item
+      A function object is an object class/struct that overloads \lstinline{operator()}.
+    \item
+      Can be passed to a generic traversal function instead of a function pointer.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Function Object: Example Definition}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+template <typename Type>
+struct SumValues {
+  Type sum;
+
+  // Constructor initializes sum to 0
+  SumValues() : sum(0) {}
+
+  // Overloaded operator() to accumulate sum
+  void operator()(Type data) {
+    sum += data;
+  }
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Function Object: How it Works}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+SumValues funObj;
+
+funObj(10);
+funObj(20);
+
+std::cout << funObj.sum << '\n'; // 30
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Function Object: Example Generic Traversal}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+template<typename Type>
+template<typename Func>
+void BinarySearchTree<Type>::preorderTraversal( Node* pCurr, Func& functor)
+{
+  if (pCurr != nullptr)
+  {
+    functor(pCurr->value); // visit the node
+    preorderTraversal(pCurr->pLeft, functor);
+    preorderTraversal(pCurr->pRight, functor);
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Function Object: Example Generic Traversal}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+template<typename Type>
+template<typename Func>
+void BinarySearchTree<Type>::preorderTraversal( Func& functor)
+{
+  preorderTraversal(mpRoot, functor);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Function Object: Example Generic Traversal}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+BinarySearchTree<int> tree{VALUES, SIZE};
+SumValues<int> sumObj; // Instantiate functor
+
+tree.preorderTraversal(sumObj);
+
+std::cout << "Sum: " << sumObj.sum << '\n';
+\end{lstlisting}
+\end{frame}
+
+\section{Self-Balancing}
+\begin{frame}{Self-Balancing Binary Search Trees}
+\begin{itemize}[<+->]
+  \item
+    The worst-case performance for searching is \(O(n)\).
+  \item
+    \emph{Self-Balancing Binary Trees} automatically minimize the tree's height when performing insertion and deletion operations.
+  \item
+    Searching (and therefore insertion and deletion) becomes $O(log_2{n})$ (i.e., asymptotically optimal) in the worst case (and may average $O(1)$ for some operation depending on the implementation).
+  \item
+    \emph{Disadvantage}: Algorithms are more complicated (especially if duplicates are allowed).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Self-Balancing Binary Search Trees}
+  Examples:
+\begin{itemize}
+  \item
+    2--3
+  \item 
+    AA
+  \item
+    AVL
+  \item
+    Red Black
+  \item
+    Scapegoat
+  \item
+    Splay
+  \item
+    Treap
+  \item
+    etc.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example of Balancing using Rotation}
+\centering
+
+\begin{forest}
+  [,phantom, for tree={fit=band, l sep-=1em, inner sep=0.3333em, font=\normalsize}, for leaves={treeNode}, for tree={s sep=0.5cm}, s sep=1.5cm
+    [3
+      [1, name=p1
+        [,justText, no edge, for current={no edge}, name=hid1] {
+          \onslide<2->{\draw[<-,dotted, very thick] (hid1) to[bend left] node[midway,left] {rotate} (p1);}
+        }
+        [2,name=c1] {
+          \onslide<2->{\draw[->,dotted, very thick] () to[bend right] node[midway,right] {rotate} (p1);}
+        }
+      ]
+      [, phantom]
+    ]
+    [3, name=p2, for tree={visible on=<3->}
+      [2
+        [1]
+        [, phantom]
+      ]{
+        \onslide<4->{\draw[->,dotted, very thick] () to[bend left] node[midway,left] {rotate} (p2);}
+      }
+      [,justText, for current={no edge}, name=hid2] {
+        \onslide<4->{\draw[<-,dotted, very thick] () to[bend right] node[midway,right] {rotate} (p2);}
+      }
+    ]
+    [2, for tree={visible on=<5->}
+      [1]
+      [3]
+    ]
+  ]
+\end{forest}
+\end{frame}
+
+\section*{Lab 15}
+\begin{frame}{Lab 15: Binary Trees (Part 2)}
+\begin{center}\Large
+Let's take a look at the lab based on today's lecture.
+\end{center}
+\end{frame}
+\end{document}

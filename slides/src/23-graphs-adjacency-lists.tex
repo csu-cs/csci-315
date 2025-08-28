@@ -1,0 +1,715 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[12pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{arrays}
+\usepackage{linked-lists}
+\usepackage{algpseudocode}
+
+\title{\Huge Graphs\\\LARGE via Adjacency Lists}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 20}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{April 10, 2025}
+\subject{Software Programming}
+%\keywords{}
+
+\setlength{\parskip}{0.5em}
+
+\graphicspath{{../imgs/}{../imgs/graphs}}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+
+\tikzset{
+  every state/.style={minimum size=12pt, inner sep=4pt, fill=CSUcyan, text=black, very thick},
+  marked/.style={text=white, fill=CSUslate},
+  visit/.style={text=black, fill=CSUgold},
+  %->,
+  >=stealth',
+  auto,
+  node distance=1.5cm,
+  font=\ttfamily,
+  % main node/.style={circle,draw,font=\ttfamily\bfseries,minimum size=0pt, inner sep=2pt},
+  every text node part/.style={align=center},
+  %
+  % Used for Beamer overlays
+  invisible/.style={opacity=0,text opacity=0},
+  visible on/.style={alt=#1{}{invisible}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+  %
+  % Linked Lists
+  node of list/.append style={
+    %very thick,
+    minimum width=5mm,
+    minimum height=8mm,
+    font=\sffamily,
+    %node distance=7mm,
+  },
+  link pointer of list/.append style={
+    %very thick,
+    minimum height=8mm,
+  },
+  pointer/.append style = {
+  },
+  % array index/.append style = {
+  %   node distance=1mm,
+  % }
+}
+
+%%% Tighter Linked Lists
+% \tikzset{
+% pointer/.style = {
+%              draw,
+%              fill=CSUgold,
+%              minimum height=4mm,
+%              minimum width=4mm,
+%              node distance=1pt
+%    },
+% node of list/.style = {
+%              draw,
+%              fill=CSUcyan,
+%              minimum height=6mm,
+%              minimum width=3mm,
+%              node distance=6mm,
+%              text=black,
+%              font=\ttfamily\bfseries
+%    },
+% link/.style = {
+%      -stealth,
+%      shorten >=1pt,
+%      shorten <=1pt,
+%      very thick
+%      },
+% block/.style = {
+%     rectangle, inner sep=0pt
+%   },
+% }
+
+% Used to stylize 0 in the adjacency matrix
+\newcommand{\mFal}[1][0]{\texttt{\textcolor{CSUgold}{#1}}}
+\newcommand{\mTru}[1][1]{\texttt{\textbf{#1}}}
+
+\newcommand{\vertMark}[1][CSUgold]{full=#1}
+
+\newcommand{\textInf}{$\infty$}
+
+\newcommand{\arraySubscript}[1]{\texttt{\textcolor{white!75!CSUblue}{[}{#1}\textcolor{white!75!CSUblue}{]}}}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section*{Review}
+
+\begin{frame}{Graph Data Structures}
+  To process and manipulate graphs, we must store \\graphs in computer memory.
+  
+  A graph is commonly represented in one of two ways:
+  \begin{enumerate}
+    \item
+      Adjacency matrices
+    \item
+      Adjacency lists
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Adjacency Matrix: Weighted Directed Example}
+  \centering
+  \begin{columns}
+    \column{0.33\textwidth}
+      %\begin{figure}
+      %\centering
+      \centerline{%
+        \begin{tikzpicture}[very thick, ->, node distance=2.5cm, every loop/.style={->, in=255, out=195}, shorten >=0.5pt]
+            \node[state] (0)              {0};
+            \node[state] (1) [right of=0] {1};
+            \node[state] (2) [below of=0] {2};
+            \node[state] (3) [right of=2] {3};
+            \node[state] (4) [below of=2] {4};
+            \path (0) edge             node {10} (1)
+                      edge [bend left] node [left] {1} (2)
+                  (1) edge             node [above] {2} (2)
+                      edge             node [left] {4} (3)
+                      edge [bend left=70] node {1} (4)
+                  (2) edge [bend left] node {3} (0)
+                      edge             node {5} (3)
+                      edge             node [left] {1} (4)
+                  (3)  edge [loop] node [below] {6} ();
+        \end{tikzpicture}%
+      }
+      %\end{figure}
+    \column{0.55\textwidth}
+      \begin{tabular}{r | c | c | c | c | c |}
+        \multicolumn{1}{c}{}
+          & \multicolumn{1}{c}{\arraySubscript{0}}
+          & \multicolumn{1}{c}{\arraySubscript{1}}
+          & \multicolumn{1}{c}{\arraySubscript{2}}
+          & \multicolumn{1}{c}{\arraySubscript{3}}
+          & \multicolumn{1}{c}{\arraySubscript{4}}\\\cline{2-6}
+        \arraySubscript{0}
+          & \mFal[$\infty$] & \mTru[10] & \mTru[1] & \mFal[$\infty$] & \mFal[$\infty$] \\\cline{2-6}
+        \arraySubscript{1}
+          & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[2] & \mTru[4] & \mTru[1] \\\cline{2-6}
+        \arraySubscript{2}
+          & \mTru[3] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[1] & \mTru[5] \\\cline{2-6}
+        \arraySubscript{3}
+          & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[6] & \mFal[$\infty$] \\\cline{2-6}
+        \arraySubscript{4}
+          & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] \\\cline{2-6}
+      \end{tabular}
+  
+      \vspace{1em}
+      If the edges have weights, they are stored in the matrix.
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Limitations of Adjacency Matrices}
+  \begin{enumerate}[<+->]
+    \item Wasted space, $O(n^2)$. It stores a weight for an edge\\
+      from every vertex to every other vertex. \\
+      Most graphs are sparse.
+    \item Slow iteration over edges.
+    \item Slow add/delete of vertices.
+    \item \emph{Cannot represent parallel edges.}
+  \end{enumerate}
+\end{frame}
+
+\section{Adjacency Lists}
+\begin{frame}{Adjacency Lists}
+Implemented using a vector of lists. Each node of a list represents an edge (destination and edge pair).\vspace{-2em}
+\begin{columns}
+\column{0.33\textwidth}
+  \pause%
+    \begin{figure}
+    \centering
+    \begin{tikzpicture}[very thick, ->, node distance=2.5cm, shorten >=0.5pt]
+        \node[state] (0)              {0};
+        \node[state] (1) [right of=0] {1};
+        \node[state] (2) [below of=0] {2};
+        \node[state] (3) [right of=2] {3};
+        \node[state] (4) [below of=2] {4};
+        \path (0) edge             node {10} (1)
+                  edge [bend left] node [left] {1} (2)
+              (1) edge             node [above] {2} (2)
+                  edge             node [left] {4} (3)
+                  edge [bend left=70] node {1} (4)
+              (2) edge [bend left] node {3} (0)
+                  edge             node {5} (3)
+                  edge             node [left] {12} (4)
+
+              (3) edge             node [above]{2}(4);
+    \end{tikzpicture}
+    \end{figure}
+
+\column{0.67\textwidth}
+  \pause%
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[node of array/.append style={fill=CSUgold}, node of array/.append style = {minimum width=6mm, minimum height=11mm}, node of list/.append style={minimum width=6mm, minimum height=6.5mm, inner sep=3pt}, additional node of list/.append style={minimum width=7mm}, link pointer of list/.append style={minimum height=6.5mm, minimum width=4.5mm}]
+      \ArrayLabel{}
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{1, 10}
+
+        % Label a node's destination and weight
+        \onslide<4->{
+          \node[anchor=south east, font={\small}, text depth=.2ex, name=dest, inner sep=1pt] at ([yshift=10pt, xshift=-1pt] firstElValue.north east) {destination};
+          \draw[link] (dest) to[bend left=10] (firstElValue);
+          \node[anchor=south west, font={\small}, text depth=.2ex, name=weight, inner sep=1pt] at ([yshift=10pt, xshift=1pt] lastElValue.north west) {weight};
+          \draw[link] (weight) to[bend right=10] (lastElValue);
+        }
+        \LinkedNode{2, 1}
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{2, 2}
+        \LinkedNode{3, 4}
+        \LinkedNode{4, 1}
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{0, 3}
+        \LinkedNode{3, 5}
+        \LinkedNode{4, 12}
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{4, 2}
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+    \end{tikzpicture}
+    \end{figure}
+
+\end{columns}
+\end{frame}
+
+\section{Minimal Spanning Trees}
+
+\begin{frame}{Minimal Spanning Tree}
+A \emph{Spanning Tree} is a subset of the edges in the graph that connects all vertices without creating any cycles.
+
+A \emph{Minimum Spanning Tree} is a spanning tree that minimizes the total edge cost.
+
+A graph has a spanning tree if and only if it is connected.
+\end{frame}
+
+\begin{frame}{Spanning Tree: Examples}
+\begin{columns}
+\column{0.55\textwidth}
+Suppose an airline's connections are represented by the following graph. The edge weights are the costs. How can the airline minimize costs while still being able to fly to every city?
+\column{0.4\textwidth}
+\vspace{-1.5em}
+  \begin{figure}
+  \centering
+  \begin{tikzpicture}[very thick, node distance=2cm]
+      \node[state] (0)              {0};
+      \node[state] (3) [below of=0] {3};
+      \node[state] (1) [left of=3] {1};
+      \node[state] (2) [right of=3] {2};
+      \node[state] (4) [below of=3] {4};
+      \node[state] (5) [right of=4] {5};
+      \node[state] (6) [above of=2] {6};
+      \alt<1>{
+        \path (0) edge              node [left]  {6} (1)
+                  edge              node [right] {5} (2)
+                  edge              node [left]  {2} (3)
+              (1) edge              node [left]  {2} (4)
+                  edge [bend left=70] node []  {4} (6)
+              (2) edge              node         {7} (5)
+                  edge              node [right] {5} (6)
+              (3) edge              node [left]  {8} (4)
+              (4) edge              node []     {10} (5);
+      }{
+        \begin{scope}[green!80]
+        \alt<2>{
+          \path (0) edge              node [left]  {6} (1)
+                    edge              node [right] {5} (2)
+                    edge              node [left]  {2} (3)
+                (1) edge [CSUgold]   node [left]  {2} (4)
+                    edge [bend left=70, CSUgold] node []  {4} (6)
+                (2) edge              node         {7} (5)
+                    edge              node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge [CSUgold]   node []     {10} (5);
+        }{
+          \alt<3> {
+            \path (0) edge [CSUgold]   node [left]  {6} (1)
+                      edge              node [right] {5} (2)
+                      edge              node [left]  {2} (3)
+                  (1) edge              node [left]  {2} (4)
+                      edge [bend left=70] node []  {4} (6)
+                  (2) edge [CSUgold]   node         {7} (5)
+                      edge              node [right] {5} (6)
+                  (3) edge [CSUgold]   node [left]  {8} (4)
+                  (4) edge              node []     {10} (5);
+          }{
+            \path (0) edge [CSUgold]   node [left]  {6} (1)
+                      edge              node [right] {5} (2)
+                      edge              node [left]  {2} (3)
+                  (1) edge              node [left]  {2} (4)
+                      edge [bend left=70] node []  {4} (6)
+                  (2) edge              node         {7} (5)
+                      edge              node [right] {5} (6)
+                  (3) edge [CSUgold]   node [left]  {8} (4)
+                  (4) edge [CSUgold]   node []     {10} (5);
+          }
+        }
+        \end{scope}
+      }
+  \end{tikzpicture}
+  \end{figure}
+\end{columns}
+\onslide<2-4>{Spanning Tree Cost: }%
+\only<2>{\(6 + 2 + 5 + 5 + 8 + 7 = 33\)}%
+\only<3>{\(4 + 2 + 5 + 5 + 2 + 10 = 28\)}%
+\only<4>{\(4 + 2 + 5 + 5 + 2 + 7 = 25\)}
+\end{frame}
+
+\begin{frame}{Minimal Spanning Tree Algorithms}
+Well-known algorithms to find a minimal spanning tree \\of an \emph{undirected} and \emph{connected} graph.
+
+\begin{itemize}
+  \item
+    Kruskal's algorithm (published 1956)
+  \item
+    Prim's algorithm (rediscovered in 1957)
+    \begin{itemize}
+    \item
+      Builds the tree iteratively by adding edges until a minimal spanning tree is obtained.
+    \item
+      Start with a designated vertex, called the source vertex.
+    \item
+      At each iteration, a new edge that does not complete a cycle is added to the tree.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Prim's Minimal Spanning Tree Algorithm}
+\begin{columns}
+\column{0.35\textwidth}
+\vspace{-1.5em}
+  \begin{figure}
+  \centering
+  \begin{tikzpicture}[very thick, node distance=2cm]
+
+      % Vertex 0
+      \alt<-2>{
+        \node[state, visit] (0)              {0};
+      }{
+        \node[state, marked] (0)              {0};
+      }
+
+      % Vertex 3
+      \alt<-2>{
+        \node[state] (3) [below of=0] {3};
+      }{
+        \alt<-4>{
+          \node[state, visit] (3) [below of=0] {3};
+        }{
+          \node[state, marked] (3) [below of=0] {3};
+        }
+      }
+
+      % Vertex 1
+      \alt<-14>{
+        \node[state] (1) [left of=3] {1};
+      }{
+        \alt<-16>{
+          \node[state, visit] (1) [left of=3] {1};
+        }{
+          \node[state, marked] (1) [left of=3] {1};
+        }
+      }
+
+      % Vertex 2
+      \alt<-6>{
+        \node[state] (2) [right of=3] {2};
+      }{
+        \alt<-8>{
+          \node[state, visit] (2) [right of=3] {2};
+        }{
+          \node[state, marked] (2) [right of=3] {2};
+        }
+      }
+
+      % Vertex 4
+      \alt<-18>{
+        \node[state] (4) [below of=3] {4};
+      }{
+        \alt<-20>{
+          \node[state, visit] (4) [below of=3] {4};
+        }{
+          \node[state, marked] (4) [below of=3] {4};
+        }
+      }
+      \alt<-24>{
+        \node[state] (5) [right of=4] {5};
+      }{
+        \alt<-25>{
+          \node[state, visit] (5) [right of=4] {5};
+        }{
+          \node[state, marked] (5) [right of=4] {5};
+        }
+      }
+
+      \alt<-10>{
+        \node[state] (6) [above of=2] {6};
+      }{
+        \alt<-12>{
+          \node[state, visit] (6) [above of=2] {6};
+        }{
+          \node[state, marked] (6) [above of=2] {6};
+        }
+      }
+
+      \alt<1>{
+        \path (0) edge              node [left]  {6} (1)
+                  edge              node [right] {5} (2)
+                  edge              node [left]  {2} (3)
+              (1) edge              node [left]  {2} (4)
+                  edge [bend left=70] node []  {4} (6)
+              (2) edge              node         {7} (5)
+                  edge              node [right] {5} (6)
+              (3) edge              node [left]  {8} (4)
+              (4) edge              node []     {10} (5);
+      }{
+        \only<-5>{
+          \path (0) edge              node [left]  {6} (1)
+                    edge              node [right] {5} (2)
+                    edge [green!80]   node [left]  {2} (3)
+                (1) edge              node [left]  {2} (4)
+                    edge [bend left=70] node []  {4} (6)
+                (2) edge              node         {7} (5)
+                    edge              node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge              node []     {10} (5);
+        }
+        \only<6-9>{
+          \path (0) edge              node [left]  {6} (1)
+                    edge [green!80]   node [right] {5} (2)
+                    edge [green!80]   node [left]  {2} (3)
+                (1) edge              node [left]  {2} (4)
+                    edge [bend left=70] node []  {4} (6)
+                (2) edge              node         {7} (5)
+                    edge              node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge              node []     {10} (5);
+        }
+        \only<10-13>{
+          \path (0) edge              node [left]  {6} (1)
+                    edge [green!80]   node [right] {5} (2)
+                    edge [green!80]   node [left]  {2} (3)
+                (1) edge              node [left]  {2} (4)
+                    edge [bend left=70] node []  {4} (6)
+                (2) edge              node         {7} (5)
+                    edge [green!80]   node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge              node []     {10} (5);
+        }
+        \only<14-17>{
+          \path (0) edge              node [left]  {6} (1)
+                    edge [green!80]   node [right] {5} (2)
+                    edge [green!80]   node [left]  {2} (3)
+                (1) edge              node [left]  {2} (4)
+                    edge [bend left=70, green!80] node []  {4} (6)
+                (2) edge              node         {7} (5)
+                    edge [green!80]   node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge              node []     {10} (5);
+        }
+        \only<18-23>{
+          \path (0) edge              node [left]  {6} (1)
+                    edge [green!80]   node [right] {5} (2)
+                    edge [green!80]   node [left]  {2} (3)
+                (1) edge [green!80]   node [left]  {2} (4)
+                    edge [bend left=70, green!80] node []  {4} (6)
+                (2) edge              node         {7} (5)
+                    edge [green!80]   node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge              node []     {10} (5);
+        }
+        \only<24->{
+          \path (0) edge              node [left]  {6} (1)
+                    edge [green!80]   node [right] {5} (2)
+                    edge [green!80]   node [left]  {2} (3)
+                (1) edge [green!80]   node [left]  {2} (4)
+                    edge [bend left=70, green!80] node []  {4} (6)
+                (2) edge [green!80]   node         {7} (5)
+                    edge [green!80]   node [right] {5} (6)
+                (3) edge              node [left]  {8} (4)
+                (4) edge              node []     {10} (5);
+        }
+      }
+  \end{tikzpicture}
+  \end{figure}\onslide<17>{}
+\column{0.55\textwidth}
+  {
+    \makeatletter
+    \setbool{@fleqn}{true}
+    \makeatother
+    \begin{flalign*}
+    V(T) = & \{0\onslide<3->{, 3}\onslide<7->{, 2}\onslide<11->{, 6}\onslide<15->{, 1}\onslide<19->{, 4}\onslide<25->{, 5}\}\\
+    E(T) = &
+    \alt<1>{
+      \emptyset\\
+    }{
+      \alt<-5>{
+        \{(0, 3)\}\\
+      } {
+        \alt<-9>{
+          \{(0, 3), (0, 2)\}\\
+        }{
+          \alt<-13>{
+            \{(0, 3), (0, 2), (2, 6)\}\\
+          }{
+            \alt<-17>{
+              \{(0, 3), (0, 2), (2, 6), (6, 1)\}\\
+            }{
+              \alt<-23>{
+                \{(0, 3), (0, 2), (2, 6), (6, 1),\\
+                      & (1, 4)\}
+              }{
+                \{(0, 3), (0, 2), (2, 6), (6, 1),\\
+                    &  (1, 4), (2, 5)\}
+              }
+            }
+          }
+        }
+      }
+    }
+    \end{flalign*}
+  }
+  \centering
+
+  \begin{tabular}{c m{2.25cm}}
+  \hline
+    Edge & Weight\\
+  \hline
+    \alt<-21>{$(0, 1)$ & $6$ \only<21>{(least)}}{$(3, 4)$ & $8$}\\
+    \alt<-5>{%
+      $(0, 2)$ & $5$ \only<5->{(least)}%
+    }{%
+      \alt<-21>{%
+        $(3, 4)$ & $8$%
+      }{%
+        \alt<-23>{%
+          $(2, 5)$ & $7$ \only<23->{(least)}%
+        }{%
+          $(1, 4)$ & $10$%
+        }%
+      }%
+    }\\
+    \alt<-21>{%
+      \only<1>{$(0, 3)$ & $2$ (least)}%
+      \only<4-5>{$(3, 4)$ & $8$}\only<8->{$(2, 5)$ & $7$}%
+    }{%
+      \only<-23>{$(1, 4)$ & $10$}%
+    }\\
+    \only<8-9>{$(2, 6)$ & $5$ \only<9->{(least)}}%
+    \only<12-13>{$(6, 1)$ & $4$ \only<13->{(least)}}%
+    \only<16-17>{$(1, 4)$ & $2$ \only<17->{(least)}}\only<20-21>{$(4, 5)$ & $10$}\\
+  \hline
+  \end{tabular}
+\end{columns}\onslide<25>{}
+\end{frame}
+
+\begin{frame}{Prim's Algorithm: Pseudo Code}
+Local Variables in \texttt{prims()}:
+\begin{itemize}
+  \item
+    \texttt{EDGES\_IN\_MST}: the vertex count.
+  \item
+    \emph{Priority} Queue of Edges (initially empty). The Edge type contains from and to vertices and the weight.
+  \item
+    \texttt{wasVisited{[Node Count]}}: set to all \texttt{false}.
+  \item
+    \texttt{totalCost = 0}
+  \item
+    \texttt{edgeCount = 0}
+  \item
+    List of Edges in MST (initially empty).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Prim's Algorithm: Pseudo Code}
+% \begin{algorithmic}
+% \Function{prims}{startIdx}\\
+% \Call{enqueueEdges}{startIdx, wasVisited, edgeQueue}
+% \While{\!edgeQueue.empty() \&\& edgeCount \< EDGES\_IN\_MST}
+% %  \State edge $\gets$ edgeQueue.dequeue()
+% % \If{$N$ is even}
+% %     \State $X \gets X \times X$
+% %     \State $N \gets \frac{N}{2} $  \Comment{This is a comment}
+% % \ElsIf{$N$ is odd}
+% %     \State $y \gets y \times X$
+% %     \State $N \gets N - 1$
+% % \EndIf
+% \EndWhile
+% \EndFunction
+% \end{algorithmic}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,]
+Function: prims(startIdx):
+  enqueueEdges (startIdx, wasVisited, edgeQueue);
+  while (!edgeQueue.empty() && edgeCount < EDGES_IN_MST)
+    edge = edgeQueue.dequeue()
+    if (!wasVisited[edge.destination])
+      mstEdges.enqueue(edge)
+      ++edgeCount
+    totalCost += edge.weight
+    enqueueEdges (edge.destination, wasVisited, edgeQueue)
+  return (edgeCount != EDGES_IN_MST) ? -1 : totalCost
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Prim's Algorithm: Pseudo Code}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,]
+Function enqueueEdges (fromVertex, wasVisited[], edgeQueue):
+// Mark the current node as visited.
+wasVisited[nodeIdx] = true;
+
+// Iterate over all edges going outward from the current node.
+// Add edges to unvisited nodes the queue
+for (const auto &edge : AdjacencyMatrix[nodeIdx])
+  if (!wasVisited[edge.destination])
+    edgeQueue. enqueue({fromVertex, edge.destination, edge.weight});
+\end{lstlisting}
+\end{frame}
+
+\section{Performance}
+
+\begin{frame}{Performance}
+  \begin{center}
+    What operations are faster with an Adjacency Matrix?
+
+    What operations are faster with an Adjacency List?
+
+    When would each implementation be more memory efficient?
+  \end{center}
+\end{frame}
+
+\section{Summary}
+
+\begin{frame}{Summary}
+\begin{itemize}
+  \item
+    A \emph{graph} \(G\) is a pair, \(G = (V, E)\).
+  \item
+    In an \emph{undirected graph} \(G = (V, E)\),\\
+    the elements of \(E\) are unordered pairs.
+  \item
+    In a \emph{directed graph} \(G = (V, E)\),\\
+    the elements of \(E\) are ordered pairs.
+  \item
+    \(H\) is a \emph{subgraph} of \(G\) if every vertex of \(H\) is a vertex of \(G\) and every edge is an edge in \(G\).
+  \item
+    Two vertices in an undirected graph are \emph{adjacent} if there is an edge between them.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary}
+\begin{itemize}
+  \item
+    \emph{Loop}: an edge incident on a single vertex.
+  \item
+    \emph{Simple graph}: no loops and no parallel edges.
+  \item
+    \emph{Simple path}: all the vertices, except possibly the first and last vertices, are distinct.
+  \item
+    \emph{Cycle}: a simple path in which the first and last vertices are the same.
+  \item
+    An undirected graph is \emph{connected} if there is a path from any vertex to any other vertex.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary}
+\begin{itemize}
+  \item
+    The \emph{shortest path algorithm} gives the shortest distance for a given node to every other node in the graph.
+  \item
+    In a \emph{weighted graph}, every edge has a nonnegative weight.
+  \item
+    A \emph{rooted tree} is a tree in which a particular vertex is designated as a root.
+  \item
+    A tree \(T\) is called a \emph{spanning tree} of graph \(G\) if \(T\) is a subgraph of G such that \(V(T) = V(G)\).
+
+\end{itemize}
+\end{frame}
+
+\section*{Lab 23}
+\begin{frame}{Lab 23: Graphs via Adjacency Lists}
+\begin{center}\Large
+Let's look at the lab based on today's lecture.
+\end{center}
+\end{frame}
+
+\end{document}

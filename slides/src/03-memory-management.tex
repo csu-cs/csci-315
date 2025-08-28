@@ -1,0 +1,987 @@
+% Sean T. Hayes
+
+\documentclass[14pt,aspectratio=1610]{beamer}
+% \documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{linked-lists}
+\usepackage{arrays}
+\usepackage{hhline}
+\usetikzlibrary{backgrounds,calc}
+
+\title{\Huge{}{Memory Management}\\\Large{}Static, Stack, Heap, and Pointers}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 12}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%%% Comment out date to use default (today)
+% \date{January 21, 2025}
+\subject{Software Programming}
+\keywords{C++, Static, Stack, Heap, and Pointers}
+
+\graphicspath{{../imgs/memory-management}}
+
+%\usepackage{tikz}
+%\usetikzlibrary{arrows.meta}
+%\usepackage{multirow}
+\usepackage{arydshln} % for dashed lines in table
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section{References \& Aliases}
+\begin{frame}[fragile]{A Review of C++ References \& Aliases}
+\begin{enumerate}
+\item
+  In a parameter declaration, \lstinline{&} makes a \textit{reference}.\\
+  The parameter refers to the memory location of the original variable.
+
+\begin{lstlisting}
+void limit(double& value, double max) {
+  if (value > max) {
+    value = max;
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+double score = 120.5;
+limit(score, 100.0);
+std::cout << score << '\n'; // 100.
+\end{lstlisting}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{A Review of C++ References \& Aliases}
+\begin{enumerate}[<+->]
+  \setcounter{enumi}{1}
+
+\item
+  In a variable declaration, \lstinline{&} makes that variable an \textit{alias}.\\
+  \begin{lstlisting}
+double score = 205.3;
+double &alias = score;
+\end{lstlisting}
+  The variable is a new name for the old variable location.
+
+\item
+  Before an existing variable, \lstinline{&} evaluates to the variable's memory address.\\
+  \begin{lstlisting}
+double score = 91.3;
+std::cout << &score; // score's address.
+\end{lstlisting}
+\end{enumerate}
+\end{frame}
+
+\section{Static Data}
+
+\begin{frame}{The 3 Memory Sections (for Data Storage)}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    \textbf{Static}: storage requirements are known and allocated before execution and remain for the entire program execution.
+  \item
+    \textbf{Call Stack} (or execution stack): memory associated with active functions.
+    \begin{itemize}
+      \item Structured as \emph{stack frames} (i.e., activation records)
+    \end{itemize}
+  \item
+    \textbf{Heap}: dynamically allocated storage; the least organized and most dynamic storage area.
+  \end{itemize}
+\column{0.33\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Static Data Memory}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}
+  \item<+->
+    The simplest memory to manage.
+  \item<+->
+    Consists of anything that can be completely determined at compile
+    time. For example:
+    \begin{itemize}
+      \item
+        global variables,
+      \item
+        static variables, and
+      \item
+        function and class definitions (instructions).
+    \end{itemize}
+  \item<+->
+    Characteristics:
+
+    \begin{itemize}
+    \item
+      Storage requirements are known before execution.
+    \item
+      The size of the static storage area is constant throughout execution.
+    \end{itemize}
+  \end{itemize}
+\column{0.33\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\section{The Stack}
+
+
+\begin{frame}{The Call Stack}
+\begin{columns}
+  \column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    The \emph{Call Stack} (i.e., the \textit{Runtime Stack} or \textit{Execution Stack}) is a contiguous memory region that grows and shrinks.
+  \item
+    Supports function calls.
+  \item
+    The stack \textbf{grows} when a function is called (activated); its \emph{stack frame} 
+    (or \emph{activation record}) is pushed on top.
+    % It \textbf{grows} (storage is allocated) when the \emph{activation
+    % record} (or \emph{stack frame}) is pushed on the stack when a
+    % function is called (activated).
+  \item
+    It \textbf{shrinks} when the function terminates; storage is
+    deallocated.
+  \end{itemize}
+
+\column{0.33\textwidth}
+  \vspace{1em}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Stack Frames}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}
+  \item
+    For each function call, a \emph{stack frame} stores local variables, parameters, and
+    return linkage.
+  \item
+    The size and structure of a stack frame are \emph{known at compile time}, but its 
+    contents and time of allocation are unknown until runtime.
+  \item
+    How is variable lifetime affected by stack management techniques?
+  \end{itemize}
+
+\column{0.33\textwidth}
+  \vspace{1em}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Stack Frames}
+
+\href{https://pythontutor.com/render.html#code=int%20add%28int%20a,%20int%20b%29%0A%7B%0A%20%20return%20a%20%2B%20b%3B%0A%7D%0A%0Aint%20doubleAdd%28int%20a,%20int%20b%29%0A%7B%0A%20%20return%20add%28a,%20b%29%0A%20%20%20%20%2B%20add%28b,%20a%29%3B%0A%7D%0A%0Aint%20main%28%29%0A%7B%0A%20%20int%20total%20%3D%200%3B%0A%20%20total%20%3D%20add%281,%202%29%3B%0A%20%20total%20%3D%20doubleAdd%283,%204%29%3B%0A%0A%20%20return%200%3B%0A%7D&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false}{Click here to step through this example code.}
+
+\begin{columns}
+
+\column{0.67\textwidth}
+
+\begin{lstlisting}[basicstyle=\ttfamily\bfseries\scriptsize,frame=single,numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{gray},
+  xleftmargin=20pt]
+int add(int a, int b)
+{
+  return a + b;  // <- 3
+}
+
+int doubleAdd(int a, int b)
+{
+  return add(a, b)
+    + add(b, a);  // <- 2
+}
+
+int main()
+{
+  int total = 0;
+  total = add(1, 2);
+  total = doubleAdd(3, 4); // <- 1
+
+  return 0;
+}
+\end{lstlisting}
+
+\column{0.33\textwidth}
+\begin{tabular}{r |>{\ttfamily\columncolor{CSUslate}}l|}
+  \multicolumn{1}{r}{} & \multicolumn{1}{c}{\textbf{Call Stack}}\\
+    \hhline{~|-|}%\cline{2-2}
+      & \texttt{main()}\\
+      & total $\rightarrow$ 0\\
+    \hhline{~|-|}%\cline{2-2}
+      & \texttt{doubleAdd()}\\
+      & int a $\rightarrow$ 3\\
+      & int b $\rightarrow$ 4\\
+    \hhline{~|-|}%\cline{2-2}
+      & \texttt{add()}\\
+      & int a $\rightarrow$ 4 \\
+$sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
+  \cline{2-2}
+\end{tabular}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Stack Overflow}
+\begin{columns}
+\column{0.67\textwidth}
+
+  \begin{itemize}
+  \item
+    The call stack and heap grow towards each other as required by program events.
+  \item
+    The following relation must hold:\\
+    $0 \le h \le a \le n$
+  \item
+    In other words, if the stack top bumps into the heap, or if the beginning of the heap is greater than the end, there are problems!
+  \end{itemize}
+
+\column{0.33\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+
+\end{frame}
+
+\section{The Heap}
+
+\begin{frame}{Heap Memory}
+\begin{columns}[b]
+\column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    Heap objects are \textit{dynamically} allocated/deallocated at runtime
+    (not associated with function call/return).
+  \item
+    Dynamic variables are created at runtime instead of at compile-time.
+  \item
+    The kind of data found on the heap is language dependant.
+
+    \begin{itemize}
+    \item
+      Typically holds strings, dynamic arrays, objects, and linked structures
+    \item
+      Java and C/C++ have different policies.
+    \end{itemize}
+  \end{itemize}
+\column{0.3\textwidth}
+  \vfill{}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{Heap Memory Example}
+
+\href{https://pythontutor.com/render.html#code=%23include%20%3Ciostream%3E%0A%0Aint%20main%28%29%0A%7B%0A%20%20const%20int%20SIZE%20%3D%203%3B%0A%20%20int%20stackArray%5BSIZE%5D%3B%20//%20Declared%20on%20the%20stack%0A%20%20int*%20heapArray%3B%20//%20Pointer%20to%20memory%20location%0A%20%20heapArray%20%3D%20new%20int%5BSIZE%5D%3B%20//%20Declare%20array%20on%20heap%0A%0A%20%20std%3A%3Acout%20%3C%3C%20%22stackArray%20%20%3D%20%22%20%3C%3C%20stackArray%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20std%3A%3Acout%20%3C%3C%20%22heapArray%20%20%20%3D%20%22%20%3C%3C%20heapArray%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20%0A%20%20stackArray%5B2%5D%20%3D%2020%3B%0A%20%20heapArray%5B2%5D%20%3D%2020%3B%0A%20%20%0A%20%20//%20Free%20up%20the%20memory%20from%20the%20heap%20array%0A%20%20delete%5B%5D%20heapArray%3B%0A%20%20heapArray%20%3D%20nullptr%3B%0A%0A%20%20return%200%3B%0A%7D&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false}{Click here to step through this example code.}%
+\begin{columns}%
+\column{0.9\textwidth}%
+\begin{lstlisting}[basicstyle=\ttfamily\bfseries\scriptsize,frame=single,
+  numbers=left, numbersep=5pt,numberstyle=\tiny\color{gray},
+  xleftmargin=20pt]
+#include <iostream>
+
+int main()
+{
+  const int SIZE = 3;
+  int stackArray[SIZE];      // Declared on the stack
+  int *heapArray;            // Declare pointer to memory location
+  heapArray = new int[SIZE]; // Declare array on heap
+
+  std::cout << "stackArray  = " << stackArray << std::endl;
+  std::cout << "heapArray   = " << heapArray << std::endl;
+
+  stackArray[2] = 20;
+  heapArray[2] = 20;
+
+  delete[] heapArray; // Free up the memory from the heap array
+  heapArray = nullptr; // Set pointer to point to address 0.
+
+  return 0;
+}
+\end{lstlisting}
+
+\column{0.1\textwidth}
+
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Heap Memory}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}
+  \item
+    The \lstinline{new} operator allocates heap storage.
+  \item
+    The \lstinline{delete} or \lstinline{delete[]} operators deallocate heap storage for reuse.
+  \item
+    Space is allocated in variable-sized blocks, so deallocation may leave
+    ``holes'' in the heap (fragmentation).
+
+    \begin{itemize}
+    \item
+      Compared to the deallocation of stack storage
+    \end{itemize}
+  \end{itemize}
+
+\column{0.3\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Heap Management}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    Some languages (e.g., C, C++) leave heap storage deallocation to the
+    programmer.
+  \item
+    Others (e.g., Java, Perl, Python, list-processing languages) employ
+    \textit{garbage collection} to reclaim unused heap space.
+  \end{itemize}
+\column{0.3\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Heap Management Functions}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    \lstinline{new} returns the start address of an unused block from the heap and changes its state from \textit{unused} to \textit{reserved} (and undefined).
+  \item
+    Suppose a Point class has three 4-byte data members: $x$, $y$, $z$.\\
+  \item
+    \lstinline[language=Java]{Point firstCoord = new Point();}\\
+    requires at least allocated $3 \times 4$ bytes.
+  \end{itemize}
+\column{0.3\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Heap Overflow}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    A \textbf{heap overflow} occurs when calling \lstinline{new} and the heap
+    does not have a big enough block of free contiguous space.
+  \item
+    So, \lstinline{new} either fails (in the case of heap overflow) or returns a
+    pointer to the new block.
+  \end{itemize}
+\column{0.3\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Heap Management Functions}
+\begin{columns}
+\column{0.67\textwidth}
+  \begin{itemize}[<+->]
+  \item
+    \lstinline{delete} returns a storage block to the heap.
+  \item
+    The status of the block returns to \textit{unused} and
+    is available for allocation by future calls to \lstinline{new}.
+  \item
+    One cause of heap overflow is a failure on the part of the program to
+    return unused storage.
+  \end{itemize}
+\column{0.3\textwidth}
+  \input{../imgs/memory-management/memory-structure}
+\end{columns}
+\end{frame}
+
+\section{Pointers}
+\begin{frame}{Pointers}
+
+\begin{itemize}[<+->]
+\item
+  Pointers are addresses (i.e., the value of a pointer variable is an address).
+\item
+  Memory that is accessed through a pointer is dynamically allocated in
+  the heap.
+\item
+  Java doesn't have explicit pointers; reference types are heap allocated
+   (although the reference is on the stack).
+\item
+  This topic is covered well in the textbook's Chapter 12.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Memory Allocation Java vs C++}
+\small
+\begin{tabularx}{1\textwidth}{| l l X |}
+\hline
+\rowcolor{CSUgold}\textcolor{black}{\textbf{Java}}  & \textcolor{black}{Stack Example}   & \textcolor{black}{Heap Example} \\ \hline
+Primitives & \cellcolor{codeBackground}\lstinline{int a = 3;}   & \cellcolor{codeBackground}\lstinline[language=Java]{int{[}{]} a = new int{[}1{]};} \\ %\cline{2-4}
+Classes    & \textit{Does not exist.} & \cellcolor{codeBackground}\lstinline[language=Java]{String str = new String("Hi!");} \\ \hline
+\multicolumn{3}{c}{}\\\hline
+
+\rowcolor{CSUgold}\textcolor{black}{\textbf{C++}}  & \textcolor{black}{Stack Example}   & \textcolor{black}{Heap Example} \\ \hline
+Primitives & \cellcolor{codeBackground}\lstinline{int a = 3;}   & \cellcolor{codeBackground}\lstinline{int *a = new int;} \\ %\cline{2-4}
+Classes    & \cellcolor{codeBackground}\lstinline{string str("Hi!");}  & \cellcolor{codeBackground}\lstinline{string *str = new string("Hi!");}\\ \hline
+\end{tabularx}
+
+\end{frame}
+
+\begin{frame}{Examples in Code}
+\centering\Large
+Let's create and test out some more pointers.
+\end{frame}
+
+\begin{frame}{Java Versus C/C++ Arrays}
+
+\begin{itemize}[<+->]
+\item
+  In Java, arrays are always allocated dynamically from heap memory.
+\item
+  In many other languages, including C++:\\
+  \begin{tabular}{l @{ -- } l}
+    Globally defined arrays & static memory.\\
+    Local (to a function) arrays & stack storage.\\
+    Dynamically allocated arrays & heap storage.\\
+  \end{tabular}
+\item
+  Dynamically allocated arrays also have stack storage --- a
+  reference (pointer) to the heap block that holds the array.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Comparing Pointers}
+
+\begin{lstlisting}
+int i = 5, j = 5;
+int *ptrJ1 = &j;
+int *ptrJ2 = &j;
+int *ptrI = &i;
+\end{lstlisting}
+
+
+True/False:
+\begin{itemize}
+\item
+  \lstinline|if (ptrJ1 == ptrJ2) {}  | \alt<2->{True}{?}
+\item <3->
+  \lstinline|if (ptrJ1 == ptrI) {}   | \alt<4->{False}{?}
+\item <5->
+  \lstinline|if (&ptrJ1 == &ptrJ2) {}| \alt<6->{False}{?}
+\item <7->
+  \lstinline|if (*ptrJ1 == *ptrI) {} | \alt<8->{True}{?}
+\end{itemize}
+
+\href{https://pythontutor.com/visualize.html#code=%23include%20%3Ciostream%3E%0A%0Aint%20main%28%29%0A%7B%0A%20%20int%20i%20%3D%205,%20j%20%3D%205%3B%0A%20%20int%20*ptrJ1%20%3D%20%26j%3B%0A%20%20int%20*ptrJ2%20%3D%20%26j%3B%0A%20%20int%20*ptrI%20%3D%20%26i%3B%0A%20%20%0A%20%20if%20%28ptrJ1%20%3D%3D%20ptrJ2%29%20%7B%0A%20%20%20%20std%3A%3Acout%20%3C%3C%201%20%3C%3C%20'%20'%3B%0A%20%20%7D%0A%20%20if%20%28ptrJ1%20%3D%3D%20ptrI%29%20%7B%0A%20%20%20%20std%3A%3Acout%20%3C%3C%202%20%3C%3C%20'%20'%3B%0A%20%20%7D%0A%20%20if%20%28%26ptrJ1%20%3D%3D%20%26ptrJ2%29%20%7B%0A%20%20%20%20std%3A%3Acout%20%3C%3C%203%20%3C%3C%20'%20'%3B%0A%20%20%7D%0A%20%20if%20%28*ptrJ1%20%3D%3D%20*ptrI%29%20%7B%0A%20%20%20%20std%3A%3Acout%20%3C%3C%204%20%3C%3C%20'%20'%3B%0A%20%20%7D%0A%0A%20%20return%200%3B%0A%7D&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false}{Click here to see the visualization for this code.}
+\end{frame}
+
+\begin{frame}[fragile]{Assigning a value to a \textit{dereferenced} pointer.}
+
+A pointer must have a value before you can \textit{dereference} it (follow
+the pointer).\\[1em]
+
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{lstlisting}
+int *x;
+*x = 3;
+\end{lstlisting}
+  \pause
+  \centering\textbf{Error! Override the value located in some unknown address.}
+\column{0.5\textwidth}
+  \pause
+\begin{lstlisting}
+int foo;
+int *x;
+x = &foo;
+*x = 3;
+\end{lstlisting}
+  \pause
+  \centering\textbf{This is fine. \lstinline{x} points to \lstinline{foo}.}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Pointers to Pointers}\center
+% \renewcommand{\arraystretch}{4}
+\begin{tabular}{|>{\columncolor{codeBackground}}l l|}
+\hline
+&\\
+\lstinline|int *x = &num;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<2->{%
+\begin{tikzpicture}[pointer/.append style = {thick}, node of list/.append style = {thick, node distance=10mm}]
+  \LinkPtr{x}
+  \node[node of list, right = of ptr, name=firstElValue, minimum width=20mm,] {?};
+  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1mm] firstElValue.north) {some \texttt{int}};
+  \draw[link] (ptr) to[bend left=8] (firstElValue);
+\end{tikzpicture}}}\\
+&\\ \hline
+&\\
+\lstinline|double *y;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<3->{%
+\begin{tikzpicture}[pointer/.append style = {thick}, node of list/.append style = {thick, node distance=10mm}]
+  \LinkPtr{y}
+  \node[node of list, right = of ptr, name=firstElValue, minimum width=30mm,] {?};
+  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1mm] firstElValue.north) {some \texttt{double}};
+  \draw[link] (ptr) to[bend left=8] (firstElValue);
+\end{tikzpicture}}} \\
+&\\ \hline
+&\\
+\lstinline|int **z = &x;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<4->{%
+\begin{tikzpicture}[pointer/.append style = {thick}, node of list/.append style = {thick}]
+  \LinkPtr{z}
+  
+  \node[pointer, name=ptr2, node distance=10mm, right = of ptr2] {};
+  \node[node of list, node distance=10mm, right = of ptr2, name=firstElValue, minimum width=20mm,] {?};
+  
+  \fill (ptr2) circle(2pt);
+  
+  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1.5mm] ptr2.north) {\texttt{x}};
+
+  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1mm] firstElValue.north) {some \texttt{int}};
+
+  \draw[link] (ptr) to[bend left=8] (ptr2);
+  \coordinate (ptr2) at (ptr2);
+  \draw[link] (ptr2) to[bend left=8] (firstElValue);
+\end{tikzpicture}}} \\
+& \\ \hline
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}[fragile]{Pointers to Pointers: An Example}
+
+
+\begin{lstlisting}
+int num = 5;
+int *pNum = &num;
+int **ppNum = &pNum;
+\end{lstlisting}
+
+Then:
+\begin{itemize}
+\item
+  \lstinline{ppNum} stores the memory location of\alt<2->{ \lstinline{pNum}.}{\textellipsis}
+\item<3->
+  \lstinline{*ppNum} stores the memory location of\alt<4->{ \lstinline{num}.}{\textellipsis}
+\item<5->
+  \lstinline{**ppNum} equals\alt<6->{ \lstinline{5}.}{\textellipsis}
+\end{itemize}
+\onslide<6->{}
+\end{frame}
+
+\section{Array Pointers}
+
+\begin{frame}[fragile]{Declaring Arrays}
+
+\begin{itemize}
+\item
+  Typical C/C++ array declarations.
+  \begin{lstlisting}
+int arr[5];               // stack
+double arr1[10][15];      // stack
+int *intPtr = new int[5]; // heap
+\end{lstlisting}
+\item
+  Typical Java array declarations:
+  \begin{lstlisting}
+int[] arr = new int[5];
+double[][] arr1 = new double [10][5];
+Object[] arr2 = new Object[100];
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Allocation of Stack and Heap Space for an Array}
+\begin{center}
+\lstinline{int *arr = new int[10];}\\\vspace{1em}
+
+\input{../imgs/memory-management/memory-allocation-heap-array.tex}
+\end{center}
+\end{frame}
+
+\begin{frame}{Pointers and Arrays}
+
+\begin{itemize}
+\item
+  The identifier of an array on the stack is basically a \\\emph{const pointer}
+  pointing at the beginning of the array.
+\item
+  You can use the \lstinline{{[}{]}} operator with pointers!
+\item
+  Example:\\
+  \lstinline{int A{[}5{]};}
+  \begin{itemize}
+  \item
+    Creates a memory block of 5 integers on the stack ($5\times4$ bytes).
+  \item
+    \lstinline{A} (the pointer) points at the beginning of the array. A $\rightarrow$ \lstinline{A{[}0{]}}.\\
+    \lstinline{(A == \&A[0])}
+
+    \begin{tikzpicture}
+      \ArrayLabel{A}
+      \ArrayList{.,.,.,.,.}
+    \end{tikzpicture}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Pointers and Arrays}
+\begin{lstlisting}
+int *x;
+int a[5] {-1, -2, -3, -4, -5};
+x = &a[2]; // x is the address of a[2]
+
+for (int i = 0; i < 3; i++)
+  x[i]++; // x[i] is the same as a[i+2]
+\end{lstlisting}
+\vspace{1em}
+% \begin{tabularx}{0.7\textwidth}{r *{5}{>{\centering\arraybackslash}X}}
+%   & \texttt{a[0]} & \texttt{a[1]} & \texttt{a[2]} & \texttt{a[3]} & \texttt{a[4]}\\
+%   \cline{2-6}
+%     \lstinline{a} $\rightarrow$ &
+%     \multicolumn{1}{|c}{-1} &
+%     \multicolumn{1}{|c}{-2} &
+%     \multicolumn{1}{|c}{-3} &
+%     \multicolumn{1}{|c}{-4} &
+%     \multicolumn{1}{|c|}{-5} \\
+%   \cline{2-6}
+%   & & & $\uparrow$ & $\uparrow$ & $\uparrow$\\
+%   & & & \texttt{x} \texttt{\&x{[}0{]}} & \texttt{\&x{[}1{]}} & \texttt{\&x{[}2{]}}\\
+% \end{tabularx}
+  \centerline{%
+  \begin{tikzpicture}[node of array/.append style={minimum width=22mm}, label of array el/.style={font=\ttfamily}]
+    \ArrayLabel{a}
+    \ArrayList{-1, -2}
+    \alt<-1>{\ArrayNode{-3}}{%
+      \begin{scope}[node of array/.append style={font=\bfseries, fill=MyPurple}]%
+        \ArrayNode{-2}%
+      \end{scope}%
+    }%
+    
+    \ArrayElLabel<-8mm><-6mm>{x}
+    \ArrayElLabel<-8mm><6mm>{\&x{[}0{]}}
+    \alt<-1>{\ArrayNode{-4}}{%
+      \begin{scope}[node of array/.append style={font=\bfseries, fill=MyPurple}]%
+        \ArrayNode{-3}%
+      \end{scope}%
+    }
+    \ArrayElLabel<-8mm>{\&x{[}1{]}}
+    \alt<-1>{\ArrayNode{-5}}{%
+      \begin{scope}[node of array/.append style={font=\bfseries, fill=MyPurple}]%
+        \ArrayNode{-4}%
+      \end{scope}%
+    }
+    \ArrayElLabel<-8mm>{\&x{[}2{]}}
+  \end{tikzpicture}%
+  }%
+  \onslide<2>{}
+\end{frame}
+
+\begin{frame}[fragile]{Pointer Arithmetic}
+\begin{itemize}
+\item
+  Integer arithmetic (\texttt{+}, \texttt{-}, \texttt{++}, \texttt{--}, \texttt{+=}, \texttt{-=}) works with pointers.
+\item
+  Increment updates the address to the ``next'' element.
+  \begin{lstlisting}
+int a[5] {-1, -2, -3, -4, -5};
+int *ptr = a;
+*(ptr + 3) = 400;
+\end{lstlisting}
+\end{itemize}
+
+
+
+% \begin{tabularx}{1\textwidth}{r *{5}{>{\centering\arraybackslash}X}}
+%   & \texttt{a[0]} & \texttt{a[1]} & \texttt{a[2]} & \texttt{a[3]} & \texttt{a[4]}\\
+%   \cline{2-6}
+%     \lstinline{a} $\rightarrow$ &
+%     \multicolumn{1}{|c}{-1} &
+%     \multicolumn{1}{|c}{-2} &
+%     \multicolumn{1}{|c}{-3} &
+%     \multicolumn{1}{|c}{\textbf{400}} &
+%     \multicolumn{1}{|c|}{-5} \\
+%   \cline{2-6}
+%   & $\uparrow$ & & $\uparrow$ & $\uparrow$ & $\uparrow$\\
+%   & \lstinline{ptr} & & \lstinline{(ptr + 2)} & \lstinline{(ptr + 3)} & \lstinline{(ptr + 4)}\\
+% \end{tabularx}
+
+\centerline{%
+  \begin{tikzpicture}[node of array/.append style={minimum width=24mm}, label of array el/.style={font=\ttfamily}]
+    \ArrayLabel{a}
+    \ArrayNode{-1}
+    \ArrayElLabel<-7mm>{ptr}
+    \ArrayNode{-2}
+    \ArrayNode{-3}
+    \ArrayElLabel<-7mm>{(ptr + 2)}
+    \alt<-1>{\ArrayNode{-4}}{%
+      \begin{scope}[node of array/.append style={font=\bfseries, fill=MyPurple}]%
+        \ArrayNode{400}%
+      \end{scope}%
+    }
+    \ArrayElLabel<-7mm>{(ptr + 3)}
+    \ArrayNode{-5}
+    \ArrayElLabel<-7mm>{(ptr + 4)}
+  \end{tikzpicture}%
+  }%
+  \onslide<2>{}
+\end{frame}
+
+\section{Memory Errors}
+
+\begin{frame}[fragile]{Pointer Pitfalls}
+
+Assigning values to uninitialized, null, or deleted pointers:
+\begin{columns}[t]
+\column{0.17\textwidth}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+int* p;
+*p = 3;
+\end{lstlisting}
+\column{0.35\textwidth}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+int* p = nullptr;
+*p = 4;
+\end{lstlisting}
+\column{0.35\textwidth}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+int* p = new int;
+delete p;
+*p = 5;
+\end{lstlisting}
+\end{columns}
+
+Using the above statements will result in a \textit{segmentation fault} or undefined behavior!
+
+\end{frame}
+
+\begin{frame}[fragile]{Memory Leaks}
+
+
+Memory leak is when you remove the reference to the memory block,
+before deleting the block itself.\vspace{1em}
+
+Example:
+\begin{lstlisting}
+int *p;      // p points somewhere
+p = new int; // p is an int value's address
+p = nullptr; // p points to null.
+\end{lstlisting}
+
+\begin{itemize}[<+->]
+\item
+  Result?
+\item\textbf{Memory Leek! (Orphan Blocks)}\\
+  Must free memory block before changing reference.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Memory Leaks}
+\begin{itemize}
+\item
+  A memory leak can diminish the performance of the computer by
+  reducing the amount of available memory.
+\item
+  Eventually, in the worst case, too much of the available memory
+  may become allocated
+\item
+  and all or part of the system or devices stops working correctly,
+  the application fails, or the system slows down.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Memory Leaks}
+  \begin{block}{Valgrind}
+  Use Valgrind with \texttt{-{}-leak-check=yes} option if your implementation has
+  memory leaks.\\
+  Reference the \href{https://valgrind.org/docs/manual/manual.html}{Valgrind User Manual}, 
+  \href{https://valgrind.org/docs/manual/quick-start.html}{The Valgrind Quick Start Guide}, or 
+  a \href{https://valgrind.org/downloads/guis.html}{Graphical User Interfaces}.
+  
+  * This is why the \texttt{-g} flag is used when debugging!
+\end{block}
+\end{frame}
+
+\begin{frame}{Problem: Multiple Pointers to the Same Address}
+
+\begin{itemize}
+\item
+  A second problem can occur when multiple pointers are assigned to a block of heap memory.
+\item
+  The block may be deleted and one of the pointers set to \textit{null},
+  but the other pointers still exist.
+\item
+  If the runtime system reassigns the memory to another object, the
+  original pointers pose a danger.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dangling Pointer: A pointer that points to an invalid location.}
+
+Example:
+
+\begin{lstlisting}
+int *p, *q;  // Create two pointers
+p = new int; // Allocate an int on the heap.
+q = p;       // Points to the same address.
+*p = 4;      // Sets the on the heap to 4.
+delete q;    // Frees the heap memory.
+*p = 3;      // Illegal assignment!
+\end{lstlisting}
+
+\begin{itemize}
+\item
+  \lstinline{p} and \lstinline{q} point to the same location.
+\item
+  When \lstinline{q} is deleted, \lstinline{p} becomes a dangling pointer!
+\end{itemize}
+\end{frame}
+
+\section{Garbage Collection}
+\begin{frame}{Memory Leaks and Garbage Collection}
+  The popularity of \textit{object-oriented programming} has meant more emphasis
+  on heap storage management.\\[1em]
+
+  Objects are considered active or inactive.
+  \begin{itemize}
+  \item
+    \emph{Active} objects: blocks \textit{accessible} through a pointer or reference.
+  \item
+    \emph{Inactive} objects: \textit{inaccessible} blocks; no reference exists (also called (\emph{orphans} or \emph{garbage}).
+  \end{itemize}
+
+  The terms \textit{accessible} and \textit{inaccessible} may be more figurative than objectively true.
+\end{frame}
+
+\begin{frame}{Garbage Collection}
+
+\begin{itemize}
+\item
+  All inaccessible blocks of storage are identified and returned to the
+  free list.
+\item
+  The heap may also be \textbf{compacted} at this time: allocated space is
+  compressed into one end of the heap, leaving all free space in a large
+  block at the other end.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Garbage Collection}
+
+\begin{itemize}[<+->]
+\item
+  C \& C++ leave it to the programmer --- if an unused storage block
+  isn't explicitly freed by, it becomes garbage.
+  \begin{itemize}
+  \item
+    You can get C++ garbage collectors, but they aren't standard.
+  \end{itemize}
+\item
+  Java, Python, Perl, and other scripting languages perform garbage collection.
+  \begin{itemize}
+  \item
+    Python, etc.\ also have automatic allocation, so the ``new'' operator is not needed).
+  \end{itemize}
+\item
+  Garbage collection was pioneered by languages like
+  \href{https://en.wikipedia.org/wiki/Lisp_(programming_language)}{Lisp}, which
+  constantly creates and destroys linked lists.
+
+\item C++ includes \href{https://en.cppreference.com/w/cpp/memory}{smart pointers}, enabling automatic object lifetime management.
+\end{itemize}
+\end{frame}
+
+
+\section{Review}
+
+\begin{frame}{Review}
+
+\begin{itemize}[<+->]
+\item
+  Three types of memory storage:
+  \begin{itemize}
+  \item
+    Static
+  \item
+    Stack
+  \item
+    Heap
+  \end{itemize}
+\item
+  Problems with heap storage:
+  \begin{itemize}
+  \item
+    Memory leaks (garbage): failure to free storage when pointers
+    (references) are reassigned.
+  \item
+    Dangling pointers: when storage is freed, but references to the
+    storage still exist.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Allocation of Stack and Heap Space for an Array}
+\begin{center}
+  \lstinline{int *arr = new int[10];}\\\vspace{1em}
+
+  % \includegraphics[width=0.8\textwidth]{memory-allocation-heap}%
+  \input{../imgs/memory-management/memory-allocation-heap-array.tex}%
+\end{center}
+\end{frame}
+
+\begin{frame}{Garbage}
+
+\begin{itemize}
+\item
+  \emph{Garbage}: any block of heap memory that cannot be accessed by the
+   program (i.e., there is no stack pointer to the block) but in which the 
+   runtime system thinks is in use.
+\item
+  Garbage is created in several ways:
+  \begin{itemize}
+  \item
+    A function ends without returning the space allocated to a local array
+    or other dynamic variable. The pointer is gone.
+  \item
+    A node is deleted from a linked data structure, but isn't freed.
+  \item
+    \textellipsis{}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Terminology}
+
+\begin{itemize}
+\item
+  A \textbf{dangling pointer} (or dangling reference, or widow) is a pointer
+  (reference) that contains the address of previously deallocated/freed heap space.
+\item
+  An \textbf{orphan (or garbage)} is a block of allocated heap memory that is no
+  longer accessible through any pointer.
+\item
+  A \textbf{memory leak} is a gradual loss of available memory due to the
+  creation of garbage.
+\end{itemize}
+\end{frame}
+
+
+
+\section*{Lab 3}
+
+\begin{frame}{Lab 3: Pointers}
+\begin{center}\Large
+Let's take a look at Lab 3 (on Blackboard).
+\end{center}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,985 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created on 2009-04-10 by Jorge Stolfi with the script make-hash-table-figure -->
+
+<svg
+   width="600.5"
+   height="281.96973"
+   id="fig"
+   stroke-linejoin="round"
+   stroke-opacity="1"
+   stroke-linecap="round"
+   fill-opacity="1"
+   fill-rule="evenodd"
+   font-family="'Bitstream Courier'"
+   font-style="normal"
+   font-weight="normal"
+   pagecolor="#ffff00"
+   pageopacity="0.0"
+   version="1.1"
+   sodipodi:docname="chain-example-string-wikimedia.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2429">
+    <marker
+       style="overflow:visible"
+       id="Dot"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="7.6669998"
+       markerHeight="7.6669998"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="RoundedArrow"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="RoundedArrow"
+       markerWidth="9.1350002"
+       markerHeight="8.8308496"
+       viewBox="0 0 6.1347524 5.9304951"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path1367" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="RoundedArrow-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="RoundedArrow"
+       markerWidth="9.1350002"
+       markerHeight="8.8308496"
+       viewBox="0 0 6.1347524 5.9304951"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path1367-8" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="RoundedArrow-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="RoundedArrow"
+       markerWidth="11.135"
+       markerHeight="10.764259"
+       viewBox="0 0 6.1347524 5.9304951"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path1367-9" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="namedview2427"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="3.4830711"
+     inkscape:cx="141.97241"
+     inkscape:cy="262.6992"
+     inkscape:window-width="3840"
+     inkscape:window-height="2054"
+     inkscape:window-x="2293"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g2222" />
+  <g
+     font-size="12px"
+     transform="translate(0,41.469727)"
+     id="g2424">
+    <defs
+       id="defs2158">
+      <!-- Start marker for non-null pointers: -->
+      <marker
+         id="linkdot_N"
+         viewBox="0 0 8 8"
+         refX="4"
+         refY="4"
+         markerWidth="8"
+         markerHeight="8"
+         orient="auto">
+        <circle
+           cx="4"
+           cy="4"
+           r="3"
+           stroke="#000000"
+           fill="#000000"
+           id="circle2128" />
+      </marker>
+      <!-- Start marker for null pointers: -->
+      <marker
+         id="linkdot_U"
+         viewBox="0 0 8 8"
+         refX="4"
+         refY="4"
+         markerWidth="8"
+         markerHeight="8"
+         orient="auto">
+        <line
+           x1="1"
+           y1="1"
+           x2="7"
+           y2="7"
+           stroke="#000000"
+           id="line2131" />
+        <line
+           x1="1"
+           y1="7"
+           x2="7"
+           y2="1"
+           stroke="#000000"
+           id="line2133" />
+      </marker>
+      <!-- Tip for arrows: -->
+      <marker
+         id="arrowtip_N"
+         viewBox="0 0 14 8"
+         refX="13"
+         refY="4"
+         markerWidth="14"
+         markerHeight="8"
+         orient="auto">
+        <polygon
+           points="1,7 1,4 1,1 13,4 "
+           stroke="#000000"
+           fill="#000000"
+           id="polygon2136" />
+      </marker>
+      <!-- Tip for highlighted arrows: -->
+      <marker
+         id="arrowtip_C"
+         viewBox="0 0 14 8"
+         refX="13"
+         refY="4"
+         markerWidth="14"
+         markerHeight="8"
+         orient="auto">
+        <polygon
+           points="13,4 1,7 1,4 1,1 "
+           stroke="#cc0000"
+           fill="#cc0000"
+           id="polygon2139" />
+      </marker>
+      <!-- Key box in input column, normal: -->
+      <rect
+         id="key_box_N"
+         y="0"
+         x="0"
+         width="90"
+         height="20"
+         fill="#5eb6cd"
+         stroke="none" />
+      <!-- Key box in input column, highlighted : -->
+      <rect
+         id="key_box_C"
+         y="0"
+         x="0"
+         width="90"
+         height="20"
+         fill="#5eb6cd"
+         stroke="none" />
+      <!-- Key box in bucket or overflow columns, normal: -->
+      <rect
+         id="key_box_E"
+         y="0"
+         x="0"
+         width="90"
+         height="20"
+         fill="#9cff9c"
+         stroke="#000000" />
+      <!-- Key box in bucket or overflow columns, vacant: -->
+      <rect
+         id="key_box_U"
+         y="0"
+         x="0"
+         width="90"
+         height="20"
+         fill="#ddeedd"
+         stroke="#000000" />
+      <!-- Value box in bucket or overflow columns, occupied: -->
+      <rect
+         id="val_box_E"
+         y="0"
+         x="0"
+         width="80"
+         height="20"
+         fill="#9cff9c"
+         stroke="#000000" />
+      <!-- Value box in bucket or overflow columns, vacant: -->
+      <rect
+         id="val_box_U"
+         y="0"
+         x="0"
+         width="80"
+         height="20"
+         fill="#ddeedd"
+         stroke="#000000" />
+      <!-- Pointer box in bucket or overflow columns, used and non-null: -->
+      <rect
+         id="ptr_box_E"
+         y="0"
+         x="0"
+         width="20"
+         height="20"
+         fill="#9cff9c"
+         stroke="#000000" />
+      <!-- Pointer box in bucket or overflow columns, null/vacant: -->
+      <rect
+         id="ptr_box_U"
+         y="0"
+         x="0"
+         width="20"
+         height="20"
+         fill="#ddeedd"
+         stroke="#000000" />
+      <!-- Background for hash value, unused: -->
+      <rect
+         id="hsh_box_U"
+         x="3"
+         y="1"
+         width="34"
+         height="18"
+         fill="#ddeedd"
+         stroke="none" />
+      <!-- Background for hash value, used: -->
+      <rect
+         id="hsh_box_N"
+         x="3"
+         y="1"
+         width="34"
+         height="18"
+         fill="#a8a8ff"
+         stroke="none" />
+      <!-- Background for hash value, highlighted: -->
+      <rect
+         id="hsh_box_C"
+         x="3"
+         y="1"
+         width="34"
+         height="18"
+         fill="#ee4444"
+         stroke="none" />
+      <!-- Vertical dots: -->
+      <g
+         id="vdots">
+        <rect
+           x="0"
+           y="6"
+           width="2"
+           height="2"
+           id="rect2153" />
+        <rect
+           x="0"
+           y="12"
+           width="2"
+           height="2"
+           id="rect2155" />
+      </g>
+    </defs>
+    <g
+       transform="translate(150)"
+       text-anchor="middle"
+       stroke="none"
+       id="g2402">
+      <text
+         x="135"
+         y="-10"
+         font-size="15px"
+         font-weight="bold"
+         fill="#000000"
+         stroke="none"
+         id="text2224"><tspan
+           style="fill:#ffffff"
+           id="tspan3536">buckets</tspan></text>
+      <g
+         id="g2238">
+        <use
+           x="0"
+           xlink:href="#hsh_box_U"
+           id="use2226" />
+        <text
+           x="20"
+           y="14"
+           id="text2228">000</text>
+        <use
+           x="40"
+           xlink:href="#key_box_U"
+           id="use2230" />
+        <use
+           x="130"
+           xlink:href="#val_box_U"
+           id="use2232" />
+        <use
+           x="210"
+           xlink:href="#ptr_box_U"
+           id="use2234" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2236" />
+      </g>
+      <g
+         transform="translate(0,20)"
+         id="g2256">
+        <use
+           x="0"
+           xlink:href="#hsh_box_N"
+           id="use2240" />
+        <text
+           x="20"
+           y="14"
+           id="text2242">001</text>
+        <use
+           x="40"
+           xlink:href="#key_box_E"
+           id="use2244" />
+        <text
+           x="85"
+           y="14"
+           id="text2246">Lisa Smith</text>
+        <use
+           x="130"
+           xlink:href="#val_box_E"
+           id="use2248" />
+        <text
+           x="170"
+           y="14"
+           id="text2250">521-8976</text>
+        <use
+           x="210"
+           xlink:href="#ptr_box_E"
+           id="use2252" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_N)"
+           id="line2254" />
+      </g>
+      <g
+         transform="translate(0,40)"
+         id="g2270">
+        <use
+           x="0"
+           xlink:href="#hsh_box_U"
+           id="use2258" />
+        <text
+           x="20"
+           y="14"
+           id="text2260">002</text>
+        <use
+           x="40"
+           xlink:href="#key_box_U"
+           id="use2262" />
+        <use
+           x="130"
+           xlink:href="#val_box_U"
+           id="use2264" />
+        <use
+           x="210"
+           xlink:href="#ptr_box_U"
+           id="use2266" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2268" />
+      </g>
+      <g
+         transform="translate(0,60)"
+         id="g2280">
+        <text
+           x="20"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2272">:</text>
+        <text
+           x="85"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2274">:</text>
+        <text
+           x="170"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2276">:</text>
+        <text
+           x="220"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2278">:</text>
+      </g>
+      <g
+         transform="translate(0,80)"
+         id="g2294">
+        <use
+           x="0"
+           xlink:href="#hsh_box_U"
+           id="use2282" />
+        <text
+           x="20"
+           y="14"
+           id="text2284">151</text>
+        <use
+           x="40"
+           xlink:href="#key_box_U"
+           id="use2286" />
+        <use
+           x="130"
+           xlink:href="#val_box_U"
+           id="use2288" />
+        <use
+           x="210"
+           xlink:href="#ptr_box_U"
+           id="use2290" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2292" />
+      </g>
+      <g
+         transform="translate(0,100)"
+         id="g2312">
+        <use
+           x="0"
+           xlink:href="#hsh_box_C"
+           id="use2296" />
+        <text
+           x="20"
+           y="14"
+           id="text2298">152</text>
+        <use
+           x="40"
+           xlink:href="#key_box_E"
+           id="use2300" />
+        <text
+           x="85"
+           y="14"
+           id="text2302">John Smith</text>
+        <use
+           x="130"
+           xlink:href="#val_box_E"
+           id="use2304" />
+        <text
+           x="170"
+           y="14"
+           id="text2306">521-1234</text>
+        <use
+           x="210"
+           xlink:href="#ptr_box_E"
+           id="use2308" />
+      </g>
+      <g
+         transform="translate(0,120)"
+         id="g2330">
+        <use
+           x="0"
+           xlink:href="#hsh_box_N"
+           id="use2314" />
+        <text
+           x="20"
+           y="14"
+           id="text2316">153</text>
+        <use
+           x="40"
+           xlink:href="#key_box_E"
+           id="use2318" />
+        <text
+           x="85"
+           y="14"
+           id="text2320">Ted Baker</text>
+        <use
+           x="130"
+           xlink:href="#val_box_E"
+           id="use2322" />
+        <text
+           x="170"
+           y="14"
+           id="text2324">418-4165</text>
+        <use
+           x="210"
+           xlink:href="#ptr_box_E"
+           id="use2326" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_N)"
+           id="line2328" />
+      </g>
+      <g
+         transform="translate(0,140)"
+         id="g2344">
+        <use
+           x="0"
+           xlink:href="#hsh_box_U"
+           id="use2332" />
+        <text
+           x="20"
+           y="14"
+           id="text2334">154</text>
+        <use
+           x="40"
+           xlink:href="#key_box_U"
+           id="use2336" />
+        <use
+           x="130"
+           xlink:href="#val_box_U"
+           id="use2338" />
+        <use
+           x="210"
+           xlink:href="#ptr_box_U"
+           id="use2340" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2342" />
+      </g>
+      <g
+         transform="translate(0,160)"
+         id="g2354">
+        <text
+           x="20"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2346">:</text>
+        <text
+           x="85"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2348">:</text>
+        <text
+           x="170"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2350">:</text>
+        <text
+           x="220"
+           y="14"
+           font-weight="bold"
+           fill="white"
+           id="text2352">:</text>
+      </g>
+      <g
+         transform="translate(0,180)"
+         id="g2368">
+        <use
+           x="0"
+           xlink:href="#hsh_box_U"
+           id="use2356" />
+        <text
+           x="20"
+           y="14"
+           id="text2358">253</text>
+        <use
+           x="40"
+           xlink:href="#key_box_U"
+           id="use2360" />
+        <use
+           x="130"
+           xlink:href="#val_box_U"
+           id="use2362" />
+        <use
+           x="210"
+           xlink:href="#ptr_box_U"
+           id="use2364" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2366" />
+      </g>
+      <g
+         transform="translate(0,200)"
+         id="g2386">
+        <use
+           x="0"
+           xlink:href="#hsh_box_N"
+           id="use2370" />
+        <text
+           x="20"
+           y="14"
+           id="text2372">254</text>
+        <use
+           x="40"
+           xlink:href="#key_box_E"
+           id="use2374" />
+        <text
+           x="85"
+           y="14"
+           id="text2376">Sam Doe</text>
+        <use
+           x="130"
+           xlink:href="#val_box_E"
+           id="use2378" />
+        <text
+           x="170"
+           y="14"
+           id="text2380">521-5030</text>
+        <use
+           x="210"
+           xlink:href="#ptr_box_E"
+           id="use2382" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_N)"
+           id="line2384" />
+      </g>
+      <g
+         transform="translate(0,220)"
+         id="g2400">
+        <use
+           x="0"
+           xlink:href="#hsh_box_U"
+           id="use2388" />
+        <text
+           x="20"
+           y="14"
+           id="text2390">255</text>
+        <use
+           x="40"
+           xlink:href="#key_box_U"
+           id="use2392" />
+        <use
+           x="130"
+           xlink:href="#val_box_U"
+           id="use2394" />
+        <use
+           x="210"
+           xlink:href="#ptr_box_U"
+           id="use2396" />
+        <line
+           x1="220"
+           y1="10"
+           x2="220.00101"
+           y2="10"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2398" />
+      </g>
+    </g>
+    <!-- Keys and hash function -->
+    <g
+       text-anchor="middle"
+       stroke="none"
+       id="g2222">
+      <text
+         x="45"
+         y="-10"
+         font-size="15px"
+         font-weight="bold"
+         fill="#000000"
+         stroke="none"
+         id="text2160"><tspan
+           style="fill:#ffffff"
+           id="tspan3534">keys</tspan></text>
+      <g
+         transform="translate(0,30)"
+         id="g2172">
+        <use
+           xlink:href="#key_box_C"
+           id="use2162" />
+        <text
+           x="45"
+           y="14"
+           stroke="none"
+           id="text2164">John Smith</text>
+        <line
+           x1="95"
+           y1="10"
+           x2="100"
+           y2="10"
+           stroke="#dd0000"
+           id="line2166" />
+        <line
+           x1="100"
+           y1="10"
+           x2="130"
+           y2="80"
+           stroke="#dd0000"
+           id="line2168" />
+        <line
+           x1="130"
+           y1="80"
+           x2="150"
+           y2="80"
+           stroke="#dd0000"
+           marker-end="url(#arrowtip_C)"
+           id="line2170" />
+      </g>
+      <g
+         transform="translate(0,70)"
+         id="g2184">
+        <use
+           xlink:href="#key_box_N"
+           id="use2174" />
+        <text
+           x="45"
+           y="14"
+           stroke="none"
+           id="text2176">Lisa Smith</text>
+        <line
+           x1="95"
+           y1="10"
+           x2="100"
+           y2="10"
+           stroke="#000000"
+           id="line2178"
+           style="stroke:#ffffff" />
+        <line
+           x1="100"
+           y1="10"
+           x2="130"
+           y2="-40"
+           stroke="#000000"
+           id="line2180"
+           style="fill:#ffffff;stroke:#ffffff" />
+      </g>
+      <g
+         transform="translate(0,110)"
+         id="g2196">
+        <use
+           xlink:href="#key_box_N"
+           id="use2186" />
+        <text
+           x="45"
+           y="14"
+           stroke="none"
+           id="text2188">Sam Doe</text>
+        <line
+           x1="95"
+           y1="10"
+           x2="100"
+           y2="10"
+           stroke="#000000"
+           id="line2190"
+           style="stroke:#ffffff" />
+        <line
+           x1="100"
+           y1="10"
+           x2="130"
+           y2="100"
+           stroke="#000000"
+           id="line2192"
+           style="stroke:#ffffff" />
+      </g>
+      <g
+         transform="translate(0,150)"
+         id="g2208">
+        <use
+           xlink:href="#key_box_C"
+           id="use2198" />
+        <text
+           x="45"
+           y="14"
+           stroke="none"
+           id="text2200">Sandra Dee</text>
+        <line
+           x1="95"
+           y1="10"
+           x2="100"
+           y2="10"
+           stroke="#dd0000"
+           id="line2202" />
+        <line
+           x1="100"
+           y1="10"
+           x2="130"
+           y2="-40"
+           stroke="#dd0000"
+           id="line2204" />
+        <line
+           x1="130"
+           y1="-40"
+           x2="150"
+           y2="-40"
+           stroke="#dd0000"
+           marker-end="url(#arrowtip_C)"
+           id="line2206" />
+      </g>
+      <g
+         transform="translate(0,190)"
+         id="g2220"
+         style="stroke:#ffffff">
+        <use
+           xlink:href="#key_box_N"
+           id="use2210"
+           style="stroke:#ffffff" />
+        <text
+           x="45"
+           y="14"
+           stroke="none"
+           id="text2212"
+           style="stroke:none">Ted Baker</text>
+        <line
+           x1="95"
+           y1="10"
+           x2="100"
+           y2="10"
+           stroke="#000000"
+           id="line2214"
+           style="stroke:#ffffff" />
+        <line
+           x1="100"
+           y1="10"
+           x2="130"
+           y2="-60"
+           stroke="#000000"
+           id="line2216"
+           style="stroke:#ffffff" />
+      </g>
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#RoundedArrow)"
+         d="m 130.17802,29.863223 h 15.28823"
+         id="path5198"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#RoundedArrow-2)"
+         d="m 129.91865,129.99037 h 15.28823"
+         id="path5198-8"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#RoundedArrow-6)"
+         d="M 129.55977,209.94855 H 144.848"
+         id="path5198-0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#RoundedArrow-6)"
+         d="m 370.1243,110.82625 30.86357,6.89047"
+         id="path5761"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <!-- Hash values and bucket array -->
+    <!-- Hash values and bucket array -->
+    <g
+       transform="translate(410)"
+       text-anchor="middle"
+       stroke="none"
+       id="g2422">
+      <text
+         x="95"
+         y="-30"
+         font-size="15px"
+         font-weight="bold"
+         fill="#000000"
+         stroke="none"
+         id="text2404"><tspan
+           style="fill:#ffffff"
+           id="tspan3538">overflow</tspan></text>
+      <text
+         x="95"
+         y="-10"
+         font-size="15px"
+         font-weight="bold"
+         fill="#000000"
+         stroke="none"
+         id="text2406"><tspan
+           style="fill:#ffffff"
+           id="tspan3540">entries</tspan></text>
+      <g
+         transform="translate(0,110)"
+         id="g2420">
+        <use
+           x="0"
+           xlink:href="#ptr_box_E"
+           id="use2408" />
+        <line
+           x1="10"
+           y1="10"
+           x2="10"
+           y2="10.001"
+           stroke="#000000"
+           marker-start="url(#linkdot_U)"
+           id="line2410" />
+        <use
+           x="20"
+           xlink:href="#key_box_E"
+           id="use2412" />
+        <text
+           x="65"
+           y="14"
+           id="text2414">Sandra Dee</text>
+        <use
+           x="110"
+           xlink:href="#val_box_E"
+           id="use2416" />
+        <text
+           x="150"
+           y="14"
+           id="text2418">521-9655</text>
+      </g>
+    </g>
+  </g>
+</svg>

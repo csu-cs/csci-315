@@ -1,0 +1,43 @@
+\begin{tikzpicture}
+	\ArrayLabel{}
+	\begin{scope}[array index/.append style={font=\sffamily,text depth=0.2ex}, node of array/.append style={minimum width=11mm, fill=MyPurple}]
+		\ArrayNode<size>{10}
+		\node[block] (firstEl) [fit=(prev)]{};
+		% \ArrayNode<type>{int}
+		\ArrayGroup{firstEl}{firstEl}{metadata}
+	\end{scope}
+	\setcounter{arrayIndex}{0}
+	
+	\ArrayNode{?}
+	\node[block] (firstArrayEl) [fit=(val)]{};
+	\ArrayNode{?}
+	\coordinate (heapBottom) at ([yshift=-1.5em] val.south);
+	\ArrayNodeSpan{7}
+	\ArrayNode{?}
+
+
+	\begin{scope}[on background layer]
+		\node[draw,fill=CSUslate, very thick,fit=(firstEl) (index) (groupLabel) (val) (\detokenize{el?}) (heapBottom)] (heapMembers) {};
+		% \node[north=of heapMembers]{Heap};
+		\node[anchor=south west, font=\it] at ([yshift=0pt] heapMembers.north west) {Heap};
+		\node[anchor=east] at ([yshift=0pt] heapMembers.north west) {$h$};
+		\node[anchor=west] at ([yshift=0pt] heapMembers.south east) {$n$};
+	\end{scope}
+
+	\begin{scope}[node of array/.append style={minimum width=14mm, font=\ttfamily\bfseries}]
+		\ArrayLabel[-1.51][-2]{}
+		%\ArrayNodeStack[CSUcyan][arr]{int}
+		%\ArrayNodeStack[CSUcyan][size]{10}
+
+		\ArrayNodeStack[CSUgold][arr]{}
+		% \ArrayGroupVerticleRight{val}{val}{Call\\Stack}
+		\fill (prev) circle(3pt);
+		\coordinate (ptrCircle) at (prev);
+		\draw[link, shorten >=1pt] (ptrCircle) to[bend right=30] (firstArrayEl);
+
+		\draw [densely dashed, very thick] ([xshift=0.5pt] val.north west) -- ([yshift=1.5em, xshift=0.5pt] val.north west);
+		\draw [densely dashed, very thick,] ([xshift=-0.5pt] val.north east) -- ([yshift=1.5em, xshift=-0.5pt] val.north east);
+
+		\node[anchor=south, font=\it, align=center] at ([yshift=1.5em] val.north) {Call\\Stack};
+	\end{scope}
+\end{tikzpicture}

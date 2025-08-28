@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="70 0 260 60" width="260" height="60">
+  <!-- Background -->
+  <!-- <rect x="70" y="0" width="260" height="60" fill="black"/> -->
+  <!-- Queue container -->
+  <!-- <rect x="100" y="5" width="200" height="50" stroke="white" fill="none" stroke-width="2"/> -->
+  <line x1="100" y1="5" x2="300" y2="5" stroke="white" stroke-width="2"/>
+  <line x1="100" y1="55" x2="300" y2="55" stroke="white" stroke-width="2"/>
+
+  <!-- Queue elements -->
+  <circle cx="125" cy="30" r="18" stroke="white" fill="#5eb6cd" stroke-width="2"/>
+  <circle cx="175" cy="30" r="18" stroke="white" fill="#5eb6cd" stroke-width="2"/>
+  <circle cx="225" cy="30" r="18" stroke="white" fill="#5eb6cd" stroke-width="2"/>
+  <circle cx="275" cy="30" r="18" stroke="white" fill="#5eb6cd" stroke-width="2"/>
+
+  <text x="125" y="30" fill="black" font-family="Arial" font-size="20" dominant-baseline="middle" dy=".08em" text-anchor="middle">D</text>
+  <text x="175" y="30" fill="black" font-family="Arial" font-size="20" dominant-baseline="middle" dy=".08em" text-anchor="middle">C</text>
+  <text x="225" y="30" fill="black" font-family="Arial" font-size="20" dominant-baseline="middle" dy=".08em" text-anchor="middle">B</text>
+  <text x="275" y="30" fill="black" font-family="Arial" font-size="20" dominant-baseline="middle" dy=".08em" text-anchor="middle">A</text>
+  
+  <!-- Enqueue arrow -->
+  <line x1="70" y1="30" x2="95" y2="30" stroke="white" stroke-width="2"/>
+  <polygon points="90,20 100,30 90,40" fill="white"/>
+  <!-- <text x="50" y="125" fill="white" font-family="Arial" font-size="14">enqueue</text> -->
+  
+  <!-- Dequeue arrow -->
+  <line x1="300" y1="30" x2="325" y2="30" stroke="white" stroke-width="2"/>
+  <polygon points="320,20 330,30 320,40" fill="white"/>
+  <!-- <text x="340" y="125" fill="white" font-family="Arial" font-size="14">dequeue</text> -->
+
+  <!-- Queue labels -->
+  <!--
+  <text x="190" y="95" fill="white" font-family="Arial" font-size="14">Queue</text>
+  <text x="115" y="75" fill="white" font-family="Arial" font-size="12">Front</text>
+  <text x="215" y="75" fill="white" font-family="Arial" font-size="12">Rear</text>
+-->
+</svg>
