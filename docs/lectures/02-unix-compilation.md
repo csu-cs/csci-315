@@ -253,14 +253,15 @@ See all options at
 ### Even More Compiler Warnings
 
 ``` Bash
-g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow greeting.cpp -o welcome
+g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wnull-dereference greeting.cpp -o welcome
 ```
 
 - `-Wall` all the warnings about constructions that some users consider questionable, and that are easy to avoid
 -  `-Wextra` some extra warning flags that are not enabled by `-Wall`
 - `-Wpedantic` warnings demanded by strict ISO C++
 - `-Wconversion` implicit conversions that may alter a value
-- `-Wshadow` whenever a local variable or type declaration shadows another variable, parameter, type, class member, etc.
+- `-Wshadow` when a local variable/type declaration shadows another variable, parameter, type, class member, etc.
+- `-Wnull-dereference` detect *some* null pointer dereferencing. 
 
 See all options at
 <https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html>
@@ -407,7 +408,7 @@ clean:
 ``` makefile
 # Make an object folder and put a .gitignore file in it.
 obj:
-  mkdir obj && echo *.o > obj/.gitignore
+  mkdir -p obj && echo *.o > obj/.gitignore
 
 # The thing to the right of | is an order-only rule
 obj/main.o: main.cpp | obj
@@ -425,13 +426,13 @@ main: obj/main.o obj/a.o obj/b.o
 
 ### Multi-Source Make
 
-- Commands can be anything; usually they are g++ to compile or link.
+- Commands can be anything; usually they are g++ commands to compile or link.
 
 - Commands can be multiline, use tabs
 
 - Other tools:
   - `makedepend` -- Finds dependencies for your program.
-  - `configure` -- Finds libraries your program make need.
+  - *GNU Autoconf* -- Generates a script for your project (`./configure`) that detects libraries your program may use and generates a make file.
 
 - We are going to focus only on `make` for this class.
 
