@@ -21,9 +21,8 @@ After studying this lecture, students should be able to:
   - Diagnose common compiler and linker errors.
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/0Tfb_EXSrAo?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/GraM3jlYrIM?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
-
 
 ## Linux Philosophy
 
