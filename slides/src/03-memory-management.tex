@@ -715,22 +715,6 @@ int *ptr = a;
 \end{lstlisting}
 \end{itemize}
 
-
-
-% \begin{tabularx}{1\textwidth}{r *{5}{>{\centering\arraybackslash}X}}
-%   & \texttt{a[0]} & \texttt{a[1]} & \texttt{a[2]} & \texttt{a[3]} & \texttt{a[4]}\\
-%   \cline{2-6}
-%     \lstinline{a} $\rightarrow$ &
-%     \multicolumn{1}{|c}{-1} &
-%     \multicolumn{1}{|c}{-2} &
-%     \multicolumn{1}{|c}{-3} &
-%     \multicolumn{1}{|c}{\textbf{400}} &
-%     \multicolumn{1}{|c|}{-5} \\
-%   \cline{2-6}
-%   & $\uparrow$ & & $\uparrow$ & $\uparrow$ & $\uparrow$\\
-%   & \lstinline{ptr} & & \lstinline{(ptr + 2)} & \lstinline{(ptr + 3)} & \lstinline{(ptr + 4)}\\
-% \end{tabularx}
-
 \centerline{%
   \begin{tikzpicture}[node of array/.append style={minimum width=24mm}, label of array el/.style={font=\ttfamily}]
     \ArrayLabel{a}
@@ -751,6 +735,13 @@ int *ptr = a;
   }%
   \onslide<2>{}
 \end{frame}
+
+\begin{frame}{Pointer Arithmetic}
+  \begin{center}\Large
+  Let's look at another example using pointer arithmetic.
+\end{center}
+\end{frame}
+
 
 \section{Memory Errors}
 
@@ -1002,6 +993,7 @@ delete q;    // Frees the heap memory.
 \begin{center}\Large
 Check your understanding with the \href{https://csu-cs.github.io/csci-315/lectures/03-memory-management\#review-questions}{posted review questions} (not for a grade).
 
+\vspace{1em}
 Then, complete Lab 3 (on Blackboard).
 \end{center}
 \end{frame}
