@@ -98,7 +98,7 @@ function sidebarNotes() {
 			]
 		},
 		{
-			text: 'Memory and Pointers',
+			text: 'Memory, Pointers, & Testing',
 			collapsed: true,
 			items: [
 				{ text: "Memory Management", link: "/lectures/03-memory-management" },

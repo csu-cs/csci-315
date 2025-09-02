@@ -75,6 +75,12 @@ std::cout << &score; // score's address.
 \end{enumerate}
 \end{frame}
 
+\begin{frame}{A Review of C++ References \& Aliases}
+  \begin{center}\Large
+  Let's test out some example code for aliases and references.
+\end{center}
+\end{frame}
+
 \section{Static Data}
 
 \begin{frame}{The 3 Memory Sections (for Data Storage)}
@@ -229,6 +235,13 @@ $sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
 \end{columns}
 \end{frame}
 
+\begin{frame}{Stack Resuse}
+  \begin{center}\Large
+  Let's look at an example side effect of not initializing variables on the stack.
+\end{center}
+\end{frame}
+
+
 \begin{frame}{Stack Overflow}
 \begin{columns}
 \column{0.67\textwidth}
@@ -261,7 +274,7 @@ $sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
   \item
     Dynamic variables are created at runtime instead of at compile-time.
   \item
-    The kind of data found on the heap is language dependant.
+    The kind of data found on the heap is language-dependant.
 
     \begin{itemize}
     \item
@@ -351,7 +364,7 @@ int main()
 \end{columns}
 \end{frame}
 
-\begin{frame}{Heap Management Functions}
+\begin{frame}{Heap Management Operations}
 \begin{columns}
 \column{0.67\textwidth}
   \begin{itemize}[<+->]
@@ -384,7 +397,7 @@ int main()
 \end{columns}
 \end{frame}
 
-\begin{frame}{Heap Management Functions}
+\begin{frame}{Heap Management Operations}
 \begin{columns}
 \column{0.67\textwidth}
   \begin{itemize}[<+->]
@@ -400,6 +413,12 @@ int main()
 \column{0.3\textwidth}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
+\end{frame}
+
+\begin{frame}{Heap Fragmentation Example}
+  \begin{center}\Large
+  Let's look at an example of how the heap can become fragmented.
+\end{center}
 \end{frame}
 
 \section{Pointers}
@@ -444,7 +463,7 @@ Let's create and test out some more pointers.
 
 \begin{itemize}[<+->]
 \item
-  In Java, arrays are always allocated dynamically from heap memory.
+  In Java, arrays are always allocated dynamically \\from heap memory.
 \item
   In many other languages, including C++:\\
   \begin{tabular}{l @{ -- } l}
@@ -589,9 +608,9 @@ int *intPtr = new int[5]; // heap
 \end{lstlisting}
 \item
   Typical Java array declarations:
-  \begin{lstlisting}
+  \begin{lstlisting}[language=Java]
 int[] arr = new int[5];
-double[][] arr1 = new double [10][5];
+double[][] arr1 = new double[10][5];
 Object[] arr2 = new Object[100];
 \end{lstlisting}
 \end{itemize}
@@ -599,7 +618,7 @@ Object[] arr2 = new Object[100];
 
 \begin{frame}{Allocation of Stack and Heap Space for an Array}
 \begin{center}
-\lstinline{int *arr = new int[10];}\\\vspace{1em}
+\lstinline{int *pArr = new int[10];}\\\vspace{1em}
 
 \input{../imgs/memory-management/memory-allocation-heap-array.tex}
 \end{center}
@@ -764,7 +783,7 @@ Using the above statements will result in a \textit{segmentation fault} or undef
 \begin{frame}[fragile]{Memory Leaks}
 
 
-Memory leak is when you remove the reference to the memory block,
+Memory leak is when you remove the reference to the memory block
 before deleting the block itself.\vspace{1em}
 
 Example:
@@ -777,7 +796,7 @@ p = nullptr; // p points to null.
 \begin{itemize}[<+->]
 \item
   Result?
-\item\textbf{Memory Leek! (Orphan Blocks)}\\
+\item\textbf{Memory Leak! (Orphan Blocks)}\\
   Must free memory block before changing reference.
 \end{itemize}
 \end{frame}
@@ -792,7 +811,7 @@ p = nullptr; // p points to null.
   Eventually, in the worst case, too much of the available memory
   may become allocated
 \item
-  and all or part of the system or devices stops working correctly,
+  and all or part of the system or device stops working correctly,
   the application fails, or the system slows down.
 \end{itemize}
 \end{frame}
@@ -803,7 +822,7 @@ p = nullptr; // p points to null.
   memory leaks.\\
   Reference the \href{https://valgrind.org/docs/manual/manual.html}{Valgrind User Manual}, 
   \href{https://valgrind.org/docs/manual/quick-start.html}{The Valgrind Quick Start Guide}, or 
-  a \href{https://valgrind.org/downloads/guis.html}{Graphical User Interfaces}.
+  \href{https://valgrind.org/downloads/guis.html}{Graphical User Interfaces}.
   
   * This is why the \texttt{-g} flag is used when debugging!
 \end{block}
@@ -813,7 +832,8 @@ p = nullptr; // p points to null.
 
 \begin{itemize}
 \item
-  A second problem can occur when multiple pointers are assigned to a block of heap memory.
+  A second problem can occur when multiple \\
+  pointers are assigned to a block of heap memory.
 \item
   The block may be deleted and one of the pointers set to \textit{null},
   but the other pointers still exist.
@@ -846,15 +866,15 @@ delete q;    // Frees the heap memory.
 
 \section{Garbage Collection}
 \begin{frame}{Memory Leaks and Garbage Collection}
-  The popularity of \textit{object-oriented programming} has meant more emphasis
-  on heap storage management.\\[1em]
+  The popularity of \textit{object-oriented programming} has \\ led to an
+  emphasis on heap storage management.\\[1em]
 
   Objects are considered active or inactive.
   \begin{itemize}
   \item
     \emph{Active} objects: blocks \textit{accessible} through a pointer or reference.
   \item
-    \emph{Inactive} objects: \textit{inaccessible} blocks; no reference exists (also called (\emph{orphans} or \emph{garbage}).
+    \emph{Inactive} objects: \textit{inaccessible} blocks; no reference exists (also called \emph{orphans} or \emph{garbage}).
   \end{itemize}
 
   The terms \textit{accessible} and \textit{inaccessible} may be more figurative than objectively true.
@@ -877,17 +897,17 @@ delete q;    // Frees the heap memory.
 
 \begin{itemize}[<+->]
 \item
-  C \& C++ leave it to the programmer --- if an unused storage block
-  isn't explicitly freed by, it becomes garbage.
+  C \& C++ leave it to the programmer --- if an unused \\
+  storage block isn't explicitly freed, it becomes \\garbage.
   \begin{itemize}
   \item
-    You can get C++ garbage collectors, but they aren't standard.
+    You can use non-standard C++ garbage collectors.
   \end{itemize}
 \item
-  Java, Python, Perl, and other scripting languages perform garbage collection.
+  Java, C\#, Python, JavaScript, Perl, and most scripting languages perform garbage collection.
   \begin{itemize}
   \item
-    Python, etc.\ also have automatic allocation, so the ``new'' operator is not needed).
+    Have automatic allocation, so the ``new'' operator is not needed.
   \end{itemize}
 \item
   Garbage collection was pioneered by languages like
@@ -929,7 +949,7 @@ delete q;    // Frees the heap memory.
 
 \begin{frame}{Allocation of Stack and Heap Space for an Array}
 \begin{center}
-  \lstinline{int *arr = new int[10];}\\\vspace{1em}
+  \lstinline{int *pArr = new int[10];}\\\vspace{1em}
 
   % \includegraphics[width=0.8\textwidth]{memory-allocation-heap}%
   \input{../imgs/memory-management/memory-allocation-heap-array.tex}%
@@ -980,7 +1000,9 @@ delete q;    // Frees the heap memory.
 
 \begin{frame}{Lab 3: Pointers}
 \begin{center}\Large
-Let's take a look at Lab 3 (on Blackboard).
+Check your understanding with the \href{https://csu-cs.github.io/csci-315/lectures/03-memory-management\#review-questions}{posted review questions} (not for a grade).
+
+Then, complete Lab 3 (on Blackboard).
 \end{center}
 \end{frame}
 

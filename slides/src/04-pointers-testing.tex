@@ -209,7 +209,7 @@ struct Dog {
 \end{columns}
 \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule-60pt} 
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-int main(int argc, char *argv[]) {
+int main() {
   Dog myPet {"Bella", "German Shepherd", 7};
   Dog *pFriend = new Dog {"Rocky", "Poodle", 2};
 
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]) {
 
 int foo() { return 4; }
 
-int main(int argc, char *argv[])
+int main()
 {
   // Display functions memory address.
   // Cast to void pointer to ensure the address is properly displayed.

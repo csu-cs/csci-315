@@ -25,16 +25,16 @@ More with Pointers and Unit Testing
 
 ### Pointers to Stack Memory
 
-|  |  |
+|    |    |
 |:---|:---|
 | `int num = 32;` | Declare an `int` variable on the stack and set to `32`. |
 | `int *ptr;` | Declare a variable `ptr` to store the memory address of where an `int` resides. |
-| `ptr = \&num;` | `\&num` gets the memory address of `num`. Stores the memory address of `num` in `ptr`. |
+| `ptr = &num;` | `&num` gets the memory address of `num`. Stores the memory address of `num` in `ptr`. |
 | `*ptr = 64;` | Go to where `ptr` is pointing (`*`) and store `64` there. Since `ptr` is pointing to `num`, `num` now has `64`. |
 
 ### Pointer to Heap Memory
 
-|  |  |
+|    |    |
 |:---|:---|
 | `int *a;` | Create a variable `a` on the stack that will store the memory address of an integer. |
 | `a = new int;` | Allocate an `int` in memory and store the memory address of that `int` in `a`. |
@@ -47,16 +47,15 @@ More with Pointers and Unit Testing
 |                    |                                                        |
 |:-------------------|:-------------------------------------------------------|
 | `int ary[100];`    | Create an array of 100 integerson the stack.           |
-| `int *pAry = ary;` | Create a pointer to the array.Note: `\&` was not used. |
+| `int *pAry = ary;` | Create a pointer to the array.Note: `&` was not used. |
 
   
 The following four statements are equivalent.  
 
-|                  |     |                      |
-|-----------------:|:----|---------------------:|
-|  `ary[10] = 50;` |     |  `*(ary + 10) = 50;` |
-|                  |     |                      |
-| `pAry[10] = 50;` |     | `*(pAry + 10) = 50;` |
+|                  |                      |
+|-----------------:|---------------------:|
+|  `ary[10] = 50;` |  `*(ary + 10) = 50;` |
+| `pAry[10] = 50;` | `*(pAry + 10) = 50;` |
 
   
 
@@ -147,7 +146,8 @@ Pointers to instances of `struct`s and `class`es work the same as with
 primitive types (e.g., `int`).
 
 ```
-struct Dog {
+struct Dog
+{
   std::string name;
   std::string breed;
   int yearsOld;
@@ -155,7 +155,8 @@ struct Dog {
 ```
 
 ```
-int main(int argc, char *argv[]) {
+int main()
+{
   Dog myPet {"Bella", "German Shepherd", 7};
   Dog *pFriend = new Dog {"Rocky", "Poodle", 2};
 
@@ -208,7 +209,7 @@ int main(int argc, char *argv[]) {
 
 int foo() { return 4; }
 
-int main(int argc, char *argv[])
+int main()
 {
   // Display functions memory address.
   // Cast to void pointer to ensure the address is properly displayed.
@@ -269,7 +270,7 @@ Meaning, you will spend less time working on problems because you will
 - [The Halting Problem](https://en.wikipedia.org/wiki/Halting_problem):
   Alan Turing proved that it is impossible for a computer to determine
   if any program halts (finishes).  
-  ([see Explanation on YouTube.](https://youtu.be/92WHN-pAFCs?t=14))
+  ([See Explanation on YouTube.](https://youtu.be/92WHN-pAFCs?t=14))
 
 - If we don’t know if it halts, how can we test?
 
