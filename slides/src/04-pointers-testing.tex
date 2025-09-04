@@ -27,14 +27,14 @@
 \item Objects in C++ share many similarities with Java, \\
   but are considered more powerful:
 \begin{itemize}
-\item They can be created on the stack.
+\item In C++, objects can be on the stack.
 \item C++ allows multiple inheritance.
 \begin{itemize}
-\item no need for the interface keyword.
+\item no need for the \lstinline[language=Java]{interface} keyword.
 \end{itemize}
 \item Templates act like generics, except they are a compile-time construct, not run time.
 \end{itemize}
-\item Remember, C++ is compiled to machine code; Java compiles to byte code!
+\item Remember, C++ is compiled to machine code; \\Java compiles to byte code!
 \end{itemize}
 \end{frame}
 
@@ -44,9 +44,9 @@
 \begin{frame}[fragile]{Pointers to Stack Memory}
 \renewcommand{\arraystretch}{1.5}
 \begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}}l >{\small}X}
-  \lstinline{int num = 32;} & Declare an \lstinline{int} variable on the stack and set to \lstinline{32}.
+  \lstinline{int num \{32\};} & Declare an \lstinline{int} variable on the stack and set to \lstinline{32}.
     \onslide<2->\\
-  \lstinline{int *ptr;}   & Declare a variable \lstinline{ptr} to store the memory address of where an \lstinline{int} resides.
+  \lstinline{int *ptr \{\};}   & Declare a variable \lstinline{ptr} to store the memory address of where an \lstinline{int} resides.
     \onslide<3->\\
   \lstinline{ptr = \&num;}   & \lstinline{\&num} gets the memory address of \lstinline{num}.\newline
   Stores the memory address of \lstinline{num} in \lstinline{ptr}.
@@ -69,19 +69,19 @@
 % \item
 % \end{itemize}
 \end{frame}
-
+f
 %\setbeamercovered{invisible}
 \begin{frame}{Pointer to Heap Memory}
 \renewcommand{\arraystretch}{1.5}
 \begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}}l >{\small}X}
-  \lstinline{int *a;}
-    & Create a variable \lstinline{a} on the stack that will store the memory address of an integer.\onslide<2->\\
-  \lstinline{a = new int;}
+  \lstinline{int *a {};}
+    & Create a variable \lstinline{a} on the stack that will \newline{} store the memory address of an integer.\onslide<2->\\
+  \lstinline{a = new int \{\};}
     & Allocate an \lstinline{int} in memory and store the memory address of that \lstinline{int} in \lstinline{a}.\onslide<3->\\
   \lstinline{*a = 5;}
     & Manipulate the new \lstinline{int} just like before.\onslide<4->\\
   \lstinline{delete a;}
-    & Because the integer is on the heap, you must de-allocate!\onslide<5->\\
+    & Must deallocate because the \lstinline{int} is in the heap!\onslide<5->\\
   \lstinline{a = nullptr;}
     & After \lstinline{delete}, reassign the pointer to \lstinline{nullptr} (best practice).\onslide\\
 \end{tabularx}
@@ -92,7 +92,7 @@
 \begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}}l X}
   \lstinline{int ary[100];}
     & Create an array of 100 integers\newline on the stack.\\
-  \lstinline{int *pAry = ary;}
+  \lstinline{int *pAry {ary};}
     & Create a pointer to the array.\newline Note: \lstinline{\&} was not used.\\
 \end{tabularx}\\[1em]
 \pause
@@ -110,7 +110,7 @@ The following four statements are equivalent.\\
 
 \begin{frame}[fragile]{Arrays}
 \begin{itemize}
-\item In Java, arrays are actually objects that store length and other information.
+\item In Java, arrays are actually objects that store length \\and other information.
 \item In C++, an array is a sequence list of data. (Nothing else is stored.)
 
 \item These are valid declarations in C++, but not in Java. Why?
@@ -126,11 +126,11 @@ Button b[20]; // Create 20 Buttons
 \item In C++, pointers and arrays have a close relationship.
 \item Instead of \lstinline{int x[20];}\\
 we can can write \\
-\lstinline{int *x = new int[20];} \\
+\lstinline{int *pX = new int[20];} \\
 to allow for dynamic allocation.
 \begin{itemize}
-\item Usage of the array (e.g., \lstinline{x[3] = 5;}) identical in both cases
-\item To deallocate, use \lstinline{delete[] x;}
+\item Usage of the array (e.g., \lstinline{x[3] = 5;} and \lstinline{pX[3] = 5;}) are identical in both cases.
+\item To deallocate, use \lstinline{delete[] pX;}
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -177,8 +177,8 @@ to allow for dynamic allocation.
 
 C++ is incredibly powerful, because of casting.\\
 \begin{lstlisting}
-int num = 300;
-int* const pInt = &num;
+int num {300};
+int* const pInt {&num}; // pointer is const
 float* const pFloat = reinterpret_cast<float*>(pInt);
 *pFloat = 3.14159; // undefined behavior
 std::cout << "*pFloat = " << *pFloat;
@@ -195,10 +195,10 @@ std::cout << "\n    num = " << num << '\n';
 
 \begin{frame}[fragile]{Pointers to Objects}
 \begin{columns}
-\column{0.55\textwidth}
+\column{0.53\textwidth}
 Pointers to instances of \lstinline{struct}s and \lstinline{class}es
 work the same as with primitive types (e.g., \lstinline{int}).
-\column{0.35\textwidth}
+\column{0.37\textwidth}
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily, xleftmargin=0pt]
 struct Dog {
   std::string name;
@@ -208,7 +208,7 @@ struct Dog {
 \end{lstlisting}
 \end{columns}
 \begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule-60pt} 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, firstline=6]
 int main() {
   Dog myPet {"Bella", "German Shepherd", 7};
   Dog *pFriend = new Dog {"Rocky", "Poodle", 2};
@@ -254,10 +254,12 @@ int main() {
     The function can be called by dereferencing the function pointer.
   \item
     Function pointers can be passed as parameters to other functions.
+    \begin{itemize}
+      \item 
+        Commonly used in \href{https://en.wikipedia.org/wiki/Callback_(computer_programming)}{callbacks}.
+    \end{itemize}
   \item
     Functions can return function pointers.
-  \item
-    Commonly used in \href{https://en.wikipedia.org/wiki/Callback_(computer_programming)}{callbacks}.
 \end{itemize}
 \end{frame}
 

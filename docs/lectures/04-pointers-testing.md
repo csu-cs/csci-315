@@ -10,11 +10,11 @@ More with Pointers and Unit Testing
 - Objects in C++ share many similarities with Java,  
   but are considered more powerful:
 
-  - They can be created on the stack.
+  - In C++, objects can be on the stack.
 
   - C++ allows multiple inheritance.
 
-    - no need for the interface keyword.
+    - no need for the `interface` keyword.
 
   - Templates act like generics, except they are a compile-time
     construct, not run time.
@@ -27,37 +27,35 @@ More with Pointers and Unit Testing
 
 |    |    |
 |:---|:---|
-| `int num = 32;` | Declare an `int` variable on the stack and set to `32`. |
-| `int *ptr;` | Declare a variable `ptr` to store the memory address of where an `int` resides. |
-| `ptr = &num;` | `&num` gets the memory address of `num`. Stores the memory address of `num` in `ptr`. |
-| `*ptr = 64;` | Go to where `ptr` is pointing (`*`) and store `64` there. Since `ptr` is pointing to `num`, `num` now has `64`. |
+| `int num {32};` | Declare an `int` variable on the stack and set to `32`. |
+| `int *ptr {};`  | Declare a variable `ptr` to store the memory address of where an `int` resides. |
+| `ptr = &num;`   | `&num` gets the memory address of `num`. Stores the memory address of `num` in `ptr`. |
+| `*ptr = 64;`    | Go to where `ptr` is pointing (`*`) and store `64` there. Since `ptr` is pointing to `num`, `num` now has `64`. |
 
 ### Pointer to Heap Memory
 
 |    |    |
 |:---|:---|
 | `int *a;` | Create a variable `a` on the stack that will store the memory address of an integer. |
-| `a = new int;` | Allocate an `int` in memory and store the memory address of that `int` in `a`. |
+| `a = new int{};` | Allocate an `int` in memory and store the memory address of that `int` in `a`. |
 | `*a = 5;` | Manipulate the new `int` just like before. |
-| `delete a;` | Because the integer is on the heap, you must de-allocate! |
+| `delete a;` | Must deallocate because the `int` is in the heap! |
 | `a = nullptr;` | After `delete`, reassign the pointer to `nullptr` (best practice). |
 
 ### Arrays with Pointer Arithmetic
 
-|                    |                                                        |
+| Declaration        | Description                                            |
 |:-------------------|:-------------------------------------------------------|
-| `int ary[100];`    | Create an array of 100 integerson the stack.           |
-| `int *pAry = ary;` | Create a pointer to the array.Note: `&` was not used. |
+| `int ary[100];`    | Create an array of 100 integers the stack.           |
+| `int *pAry {ary};` | Create a pointer to the array. Note: `&` was not used. |
 
   
-The following four statements are equivalent.  
+Given the above declarations, the following four statements are equivalent.
 
-|                  |                      |
+| Square Brackets  | Pointer Arithmetic   |
 |-----------------:|---------------------:|
 |  `ary[10] = 50;` |  `*(ary + 10) = 50;` |
 | `pAry[10] = 50;` | `*(pAry + 10) = 50;` |
-
-  
 
 ### Arrays
 
@@ -79,12 +77,12 @@ The following four statements are equivalent.
 
 - Instead of `int x[20];`  
   we can can write  
-  `int *x = new int[20];`  
+  `int *pX = new int[20];`  
   to allow for dynamic allocation.
 
-  - Usage of the array (e.g., `x[3] = 5;`) identical in both cases
+  - Usage of the array (e.g., `x[3] = 5;` and `pX[3] = 5`) are identical in both cases.
 
-  - To deallocate, use `delete[] x;`
+  - To deallocate, use `delete[] pX;`
 
 ## Constants
 
@@ -128,33 +126,31 @@ two types of const-ness.
 C++ is incredibly powerful, because of casting.  
 
 ```cpp
-int num = 300;
-int* const pInt = &num;
+int num {300};
+int* const pInt {&num}; // pointer is const
 float* const pFloat = reinterpret_cast<float*>(pInt);
-*pFloat = 3.14159; // undefined behavior
+*pFloat = 3.14159; // undefined behavior // [!code error]
 std::cout << "*pFloat = " << *pFloat;
 std::cout << "\n    num = " << num << '\n';
 ```
 
 - Yes, that is “legal.”
 
-- The value of `num` is !
+- The value of `num` is **undefined**!
 
 ### Pointers to Objects
 
 Pointers to instances of `struct`s and `class`es work the same as with
 primitive types (e.g., `int`).
 
-```
+```cpp
 struct Dog
 {
   std::string name;
   std::string breed;
   int yearsOld;
 };
-```
 
-```
 int main()
 {
   Dog myPet {"Bella", "German Shepherd", 7};
@@ -172,12 +168,18 @@ int main()
 
 ### Pointers to Objects
 
-- In Java, a pointer is called a reference to an object:  
-  `String str = new String("Hello!");`
+- In Java, a pointer is called a reference to an object:
+
+  ```java
+  String str = new String("Hello!");
+  ```
 
 - In C++, a pointer stores the memory location of something else. For
-  objects:  
-  `std::string *str = new std::string("Hello!");`
+  objects:
+
+  ```cpp
+  std::string *str = new std::string("Hello!");
+  ```
 
 ### Pointers to Objects: A Simple Explanation
 
@@ -196,11 +198,10 @@ int main()
 - The function can be called by dereferencing the function pointer.
 
 - Function pointers can be passed as parameters to other functions.
+  - Commonly used in
+    [callbacks](https://en.wikipedia.org/wiki/Callback_(computer_programming)).
 
 - Functions can return function pointers.
-
-- Commonly used in
-  [callbacks](https://en.wikipedia.org/wiki/Callback_(computer_programming)).
 
 ### Function Pointers
 
@@ -270,7 +271,13 @@ Meaning, you will spend less time working on problems because you will
 - [The Halting Problem](https://en.wikipedia.org/wiki/Halting_problem):
   Alan Turing proved that it is impossible for a computer to determine
   if any program halts (finishes).  
-  ([See Explanation on YouTube.](https://youtu.be/92WHN-pAFCs?t=14))
+  Watch this explanation video.
+
+  <div class="youtube">
+  <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/92WHN-pAFCs?start=14&amp;rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+  </div>
+
+  -  Optionally, check out this related video: [Math's Fundamental Flaw](https://www.youtube.com/watch?v=HeQX2HjkcNo). This video is optional to watch, but fascinating.
 
 - If we don’t know if it halts, how can we test?
 

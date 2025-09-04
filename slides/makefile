@@ -11,7 +11,7 @@ all: $(PDFS)
 
 $(BUILD_DIR)/%.pdf: $(SRC_DIR)/%.tex $(SRC_DIR)/csu-theme.sty
 	pdflatex.exe -halt-on-error -output-directory=objs -include-directory=./src $(<F)
-	pdflatex.exe -halt-on-error -output-directory=objs -include-directory=./src $(<F)
+	# pdflatex.exe -halt-on-error -output-directory=objs -include-directory=./src $(<F)
 	mv -f objs/$(@F) "$(BUILD_DIR)/$(@F)"
 	SumatraPDF.exe $(BUILD_DIR)/$(@F) -view "single page" -zoom "fit page" -reuse-instance || true
 
