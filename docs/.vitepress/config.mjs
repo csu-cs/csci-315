@@ -102,7 +102,8 @@ function sidebarNotes() {
 			collapsed: true,
 			items: [
 				{ text: "Memory Management", link: "/lectures/03-memory-management" },
-				{ text: "Pointers and Testing", link: "/lectures/04-pointers-testing" },
+				{ text: "More with Pointers", link: "/lectures/04-pointers" },
+				{ text: "Testing and Unit Tests", link: "/lectures/04-testing" },
 			]
 		},
 		{

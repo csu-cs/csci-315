@@ -118,7 +118,7 @@ The weekly schedule is subject to change.
 |  1A  | [Introduction](/lectures/01-introduction), [Unix Commands](/lectures/01-basic-unix) | Lab 01                |
 |  1B  | [C++ Compilation is Linux](/lectures/02-unix-compilation)  | Lab 02                |
 |  2A  | [Memory Management](/lectures/03-memory-management) | Lab 03                |
-|  2B  | [Pointers and Testing](/lectures/04-pointers-testing) | Lab 04, 05, & Ethics  |
+|  2B  | [Pointers](/lectures/04-pointers), [Testing](/lectures/04-testing) | Lab 04, 05, & Ethics  |
 |  3A  | [C++ Object-Oriented Programming](/lectures/05-oop) |                       |
 |  3B  | [Operator Overloading and Templates](/lectures/06-operator-overloading-templates)  | Lab 06                |
 |  4A  | [Performance Analysis](/lectures/07-performance-analysis) | Lab 07                |

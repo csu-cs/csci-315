@@ -7,7 +7,8 @@
 
 ## Memory and Pointers
 - [Memory Management](/lectures/03-memory-management)
-- [Pointers and Testing](/lectures/04-pointers-testing)
+- [More with Pointers](/lectures/04-pointers)
+- [Testing and Unit Testing](/lectures/04-testing)
 
 ## C++ Object-Oriented Programming
 - [C++ Object-Oriented Programming](/lectures/05-oop)
