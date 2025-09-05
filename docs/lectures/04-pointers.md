@@ -110,7 +110,7 @@ two types of const-ness.
   `const int * const ptr;`  
   `int const * const ptr;`
 
-## Object Pointers
+## Casting Pointers
 
 ### In C++, a pointer can point to anything.
 
@@ -119,7 +119,8 @@ two types of const-ness.
 - Other pointers
 - Objects
 - Functions
-- Something nonspecific
+- Something nonspecific  (`void *`).  
+  Void pointers are more useful in C but should be avoided in C++.
 
 ### Casting
 
@@ -138,7 +139,7 @@ std::cout << "\n    num = " << num << '\n';
 
 - The value of `num` is **undefined**!
 
-### Pointers to Objects
+## Pointers to Objects
 
 Pointers to instances of `struct`s and `class`es work the same as with
 primitive types (e.g., `int`).
@@ -166,8 +167,6 @@ int main()
 }
 ```
 
-### Pointers to Objects
-
 - In Java, a pointer is called a reference to an object:
 
   ```java
@@ -181,15 +180,11 @@ int main()
   std::string *str = new std::string("Hello!");
   ```
 
-### Pointers to Objects: A Simple Explanation
-
 - In Java, pointers only exist for objects.
 
 - In C++, a pointer may point to anything.
 
 ## Function Pointers
-
-### Function Pointers
 
 - A ***pointer*** is a variable that stores the address of something.
 
@@ -202,8 +197,6 @@ int main()
     [callbacks](https://en.wikipedia.org/wiki/Callback_(computer_programming)).
 
 - Functions can return function pointers.
-
-### Function Pointers
 
 ```cpp
 #include <iostream>
@@ -228,23 +221,6 @@ int main()
   return 0;
 }
 ```
-
-### There is more
-
-Pointers can point to many things.
-
-- Primitives
-
-- Arrays
-
-- Other pointers
-
-- Objects
-
-- Functions
-
-- Something nonspecific (`void *`).  
-  Void pointers are more useful in C but should be avoided in C++.
 
 ## Lab 4: Pointers
 
