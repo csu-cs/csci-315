@@ -69,12 +69,12 @@
 % \item
 % \end{itemize}
 \end{frame}
-f
+
 %\setbeamercovered{invisible}
 \begin{frame}{Pointer to Heap Memory}
 \renewcommand{\arraystretch}{1.5}
 \begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}}l >{\small}X}
-  \lstinline{int *a {};}
+  \lstinline|int *a \{\};|
     & Create a variable \lstinline{a} on the stack that will \newline{} store the memory address of an integer.\onslide<2->\\
   \lstinline{a = new int \{\};}
     & Allocate an \lstinline{int} in memory and store the memory address of that \lstinline{int} in \lstinline{a}.\onslide<3->\\
@@ -92,7 +92,7 @@ f
 \begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}}l X}
   \lstinline{int ary[100];}
     & Create an array of 100 integers\newline on the stack.\\
-  \lstinline{int *pAry {ary};}
+  \lstinline{int *pAry \{ary\};}
     & Create a pointer to the array.\newline Note: \lstinline{\&} was not used.\\
 \end{tabularx}\\[1em]
 \pause
