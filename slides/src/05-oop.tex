@@ -68,7 +68,7 @@ class ClassIdentifier
   \item \lstinline{public}: accessible outside the class.
   \item \lstinline{private}: cannot be accessed outside the class.
   \item \lstinline{protected}: access for the class and its subclasses.
-  \item \lstinline{friend}: grant member-level access to non-member functions or classes. Use sparingly (or not at all); this reduces encapsulation and increase coupling.
+  \item \lstinline{friend}: grant member-level access to non-member functions or classes. Use sparingly (or not at all); this reduces encapsulation and increases coupling.
   \end{itemize}
 \end{frame}
 
@@ -96,7 +96,7 @@ class ClassIdentifier
 \item
   Classes and structs have the same capabilities.
 \item
-  Use \lstinline{struct} if all member variables of a class are public and especially if there are no member functions (``plain old data'').
+  Use a \lstinline{struct} if all member variables of a class are public and especially if there are no member functions (``plain old data'').
 \end{itemize}
 \end{frame}
 
@@ -152,7 +152,7 @@ void AClass::size(int size)
     Typically, each class declaration is in its own \texttt{.hpp} file.
     \begin{itemize}
     \item
-      Avoid including this code multiple times in a program,
+      Avoid including this code multiple times in a program
       by using preprocessor directives to check for a unique definition.\\[0.5em]
       \texttt{MyClass.hpp}
       \begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
@@ -182,7 +182,7 @@ void AClass::size(int size)
     Most accessors should be constant.
   \end{itemize}
 \item[\textbf{\textcolor{white}{Static}}:]<+->
-  does \textbf{not} have access to non-static members.\\Does not have access to the \texttt{this} pointer.
+  does \textbf{not} have access to non-static members.\\Does not have access to the \lstinline{this} pointer.
 \end{description}
 \end{frame}
 
@@ -197,7 +197,7 @@ void AClass::size(int size)
   \begin{itemize}
     \item Use the keyword \lstinline{static} to declare a function or variable of a class as static.
     \item No object is needed to access a static member.
-    \item Static methods do not have access not no-static members.
+    \item Static methods do not have access to non-static members.
     \item All objects of a class share any static member of the class.
   \end{itemize}
 \end{itemize}
@@ -360,7 +360,7 @@ AClass::~AClass()
 The \emph{copy constructor} and \emph{assignment operator} define the semantics of \lstinline{a = b}.
 \begin{itemize}
   \item<2->
-    The \textit{copy constructor} defines how a \emph{new} object created as a copy of an existing object (e.g., when function parameters are passed).
+    The \textit{copy constructor} defines how a \emph{new} object is created as a copy of an existing object (e.g., when function parameters are passed).
   \item<3->
     More low-level control is available (e.g., performing a deep copy instead of a shallow copy).
     \begin{itemize}
@@ -382,7 +382,7 @@ The \emph{copy constructor} and \emph{assignment operator} define the semantics 
       Doing so requires \emph{overloading} the assignment operator's definition when it accepts two objects of our class.
 
     \item
-      We will give a brief introduction to \emph{operator overloading} here but go in dept on the topic in the next lecture.
+      We will give a brief introduction to \emph{operator overloading} here, but go in depth on the topic in the next lecture.
   \end{itemize}
 \end{frame}
 
@@ -390,7 +390,7 @@ The \emph{copy constructor} and \emph{assignment operator} define the semantics 
 
 \begin{frame}[fragile]{Operator Overloading}
 \begin{itemize}
-\item In C++, operators like \texttt{=}, \texttt{+}, \texttt{*}, \texttt{==}, etc. can be defined, just like methods.
+\item In C++, operators like \texttt{=}, \texttt{+}, \texttt{*}, \texttt{==}, etc.\ can be defined, just like methods.
 \item Example:
 
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
@@ -477,9 +477,9 @@ std::ostream& operator<<(std::ostream& out,
 Two common ways to relate two classes in a meaningful way are:
 \begin{itemize}
 \item
-  \emph{Inheritance} -- an ``is-a'' relationship.
+  \emph{Inheritance}: an ``is-a'' relationship.
 \item
-  \emph{Composition} or \emph{aggregation} -- a ``has-a'' relationship.
+  \emph{Composition} or \emph{aggregation}: a ``has-a'' relationship.
 \end{itemize}
 \end{frame}
 
@@ -489,7 +489,7 @@ Two common ways to relate two classes in a meaningful way are:
 \begin{itemize}
 \item Methods and attributes are inherited.
 \end{itemize}
-\item Java and C++ difference
+\item Java and C++ have difference syntax:
 \begin{itemize}
 \item \eqmakebox[subclass][l]{Java}:  \lstinline[language=Java]{public class A extends B \{ \}}
 \item \eqmakebox[subclass][l]{C++}:  \lstinline{class A: public B \{ \};} \\
@@ -564,7 +564,7 @@ public:
   Templates provide the ability to change types at compile time.
   \begin{itemize}
   \item
-    We will learn more about templates in the next set of slides (Chapter 13).
+    We will learn more about templates in the next lecture (Chapter 13).
   \end{itemize}
 \end{itemize}
 \end{frame}

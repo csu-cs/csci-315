@@ -3,6 +3,22 @@ Classes, Inheritance, and Operator Overloading
 
 Chapters 10 and 11.
 
+Learning Outcomes
+-----------------
+
+After completing this lecture and the related lab, students will be able to:
+
+1.  **Explain the fundamental concepts of object-oriented programming (OOP)** in C++, including encapsulation, inheritance, and polymorphism.
+2.  **Define and implement C++ classes and objects**, including the use of member variables, member functions, constructors, and destructors.
+3.  **Organize class code using header and implementation files**, and apply access specifiers (public, private, protected) appropriately.
+4.  **Demonstrate the use of operator overloading** and explain its role in customizing class behavior.
+5.  **Describe and apply inheritance and composition** to model relationships between classes.
+6.  **Differentiate between static and dynamic binding** and use the virtual keyword to enable polymorphism.
+7.  **Compare and contrast OOP features in C++ and Java**, especially regarding memory management and inheritance.
+8.  **Understand the basics of templates** and their role in static polymorphism (as a preview for future lectures).
+
+## Lecture Video
+
 <div class="youtube">
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/vHvPFaCU9-0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
@@ -13,7 +29,7 @@ Chapters 10 and 11.
 
 - The general syntax for defining a class is
 
-    ```cpp
+    ```C++
     class ClassIdentifier
     {
         // Class members (variables and functions);
@@ -48,15 +64,13 @@ Access restrictions for members are set with the following keywords.
 
 - `friend`: grant member-level access to non-member functions or
   classes. Use sparingly (or not at all); this reduces encapsulation and
-  increase coupling.
+  increases coupling.
 
-### Class Organization
+In Java, each member is prefixed with a keyword.
 
-- In Java, each member is prefixed with a keyword.
+In C++,
 
-- In C++,
-
-  - Each class can have public, private, and protected sections listing
+  - Each class can have `public`, `private`, and `protected` sections listing
     members with that access.
 
   - The `friend` keyword is placed before a function/class name to
@@ -71,7 +85,7 @@ A **`struct`** versus a **`class`**
 
 - Classes and structs have the same capabilities.
 
-- Use `struct` if all member variables of a class are public and
+- Use a `struct` if all member variables of a class are public and
   especially if there are no member functions (“plain old data”).
 
 ## Member Functions
@@ -85,7 +99,7 @@ A **`struct`** versus a **`class`**
 
 ::: code-group
 
-```cpp [AClass.hpp]
+```C++ [AClass.hpp]
 #ifndef A_CLASS
 #define A_CLASS
 
@@ -102,7 +116,7 @@ class AClass
 #endif
 ```
 
-```cpp [AClass.cpp]
+```C++ [AClass.cpp]
 #include "AClass.hpp"
 int AClass::getSize() const
 {
@@ -123,12 +137,12 @@ void AClass::size(int size)
 
 - Typically, each class declaration is in its own `.hpp` file.
 
-  - Avoid including this code multiple times in a program, by using
+  - Avoid including this code multiple times in a program by using
     preprocessor directives to check for a unique definition.  
 
     ::: code-group
 
-    ```cpp [MyClass.hpp]
+    ```C++ [MyClass.hpp]
     #ifndef MY_CLASS
     #define MY_CLASS
     //...
@@ -168,7 +182,7 @@ Does not have access to the `this` pointer.
 
   - No object is needed to access a static member.
 
-  - Static methods do not have access not no-static members.
+  - Static methods do not have access to non-static members.
 
   - All objects of a class share any static member of the class.
 
@@ -203,7 +217,7 @@ A ***constructor*** contains code that initializes the object.
 
 ::: code-group
 
-```cpp [AClass.hpp]
+```C++ [AClass.hpp]
 class AClass
 {
 public:
@@ -220,7 +234,7 @@ private:
 };
 ```
 
-```cpp [AClass.cpp]
+```C++ [AClass.cpp]
 #include "AClass.hpp"
 
 AClass::AClass()
@@ -244,14 +258,14 @@ AClass::AClass(int size)
 - In C++, a constructor is called upon variable declaration, or
   explicitly through `new` with pointers, or in other situations.  
 
-  ```cpp
+  ```C++
   Clock myClock; // Invokes the default constructor.
   Clock *pClock = new Clock; // Invokes the default constructor
   ```
 
 - You can create and invoke custom constructors.
 
-  ```cpp:line-numbers=3
+  ```C++:line-numbers=3
   Clock start{12} // Invokes a constructor that accepts and int
   ```
 
@@ -265,7 +279,7 @@ AClass::AClass(int size)
 
 ::: code-group
 
-```cpp [AClass.hpp]
+```C++ [AClass.hpp]
 class AClass
 {
 public:
@@ -281,7 +295,7 @@ private:
 };
 ```
 
-```cpp [AClass.cpp]
+```C++ [AClass.cpp]
 #include "AClass.hpp"
 
 AClass::AClass()
@@ -297,14 +311,12 @@ AClass::~AClass()
 
 :::
 
-## Copying Objects
+## Coping Objects and Assignment in C++
 
-### Control Over Copy and Assignment in C++
-
-The ***copy constructor*** and ***assignment operator*** define the
+The **copy constructor** and **assignment operator** define the
 semantics of `a = b`.
 
-- The *copy constructor* defines how a ***new*** object created as a
+- The *copy constructor* defines how a *new* object is created as a
   copy of an existing object (e.g., when function parameters are
   passed).
 
@@ -321,11 +333,11 @@ semantics of `a = b`.
 
 - Therefore, we must define how this should happen.
 
-- Doing so requires ***overloading*** the assignment operator’s
+- Doing so requires *overloading* the assignment operator’s
   definition when it accepts two objects of our class.
 
-- We will give a brief introduction to ***operator overloading*** here
-  but go in dept on the topic in the next lecture.
+- We will give a brief introduction to *operator overloading* , but 
+  go in depth on the topic in the next lecture.
 
 ## Operator Overloading
 
@@ -334,7 +346,7 @@ semantics of `a = b`.
 
 - Example:
 
-  ```
+  ```C++
   class Matrix
   {
   public:
@@ -357,7 +369,7 @@ semantics of `a = b`.
 
 - Function definition:  
 
-  ```cpp
+  ```C++
   const className& operator=(const className& rightObject)
   {
     // local declaration, if any
@@ -370,17 +382,17 @@ semantics of `a = b`.
   }
   ```
 
-### Overloading the Stream Insertion Operator (`<``<`)
+### Overloading the Stream Insertion Operator (`<<`)
 
 - Function prototype:
  
-  ```cpp
+  ```C++
   friend std::ostream& operator<<(std::ostream&, const className&);
   ```
 
 - Function definition:  
 
-  ```cpp
+  ```C++
   std::ostream& operator<<(std::ostream& out,
       const className& cObject) {
     // local declaration, if any
@@ -404,9 +416,13 @@ semantics of `a = b`.
   - Requires additional storage space and a considerable amount of
     computer time
 
-- ***Design tip***: Use reference parameters to avoid unnecessary
-  copies. Make the parameter `const` if the function should not modify
-  it.
+::: tip Design Tip
+
+Use reference parameters to avoid unnecessary
+copies. Make the parameter `const` if the function should not modify
+it.
+
+:::
 
 ## Inheritance
 
@@ -414,9 +430,9 @@ semantics of `a = b`.
 
 Two common ways to relate two classes in a meaningful way are:
 
-- ***Inheritance*** – an “is-a” relationship.
+- ***Inheritance***: an “is-a” relationship.
 
-- ***Composition*** or ***aggregation*** – a “has-a” relationship.
+- ***Composition*** or ***aggregation***: a “has-a” relationship.
 
 ### Inheritance
 
@@ -424,7 +440,9 @@ Two common ways to relate two classes in a meaningful way are:
 
   - Methods and attributes are inherited.
 
-- Java and C++ difference
+- Java and C++ have difference syntax and different types of inheritance.
+  - Java: `public class A extends B { }`
+  - C++ `class A: public B { };`
 
 - Multiple inheritance possible in C++, not in Java.
 
@@ -436,14 +454,23 @@ Two common ways to relate two classes in a meaningful way are:
 
   - Also, suppose `promote()` is a method defined in both classes.
 
-- Employee variables can refer to Teachers
+- Employee variables can refer to Teachers.
 
-  |                        |                      |
-  |:-----------------------|:---------------------|
-  | **Java**               | **C++**              |
-  | `Employee emp;`        | `Employee *emp;`     |
-  | `emp = new Teacher();` | `emp = new Teacher;` |
-  | `emp.promote();`       | `emp->promote();`    |
+  ::: code-group
+
+  ```Java [Java Example]
+  Employee emp;
+  emp = new Teacher();
+  emp.promote();
+  ```
+
+  ```C++ [C++ Example]
+  Employee *emp; // probably should name pEmp;
+  emp = new Teacher;
+  emp->promote();
+  ```
+
+  :::
 
 - Is the Employee’s or the Teachers’ `promote()` method called?
 
@@ -462,7 +489,7 @@ Two common ways to relate two classes in a meaningful way are:
 - A function can be declared *virtual* to use dynamic binding instead of
   static.  
 
-  ```cpp
+  ```C++
   class Animal
   {
   public:
@@ -492,11 +519,27 @@ Two common ways to relate two classes in a meaningful way are:
 
 - Templates provide the ability to change types at compile time.
 
-  - We will learn more about templates in the next set of slides
-    (Chapter 13).
+  - We will learn more about templates in the next lecture (Chapter 13).
 
 ### There is more.
 
 - We have quickly skimmed the material in Chapters 10 – 11 in this lecture.
 
 - Reference the textbook for details and examples.
+
+## Review Questions
+
+Use these questions to check your understanding of the material. These are not for a grade.
+
+1. What are the main principles of object-oriented programming, and how does C++ support each one?
+2. How do you define a class in C++? What is the difference between a class and a struct?
+3. What is the purpose of access specifiers (`public`, `private`, `protected`) in C++ classes?
+4. Explain the difference between a constructor and a destructor. When is each called?
+5. What is operator overloading? Give an example of how you might overload an operator in a class.
+6. How does inheritance work in C++? What is the difference between inheritance and composition?
+7. What is the difference between static and dynamic binding? How does the `virtual` keyword affect this?
+8. Why might you need to write a copy constructor or an assignment operator for your class?
+9. How are objects passed to functions in C++? What are the advantages of passing by reference?
+10. How does C++'s approach to OOP differ from Java's, especially regarding memory management and inheritance?
+
+Try to answer these questions on your own or discuss them with a classmate!
