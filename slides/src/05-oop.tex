@@ -33,7 +33,7 @@
 \begin{lstlisting}
 class ClassIdentifier
 {
-  // Class members (variables and functions);
+  // Members (variables and functions);
 }; // <- Don't forget the semicolon.
 \end{lstlisting}
 \item<2->
@@ -44,18 +44,12 @@ class ClassIdentifier
 \begin{frame}[fragile]{Syntax of Class}
   \begin{itemize}
   \item<+->
-    If a member of a class is a variable,
-    \begin{itemize}
-    \item
-      It is declared like any other variable.
-    \item
-      You cannot initialize a variable when you declare it.
-    \end{itemize}
+    \emph{Data members} of a class are declared just like ordinary variables.
   \item<+->
-    If a member of a class is a function,
+    \emph{Function members} of a class (i.e., methods) are declared withing the class as a prototype.
     \begin{itemize}
-    \item
-      A function prototype declares that member.
+    \item 
+      A common practice is to define the function separately.
     \item
       Function members can \emph{directly} access any member of the class.
     \end{itemize}
@@ -144,6 +138,8 @@ void AClass::size(int size)
 }
 \end{lstlisting}
 \end{columns}
+
+\lstinline{mSize} starts with 'm' to indicate member variable.
 \end{frame}
 
 \begin{frame}[fragile]{Class File Organization}
@@ -299,9 +295,22 @@ Clock start{12} // Invokes a constructor that accepts and int
 
 \begin{frame}[fragile]{C++ Destructor}
 \begin{itemize}
-\item Special method whose signature is a \lstinline{~} followed by the name of the class.
-\item Particularly if the class contains pointers and the constructor contains calls to new, a destructor needs to be defined.\\
+\item
+  A special method whose signature is a \lstinline{~} \\followed by the name of the class.
+  \begin{itemize}
+    \item Cannot be overloaded and does not take parameters.
+  \end{itemize}
 
+\item
+  Called automatically when an object goes out of scope or is deleted.
+
+\item
+  Typically used to free memory allocated by the constructor.
+  \begin{itemize}
+    \item If the class contains pointers and the constructor contains calls to `new`, a destructor needs to be defined.
+  \end{itemize}
+\item
+  Java does not have explicit destructors because of garbage collection.
 \end{itemize}
 % \begin{lstlisting}[basicstyle=\small\ttfamily]
 % class SomeClass {
@@ -397,8 +406,8 @@ The \emph{copy constructor} and \emph{assignment operator} define the semantics 
 class Matrix {
 public:
   Matrix(const Matrix& m); // Copy constructor
-  Matrix operator+(const Matrix& m); // overload + op
-  Matrix operator=(const Matrix& m); // overload = op
+  const Matrix& operator+(const Matrix& m); // overload + op
+  const Matrix& operator=(const Matrix& m); // overload = op
   // ...
 };
 \end{lstlisting}
@@ -533,7 +542,7 @@ Two common ways to relate two classes in a meaningful way are:
 \begin{frame}[fragile]{Static vs. Dynamic Binding}
 \begin{itemize}[<+->]
 \item
-  A function can be declared \textit{virtual} to use dynamic binding instead of static.\\
+  A function can be declared \textit{virtual} to use \\dynamic binding instead of static.\\
   \begin{lstlisting}
 class Animal {
 public:
@@ -545,7 +554,7 @@ public:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Design Principles}
+\begin{frame}{Design Paradigms}
 \begin{itemize}
 \item
   \emph{Encapsulation}: combines data and operations on data in a single unit.
@@ -556,15 +565,15 @@ public:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Static vs. Dynamic Polymorphism}
+\begin{frame}{Design Paradigms}
 \begin{itemize}
 \item
   Inheritance provides the ability to change types at runtime (though subclasses).
 \item
-  Templates provide the ability to change types at compile time.
+  \emph{Templates} provide the ability to change types at compile time.
   \begin{itemize}
   \item
-    We will learn more about templates in the next lecture (Chapter 13).
+    The next lecture will cover templates (Chapter 13).
   \end{itemize}
 \end{itemize}
 \end{frame}

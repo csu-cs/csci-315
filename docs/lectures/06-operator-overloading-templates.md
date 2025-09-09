@@ -3,34 +3,35 @@ Operator Overloading and Templates
 
 Chapter 13
 
+
+Learning Outcomes
+-----------------
+
+After completing this lecture and the related lab, students will be able to:
+
+1. Explain the purpose and limitations of operator overloading, including which operators can be overloaded, restrictions on precedence/associativity, and why it is useful for user-defined types.
+
+2. Differentiate between member and nonmember (`friend`) operator overloads.
+
+3. Implement common binary operators, assignment (`=`), stream insertion/extraction (`<<`, `>>`), and array indexing (`[]`).
+
+4. Implement unary operators (pre/post increment and decrement) and explain how return types differ between mutable and const contexts.
+
+5. Utilize the `this` pointer within member functions.
+
+6. Define and use function and class templates, employing template `<typename T>` to create generic and reusable code.
+
+7. Organize template code properly so that template definitions are visible at the point of instantiation, recognizing common compilation and header/implementation practices.
+
+8. Apply templates to data structures, such as generic array-based lists, demonstrating reuse through inheritance (e.g., ordered vs. unordered lists).
+
+9.  Use C++11 random number facilities, distinguishing between random engines and distributions, and writing programs to generate random values.
+
+## Lecture Video
+
 <div class="youtube">
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/FXdo32nZi4M?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
-
-## Objectives
-
-In this lecture, you will:
-
-- Learn about overloading.
-
-- Become familiar with the restrictions on operator overloading.
-
-- Examine the `this` pointer.
-
-- Learn about `friend` functions.
-
-- Learn how to overload operators as members and nonmembers of a class.
-
-- Discover how to overload various operators.
-
-- Become familiar with the requirements for classes with pointer member
-  variables.
-
-- Learn about templates.
-
-- Explore how to construct and use function and class templates.
-
-- Become aware of C++11 random number generators.
 
 ## Operator Overloading
 
@@ -45,19 +46,23 @@ ClockType yourTime{4, 23, 30};
 
 Which version of the C++ statements below would you prefer?
 
-```cpp
+::: code-group
+
+```C++ [Methods]
 local.print();
 local.incrementSeconds();
 if (local.equal(yourTime))
 // ...
 ```
 
-```cpp
+```C++ [Operators]
 cout << local;
 local++;
 if (local == yourTime)
 // ...
 ```
+
+:::
 
 ### Why Operator Overloading Is Needed
 
@@ -327,7 +332,7 @@ Non-Member Function for Operator Overload:
   - If the operator function is a nonmember (i.e., a `friend` function),
     it has one parameter.
 
-### Pre-Increment (`++`) and Pre-Decrement (`-``-`)
+### Pre-Increment (`++`) and Pre-Decrement (`--`)
 
 The general syntax to overload the pre-increment operator `++` as a
 member function.
@@ -340,7 +345,7 @@ Type operator++()
 }
 ```
 
-### Post-Increment (`++`) and Post-Decrement (`-``-`)
+### Post-Increment (`++`) and Post-Decrement (`--`)
 
 The general syntax to overload the post-increment operator `++` as a
 member function.
@@ -356,7 +361,7 @@ Type operator++(int)
 }
 ```
 
-Post-Increment (`++`) and Post-Decrement (`-``-`) The general syntax to
+Post-Increment (`++`) and Post-Decrement (`--`) The general syntax to
 overload the post-increment operator `++` as a nonmember function.
 
 - Function prototype:
@@ -490,7 +495,7 @@ void fun2(const auto& val);
 ```
 
 `g++` may default to an older C++ standard. If so, add `-std=c++20` to
-your compiler arguments to user template abbreviation.
+your compiler arguments to use template abbreviation.
 
 The auto-grader uses the C++20 when checking your code.
 

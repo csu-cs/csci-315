@@ -22,38 +22,32 @@
 
 \section{Objectives}
 
-\begin{frame}[fragile]{Objectives}
-\protect\hypertarget{objectives-1-of-2}{}
+\begin{frame}[fragile]{Objectives on Opeartor Overloading}
 
 In this lecture, you will:
 \begin{itemize}
 \item
-  Learn about overloading.
-\item
-  Become familiar with the restrictions on operator overloading.
+  Examine the purpose and limitations of operator overloading.
 \item
   Examine the \lstinline{this} pointer.
 \item
-  Learn about \lstinline{friend} functions.
+  Differentiate between member and nonmember (\lstinline{friend}) operator overloads.
 \item
-  Learn how to overload operators as members and nonmembers of a class.
+  Overload operators as members and nonmembers of a class.
+\item
+  Apply the Rule of Three to properly handle pointer member variables.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Objectives}
-\protect\hypertarget{objectives-2-of-2}{}
+\begin{frame}{Objectives on Templates}
+In this lecture, you will:
 \begin{itemize}
 \item
-  Discover how to overload various operators.
+  Define and use function and class templates.
 \item
-  Become familiar with the requirements for classes with pointer member
-  variables.
+  Organize template code properly.
 \item
-  Learn about templates.
-\item
-  Explore how to construct and use function and class templates.
-\item
-  Become aware of C++11 random number generators.
+  Use C++11 random number facilities.
 \end{itemize}
 \end{frame}
 
@@ -687,7 +681,7 @@ void fun2(const auto& val);
 \end{frame}
 
 \begin{frame}{Abbreviated Function Templates}
-\texttt{g++} may default to an older C++ standard. If so, add \lstinline[language=Bash, identifierstyle=\color{white}]{-std=c++20} to your compiler arguments to user template abbreviation.
+\texttt{g++} may default to an older C++ standard. If so, add \lstinline[language=Bash, identifierstyle=\color{white}]{-std=c++20} to your compiler arguments to use template abbreviation.
 
 The auto-grader uses the C++20 when checking your code.
 \end{frame}

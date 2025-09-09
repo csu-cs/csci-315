@@ -40,15 +40,13 @@ After completing this lecture and the related lab, students will be able to:
 
 ### Syntax of Class
 
-- If a member of a class is a variable,
+- *Data members* of a class are declared just like ordinary variables.
 
-  - It is declared like any other variable.
+- *Function members* of a class (i.e., methods),
 
-  - You cannot initialize a variable when you declare it.
+  - Are declared withing the class as a prototype.
 
-- If a member of a class is a function,
-
-  - A function prototype declares that member.
+  - A common practice is to define the function separately.
 
   - Function members can ***directly*** access any member of the class.
 
@@ -130,6 +128,13 @@ void AClass::size(int size)
   mSize = size;
 }
 ```
+
+:::
+
+::: tip Style Tip
+
+Start member variables with a `m` like (`mSize` in the above example) to easily
+differentiate them from local variables.
 
 :::
 
@@ -273,9 +278,15 @@ AClass::AClass(int size)
 
 - Special method whose signature is a `~` followed by the name of the
   class.
+  - A destructor cannot be overloaded and does not take parameters.
 
-- Particularly if the class contains pointers and the constructor
-  contains calls to new, a destructor needs to be defined.  
+- A destructor is called automatically when an object goes out of scope or is deleted.
+
+- A destructor is typically used to free memory allocated by the constructor.
+  - If the class contains pointers and the constructor
+  contains calls to `new`, a destructor needs to be defined.
+
+- Java does not have explicit destructors because of garbage collection.
 
 ::: code-group
 
@@ -351,8 +362,8 @@ semantics of `a = b`.
   {
   public:
     Matrix(const Matrix& m); // Copy constructor
-    Matrix operator+(const Matrix& m); // overload + op
-    Matrix operator=(const Matrix& m); // overload = op
+    const Matrix& operator+(const Matrix& m); // overload + op
+    const Matrix& operator=(const Matrix& m); // overload = op
     // ...
   };
   ```
@@ -501,7 +512,7 @@ Two common ways to relate two classes in a meaningful way are:
 - With inheritance, it is a good idea to make the destructors virtual to
   ensure that the child object’s memory is freed.
 
-### Design Principles
+### Design Paradigms
 
 - ***Encapsulation***: combines data and operations on data in a single
   unit.
@@ -517,9 +528,9 @@ Two common ways to relate two classes in a meaningful way are:
 - Inheritance provides the ability to change types at runtime (though
   subclasses).
 
-- Templates provide the ability to change types at compile time.
+- ***Templates*** provide the ability to change types at compile time.
 
-  - We will learn more about templates in the next lecture (Chapter 13).
+  - [The next lecture](06-operator-overloading-templates) will cover templates (Chapter 13).
 
 ### There is more.
 
