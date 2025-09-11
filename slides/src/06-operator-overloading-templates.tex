@@ -3,6 +3,7 @@
 \documentclass[14pt,aspectratio=1610, hyperref={pdfpagelayout=SinglePage}]{beamer}
 % \documentclass[14pt,aspectratio=1610, hyperref={pdfpagelayout=SinglePage},handout]{beamer}
 \usepackage{csu-theme}
+\usepackage{booktabs}
 
 \title{\Huge{}Operator Overloading \\\& Templates}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 13}
@@ -13,6 +14,8 @@
 % \date{January 30, 2025}
 \subject{Software Programming}
 %\keywords{}
+
+\setlength{\parskip}{0.5em}
 
 \begin{document}
 
@@ -35,7 +38,7 @@ In this lecture, you will:
 \item
   Overload operators as members and nonmembers of a class.
 \item
-  Apply the Rule of Three to properly handle pointer member variables.
+  Apply the \emph{Rule of Three} to properly handle pointer member variables.
 \end{itemize}
 \end{frame}
 
@@ -60,7 +63,7 @@ Consider the following statements:
 \begin{lstlisting}
 ClockType local{8, 23, 34};
 ClockType yourTime{4, 23, 30};
-\end{lstlisting}\vspace{1em}
+\end{lstlisting}
 
 Which version of the C++ statements below would you prefer?
 \begin{columns}[T]
@@ -86,7 +89,7 @@ if (local == yourTime)
 \protect\hypertarget{why-operator-overloading-is-needed-2-of-2}{}
 \begin{itemize}
 \item
-  Assignment and member selection are the only built-in operations on
+  \textit{Assignment} and \textit{member selection} are the only \\built-in operations on
   classes.
   \begin{itemize}
   \item
@@ -195,7 +198,7 @@ Functions}
 \item
   To overload \lstinline{()}, \lstinline{[]},
   \lstinline{->}, or \lstinline{=} for a class,
-  the function must be a member of the class.
+  the function \textit{must} be a member of the class.
 \item
   Suppose \lstinline{op} is overloaded for \lstinline{opOverClass}:
   \begin{itemize}
@@ -244,7 +247,7 @@ returnType operator#(const Type& otherObject) const
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Binary Operator Overloads as Nonmember Functions}
+\begin{frame}[fragile]{Binary Operator Overloads as Nonmember}
 \protect\hypertarget{overloading-the-binary-operators-arithmetic-or-relational-as-nonmember-functions}{}
 \begin{itemize}
 \item
@@ -279,7 +282,7 @@ returnType operator#(const Type& leftObject, const Type& rightObject) const
     \lstinline{rectangleType} object.
   \end{itemize}
 \item
-  Thus, the operator function that overloads
+  The operator overload of
   \lstinline{<<} for \lstinline{rectangleType} must be a
   nonmember function of the class.
   \begin{itemize}
@@ -294,12 +297,12 @@ returnType operator#(const Type& leftObject, const Type& rightObject) const
 (\texttt{{<}<})}
 \protect\hypertarget{overloading-the-stream-insertion-operator}{}
 
-  Function prototype:\\
+  Function prototype:
   \begin{lstlisting}
 friend std::ostream& operator<<( std::ostream&, const Type&);
 \end{lstlisting}
 
-  Function definition:\\
+  Function definition:
   \begin{lstlisting}
 std::ostream& operator<<(std::ostream& out,
       const Type& cObject) {
@@ -315,12 +318,12 @@ std::ostream& operator<<(std::ostream& out,
 \begin{frame}[fragile]{Overloading the Stream Extraction Operator
   (\texttt{{>}>})}
 
-  Function prototype:\\
+  Function prototype:
   \begin{lstlisting}
 friend std::istream& operator>>( std::istream&, Type&);
 \end{lstlisting}
 
-  Function definition:\\
+  Function definition:
   \begin{lstlisting}
 std::istream& operator>>(std::istream& in, Type& cObject) {
   // local declaration, if any
@@ -334,10 +337,10 @@ std::istream& operator>>(std::istream& in, Type& cObject) {
 
 \begin{frame}[fragile]{Overloading the Assignment Operator (\texttt{=})}
 \protect\hypertarget{overloading-the-assignment-operator}{}
-  Function prototype:\\
+  Function prototype:
   \lstinline{const Type& operator=(const Type&);}
 
-  Function definition:\\
+  Function definition:
   \begin{lstlisting}[basicstyle=\ttfamily\small]
 const Type& operator=(const Type& rightObject)
 {
@@ -353,7 +356,6 @@ const Type& operator=(const Type& rightObject)
 \end{frame}
 
 \begin{frame}{Classes with Pointer Members (Revisited)}
-\protect\hypertarget{classes-and-pointer-member-variables-revisited}{}
 \begin{itemize}
 \item
   Recall that the assignment operator copies member variables from one
@@ -376,20 +378,16 @@ const Type& operator=(const Type& rightObject)
 \end{frame}
 
 \begin{frame}[fragile]{Member vs. Nonmember Operator Overloading}
-\protect\hypertarget{operator-overloading-member-versus-nonmember-1-of-2}{}
-\begin{itemize}
-\item
-  Some operators must be overloaded as member functions and some as nonmember (\lstinline{friend}) functions.
-\item
-  Binary arithmetic operators can be overloaded either way.\\
+Some operators must be overloaded as member functions and some as nonmember (\lstinline{friend}) functions.
+
+Binary arithmetic operators can be overloaded either way.
   \begin{lstlisting}
 Type operator+(const Type&);
 \end{lstlisting}
-  or\\
-  \begin{lstlisting}
+  or
+\begin{lstlisting}
 friend Type operator+(const Type&, const Type&);
 \end{lstlisting}
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Member vs. Nonmember Operator Overloading}
@@ -412,21 +410,30 @@ Non-Member Function for Operator Overload:
 \end{frame}
 
 \begin{frame}[fragile]{Overloading the Array Index Operator \texttt{[]}}
-\protect\hypertarget{overloading-the-array-index-subscript-operator}{}
-\begin{itemize}
-\item
-  Declaring the \lstinline{[]} operator as a class member for
+Declaring the \lstinline{[]} operator as a class member for
   nonconstant arrays:
 \begin{lstlisting}
-Type& operator[](int index);
+Type& operator[](unsigned int index);
 \end{lstlisting}
-\item
-  Declaring the \lstinline{[]} operator as a class member for
+
+Declaring the \lstinline{[]} operator as a class member for
   constant arrays:
 \begin{lstlisting}
-const Type& operator[](int index) const;
+const Type& operator[](unsigned int index) const;
 \end{lstlisting}
-\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Array Index Operator \texttt{[]}}
+\begin{lstlisting}
+int array[5] { 1, 2, 3, 4, 5 };
+const int ARRAY[5] { 1, 2, 3, 4, 5 };
+
+std::cout << array[2];
+std::cout << ARRAY[2]; // Const operator[]
+
+array[2] = 10;    // Non-const operator[]
+// ARRAY[2] = 10; // Error
+\end{lstlisting}
 \end{frame}
 
 \section{Unary Operator}
@@ -481,11 +488,6 @@ Post-Decrement (\texttt{{-}-})}
 The general syntax to overload the post-increment operator \lstinline{++} as
   a nonmember function.
 
-Function prototype:
-\begin{lstlisting}
-friend Type operator++(Type&, int);
-\end{lstlisting}
-
 Function definition:
 \begin{lstlisting}
 Type operator++(Type& incObj, int) {
@@ -496,6 +498,7 @@ Type operator++(Type& incObj, int) {
   return TEMP; // the copy of the old value
 }
 \end{lstlisting}
+May need to declare as a \lstinline{friend} function in the class definition.
 \end{frame}
 
 \section*{Restrictions}
@@ -746,6 +749,70 @@ class declaration;
 \end{itemize}
 \end{frame}
 
+\section{Java vs. C++}
+
+\begin{frame}{Type Erasure vs Code Generation}
+\begin{itemize}
+\item
+  Java generics use \emph{type erasure}: at runtime, all generic types are compiled to Object (or primitive wrappers), and type information is lost.
+\item 
+  C++ templates are \emph{code generators}: the compiler creates a new, fully typed version of the function or class for each instantiation.
+\item
+  C++ templates can lead to code bloat if many different types are used.
+\item
+  However, it also allows for optimizations that are not possible in Java.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Type Erasure vs Code Generation}
+
+Java generics example
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+List<Integer> ints = new ArrayList<>();
+List<String> strs = new ArrayList<>();
+// At runtime, both are really just List<Object>
+\end{lstlisting}
+
+C++ templates example
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+std::vector<int> ints;
+std::vector<std::string> strs;
+// At compile time, two classes are generate.
+\end{lstlisting}
+
+In C++, \lstinline{vector<int>} and \lstinline{vector<string>} are distinct types at compile time, enabling stronger type safety and optimizations.
+\end{frame}
+
+\begin{frame}{Benefits of C++ Templates over Java Generics}
+\begin{itemize}
+\item C++ templates work directly with the actual type, including primitives, so there;s zero runtime overhead.
+\item C++ templates can perform compile-time logic (template metaprogramming).
+\item C++ allows template specialization: you can write different implementations for specific types.
+\item With C++20, templates can specify constraints using concepts (e.g., \lstinline{requires Integral<T>}).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Java Generics vs C++ Templates}
+  \begin{table}[h!]
+\centering\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Feature} & \textbf{Java Generics} & \textbf{C++ Templates} \\
+\midrule
+Runtime behavior & Type erasure  & Code generation per type \\
+Performance      & boxing/unboxing & Zero overhead, fully typed \\
+Compile-time power & None & Metaprogramming, \texttt{constexpr} \\
+Specialization   & Not supported & Full or partial \\
+Constraints      & Interfaces only & C++20 Concepts, etc. \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of Java Generics and C++ Templates}
+\end{table}
+
+\end{frame}
+
+
+\section*{ADT}
 \begin{frame}{Array-Based Lists}
 \protect\hypertarget{array-based-lists-revisited}{}
 \begin{itemize}
@@ -767,7 +834,7 @@ class declaration;
 \begin{frame}[fragile]{C++11 Random-Number Generator}
 \begin{itemize}
 \item
-  To use C++ 11 random-number generator functions, we use an engine and a
+  To use C++11 random-number generator functions, we use an engine and a
   distributor.
   \begin{itemize}
   \item

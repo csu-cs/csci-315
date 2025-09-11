@@ -314,13 +314,22 @@ Non-Member Function for Operator Overload:
 
 ### Overloading the Array Index Operator `[]`
 
-- Declaring the `[]` operator as a class member for nonconstant arrays:
+- Declaring the `[]` operator as a class member for nonconstant arrays:  
+  `Type& operator[](unsigned int index);`
 
-      Type& operator[](int index);
+- Declaring the `[]` operator as a class member for constant arrays:  
+  `const Type& operator[](unsigned int index) const;`
 
-- Declaring the `[]` operator as a class member for constant arrays:
+```C++
+int array[5] { 1, 2, 3, 4, 5 };
+const int ARRAY[5] { 1, 2, 3, 4, 5 };
 
-      const Type& operator[](int index) const;
+std::cout << array[2];
+std::cout << ARRAY[2]; // Const operator[]
+
+array[2] = 10;    // Non-const operator[]
+// ARRAY[2] = 10; // Error
+```
 
 ## Overloading Unary Operators
 
@@ -542,7 +551,60 @@ The auto-grader uses the C++20 when checking your code.
 - In either case, function definitions and client code are compiled
   together.
 
-### Array-Based Lists
+### Java Generics vs C++ Templates
+
+#### Type Erasure vs Code Generation
+
+- Java *generics* use **type erasure**: at runtime, all generic
+types are compiled to Object (or primitive wrappers), and
+type information is lost.
+- C++ *templates* are **code generators**: the compiler creates
+a new, fully typed version of the function or class for each
+instantiation.
+- C++ templates can lead to *code bloat* if many different
+types are used.
+- However, it also allows for *optimizations* that are not
+possible in Java.
+
+Java generics example
+
+```Java 
+List<Integer> ints = new ArrayList<>();
+List<String> strs = new ArrayList<>();
+// At runtime, both are really just List<Object>
+```
+
+```C++
+std::vector <int> ints;
+std::vector <std::string> strs;
+// At compile time, two classes are generate.
+```
+
+In C++, `vector<int>` and `vector<string>` are distinct types at
+compile time, enabling stronger type safety and optimizations
+
+#### Benefits of C++ Templates over Java Generics
+
+- C++ templates work directly with the actual type, including
+primitives, so there;s zero runtime overhead.
+- C++ templates can perform compile-time logic (template
+metaprogramming).
+- C++ allows template specialization: you can write
+different implementations for specific types.
+- With C++20, templates can specify constraints using
+concepts (e.g., `requires Integral<T>` ).
+
+| Feature            | Java Generics                        | C++ Templates                          |
+|--------------------|--------------------------------------|----------------------------------------|
+| Runtime behavior   | Type erasure (all become `Object`)    | Code generation per type               |
+| Performance        | Possible boxing/unboxing             | Zero overhead, fully typed             |
+| Compile-time power | None                                 | Metaprogramming, `constexpr`           |
+| Specialization     | Not supported                        | Full & partial specialization          |
+| Constraints        | Interfaces only                      | Concepts (C++20) and SFINAE            |
+
+: Comparison of Java Generics and C++ Templates
+
+### Array-Based Lists (ADT)
 
 - Using class templates allows the creation of generic code.
 
@@ -555,7 +617,7 @@ The auto-grader uses the C++20 when checking your code.
 
 ## C++11 Random-Number Generator
 
-- To use C++ 11 random-number generator functions, we use an engine and
+- To use C++11 random-number generator functions, we use an engine and
   a distributor.
 
   - An engine returns unpredictable (random) bits.
@@ -572,7 +634,8 @@ The auto-grader uses the C++20 when checking your code.
 ```cpp
 #include <random>
 
-int main() {
+int main()
+{
   std::random_device randDevice;
   std::default_random_engine num{ randDevice() };
   std::uniform_int_distribution<int> dist{1, 6};
