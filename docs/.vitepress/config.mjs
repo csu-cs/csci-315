@@ -111,7 +111,8 @@ function sidebarNotes() {
 			collapsed: true,
 			items: [
 				{ text: "C++ Object-Oriented Programming", link: "/lectures/05-oop" },
-				{ text: "Operator Overloading and Templates", link: "/lectures/06-operator-overloading-templates" },
+				{ text: "Operator Overloading", link: "/lectures/06-operator-overloading" },
+				{ text: "Templates", link: "/lectures/06-templates" },
 			]
 		},
 		{

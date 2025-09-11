@@ -12,7 +12,8 @@
 
 ## C++ Object-Oriented Programming
 - [C++ Object-Oriented Programming](/lectures/05-oop)
-- [Operator Overloading and Templates](/lectures/06-operator-overloading-templates)
+- [Operator Overloading](/lectures/06-operator-overloading)
+- [Templates](/lectures/06-templates)
 
 ## Performance Analysis
 - [Performance Analysis](/lectures/07-performance-analysis)

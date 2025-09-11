@@ -530,7 +530,7 @@ Two common ways to relate two classes in a meaningful way are:
 
 - ***Templates*** provide the ability to change types at compile time.
 
-  - [The next lecture](06-operator-overloading-templates) will cover templates (Chapter 13).
+  - [An upcoming lecture](06-templates) will cover templates (Chapter 13).
 
 ### There is more.
 
