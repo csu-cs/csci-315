@@ -3,6 +3,30 @@ Performance Analysis
 
 Chapter 18
 
+
+Learning Outcomes
+-----------------
+
+After completing this lecture and the related lab, students will be able to:
+
+1. **Define and distinguish between empirical and analytical methods of evaluating algorithm performance**, and articulate when each method is more appropriate.
+
+2. **Identify key operations** to count in an algorithm (e.g., comparisons, swaps, recursive calls, etc.), and use these to characterize the time complexity of simple code segments.
+
+3. **Explain best-case, average-case, and worst-case behavior for algorithms**, including what those mean and why we often focus on worst-case or average-case analysis.
+
+4. **Apply rules of estimation** to compute cost functions for loops (including nested loops), conditionals, and simple recursive functions.
+
+5. **Understand and use Big-O notation**: identify the dominating term in a cost expression, compare growth rates, and classify functions by their asymptotic behavior (constant, logarithmic, linear, quadratic, etc.).
+
+6. **Set up and run empirical performance experiments**, including instrumentation (timing), varying input size, and collecting performance data.
+
+7. **Visualize and interpret timing data** (e.g. by plotting runtime vs. input size, comparing multiple algorithms via graphs, and recognizing anomalies).
+
+8. **Combine analytical and empirical results** to make informed decisions about algorithm or implementation choices, recognizing limitations of each method (e.g. machine, implementation, data-specific effects).
+
+## Lecture Video
+
 <div class="youtube">
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/bCiqntabxa0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
@@ -590,27 +614,31 @@ int bigOExample7(int n) {
 #include <iostream> // To display information
 #include <chrono>   // Required for taking timings
 
-void checkTime(const unsigned int MIN_N, const unsigned int MAX_N, const unsigned int CHANGE_IN_N) {
-  using namespace std::chrono;
+void checkTime(const unsigned int MIN_N,
+	const unsigned int MAX_N,
+	const unsigned int CHANGE_IN_N)
+{
+	using namespace std::chrono;
 
-  // We want to run our algorithm over varying sizes.
-  for (unsigned int size = MIN_N; size < MAX_N; size += CHANGE_IN_N) {
-    // Capture the start clock (stored as clock_t)
-    const auto START_TIME = (high_resolution_clock::now());
+	// We want to run our algorithm over varying sizes.
+	for (unsigned int size = MIN_N; size <= MAX_N; size += CHANGE_IN_N)
+	{
+		// Capture the start clock (stored as clock_t)
+		const auto START_TIME = (high_resolution_clock::now());
 
-    // To Do: This is were your algorithm should be called.
-    // Note: size is the SIZE or the input; you may have to change it.
-    // functionCallToYouAlgorithm(size);
+		// To Do: This is were your algorithm should be called.
+		// Note: size is the SIZE or the input; you may have to change it.
+		// functionCallToYouAlgorithm(size);
 
-    // Capture the clock and subtract the start to get the total time elapsed.
-    const auto DIFF = duration_cast<microseconds>(high_resolution_clock::now() - START_TIME);
+		// Capture the clock and subtract the start to get the total time elapsed.
+		const auto DIFF = duration_cast<microseconds>(high_resolution_clock::now() - START_TIME);
 
-    // Convert clock_t into seconds as a floating point number.
-    const auto TIME_AMOUNT = static_cast<double>(DIFF.count()) * 1e-6;
+		// Convert clock_t into seconds as a floating point number.
+		const auto TIME_AMOUNT = static_cast<double>(DIFF.count()) * 1e-6;
 
-    // Print out first the size (size) and then the elapsed time.
-    std::cout << size << '\t' << TIME_AMOUNT << '\n';
-  }
+		// Print out first the size (size) and then the elapsed time.
+		std::cout << size << '\t' << TIME_AMOUNT << '\n';
+	}
 }
 ```
 
@@ -717,17 +745,12 @@ save "plotname.pdf"
 
 ### Opening PDF files in Visual Studio Code
 
-- For convince, I recommend installing a PDF viewer extension to Visual
-  Studio Code like
-  [vscode-pdf](https://marketplace.visualstudio.com/items?itemName=tomoki1207.pdf).
+For convince, I recommend installing a PDF viewer extension to VSCodium like
+[vscode-pdf](https://github.com/tomoki1207/vscode-pdfviewer).
 
-- If you are using the Windows Subsystem for Linux (WSL), also install
-  the [WSL
-  extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
-  by Microsoft. After that, you should see a green box in the bottom
-  left saying “WSL:Ubuntu”.
+![vscode-pdf extension](/images/performance/pdf-extention.png "Installing a PDF Extension"){style="max-width:354px"}
 
-- The following examples assume you can open PDFs in Visual Studio Code.
+The following examples assume you can open PDFs in Visual Studio Code.
 
 ### Huge Time Saver!
 
@@ -745,7 +768,7 @@ save "plotname.pdf"
   ```
 
 - Run your script and display the PDF:
-  `gnuplot simple.plot && code simple.pdf`
+  `gnuplot simple.plot && codium simple.pdf`
 
 ### Huge Time Saver!
 
@@ -754,7 +777,7 @@ Using a gnuplot script is especially useful if you put it in a makefile!
 ``` Make
 plot:
   gnuplot simple.plot # Run gnuplot script
-  code simple.pdf # Open the PDF is Visual Studio Code
+  codium simple.pdf # Open the PDF is Visual Studio Code
 ```
 
 Now, `make plot` generates the plot and displays it!
@@ -799,7 +822,7 @@ data.out: main
 
 data.pdf: data.out data.plot
   gnuplot data.plot
-  code data.pdf # Open PDF in VS Code (extension required)
+  codium data.pdf # Open PDF in VSCodium (extension required)
 
 plot: data.pdf
 ```
