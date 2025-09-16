@@ -144,18 +144,29 @@
   \end{description}
 \end{frame}
 
-\section{GDB in VS Code}
+\section{GDB in VSCodium}
 
-\begin{frame}{Prerequisites to GDB in VS Code}
-  \begin{itemize}\setlength\itemsep{0.5em}
-    \item If running in WSL, install the WSL extension.
-    \item Install the C++ extension.
+\begin{frame}{Prerequisites}
+  \begin{enumerate}
+    \item Install the \href{https://open-vsx.org/extension/KylinIdeTeam/cppdebug}{C/C++ Debug (gdb)} extension.
+
+    \item If running in WSL, install the \href{https://open-vsx.org/extension/jeanp413/open-remote-wsl}{Open Remote - WSL} extension.
+    
+      \begin{itemize}
+        \item Ensure that the \href{https://open-vsx.org/extension/KylinIdeTeam/cppdebug}{C/C++ Debug (gdb)} extension is installed within WSL\@.
+      \end{itemize}
+
     \item Open the lab/project folder (not just a source file or the whole repository).
+    
+      \begin{itemize}
+        \item If using WSL, make sure to open the folder in WSL (remote connection).
+      \end{itemize}
+
     \item Open a C++ file.
-  \end{itemize}
+  \end{enumerate}
 \end{frame}
 
-\begin{frame}{Setup Project for GDB in VS Code}
+\begin{frame}{Project Setup}
   \begin{enumerate}\setlength\itemsep{0.5em}
     \item Open a C++ File in the Folder.
     \item Click on the ``Run'' menu at the top.

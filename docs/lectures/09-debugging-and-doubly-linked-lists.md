@@ -49,6 +49,7 @@ Chapter 16
 - `clear` Delete all breakpoints.
 
 ### Stepping through Lines of Code
+
 - `step` Go to next instruction (source line), diving into function calls.
 - `next` Go to next instruction (source line) in this function.
 - `continue` Continue execution until the next breakpoint.
@@ -61,20 +62,21 @@ Chapter 16
 - `undisplay` Remove the `display` with the given number.
 - `info locals` Print the local variables or arguments in the current stack frame.
 
-## GDB in VS Code
+## GDB in VSCodium or VS Code
 
-### Prerequisites to GDB in VS Code
+### Prerequisites
 
-- If running in WSL, install the WSL extension.
+1.  Install the [C/C++ Debug (gdb)](https://open-vsx.org/extension/KylinIdeTeam/cppdebug) extension.
 
-- Install the C++ extension.
+2.  If running in WSL, install the [Open Remote - WSL](https://open-vsx.org/extension/jeanp413/open-remote-wsl) extension.
+    +   Ensure that the [C/C++ Debug (gdb)](https://open-vsx.org/extension/KylinIdeTeam/cppdebug) extension is installed within WSL.
 
-- Open the lab/project folder (not just a source file or the whole
-  repository).
+3.  Open the lab/project folder (not just a source file or the whole repository).
+    +   If using WSL, make sure to connect to WSL (remote connection).
 
-- Open a C++ file.
+4.  Open a C++ file.
 
-### Setup Project for GDB in VS Code
+### Project Setup
 
 1.  Open a C++ File in the Folder.
 
