@@ -30,7 +30,7 @@
 \item
   Often, data is organized and processed sequentially (in a \emph{sequential list}).
 \item
-  An array is a useful data structure for sequential processing but has its limitations.
+  An array is a useful data structure for sequential processing, but has its limitations.
   \begin{itemize}
   \item
     Array sizes are fixed.
@@ -61,10 +61,10 @@ What is the order of approximation (Big O) of the following operations on an arr
 \begin{frame}{Linked Lists}
 \begin{itemize}
 \item
-  \emph{Linked lists} store data in \emph{nodes}, where each node contains
+  \emph{Linked lists} store data in \emph{nodes}, where each node \\contains
   the data and a pointer to the next node.
 \item
-  The first node is called the head and the last is the tail.
+  The first node is called the head, and the last is the tail.
 \end{itemize}
 \center%
 \begin{tikzpicture}
@@ -83,7 +83,7 @@ What is the order of approximation (Big O) of the following operations on an arr
 \begin{frame}{Advantages of Linked Lists}
 \begin{itemize}
 \item
-  A variable size; memory is allocated and released as needed.
+  A variable size; memory is allocated and released \\as needed.
 \item
   Some algorithms are faster with linked lists compared to arrays.
 \item
@@ -95,12 +95,11 @@ What is the order of approximation (Big O) of the following operations on an arr
 \begin{frame}{Disadvantages of Linked Lists}
 \begin{itemize}
 \item
-  Additional memory. Each pointer requires additional 4 or 8 bytes, be
-  which may significant with large data sets.
+  Additional memory. Each pointer requires an \\additional 4 or 8 bytes, which may be significant \\with large data sets.
 \item
-  Discontinuous memory.
+  Discontiguous memory (spread over disconnected locations).
 \item
-  Some algorithms are slower on Linked Lists, compared to arrays.
+  Some algorithms are slower on Linked Lists, compared to on arrays.
 \end{itemize}
 \end{frame}
 
@@ -125,29 +124,14 @@ struct Node {
 \begin{frame}[fragile]{Working with Nodes}
 \begin{itemize}
 \item<1->
-  %\raisebox{-.5\height}{\parbox{0.5\textwidth}{%
     Variable declaration:\\
-    \lstinline|Node *pHead{nullptr};|%}
-    % \raisebox{-.5\height}{\onslide<2->\begin{tikzpicture}
-    %   \LinkPtr{pHead}
-    % \end{tikzpicture}}%
-  %}
+    \lstinline|Node *pHead{nullptr};|
 \item<3->
-  %\raisebox{-.5\height}{\parbox{0.5\textwidth}{%
     Add a value:\\
-    \lstinline|pHead = new Node{'A'};|%}
-    % \raisebox{-.5\height}{\onslide<4->\begin{tikzpicture}
-    %   \LinkedList{\textquotesingle{}A\textquotesingle{}}
-    % \end{tikzpicture}}%
-  %}
+    \lstinline|pHead = new Node{'A'};|
 \item<5->%
-  %\raisebox{-.5\height}{\parbox{0.55\textwidth}{%
     Add another value:\\
-    \lstinline|pHead->pNext = new Node{'B'};|%}
-    % \raisebox{-.5\height}{\onslide<6->\begin{tikzpicture}
-    %   \LinkedList{\textquotesingle{}A\textquotesingle{}, \textquotesingle{}B\textquotesingle{}}
-    % \end{tikzpicture}}%
-  %}
+    \lstinline|pHead->pNext = new Node{'B'};|
 \item<7->
   Add a third value:\\
   \lstinline|pHead->pNext->pNext = new Node{'C'};|\\
@@ -167,15 +151,9 @@ struct Node {
   \LinkedNode{\textquotesingle{}C\textquotesingle{}}
 }
 \end{tikzpicture}
-% \onslide<8->{%
-%     %\hspace{2cm}
-    
-%     \begin{tikzpicture}
-%       \LinkedList{\textquotesingle{}A\textquotesingle{}, \textquotesingle{}B\textquotesingle{}, \textquotesingle{}C\textquotesingle{}}
-%     \end{tikzpicture}}
 \end{frame}
 
-\begin{frame}[fragile]{Traversing over a Linked List}
+\begin{frame}[fragile]{Traversing a Linked List}
 Given a pointer to the first node, step through each node.
 
 \begin{lstlisting}
@@ -257,19 +235,19 @@ void display(const Node * const pHead) {
   Provide methods for using the list.
   \begin{itemize}
   \item
-    constructor
+    constructor(s)
   \item
-    prepend(value)
+    {prepend(value)}
   \item
-    append(value)
+    {append(value)}
   \item
-    insert(index, value)
+    {insert(index, value)}
   \item
-    remove(index, value)
+    {remove(index, value)}
   \item
-    set(index, value)
+    {set(index, value)}
   \item
-    getLength()
+    {getLength()}
   \item
     \ldots{}
   \end{itemize}
@@ -327,15 +305,6 @@ LinkedList::LinkedList()
 \end{frame}
 
 \section{Prepend}
-
-% \begin{frame}{}
-% \centering
-% {\Large Prepending a Value to a List}
-% \\[3em]
-% \begin{tikzpicture}
-%   \LinkedList[tail]{\textquotesingle{}A\textquotesingle{}, \textquotesingle{}B\textquotesingle{}, \textquotesingle{}C\textquotesingle{}, \textellipsis, \textquotesingle{}Z\textquotesingle{}}
-% \end{tikzpicture}
-% \end{frame}
 
 \begin{frame}{Prepend (Add to Beginning)}
 \begin{enumerate}
@@ -465,15 +434,6 @@ void LinkList::prepend(const std::string &value) {
 \end{frame}
 
 \section{Append}
-
-% \begin{frame}{}
-% \centering
-% {\Large Appending a Value to the End of a List}
-% \\[3em]
-% \begin{tikzpicture}
-%   \LinkedList{"A", "B", \textellipsis, "Z"}
-% \end{tikzpicture}
-% \end{frame}
 
 \begin{frame}{Append (Add to End)}
 \begin{enumerate}
@@ -611,7 +571,7 @@ void LinkList::insert(const std::string &val, int index) {
     append(val);
   }
   else {
-    // Traverse to location and insert.
+    // Traverse to the location and insert.
   }
 }
 \end{lstlisting}
@@ -696,7 +656,7 @@ for (int iter{1}; iter < index; ++iter)
 // Contents of the final else statement.
 Node *pNewNode{new Node{val}};
 Node *pBefore{mpHead};
-for (int iter = 1; iter < index; ++iter) {
+for (int iter{1}; iter < index; ++iter) {
   pBefore = pBefore->pNext;
 }
 pNewNode->pNext = pBefore->pNext;
@@ -806,7 +766,7 @@ LinkedList& LinkedList::operator=(const LinkedList& src) {
 
 \begin{frame}[fragile]{Removing the First Element}
 \begin{itemize}
-\item Before deleting, save the old head and update head.\\
+\item Before deleting, save the old head and update \lstinline{mpHead}.\\
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 Node *pOldHead{mpHead};
 mpHead = mpHead->pNext;
@@ -871,10 +831,10 @@ std::string LinkedList::removeFirst() {
 \begin{enumerate}
 \item Before deleting, traverse to the node before the tail\\(the new tail).\\
 \begin{lstlisting}
-Node *pCurr{mpHead};
-for (int iter = 2; iter < mSize; ++iter)
+Node *pBefore{mpHead};
+for (int iter{2}; iter < mSize; ++iter)
 {
-  pCurr = pCurr->pNext;
+  pBefore = pBefore->pNext;
 }
 \end{lstlisting}
 \end{enumerate}
@@ -883,7 +843,7 @@ for (int iter = 2; iter < mSize; ++iter)
   \begin{tikzpicture}
     \LinkedList{"B", "C", \textellipsis}
     \LinkedNode{"Y"}
-    \onslide<2->{\TailPtr{pCurr}}
+    \onslide<2->{\TailPtr{pBefore}}
     \LinkedNode{"Z"}
     \TailPtr{mpTail}
   \end{tikzpicture}
@@ -894,17 +854,17 @@ for (int iter = 2; iter < mSize; ++iter)
 \begin{frame}[fragile, b]{Removing the List Element}
 \begin{enumerate}\addtocounter{enumi}{1}
 \item Update current's next to null.\\
-  \lstinline{pCurr->pNext = nullptr;}\\[1em]
-\item<3-> Delete tail and point to new tail.\\
+  \lstinline{pBefore->pNext = nullptr;}\\[1em]
+\item<3-> Delete tail and point to the new tail.\\
   \lstinline{delete mpTail;}\\
-  \lstinline{mpTail = pCurr;}\\[1em]
+  \lstinline{mpTail = pBefore;}\\[1em]
 \end{enumerate}
 
 \begin{center}
   \begin{tikzpicture}
     \LinkedList{"B", "C", \textellipsis}
     \LinkedNode[ptr][true][newTailEl]{"Y"}
-    \TailPtr[newTailEl]{pCurr}
+    \TailPtr[newTailEl]{pBefore}
     \alt<-1>{
       \LinkedNode{"Z"}
       %\TailPtr{mpTail}
@@ -931,15 +891,15 @@ std::string LinkedList::removeLast() {
   std::string value;
   if (mpHead != nullptr) {
     value = mpTail->datum; // return value
-    Node* pCurr = mpHead;
-    for (int iter = 2; iter < mSize; ++iter)
-      pCurr = pCurr->pNext;
-    pCurr->pNext = nullptr;
+    Node* pBefore = mpHead;
+    for (int iter{2}; iter < mSize; ++iter)
+      pBefore = pBefore->pNext;
+    pBefore->pNext = nullptr;
     delete mpTail;
     if(mpHead == mpTail) // removing the only element
       mpHead = mpTail = nullptr;
     else
-      mpTail = pCurr; // update tail
+      mpTail = pBefore; // update tail
     --mSize;
   }
   return value;
@@ -951,17 +911,17 @@ std::string LinkedList::removeLast() {
 \begin{enumerate}
 \item Traverse to the position before the node to remove.\\
 \begin{lstlisting}
-Node *pPrev{mpHead};
-for (int iter = 1; iter < index; ++iter)
+Node *pBefore{mpHead};
+for (int iter{1}; iter < index; ++iter)
 {
-  pPrev = pPrev->pNext;
+  pBefore = pBefore->pNext;
 }
 \end{lstlisting}
 \end{enumerate}
   \begin{tikzpicture}
     \LinkedList{"A"}
     \LinkedNode{"B"}
-    \TailPtr{pPrev}
+    \TailPtr{pBefore}
     \LinkedNode{"C"}
     \LinkedNode{"\textellipsis"}
     \LinkedNode{"Z"}
@@ -973,10 +933,10 @@ for (int iter = 1; iter < index; ++iter)
 \begin{frame}[fragile, b]{Remove an Element at an Index}
 \begin{enumerate}\addtocounter{enumi}{1}
 \item Create a pointer to the node to remove.\\
-  \lstinline{Node *pDel = pPrev->pNext;}
+  \lstinline{Node *pDel = pBefore->pNext;}
 \item<3->
-  Set \texttt{pPrev}'s next point to the node after the deletion.\\
-  \lstinline{pPrev->pNext = pDel->pNext;}
+  Set \texttt{pBefore}'s next point to the node after the deletion.\\
+  \lstinline{pBefore->pNext = pDel->pNext;}
 \item<5->
   Delete the node.\\
   \lstinline{delete pDel;}%\\
@@ -987,7 +947,7 @@ for (int iter = 1; iter < index; ++iter)
   \begin{tikzpicture}
     \LinkedList{"A"}
     \LinkedNode[prePtr]{"B"}
-    \TailPtr{pPrev}
+    \TailPtr{pBefore}
     \alt<-3>{
       \LinkedNode{"C"}
     }{
@@ -1038,14 +998,14 @@ std::string LinkedList::removeAt(int index) {
 The final else statement contains the following code:
 
 \begin{lstlisting}[basicstyle=\small\ttfamily]
-Node *pPrev{mpHead};
+Node *pBefore{mpHead};
 
-for (int iter = 1; iter < index; ++iter) {
-  pPrev = pPrev->pNext;
+for (int iter{1}; iter < index; ++iter) {
+  pBefore = pBefore->pNext;
 }
 
-Node *pDel = pDel = pPrev->pNext;
-pPrev->pNext = pDel->pNext; // Adjust pointers
+Node *pDel = pDel = pBefore->pNext;
+pBefore->pNext = pDel->pNext; // Adjust pointers
 --mSize;
 
 value = pDel->datum; // save the return value
@@ -1057,7 +1017,8 @@ delete pDel; // Delete the node.
 \section{Performance}
 
 \begin{frame}{Linked-List Performance}
-What is the Big $O$ of the following operations on linked lists?
+What is the average-case Big $O$ of the \\
+following operations on linked lists?
 
 \begin{center}
 \begin{tabular}{r c c}
@@ -1155,6 +1116,14 @@ for (double index = 0; index < 100; ++index)
     \item Recompile using \lstinline{make} or \lstinline{make some-test}.
     \item The run with valgrind with \lstinline{valgrind ./main} or \lstinline{valgrind ./test-runner}.
   \end{enumerate}
+\end{frame}
+
+\begin{frame}{Tip: Remember Valgrind}
+  For example, what happens if we forgot to initialize the member variables in the copy constructor? This is a common mistake when implementing the Rule of 3.
+
+  Notice that ASan doesn't report any issues, but Valgrind does.
+  
+  The reason is that ASan doesn't check uninitialized memory reads, but Valgrind does.
 \end{frame}
 
 \section*{Lab 8}

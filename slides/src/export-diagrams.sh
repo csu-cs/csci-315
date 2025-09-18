@@ -2,16 +2,24 @@
 
 # Usage: ./export-diagrams.sh 01-introduction.tex
 
-TEXFILE="$1"
+TEX_FILE="$1"
 OUTDIR="diagrams"
 mkdir -p "$OUTDIR"
 
+# Verify that input argument is provided and the file exists
+if [ -z "$TEX_FILE" ] || [ ! -f "$TEX_FILE" ]; then
+    echo "Usage: $0 <path-to-tex-file>"
+    exit 1
+fi
+
+echo "Extracting diagrams from ${TEX_FILE} to ${OUTDIR}."
+
 # Extract forest diagrams
-awk '/\\begin{forest}/, /\\end{forest}/ {print}' "$TEXFILE" | \
+awk '/\\begin{forest}/, /\\end{forest}/ {print}' "$TEX_FILE" | \
 awk 'BEGIN{n=0} /\\begin{forest}/ {n++; fname=sprintf("'"$OUTDIR"'/forest-%02d.tex",n); print "\\documentclass{standalone}\n\\usepackage{forest}\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\n\\forestset{\n  treeNode/.style={%\n    circle, % node shape\n    draw=black, %line and border color\n    edge=->, % show arrow to child\n    edge=very thick, %edge weight\n    very thick, % node boarder\n    fill=CSUcyan, % node fill\n    text=black,% text color\n    %fit=rectangle, % the resulting tree will usually be wide\n    fit=band,%\n    %inner sep=0.3em,\n    l sep=0em,% distnace between levels\n  },\n  default preamble={%\n    for tree={%\n      treeNode%\n    },%\n  },%\n  %\n  headPtr/.style={\n    anchor=north,l sep=0.5em,%\n    ellipse,draw=none, inner sep=0, fill=none, text=white\n  },\n  %\n  % Used for beamer overlays\n  visible on/.style={\n    for tree={\n      /tikz/visible on={#1},\n      edge+={/tikz/visible on={#1}}}},\n  %\n  % Hide just the node, not its children (and the edges connecting it)\n  node visible on/.style={\n      /tikz/visible on={#1},\n      edge+={/tikz/visible on={#1}},\n      for children={edge+={/tikz/visible on={#1}}}%\n  },%\n  %\n  edge highlight on/.style={\n    edge+={/tikz/highlight on={#1}}\n  }\n}\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{forest}/ {print "\\end{document}" >> fname; close(fname)}'
 
 # Extract tikz diagrams
-awk '/\\begin{tikzpicture}/, /\\end{tikzpicture}/ {print}' "$TEXFILE" | \
+awk '/\\begin{tikzpicture}/, /\\end{tikzpicture}/ {print}' "$TEX_FILE" | \
 awk 'BEGIN{n=0} /\\begin{tikzpicture}/ {n++; fname=sprintf("'"$OUTDIR"'/tikz-%02d.tex",n); print "\\documentclass{standalone}\n\\usepackage{tikz}\n\\usetikzlibrary{shapes,positioning,fit,backgrounds,calc}\n\n\\usepackage{listings}\n\\definecolor{codeKeyword}{HTML}{569CD6}\n\\definecolor{codeVariable}{HTML}{D7BA7D}\n\\definecolor{codeString}{HTML}{CE9178}\n\\definecolor{codeBackground}{HTML}{0a0c10}\n\\definecolor{codeComment}{HTML}{72ab58}\n\\lstset{\n  language=C++,\n  basicstyle=\\ttfamily\\color{white},\n  breaklines=true,\n  breakatwhitespace=true,\n  breakindent=3em,\n  tabsize=4,\n  showspaces=false,\n  showstringspaces=false,\n  commentstyle=\\color{codeComment}\\fontfamily{lmtt}\\itshape,\n  upquote=true,\n  literate={~}{{\\textasciitilde}}1,\n  keepspaces,\n  keywordstyle=\\color{codeKeyword}\\bfseries,\n  identifierstyle=\\color{codeVariable},\n  stringstyle=\\color{codeString},\n  morekeywords={nullptr},\n  backgroundcolor=\\color{codeBackground},\n  frame=single,\n  numbers=left,\n  numbersep=5pt,\n  numberstyle=\\tiny\\color{CSUcyan},\n  xleftmargin=10pt\n}\n\n% Custom background to lstinline\n\\usepackage{realboxes}\n\\usepackage{xpatch}\n\\makeatletter\n\\xpretocmd\\lstinline@{\\Colorbox{codeBackground}\\bgroup\\appto\\lst@DeInit{\\egroup}}{}{}\n\\xpretocmd\\lst@InlineG{\\Colorbox{codeBackground}\\bgroup\\appto\\lst@DeInit{\\egroup}}{}{}\n\\makeatother\n\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\n\\usepackage{ifthen}\n\\usepackage{arrays}\n\\usepackage{linked-lists}\n\n\n\\tikzset{\n  point/.style={\n    circle,\n    fill=white,\n    draw=white,\n    very thick,\n    minimum size=8pt,\n    inner sep=0pt,\n  }\n}\n\n% Used for 3D Plot of Quadtree\n\\usepackage{pgfplots}\n\\pgfplotsset{compat=newest}\n\n\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{tikzpicture}/ {print "\\end{document}" >> fname; close(fname)}'
 
 # # Compile and convert each diagram
@@ -116,6 +124,7 @@ for texfile in "${OUTDIR}"/*.tex; do
 
       if [ -f "${OUTDIR}/${outname}.pdf" ]; then
         pdf2svg "${OUTDIR}/${outname}.pdf" "$OUTDIR/${outname}.svg"
+        rm -f "${OUTDIR}/${outname}.aux"
         # rm -f "$newfile" "${OUTDIR}/${outname}.log" "${OUTDIR}/${outname}.aux"
       fi
 
@@ -127,6 +136,26 @@ for texfile in "${OUTDIR}"/*.tex; do
     # if [ -f "${OUTDIR}/${base}-frame${maxframe}.svg" ]; then
     #     rm -f "$texfile"
     # fi
+  fi
+done
+
+# Change the height and width of all SVGs to be 150% of their original size using sed.
+for svg in "$OUTDIR"/*.svg; do
+  if [ -f "$svg" ]; then
+    # Extract current width and height (assumes px units or no units)
+    width=$(sed -n 's/.*<svg[^>]*width="\([0-9.]*\)[^"]*".*/\1/p' "$svg" | head -n1)
+    height=$(sed -n 's/.*<svg[^>]*height="\([0-9.]*\)[^"]*".*/\1/p' "$svg" | head -n1)
+    # Only proceed if both width and height are found and are numbers
+    if [[ $width =~ ^[0-9.]+$ && $height =~ ^[0-9.]+$ ]]; then
+      new_width=$(awk "BEGIN {printf \"%.3f\", $width * 1.5}")
+      new_height=$(awk "BEGIN {printf \"%.3f\", $height * 1.5}")
+      # Replace width and height in the SVG file
+      sed -i "0,/\(<svg[^>]*width=\"\)[0-9.]\+\([^\"]*\"\)/s//\1${new_width}\2/" "$svg"
+      sed -i "0,/\(<svg[^>]*height=\"\)[0-9.]\+\([^\"]*\"\)/s//\1${new_height}\2/" "$svg"
+      echo "Resized $svg"
+    else
+      echo "Could not extract width/height for $svg"
+    fi
   fi
 done
 

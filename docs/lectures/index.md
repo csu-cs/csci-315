@@ -19,7 +19,7 @@
 - [Performance Analysis](/lectures/07-performance-analysis)
 
 ## Linked Lists
-- [Linked Lists](/lectures/08-linked-lists)
+- [Singly-Linked Lists](/lectures/08-linked-lists)
 - [Debugging & Doubly-Linked Lists](/lectures/09-debugging-and-doubly-linked-lists)
 
 ## Searching and Sorting

@@ -126,7 +126,7 @@ function sidebarNotes() {
 			text: 'Linked Lists',
 			collapsed: true,
 			items: [
-				{ text: "Linked Lists", link: "/lectures/08-linked-lists" },
+				{ text: "Singly-Linked Lists", link: "/lectures/08-linked-lists" },
 				{ text: "Debugging & Doubly-Linked Lists", link: "/lectures/09-debugging-and-doubly-linked-lists" },
 			]
 		},
