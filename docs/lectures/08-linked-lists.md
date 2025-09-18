@@ -13,6 +13,8 @@ import prepend_nonemptyDiagram from '/images/singly-linked-lists/prepend_nonempt
 import prepend_emptyDiagram from '/images/singly-linked-lists/prepend_empty.svg'
 import append_nonemptyDiagram from '/images/singly-linked-lists/append_nonempty.svg'
 import insert_middleDiagram from '/images/singly-linked-lists/insert_middle.svg'
+import remove_frontDiagram from '/images/singly-linked-lists/remove_front.svg'
+import remove_backDiagram from '/images/singly-linked-lists/remove_back.svg'
 </script>
 
 ## Introduction
@@ -433,13 +435,13 @@ LinkedList& LinkedList::operator=(const LinkedList& src) {
 
 - Before deleting, save the old head and update the head.  
 
+<ProgressiveDiagram :src="remove_frontDiagram" />
+
   ```C++
   Node *pOldHead{mpHead};
   mpHead = mpHead->pNext;
   delete pOldHead;
   ```
-
-### Removing the First Element
 
 If the list is now empty, set the head and tail pointers to null.
 
@@ -478,6 +480,8 @@ std::string LinkedList::removeFirst() {
 3.  Delete tail and point to the new tail.  
     `delete mpTail;`  
     `mpTail = pBefore;`  
+
+<ProgressiveDiagram :src="remove_backDiagram" />
 
 ```C++
 std::string LinkedList::removeLast()
