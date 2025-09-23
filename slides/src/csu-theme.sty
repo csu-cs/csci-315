@@ -16,6 +16,7 @@
 \definecolor{CSUslate}{HTML}{383838}
 \definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.
 \definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.
+\definecolor{MyGreen}{HTML}{61ff7e} % Alternative color for highlight.
 
 % Code colors (adapted from VS Code)
 \definecolor{codeKeyword}{HTML}{569CD6}
@@ -124,11 +125,15 @@
 \graphicspath{{../imgs/}}
 
 \RequirePackage{amssymb,amsmath}
-\RequirePackage{hyperref}
+\RequirePackage[]{hyperref}
 %\urlstyle{same}
 \RequirePackage{href-ul} % Underline links
 \renewcommand{\ULdepth}{1.8pt} % Set how tight underlines are (\uline)
 
+\hypersetup{
+  pdfpagelayout=SinglePage,
+  pdfstartview=FitH   % fit page width to window
+}
 
 \RequirePackage{listings}
 \lstset{%

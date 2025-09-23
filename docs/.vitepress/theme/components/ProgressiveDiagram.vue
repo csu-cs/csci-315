@@ -1,8 +1,17 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 
 // Generate a unique prefix for each instance
 const instanceId = Math.random().toString(36).slice(2, 9)
+
+const windowWidth = ref(1024) // Default for SSR
+
+if (typeof window !== 'undefined') {
+  windowWidth.value = window.innerWidth
+  window.addEventListener('resize', () => {
+    windowWidth.value = window.innerWidth
+  })
+}
 
 const props = defineProps({
   src: {
@@ -138,6 +147,20 @@ const updateVisibility = () => {
   })
 }
 
+// Dynamically compute gap based on number of steps
+const dotGap = computed(() => {
+  // Use windowWidth.value instead of window.innerWidth
+  if (windowWidth.value <= 600) {
+    if (maxStep.value <= 8) return '0.5rem'
+    if (maxStep.value <= 16) return '0.4rem'
+    if (maxStep.value <= 24) return '0.3rem'
+    return '0.2rem'
+  } else {
+    if (maxStep.value <= 16) return '0.75rem'
+    return '0.5rem'
+  }
+})
+
 watch(step, updateVisibility)
 </script>
 
@@ -147,12 +170,15 @@ watch(step, updateVisibility)
 
     <div class="controls">
       <button @click="prev" :disabled="step === 1">◀</button>
-      <span>{{ step }} / {{ maxStep }}</span>
+      <span class="prog-label">{{ step }} / {{ maxStep }}</span>
       <button @click="next" :disabled="step === maxStep">▶</button>
     </div>
 
     <!-- Step indicator dots -->
-    <div class="step-dots">
+    <div
+      class="step-dots"
+      :style="{ '--dot-gap': dotGap }"
+    >
       <span
         v-for="n in maxStep"
         :key="n"
@@ -195,25 +221,62 @@ watch(step, updateVisibility)
   justify-content: center;
   gap: 1rem;
 }
+
+/* Make prev/next buttons easier to tap on mobile */
+button {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  font-size: 1.25rem;
+}
+
 button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+.prog-label {
+  display: inline-block;
+  min-width: 5ch;
+  text-align: center;
+}
+/* Step dots: shrink width if too many, always fit container */
 .step-dots {
   margin-top: 0.5rem;
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--dot-gap, 0.5rem);
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0 0.5rem;
 }
+
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: #ccc;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, width 0.2s;
 }
 .dot.active {
   background: var(--vp-c-brand);
+}
+
+/* Responsive: shrink dots further on small screens */
+@media (max-width: 600px) {
+  button {
+    min-width: 3rem;
+    min-height: 3rem;
+    font-size: 1.5rem;
+  }
+  .step-dots {
+    max-width: 95vw;
+    padding: 0 0.1rem;
+  }
+  .dot {
+    min-width: 4px;
+    max-width: 12px;
+    height: 16px;
+    border-radius: 6px;
+  }
 }
 </style>

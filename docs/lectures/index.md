@@ -20,7 +20,8 @@
 
 ## Linked Lists
 - [Singly-Linked Lists](/lectures/08-linked-lists)
-- [Debugging & Doubly-Linked Lists](/lectures/09-debugging-and-doubly-linked-lists)
+- [Debugging in C++](/lectures/09-debugging)
+- [Doubly-Linked Lists](/lectures/09-doubly-linked-lists)
 
 ## Searching and Sorting
 - [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort)

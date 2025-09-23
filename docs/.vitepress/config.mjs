@@ -127,7 +127,8 @@ function sidebarNotes() {
 			collapsed: true,
 			items: [
 				{ text: "Singly-Linked Lists", link: "/lectures/08-linked-lists" },
-				{ text: "Debugging & Doubly-Linked Lists", link: "/lectures/09-debugging-and-doubly-linked-lists" },
+				{ text: "Debugging in C++", link: "/lectures/09-debugging" },
+				{ text: "Doubly-Linked Lists", link: "/lectures/09-doubly-linked-lists" },
 			]
 		},
 		{

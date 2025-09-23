@@ -123,7 +123,7 @@ The weekly schedule is subject to change.
 |  3B  | [Operator Overloading](/lectures/06-operator-overloading) and [Templates](/lectures/06-templates)  | Lab 06                |
 |  4A  | [Performance Analysis](/lectures/07-performance-analysis) | Lab 07                |
 |  4B  | [Linked Lists](/lectures/08-linked-lists) | Lab 08                |
-|  5A  | [Debugging, Doubly-Linked Lists, & the STL](/lectures/09-debugging-and-doubly-linked-lists) | Project 1 & Lab 09    |
+|  5A  | [Debugging](/lectures/09-debugging) and [Doubly-Linked Lists, & the STL](/lectures/09-doubly-linked-lists) | Project 1 & Lab 09    |
 |  5B  | [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort) | Lab 10                |
 |  6A  | [Quick and Merge Sorting](/lectures/11-quick-and-merge-sort) | Lab 11                |
 |  6B  | [Stacks & Queues](/lectures/12-stacks-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |

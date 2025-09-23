@@ -1,7 +1,9 @@
 \documentclass[14pt,aspectratio=1610]{beamer}
 %\documentclass[14pt,aspectratio=1610,handout]{beamer}
 \usepackage{csu-theme}
+\usepackage{arrays}
 \usepackage{linked-lists}
+\usetikzlibrary{positioning,backgrounds}
 
 \title{\Huge{} C++ Debugging,\\Doubly-Linked Lists, \& Project 1}
 \subtitle{CSCI 315: Data Structure Analysis}
@@ -201,18 +203,27 @@ test-runner
   We can use a helper data structure (a stack).
 \item
   We can implement a \emph{doubly-linked list} type, where every node has a next and previous pointer.
-\end{enumerate}%
+\end{enumerate}\onslide<4>{}%
 \vspace{-0.25em}
-\onslide<+->{%
+
+\alt<-3>{
+\begin{tikzpicture}[node of list/.append style = {minimum width=14.275mm}]
+  \LinkPtr{mpHead}
+  \LinkedNode[first]{"A"}
+  \LinkedNode{"B"}
+  \LinkedNode{\textellipsis}
+  \LinkedNode{"Z"}
+  \TailPtr{mpTail}
+\end{tikzpicture}%
+}{
 \begin{tikzpicture}
-    \LinkPtr{mpHead}
-    \DoublyLinkedNode[first]{"A"}
-    \DoublyLinkedNode{"B"}
-    % \DoublyLinkedNode{"C"}
-    \DoublyLinkedNode{\textellipsis}
-    \DoublyLinkedNode{"Z"}
-    \TailPtr{mpTail}
-  \end{tikzpicture}
+  \LinkPtr{mpHead}
+  \DoublyLinkedNode[first]{"A"}
+  \DoublyLinkedNode{"B"}
+  \DoublyLinkedNode{\textellipsis}
+  \DoublyLinkedNode{"Z"}
+  \TailPtr{mpTail}
+\end{tikzpicture}%
 }
 \end{frame}
 
@@ -255,7 +266,7 @@ test-runner
 
 
 \begin{frame}{Appending a Doubly-Linked List}
-  \center
+  \center%
   \begin{tikzpicture}
 
   
@@ -296,6 +307,162 @@ test-runner
       \draw[link] (tPtr) to[bend right=60] (ele);%
     }
   \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Insert in the Middle}
+  
+\begin{center}
+  Example: Insert a new node after at index 2 (after ``B'')
+
+\begin{tikzpicture}
+    \LinkPtr{mpHead}
+    \DoublyLinkedNode[first]{"A"}
+    \DoublyLinkedNode{"B"}
+    \node[block] (BNode) [fit=(ele)]{};%
+    \coordinate (beforeNodeNext) at (ptr);%
+    \onslide<3->{
+      \TailPtr{pBefore}
+    }
+    
+    \alt<-5>{\DoublyLinkedNode{"C"}}{%
+      \alt<-6>{\DoublyLinkedNode[disconnected]{"C"}}{%
+        \DoublyLinkedNode[disconnected][disconnected]{"C"}%
+      }%
+    }
+    \node[block] (afterNode) [fit=(ele)]{};%
+    \coordinate (afterNodePrev) at (leftPtr);%
+    \DoublyLinkedNode{"D"}
+    \TailPtr{mpTail}
+
+    \onslide<2->{
+      \begin{scope}[xshift=3.75cm]%
+        \LinkPtr[2]{pNewNode}
+      \end{scope}
+      \DoublyLinkedNode[first]{"new"}
+      \node[block] (newNode) [fit=(ele)]{};%
+      \coordinate (newNodePrev) at (leftPtr);%
+      \coordinate (newNodeNext) at (ptr);%
+    }
+
+    \onslide<4->{
+      \draw[link] (newNodePrev) to[bend right=8] (BNode);
+    }
+    \onslide<5->{
+      \draw[link] (newNodeNext) to[bend left=8] (afterNode);
+    }
+    \onslide<6->{
+      \draw[link] (afterNodePrev) to[bend left=8] (newNode);
+    }
+    \onslide<7->{
+      \draw[link] (beforeNodeNext) to[bend right=8] (newNode);
+    }
+  \end{tikzpicture}
+\end{center}
+\end{frame}
+
+\section{Iterators}
+\begin{frame}{Iterators for Container}
+\begin{itemize}
+\item
+  Iterators are pointer-like entities that are used to access individual elements in a container.
+\item
+  Often they are used to move sequentially from element to element, a process called \textit{iterating} through a container.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Iterators for an \texttt{\bfseries Array} Container}
+  \vspace{1em}
+  \begin{tikzpicture}
+
+    % Dynamic Array
+    \ArrayLabel{}
+    \ArrayNodeVertical{17}
+    \ArrayNodeVertical{5}
+    \ArrayListVertical{23, 12, 7, 2}
+    % \ArrayNodeVerticalSpan{3}
+    % \ArrayNodeVertical{?}
+    % \ArrayGroupVerticleRight{space}{prev}{Unused}
+
+    % Array Class Members
+    \begin{scope}[node of array/.append style={minimum width=14mm}]
+      \ArrayLabel[-2.75][-2.75]{}
+
+      \ArrayNodeStack[CSUcyan][mLength]{6}
+      \node[block] (longestTitle) [fit=(index)]{};
+      
+      \ArrayNodeStack[CSUgold][mpArray]{}
+      \fill (prev) circle(3pt);
+      \coordinate (ptrCircle) at (prev);
+      \draw[link] (ptrCircle) to[bend left=45] (el17);
+
+    \end{scope}
+    \begin{scope}[on background layer]
+      \node[draw,fill=CSUslate, very thick,fit=(el6) (el) (longestTitle)] (stackMembers) {};
+    \end{scope}
+    \node[anchor=south, font=\ttfamily] at ([yshift=0pt] stackMembers.north) {\lstinline|Array<int> arr;|};
+
+    % Iterator Members
+    \onslide<2->{
+      \node[pointer, name=ptr2] at ([yshift=-8.5mm] 2,-1) {};%
+      \node[outer block] (last) [fit=(ptr2)]{};
+      \node[label of pointer, above = of last.north west, name=head, anchor=south west, align=left, fill=codeBackground] (head) {\lstinline|Array<int>::iterator|\\
+      \texttt{~~~~}\lstinline|iter = arr.begin() + 1;|};%
+      \coordinate (ptr) at (ptr2);%
+      \coordinate (headPtr) at (ptr2);%
+      \fill (ptr) circle(3pt);%
+      \draw[link] (headPtr) to[bend right=8] (el5);
+    }
+
+    \onslide<3->{
+      \node[below =3pt of last.south west, anchor=north west, align=left, xshift=-3pt, execute at begin node=\setlength{\baselineskip}{1.4em}] (description) {The iterator corresponds to the \\class \lstinline|Array<int>| is of the \\type \lstinline|Array<int>::iterator|.};
+    }
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{\bfseries begin} and \texttt{\bfseries end} Iterator Functions}
+\begin{itemize}
+\item
+  \lstinline{begin()}: returns an iterator to the beginning of the container.
+\item
+  \lstinline{end()}: returns an iterator to just past the last value.
+\end{itemize}
+\centerline{%
+  \begin{tikzpicture}[node of array/.append style = {minimum height=7mm}]
+    \ArrayLabel{\texttt{arr}}
+    \ArrayNode[]{17}
+    \ArrayElLabel{\lstinline|begin()|}
+    \ArrayList{5, 23, 12, 7, 2}
+    %\ArrayNodeSpan{5}
+    %\ArrayList{,,,,,,}
+    \begin{scope}[node of array/.append style={densely dotted}]
+      \ArrayNode[none]{}
+      \node[anchor=east, inner sep=1pt] (txtLabel) at ([shift={(0, 1)}]val.north) {Past the last element};
+      \draw[->, very thick] (txtLabel.east) to[bend left=50] (val);
+    \end{scope}
+    \ArrayElLabel{\lstinline|end()|}
+    %\node Past-the-last element
+  \end{tikzpicture}
+}
+\end{frame}
+
+\begin{frame}{Benefits of Iterators}
+\begin{itemize}
+\item<2->
+  \emph{Convenience in Programming}:
+  \begin{itemize}
+  \item
+    Provide common usage for any container (the internal structure of a container does not matter).
+  \item
+    Provide read and/or write access to each element's values.
+  \end{itemize}
+\item<3->
+  \emph{Reusable Code}:\\
+  Iterator algorithms are not dependent on the container type.
+\item<4->
+  \emph{Dynamic Processing}:\\
+  Easily dynamically allocate as well as delete the memory.
+\end{itemize}
 \end{frame}
 
 \section*{Homework}
