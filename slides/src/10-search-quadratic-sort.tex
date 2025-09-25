@@ -854,12 +854,12 @@ The \emph{insertion sort algorithm} sorts the list by moving each element to its
   \onslide<3>{\ArrayGroup{el10}{el18}{Sorted}}
   \onslide<4>{\ArrayGroup{el10}{el25}{Sorted}}
   \onslide<17->{\ArrayGroup{el10}{el30}{Sorted}}
-  \onslide<6>{\draw[link, <-] ([xshift=-2mm] el25.south east) to[bend right] node[below] {move} ([xshift=2mm] el23.south west);}
+  \onslide<6>{\draw[link, <-, dotted] ([xshift=-2mm] el25.south east) to[bend right] node[below] {move} ([xshift=2mm] el23.south west);}
   \onslide<8>{\draw[link, <-] (val) to[bend right] node[above] {copy} (el23);}
   \only<14>{\draw[link, ->] (val) to[bend right] node[right] {copy} (first25);}
   \only<15>{\draw[link, ->] (val) to[bend right] node[right] {copy} (el23);}
 
-  \onslide<18>{\draw[link, ->] (el17) to[bend left=50] node[below] {move} (el18);}
+  \onslide<18>{\draw[link, ->, dotted] (el17) to[bend left=50] node[below] {move} (el18);}
   \onslide<19-20>{\draw[link, <-] (val) to[bend right] node[above] {copy} (el17);}
   \onslide<22>{\draw[link, ->] (val) to[bend left] node[left] {copy} (el18);}
   
