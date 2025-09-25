@@ -16,8 +16,6 @@
 
 \setlength{\parskip}{0.5em}
 
-\definecolor{MyGreen}{HTML}{61ff7e}
-
 \graphicspath{{../imgs/performance}}
 
 \begin{document}
@@ -150,9 +148,9 @@ Find the location of \texttt{75} in this sorted array.
 
   \onslide<3-4>{\ArrayElLabel[val]{mid}}
 
-  \alt<-4> {
+  \alt<-4>{
     \ArrayList{45, 48, 66, 75, 89, 95}
-  } {
+  }{
     \alt<-5>{
       \ArrayList{45, 48}
       \ArrayNode[MyPurple]{66}
@@ -161,7 +159,12 @@ Find the location of \texttt{75} in this sorted array.
     }
 
     \onslide<5-6>{\ArrayElLabel[el66]{mid}}
-    \ArrayNode{75}
+    \alt<-8>{
+      \ArrayNode{75}
+    }{
+      \ArrayNode[MyPurple]{75}
+    }
+
     \alt<-6>{
       \ArrayNode{89}
       \ArrayNode{95}
@@ -277,7 +280,8 @@ $100000000$  & $0.1$s              & $0.027$\textmu{}s           & $2.66$s      
   \item
     Let $f$ be a function of $n$.
   \item
-    \emph{Asymptotic}: the study of the function $f$ as $n$ becomes larger and larger without bound.
+    \emph{Asymptotic}: the study of the function $f$ as $n$ \\
+    becomes larger and larger without bound.
   \item
     Let $f$ and $g$ be real-valued, non-negative functions.
   \item
@@ -347,7 +351,7 @@ $100000000$  & $0.1$s              & $0.027$\textmu{}s           & $2.66$s      
 
 \begin{frame}{Lower Bound on Comparison-Based Search}
 \small
-\emph{Comparison-based search algorithms}: Search a list by comparing the target element with list elements.
+\emph{Comparison-based search algorithms}: Search a list by comparing \\the target element with list elements.
 \pause{}
 
 \emph{Theorem}: Let $L$ be a list of size $n > 1$. Suppose that the elements of $L$ are sorted. If $SRH(n)$ denotes the minimum number of comparisons needed, in the worst case, by using a comparison-based algorithm to recognize whether an element $x$ is in $L$, then $SRH(n) \ge \log_2(n + 1)$.
@@ -788,39 +792,43 @@ The \emph{insertion sort algorithm} sorts the list by moving each element to its
           \ArrayList{30, 23, 17, 45, 34}
         }{
           \ArrayList[MyGreen]{10, 18}
-          \alt<-14>{
-            \ArrayNode[MyGreen]{25}
-          }{
-            \ArrayNode[MyGreen]{23}
-          }
-          \alt<-9>{
-            \ArrayNode[MyGreen]{30}
-            \only<9>{\draw[link, ->] (el30) to[bend right=70] node[below] {copy} (el23);}
-            \only<5-9>{\ArrayGroup{el10}{el30}{Sorted}}
-            \ArrayNode{23}
-          }{
-            \alt<-11>{
-              \ArrayNode[MyGreen]{30}
-              \onslide<10>{\draw[link, ->] (el30) to[bend right=70] node[below] {copy} (el23);}
-              \onslide<11->{\draw[link, ->] (el25) to[bend right=70] node[below] {copy} (el30);}
-              \onslide<5->{\ArrayGroup{el10}{el30}{Sorted}}
-            }{
-              \node[block] (first25) [fit=(val)]{};
-              \ArrayNode[MyGreen]{25}
-              \onslide<11-12>{\draw[link, ->] (first25) to[bend right=70] node[below] {copy} (el25);}
-              \onslide<5-16>{\ArrayGroup{el10}{el25}{Sorted}}
-            }
-            \alt<-16>{
-              \ArrayNode{30}
-            }{
-              \ArrayNode[MyGreen]{30}
-            }
-          }
-          \ArrayList{17, 45, 34}
         }
       }
     }
   }
+  \only<5-14>{
+    \ArrayNode[MyGreen]{25}
+  }
+  \only<15->{
+    \ArrayNode[MyGreen]{23}
+  }
+
+  \only<5->{
+      \alt<-9>{
+        \ArrayNode[MyGreen]{30}
+        \only<5-9>{\ArrayGroup{el10}{el30}{Sorted}}
+        \ArrayNode{23}
+        \only<9>{\draw[link, ->] (el30) to[bend right=70] node[below] {copy} (el23);}
+      }{
+        \alt<-11>{
+          \ArrayNode[MyGreen]{30}
+          \onslide<10>{\draw[link, ->] (el30) to[bend right=70] node[below] {copy} (el23);}
+          \onslide<11->{\draw[link, ->] (el25) to[bend right=70] node[below] {copy} (el30);}
+          \onslide<5->{\ArrayGroup{el10}{el30}{Sorted}}
+        }{
+          \node[block] (first25) [fit=(val)]{};
+          \ArrayNode[MyGreen]{25}
+          \onslide<11-12>{\draw[link, ->] (first25) to[bend right=70] node[below] {copy} (el25);}
+          \onslide<5-16>{\ArrayGroup{el10}{el25}{Sorted}}
+        }
+        \alt<-16>{
+          \ArrayNode{30}
+        }{
+          \ArrayNode[MyGreen]{30}
+        }
+      }
+      \ArrayList{17, 45, 34}
+    }
 
   \onslide<21-22>{
     \draw[link, ->] (el30) to[bend right=70] node[below] {copy 1} (el17);
@@ -856,7 +864,8 @@ The \emph{insertion sort algorithm} sorts the list by moving each element to its
   \onslide<22>{\draw[link, ->] (val) to[bend left] node[left] {copy} (el18);}
   
   \onslide<22>{}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 
 \end{frame}
 
