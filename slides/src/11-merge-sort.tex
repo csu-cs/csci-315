@@ -1,0 +1,614 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{forest}
+\usepackage{booktabs}
+
+\title{\Huge{} Merge Sort}
+\subtitle{CSCI 315: Data Structure Analysis\\Chapter 18}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{February 18, 2025}
+\subject{Software Programming}
+%\keywords{}
+
+\setlength{\parskip}{0.5em}
+
+
+\usepackage{linked-lists}
+\usepackage{arrays}
+
+
+\tikzset{
+  node of list/.append style = {
+    minimum height=6mm,
+    minimum width=3mm,
+    node distance=6mm,
+    font=\small,
+  },
+  link pointer of list/.append style= {
+    minimum height=6mm,
+    minimum width=3mm
+  },
+  pointer/.append style = {
+    minimum height=4mm,
+    minimum width=4mm,
+    node distance=1pt
+  },
+  label of pointer/.append style = {
+    font=\ttfamily\small
+  },
+  node of array/.append style = {
+     minimum height=8mm,
+     minimum width=10.8mm,
+     font=\large
+  },
+  label of array el/.append style={
+    % rotate=-67.5,
+    % anchor=west,
+    % align=right,
+    % yshift=-3mm,
+    font=\sffamily,
+    % rotate=-12,
+  },
+}
+
+% Adapted from the B-Tree slides for Merge Sort diagram
+\NewDocumentCommand{\BTreeNode}{ m }{%
+	\begingroup
+	\foreach\element [count=\i from 1] in {#1} {%
+		\ifnum\i>1%After the first element
+      {\color{white}\rule[-0.4em]{1.25pt}{1.5em}}%
+		\fi%
+      \makebox[1.45em][c]{\vspace{1.25em}\element\vspace{1.25em}}%
+	}%
+	\endgroup%
+}
+
+\forestset{
+  visible on/.style={
+  for tree={
+    /tikz/visible on={#1},
+    edge+={/tikz/visible on={#1}}}}
+}
+
+\tikzset{
+  %
+  % Used for beamer overlays
+  invisible/.style={opacity=0,text opacity=0},
+  visible on/.style={alt=#1{}{invisible}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage%
+\end{frame}
+
+\section{Merge Sort}
+\begin{frame}{Merge Sort}
+\begin{itemize}
+\item
+  \emph{Quick Sort}:\\
+    $O(n\log_2n)$ average case; $O(n^2)$ worst case
+\item
+  \emph{Merge Sort}: always $O(n\log_2n)$
+
+\item
+  Unlike Quick Sort, it divides the list into two sub-lists of nearly equal size.
+\item
+  Uses the divide-and-conquer technique.
+  \begin{itemize}
+  \item
+    Partitions the list into two sub-lists of nearly equal size.
+  \item
+    Sorts the sub-lists.
+  \item
+    Combines the sub-lists into one sorted list.
+  \end{itemize}
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Merge Sort}
+\begin{center}
+\begin{forest}
+  for tree={%
+      s sep = 10mm,
+      draw, % show border
+      edge=-stealth, % show arrow to child
+      edge=very thick, % edge weight
+      very thick, % node border
+      fill=CSUcyan, % node fill
+      text=black,% text color
+      fit=tight,% options: tight|rectangle|band
+      inner ysep=0,
+      inner xsep=1pt,
+      minimum height=1.5em,
+      l=0pt,
+      l sep = 10pt,
+    }
+[,phantom
+  [\BTreeNode{35, 28, 17, 45, 62, 48, 30, 38}
+    [\BTreeNode{35, 28, 17, 45}
+      [\BTreeNode{35, 28}
+        [\BTreeNode{35}, alias=div1a]
+        [\BTreeNode{28}, alias=div1b]
+      ]
+      [\BTreeNode{17, 45}
+        [\BTreeNode{17}, alias=div2a]
+        [\BTreeNode{45}, alias=div2b]
+      ]
+    ]
+    [\BTreeNode{62, 48, 30, 38}
+      [\BTreeNode{62, 48}
+        [\BTreeNode{62}, alias=div3a]
+        [\BTreeNode{48}, alias=div3b]
+      ]
+      [\BTreeNode{30, 38}
+        [\BTreeNode{30}, alias=div4a]
+        [\BTreeNode{38}, alias=div4b]
+      ]
+    ]
+  ]
+  [\BTreeNode{17, 28, 30, 35, 38, 45, 48, 62}, for tree={grow=north, edge=stealth-, s sep=20.7mm, visible on=<2->}, l=13.75em
+    [\BTreeNode{30, 38, 48, 62}
+      [\BTreeNode{30, 38}, alias=merge4]
+      [\BTreeNode{48, 62}, alias=merge3]
+    ]
+    [\BTreeNode{17, 28, 35, 45}
+      [\BTreeNode{17, 45}, alias=merge2]
+      [\BTreeNode{28, 35}, alias=merge1]
+    ]
+  ]{
+    \onslide<2->{
+      \draw[-stealth, very thick] (div1a) to (merge1);
+      \draw[-stealth, very thick] (div1b) to (merge1);
+      \draw[-stealth, very thick] (div2a) to (merge2);
+      \draw[-stealth, very thick] (div2b) to (merge2);
+      \draw[-stealth, very thick] (div3a) to (merge3);
+      \draw[-stealth, very thick] (div3b) to (merge3);
+      \draw[-stealth, very thick] (div4a) to (merge4);
+      \draw[-stealth, very thick] (div4b) to (merge4);
+    }
+  }
+]
+\end{forest}
+\end{center}
+\end{frame}
+
+\begin{frame}{Merge Sort Algorithm}
+  \large
+\begin{itemize}
+\item
+  Uses recursion.
+\item
+  If the list is of  assize greater than 1,
+  \begin{enumerate}
+  \item
+    Divide the list into two sub-lists.
+  \item
+    Merge sort the first sub-list.
+  \item
+    Merge sort the second sub-list.
+  \item
+    Merge the first sub-list and the second sub-list.
+  \end{enumerate}
+\end{itemize}
+\end{frame}
+
+\section{Merging Arrays}
+
+\begin{frame}{Merging Two Sorted Arrays}
+  \begin{tikzpicture}
+    \ArrayLabel{}
+    \ArrayList{18, 25, 36}
+    \invisible{\ArrayNode{I1}}
+
+    \ArrayLabel[0][5]{}
+    \ArrayList{20, 30, 44, 46}
+    \invisible{\ArrayNode{I2}}
+
+    \alt<-2>{
+      \ArrayElLabel[el18]{left}
+    } {
+      \alt<-8>{
+        \ArrayElLabel[el25]{left}
+      }{
+        \alt<-14>{
+          \ArrayElLabel[el36]{left}
+        }{
+          \ArrayElLabel[elI1]{left}
+        }
+        
+      }
+    }
+    
+    \alt<-5>{
+      \ArrayElLabel[el20]{right}
+    }{
+      \alt<-11>{
+        \ArrayElLabel[el30]{right}
+      }{
+        \alt<-17>{
+          \ArrayElLabel[el44]{right}
+        }{
+          \alt<-20>{
+            \ArrayElLabel[el46]{right}
+          }{
+            \ArrayElLabel[elI2]{right}
+          }
+        }
+      }
+    }
+
+    % Temporary Array
+    \ArrayLabel[-3]{}
+
+    % [0]
+    \alt<1>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{18}
+    }
+    \only<-3> {
+      \ArrayElLabel{temp}
+    }
+    
+    % [1]
+    \alt<-4>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{20}
+    }
+    \only<4-6> {
+      \ArrayElLabel{temp}
+    }
+
+    % [2]
+    \alt<-7>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{25}
+    }
+    \only<7-9> {
+      \ArrayElLabel{temp}
+    }
+
+    % [3]
+    \alt<-10>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{30}
+    }
+    \only<10-12>{
+      \ArrayElLabel{temp}
+    }
+
+    % [4]
+    \alt<-13>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{36}
+    }
+    \only<13-15>{
+      \ArrayElLabel{temp}
+    }
+
+    % [5]
+    \alt<-16>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{44}
+    }
+    \only<16-18>{
+      \ArrayElLabel{temp}
+    }
+
+    % [6]
+    \alt<-19>{
+      \ArrayNode{?}
+    }{
+      \ArrayNode{46}
+    }
+    
+    \only<19-21>{
+      \ArrayElLabel{temp}
+    }
+
+    \invisible{\ArrayNode{}}
+    \only<22->{
+      \ArrayElLabel{temp}
+    }
+    
+    \onslide<22>{}
+  \end{tikzpicture}
+\end{frame}
+
+\section{Merge Sort on Linked Lists}
+\begin{frame}{Merge Sort: Find Middle and Divide}
+\begin{tikzpicture}[label of pointer/.append style={rotate=20}, node of list/.append style={inner sep=2pt, minimum width=6.8mm}]
+  % \LinkedList{65};
+  \LinkPtr[][above]{pHead}
+  \LinkedNode{65}
+  \LinkedNode{7}
+  \LinkedNode{85}
+  \LinkedNode{92}
+  \LinkedNode{12}
+  \alt<-17>{\LinkedNode{9}}{\LinkedNode[null][ele]{9}}
+  \LinkedNode{24}
+  \LinkedNode{75}
+  \LinkedNode{16}
+
+  \only<1>{\TailPtr<-10mm>[null][el12]{pCurr}}
+  \only<2>{\TailPtr<-10mm>[el65][el12][out=160, in=330]{pCurr}}
+  \only<3-4>{\TailPtr<-10mm>[el7][el12][out=155, in=325]{pCurr}}
+  \only<5>{\TailPtr<-10mm>[el85][el12][out=150, in=320]{pCurr}}
+  \only<6-7>{\TailPtr<-10mm>[el92][el12][bend left=8]{pCurr}}
+  \only<8>{\TailPtr<-10mm>[el12][el12][]{pCurr}}
+  \only<9-10>{\TailPtr<-10mm>[el9][el12][bend right=8]{pCurr}}
+  \only<11>{\TailPtr<-10mm>[el24][el12][bend right=8]{pCurr}}
+  \only<12-13>{\TailPtr<-10mm>[el75][el12][bend right=8]{pCurr}}
+  \only<14>{\TailPtr<-10mm>[el16][el12][bend right=8]{pCurr}}
+  \onslide<15-16>{\TailPtr<-10mm>[null][el12][bend right=8]{pCurr}}
+
+  \only<-3>{\TailPtr<-10mm>[null][el85]{pMid}}
+  \only<4-6>{\TailPtr<-10mm>[el65][el85][out=140, in=320]{pMid}}
+  \only<7-9>{\TailPtr<-10mm>[el7][el85][bend left=8]{pMid}}
+  \only<10-12>{\TailPtr<-10mm>[el85][el85]{pMid}}
+  \only<13-15>{\TailPtr<-10mm>[el92][el85][bend right=8]{pMid}}
+  \onslide<16-19>{\TailPtr<-10mm>[el12][el85][bend right=8]{pMid}}
+
+  \only<17->{\TailPtr[el9][el9][]{pFirst2}}
+  \only<19->{\TailPtr[el65][el65][]{pFirst1}}
+\end{tikzpicture}
+% \onslide<8->{%
+%   \begin{tikzpicture}[label of pointer/.append style={rotate=20}, link pointer of list/.append style={minimum height=6mm,minimum width=3mm}, node of list/.append style={inner sep=3pt}]
+%     \LinkPtr[][above]{pHead}
+%     \LinkedNode{65}
+%     \LinkedNode{7}
+%     \LinkedNode{85}
+%     \LinkedNode{92}
+%     \LinkedNode{12}
+%     \TailPtr{pMid}
+
+%     \LinkPtr[-1.25][above]{pFirst2}
+%     \LinkedNode{9}
+%     \LinkedNode{24}
+%     \LinkedNode{75}
+%     \LinkedNode{16}
+%   \end{tikzpicture}
+% }
+\end{frame}
+
+\begin{frame}{Merge Sort: Merge}
+Sorted sub-lists are merged into one sorted list.
+\begin{itemize}
+\item
+  Compare elements of sub-lists
+\item
+  Adjust pointers of nodes with the smaller datum.
+\end{itemize}
+
+\begin{tikzpicture}[
+    node of list/.append style = {node distance=12.5mm, minimum width=7mm, minimum height = 7.2mm}, 
+    %node of list/.append style = {inner sep=4pt},
+    %label of pointer/.append style={rotate=22},
+    link pointer of list/.append style= { minimum width=5mm, minimum height = 7.2mm }
+  ]
+
+  \onslide<2->{\LinkPtr{pHead}}
+
+  \alt<1>{
+    \LinkedNode[ptrFlip1][false]{7}
+  }{
+    \LinkedNode[ptrFlip1]{7}
+  }
+
+  \onslide<3-5>{\TailPtr<16mm><-2mm>[ele][last][bend left=10]{pLastMerge}}
+  
+  \alt<-4>{\LinkedNode{12}}{\LinkedNode[ptrFlip3][false][elFlip2]{12}}
+ 
+  \onslide<9-11>{\TailPtr<15.5mm><-10mm>[last][last][bend left=10]{pLastMerge}}
+  \alt<-10>{\LinkedNode{65}}{\LinkedNode[ptrFlip5][false][elFlip4]{65}}
+
+
+  
+  \only<17-19>{\TailPtr<15.5mm><-10mm>[last][last][bend left=10]{pLastMerge}}
+  \alt<-18>{\LinkedNode{85}}{\LinkedNode[ptr][false][elFlip5]{85}}
+
+  \only<-3>{      \TailPtr<20mm><0mm>[ el7][el65][out=210, in=30]{pFirst1}}
+  \onslide<4-9>{  \TailPtr<20mm><0mm>[el12][el65][bend left=10]{pFirst1}}
+  \onslide<10-17>{\TailPtr<20mm><0mm>[el65][el65][bend left=10]{pFirst1}}
+  \onslide<18->{  \TailPtr<20mm><0mm>[last][el65][bend left=10]{pFirst1}}
+
+  \LinkedNode{92}
+
+  
+  \coordinate (ptr) at (0,-1.5);
+  \LinkedNode[ptr][false]{9}
+  \onslide<5->{\draw[link] (ptrFlip1) to[bend left=10] (ele);}
+  \only<8->{\draw[link] (ptr) to[bend right=20] (elFlip2);}
+  \onslide<6-8>{\TailPtr<-4mm><-2mm>{pLastMerge}}
+
+  \alt<-7>{\LinkedNode{16}}{\LinkedNode[ptr][false]{16}}
+  
+  \onslide<12-13>{\TailPtr<-4mm><-10mm>{pLastMerge}}
+
+  \only<11->{\draw[link] (ptrFlip3) to[bend left=10] (ele);}
+  \LinkedNode{24}
+  \onslide<14-16>{\TailPtr<-4mm><-10mm>{pLastMerge}}
+
+  \only<16->{\draw[link] (ptr) to[bend right=10] (elFlip4);}
+  \alt<-15>{\LinkedNode{75}}{\LinkedNode[ptr][false]{75}}
+  \only<19->{\draw[link] (ptrFlip5) to[bend left=10] (el75);}
+  \only<22->{\draw[link] (ptr) to[bend right=10] (el85);}
+
+  \only<-6>{      \TailPtr<-8mm><0mm>[ el9][el24][out=130, in=330]{pFirst2}}
+  \onslide<7-12>{ \TailPtr<-8mm><0mm>[el16][el24][bend right=10]{pFirst2}}
+  \onslide<13-14>{\TailPtr<-8mm><0mm>[el24][el24][bend right=10]{pFirst2}}
+  \only<15->{
+    \alt<-20>{
+      \TailPtr<-8mm><0mm>[ el75][el24][bend left=10]{pFirst2}
+    }{
+      \TailPtr<-8mm><0mm>[null][el24]{pFirst2}
+    }
+  }
+
+  \only<20->{\TailPtr<-4mm><8mm>{pLastMerge}}
+
+  \onslide<22>{}
+\end{tikzpicture}
+\end{frame}
+
+\section{Merge Sort: Analysis}
+\begin{frame}{Analysis: Merge Sort}
+\begin{itemize}
+\item
+  Suppose that $L$ is a list of $n$ elements, with $n > 0$.
+\item
+  Suppose that $n$ is a power of $2$; that is, $n = 2^m$ for \\some integer $m > 0$, so that we can divide the list \\into two sub-lists, each of size:\\
+  \begin{equation*}
+    \frac{n}{2}=\frac{2^m}{2}=2^{m-1}
+  \end{equation*}
+  $m$ will be the number of recursion levels.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analysis: Merge Sort}
+\centering
+\begin{forest}
+  % before drawing tree={
+  %     tikz+={\coordinate (a) at (current bounding box.west);},
+  %   },
+  % for tree={tier/.option=level},
+  % level label/.style={
+  %   before typesetting nodes={
+  %     for nodewalk={current,tempcounta/.option=level,group={root,tree breadth-first},ancestors}{if={>OR={level}{tempcounta}}{before drawing tree={label me=##1}}{}},
+  %   }
+  % },
+  % label me/.style={tikz+={\node [anchor=base] at (.parent |- a) {#1};}},
+  block/.style={, minimum height=1.3cm},
+  for tree={
+    anchor=center,
+    grow=south,
+  },
+  label/.style={anchor=center,align=left, no edge,font=\footnotesize}
+  [,phantom
+    [8,tier=l1
+      [4,tier=l2
+        [2,tier=l3
+          [1,tier=l4][1,tier=l4]
+        ]
+        [2,tier=l3
+          [1,tier=l4][1,tier=l4]
+        ]
+      ]
+      [4,tier=l2
+        [2,tier=l3
+          [1,tier=l4][1,tier=l4]
+        ]
+        [2,tier=l3
+          [1,tier=l4][1,tier=l4]
+        ]
+      ]
+    ]
+    [{Recursion Level: 0\\Calls to Merge Sort: 1 with 8 elements each}, label,tier=l1
+      [{Recursion Level: 1\\Calls to Merge Sort: 2 with 4 elements each}, label,tier=l2
+        [{Recursion Level: 2\\Calls to Merge Sort: 4 with 2 elements each}, label,tier=l3
+          [{Recursion Level: 3\\Calls to Merge Sort: 8 with 1 elements each}, label,tier=l4]
+        ]
+      ]
+    ]
+  ]
+\end{forest}
+\end{frame}
+
+\begin{frame}{Analysis: Merge Sort}
+\begin{itemize}[<+->]
+\item
+  To merge two sorted lists of size \(s\) and \(t\), the \\maximum number of comparisons is \(s + t - 1\).
+\item
+  Merging two sorted lists into a sorted list is where the actual comparisons and assignments are done.
+\item
+  Max. \# of comparisons at level \(k\) of recursion:
+  \begin{equation*}
+    2^k\left(\frac{n}{2^k} - 1\right) = n - 2^k = O(n)
+  \end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analysis: Merge Sort}
+\begin{itemize}[<+->]
+\item
+  There are at most \(O(n)\) comparisons per recursion level.
+\item
+  Therefore, there are \(O(nm)\) total comparisons, \\where \(m\) is the number of levels of recursion.
+\item
+  Thus, \(O(nm) \equiv O(n \log_2n)\).
+
+\item
+  Key comparisons in the worst case:\\[-1em]
+    \begin{equation*}
+      O\left(n\log_2n\right)
+    \end{equation*}
+\item
+  Key comparisons in average case:\\[-1em]
+    \begin{equation*}
+      n\log_2n - 1.25n = O\left(n\log_2n\right)
+    \end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\Large\centering{}
+\href{https://www.toptal.com/developers/sorting-algorithms}{Sorting Algorithms Animation}
+\end{frame}
+
+\setbeamercovered{transparent}
+\section{Summary}
+\begin{frame}{Summary}
+\begin{itemize}[<+->]
+\item
+  By \emph{asymptotic}, we mean the rate of growth of function $f(n)$ as $n$ grows towards infinity.
+\item
+  On average, a sequential search searches half the list and makes $O(n)$ comparisons, which is inefficient.
+\item
+  The binary-search algorithm is the optimal worst-case algorithm for solving search problems by using the \textit{comparison method}.
+\item
+  A binary search requires the list to be sorted but takes only $2\log_2n - 3$ or O$(\log_2n)$ key comparisons.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Summary}
+\begin{itemize}[<+->]
+\item
+  Bubble Sort: $O(n^2)$ key comparisons and item assignments.
+\item
+  Selection Sort: $O(n^2)$ key comparisons and $O(n)$ item assignments.
+\item
+  Insertion Sort: $O(n^2)$ key comparisons and item assignments.
+\item
+  Both the Quick Sort and Merge Sort algorithms partition a list to sort it.
+  \begin{itemize}
+    \item
+      Quick Sort: average number of key comparisons is $O(n\log_2n)$; worst case number of key comparisons is $O(n^2)$
+    \item
+      Merge Sort: the number of key comparisons is $O(n\log_2n)$ on average and in the worst case.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section*{Lab 11}
+\begin{frame}{Lab 11: Insertion, Quick, and Merge Sort}
+\centering\Large
+  Let's take a look at Lab 11.
+\end{frame}
+\end{document}

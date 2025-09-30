@@ -25,7 +25,8 @@
 
 ## Searching and Sorting
 - [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort)
-- [Quick and Merge Sorting](/lectures/11-quick-and-merge-sort)
+- [Quick Sorting](/lectures/11-quick-sort)
+- [Merge Sorting](/lectures/11-merge-sort)
 
 ## More Data Structures
 - [Stacks & Queues](/lectures/12-stacks-queues)

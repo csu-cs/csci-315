@@ -125,7 +125,7 @@ The weekly schedule is subject to change.
 |  4B  | [Linked Lists](/lectures/08-linked-lists) | Lab 08                |
 |  5A  | [Debugging](/lectures/09-debugging) and [Doubly-Linked Lists, & the STL](/lectures/09-doubly-linked-lists) | Project 1 & Lab 09    |
 |  5B  | [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort) | Lab 10                |
-|  6A  | [Quick and Merge Sorting](/lectures/11-quick-and-merge-sort) | Lab 11                |
+|  6A  | [Quick Sort](/lectures/11-quick-sort) and [Merge Sort](/lectures/11-merge-sort) | Lab 11                |
 |  6B  | [Stacks & Queues](/lectures/12-stacks-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |
 |  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) | Project 2 & Lab 13    |
 |  7B  | Midterm Exam                                |                       |

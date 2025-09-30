@@ -213,10 +213,8 @@ Find the location of `75` in this sorted array.
 | $10000000$ | $0.01$μs | $0.023$μs | $0.23$μs | $1.16$ days |  |
 | $100000000$ | $0.1$μs | $0.027$μs | $2.66$μs | $115.7$ days |  |
 
-Time for $f(n)$ instructions if executing 1-billion instructions per
-second.
-
-*μs is a microsecond or 10e-6 seconds.
+: Time for $f(n)$ instructions if executing 1-billion instructions per
+second. * μs is a microsecond or 10e-6 seconds.
 
 
 - Let $f$ be a function of $n$.

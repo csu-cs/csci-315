@@ -136,7 +136,8 @@ function sidebarNotes() {
 			collapsed: true,
 			items: [
 				{ text: "Search & Quadratic Sorting", link: "/lectures/10-search-quadratic-sort" },
-				{ text: "Quick and Merge Sorting", link: "/lectures/11-quick-and-merge-sort" },
+				{ text: "Quick Sort", link: "/lectures/11-quick-sort" },
+				{ text: "Merge Sort", link: "/lectures/11-merge-sort" },
 			]
 		},
 		{

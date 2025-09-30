@@ -4,7 +4,7 @@
 \usepackage{forest}
 \usepackage{booktabs}
 
-\title{\Huge{} Quick Sort \&\\Merge Sort}
+\title{\Huge{} Quick Sort}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 18}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
@@ -16,23 +16,9 @@
 
 \setlength{\parskip}{0.5em}
 
-
-\definecolor{MyGreen}{HTML}{61ff7e}
-\usepackage{linked-lists}
 \usepackage{arrays}
 
-
 \tikzset{
-  node of list/.append style = {
-    minimum height=6mm,
-    minimum width=3mm,
-    node distance=6mm,
-    font=\small,
-  },
-  link pointer of list/.append style= {
-    minimum height=6mm,
-    minimum width=3mm
-  },
   pointer/.append style = {
     minimum height=4mm,
     minimum width=4mm,
@@ -55,18 +41,17 @@
     % rotate=-12,
   },
 }
-
 \begin{document}
 
 \begin{frame}
-  \titlepage
+  \titlepage%
 \end{frame}
 
 \section{Best Performance}
 
 \begin{frame}{Lower Bound on Comparison-Based Sorting}
 \center\Large
-Can we do better than $O(n^2)$ for sorting algorithms?\vspace{1em}
+Can we do better than \(O(n^2)\) for sorting algorithms?\vspace{1em}
 
 What is the best we can do?
 \end{frame}
@@ -78,9 +63,9 @@ What is the best we can do?
   \emph{Comparison tree}: graph used to trace the execution of a comparison-based algorithm.
   \begin{itemize}
   \item
-    Let $L$ be a list of $n$ distinct elements, where $n > 0$\\
-    For any $j$ and $k$, where $1 \le j \le n$,  $1 \le k \le n$,\\
-    either $L[j] \le L[k]$  or  $L[j] > L[k] $.
+    Let $L$ be a list of $n$ distinct elements, where \(n > 0\) \\
+    For any $j$ and $k$, where \( 0 \le j < n \),  \( 0 \le k < n \),\\
+    either \(L_{j} \le L_{k}\)  or  \(L_{j} > L_{k}\).
   \end{itemize}
 \item
   \emph{Binary tree}: each comparison has two outcomes.
@@ -96,9 +81,9 @@ What is the best we can do?
   \emph{Node}: represents a comparison
   \begin{itemize}
   \item
-    Labeled as $j:k$ (comparison of $L[j]$ with $L[k]$)
+    Labeled as $j:k$ (comparison of $L_{j}$ with $L_{k}$)
   \item
-    If $L[j] < L[k]$, follow the left branch; otherwise, follow the right branch.
+    If $L_{j} < L_{k}$, follow the left branch; otherwise, follow the right branch.
   \end{itemize}
 \item
   \emph{Leaf}: represents the final ordering of the nodes
@@ -149,26 +134,27 @@ for tree = {
   %fit=band,
   l sep=2.6cm,
   s sep+=3mm,
+  inner sep=3pt,
   edge=->,
   edge=very thick,
   grow=east,
-  for leaves={rectangle, fill=CSUgold},
+  for leaves={rectangle, fill=CSUgold, inner sep=4pt},
   font=\small
 }
-[{$L_1:L_2$} ,name=root,
-    [{$L_2:L_3$}, edge label = {node [midway,below,sloped] {$L_1 \le L_2$} }
-      [{$\mathbf{1, 2, 3}$}, edge label = {node [midway,below,sloped] {$L_2 \le L_3$} }]
-      [{$L_1:L_3$}, edge label = {node [midway,above,sloped] {$L_2 > L_3$} }
-        [{$\mathbf{1, 3, 2}$}, edge label = {node [midway,below,sloped] {$L_1 \le L_3$} }]
-        [{$\mathbf{3, 1, 2}$}, edge label = {node [midway,above,sloped] {$L_1 > L_3$} }]
+[{$L_0:L_1$} ,name=root,
+    [{$L_1:L_2$}, edge label = {node [midway,below,sloped] {$L_0 \le L_1$} }
+      [{$\mathbf{1, 2, 3}$}, edge label = {node [midway,below,sloped] {$L_1 \le L_2$} }]
+      [{$L_0:L_2$}, edge label = {node [midway,above,sloped] {$L_1 > L_2$} }
+        [{$\mathbf{1, 3, 2}$}, edge label = {node [midway,below,sloped] {$L_0 \le L_2$} }]
+        [{$\mathbf{3, 1, 2}$}, edge label = {node [midway,above,sloped] {$L_0 > L_2$} }]
       ]
     ]
-    [{$L_2:L_3$}, edge label = {node [midway,above,sloped] {$L_1 > L_2$} }
-      [{$L_1:L_3$}, edge label = {node [midway,below,sloped] {$L_2 \le L_3$} }
-        [{$\mathbf{2, 1, 3}$}, edge label = {node [midway,below,sloped] {$L_1 \le L_3$} }]
-        [{$\mathbf{2, 3, 1}$}, edge label = {node [midway,above,sloped] {$L_1 > L_3$} }]
+    [{$L_1:L_2$}, edge label = {node [midway,above,sloped] {$L_0 > L_1$} }
+      [{$L_0:L_2$}, edge label = {node [midway,below,sloped] {$L_1 \le L_2$} }
+        [{$\mathbf{2, 1, 3}$}, edge label = {node [midway,below,sloped] {$L_0 \le L_2$} }]
+        [{$\mathbf{2, 3, 1}$}, edge label = {node [midway,above,sloped] {$L_0 > L_2$} }]
       ]
-      [{$\mathbf{3, 2, 1}$}, edge label = {node [midway,above,sloped] {$L_2 > L_3$} }]
+      [{$\mathbf{3, 2, 1}$}, edge label = {node [midway,above,sloped] {$L_1 > L_2$} }]
     ]
 ]
 \end{forest}
@@ -177,13 +163,9 @@ for tree = {
 \begin{frame}{Comparison Tree}
 \begin{itemize}
 \item<+->
-  A unique permutation of the elements of $L$ is associated with each root-to-leaf path.
-  \begin{itemize}
-  \item
-    Because the sort algorithm only moves the data and makes comparisons.
-  \end{itemize}
+  A unique permutation of the elements of $L$ is associated with each root-to-leaf path, because the sort algorithm only compares and moves the data.
 \item<+->
-  For a list of $n$ elements, $n > 0$, there are $n!$ different permutations
+  For a list of $n$ elements, $n > 0$, there are $n!$ different permutations.
   \begin{itemize}
   \item
     Any of these might be the correct ordering of $L$.
@@ -195,7 +177,7 @@ for tree = {
 
 \begin{frame}{Lower Bound on Comparison-Based Sorting}
 \large
-Theorem: Any sorting algorithm that sorts a list of $n$ elements (by comparison of only the keys) makes \emph{at least} $O(n\log_2n)$ key comparisons in its worst case.\vspace{1em}
+Theorem: Any algorithm that sorts a $n$ elements\\ (by comparison of only the keys) makes \emph{at least} $O(n\log_2n)$ key comparisons in its worst case.\vspace{1em}
 
 \pause{}
 We won't prove this theorem, but unlike the previous algorithms discussed, there are algorithms that, on average, are $O(n\log_2n)$.
@@ -248,7 +230,8 @@ Choose an element to split the list \emph{pivot element}.
     \ArrayList{55, 87, 13, 78, 96, 32, 48, 22, 11, 58, 66, 88, 45}
 
     \ArrayGroup{el52}{el45}{Unsorted List}
-  \end{tikzpicture}}
+  \end{tikzpicture}%
+  }
 
   \vspace{0.7em}
   \centerline{%
@@ -263,7 +246,8 @@ Choose an element to split the list \emph{pivot element}.
   
     \ArrayGroup{el45}{el11}{Lower}
     \ArrayGroup{el55}{el87}{Upper}
-  \end{tikzpicture}}
+  \end{tikzpicture}%
+  }
 \end{frame}
 
 \begin{frame}[b]{Quick Sort Example}
@@ -344,7 +328,8 @@ Choose an element to split the list \emph{pivot element}.
   \invisible{%
     \ArraySwap{el32}{el45}%
   }
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -390,7 +375,8 @@ Choose an element to split the list \emph{pivot element}.
     \ArraySwap{el32}{el45}%
   }
   \onslide<3>{}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -433,7 +419,8 @@ Choose an element to split the list \emph{pivot element}.
   }
 
   \onslide<2>{}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -474,7 +461,8 @@ Choose an element to split the list \emph{pivot element}.
   }
 
   \onslide<3> {}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -549,7 +537,8 @@ Choose an element to split the list \emph{pivot element}.
   }
 
   \onslide<5>{}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -624,7 +613,8 @@ Choose an element to split the list \emph{pivot element}.
   }
 
   \onslide<5>{}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -699,7 +689,8 @@ Choose an element to split the list \emph{pivot element}.
   }
 
   \onslide<5>{}
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -737,7 +728,8 @@ Choose an element to split the list \emph{pivot element}.
     \ArraySwap{el87}{el45}%
   }
 
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -774,7 +766,8 @@ Choose an element to split the list \emph{pivot element}.
   \invisible{%
     \ArraySwap{el87}{el45}%
   }
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -845,7 +838,8 @@ Choose an element to split the list \emph{pivot element}.
   \invisible{%
     \ArraySwap{el87}{el45}%
   }
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -871,7 +865,8 @@ Choose an element to split the list \emph{pivot element}.
   \invisible{%
     \ArraySwap{el45}{el87}%
   }
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \vspace{3.5em}
 \end{frame}
 
@@ -898,7 +893,8 @@ Choose an element to split the list \emph{pivot element}.
   \invisible{%
     \ArraySwap{el52}{el87}%
   }
-\end{tikzpicture}}
+\end{tikzpicture}%
+}
 \pause\vspace{3.5em}
 \end{frame}
 
@@ -1009,520 +1005,11 @@ Choose an element to split the list \emph{pivot element}.
   \item Use fancy partitioning techniques.
   \begin{itemize}
     \item
-      Hoare partitioning: Traverse the list from both sizes, swapping smaller elements to the left and larger elements to the right.
+      Hoare's partitioning: Traverse the list from both sizes, swapping smaller elements to the left and larger elements to the right.
     \item
       Dual-Pivot partitioning: Partitions the list into three sub-lists.
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\section{Merge Sort}
-\begin{frame}{Merge Sort}
-\begin{itemize}
-\item
-  \emph{Quick Sort}: $O(n\log_2n)$ average case; $O(n^2)$ worst case
-\item
-  \emph{Merge Sort}: always $O(n\log_2n)$
-
-\item
-  Unlike Quick Sort, it divides the list into two sub-lists of nearly equal size.
-\item
-  Uses the divide-and-conquer technique.
-  \begin{itemize}
-  \item
-    Partitions the list into two sub-lists of nearly equal size.
-  \item
-    Sorts the sub-lists.
-  \item
-    Combines the sub-lists into one sorted list.
-  \end{itemize}
-
-\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Merge Sort}
-\begin{center}
-  \begin{forest}
-  for tree = {
-    rectangle,
-    color=CSUblue,
-    fill=white,
-    % fit=tight,
-    edge=->,
-    edge=very thick,
-    minimum width=8mm,
-    s sep = 10mm,
-    l=9pt,
-    font=\footnotesize
-  }
-  [{35\quad{}28\quad{}17\quad{}45\quad{}62\quad{}48\quad{}30\quad{}38}
-    [{35\quad{}28\quad{}17\quad{}45}
-      [{35\quad{}28}
-        [35]
-        [28]
-      ]
-      [{17\quad{}45}
-        [17]
-        [45]
-      ]
-    ]
-    [{62\quad{}48\quad{}30\quad{}38}
-      [{62\quad{}48}
-        [62]
-        [48]
-      ]
-      [{30\quad{}38}
-        [30]
-        [38]
-      ]
-    ]
-  ]
-  \end{forest}
-\pause
-  \begin{forest}
-  for tree = {
-    rectangle,
-    grow=north,
-    color=white,
-    fill=CSUgold,
-    % fit=tight,
-    edge=<-,
-    edge=very thick,
-    minimum width=8mm,
-    s sep = 10mm,
-    l=9pt,
-    for leaves={inner sep=1pt},
-    font=\footnotesize
-  }
-  [{17\quad{}28\quad{}30\quad{}35\quad{}38\quad{}45\quad{}48\quad{}62}
-    [{30\quad{}38\quad{}48\quad{}62}
-      [{30\quad{}38}
-        []
-        []
-      ]
-      [{48\quad{}62}
-        []
-        []
-      ]
-    ]
-    [{17\quad{}28\quad{}35\quad{}45}
-      [{17 45}
-        []
-        []
-      ]
-      [{28\quad{}35}
-        []
-        []
-      ]
-    ]
-  ]
-  \end{forest}
-\end{center}
-\end{frame}
-
-\begin{frame}{Merge Sort Algorithm}
-  \large
-\begin{itemize}
-\item
-  Uses recursion.
-\item
-  If the list is of  assize greater than 1,
-  \begin{enumerate}
-  \item
-    Divide the list into two sub-lists.
-  \item
-    Merge sort the first sub-list.
-  \item
-    Merge sort the second sub-list.
-  \item
-    Merge the first sub-list and the second sub-list.
-  \end{enumerate}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Merging Two Sorted Lists}
-  \begin{tikzpicture}
-    \ArrayLabel{}
-    \ArrayList{18, 25, 36}
-    \invisible{\ArrayNode{I1}}
-
-    \ArrayLabel[0][5]{}
-    \ArrayList{20, 30, 44, 46}
-    \invisible{\ArrayNode{I2}}
-
-    \alt<-2>{
-      \ArrayElLabel[el18]{left}
-    } {
-      \alt<-8>{
-        \ArrayElLabel[el25]{left}
-      }{
-        \alt<-14>{
-          \ArrayElLabel[el36]{left}
-        }{
-          \ArrayElLabel[elI1]{left}
-        }
-        
-      }
-    }
-    
-    \alt<-5>{
-      \ArrayElLabel[el20]{right}
-    }{
-      \alt<-11>{
-        \ArrayElLabel[el30]{right}
-      }{
-        \alt<-17>{
-          \ArrayElLabel[el44]{right}
-        }{
-          \alt<-20>{
-            \ArrayElLabel[el46]{right}
-          }{
-            \ArrayElLabel[elI2]{right}
-          }
-        }
-      }
-    }
-
-    % Temporary Array
-    \ArrayLabel[-3]{}
-
-    % [0]
-    \alt<1>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{18}
-    }
-    \only<-3> {
-      \ArrayElLabel{temp}
-    }
-    
-    % [1]
-    \alt<-4>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{20}
-    }
-    \only<4-6> {
-      \ArrayElLabel{temp}
-    }
-
-    % [2]
-    \alt<-7>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{25}
-    }
-    \only<7-9> {
-      \ArrayElLabel{temp}
-    }
-
-    % [3]
-    \alt<-10>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{30}
-    }
-    \only<10-12>{
-      \ArrayElLabel{temp}
-    }
-
-    % [4]
-    \alt<-13>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{36}
-    }
-    \only<13-15>{
-      \ArrayElLabel{temp}
-    }
-
-    % [5]
-    \alt<-16>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{44}
-    }
-    \only<16-18>{
-      \ArrayElLabel{temp}
-    }
-
-    % [6]
-    \alt<-19>{
-      \ArrayNode{?}
-    }{
-      \ArrayNode{46}
-    }
-    
-    \only<19-21>{
-      \ArrayElLabel{temp}
-    }
-
-    \invisible{\ArrayNode{}}
-    \only<22->{
-      \ArrayElLabel{temp}
-    }
-    
-    \onslide<22>{}
-  \end{tikzpicture}
-\end{frame}
-
-\begin{frame}{Merge Sort: Find Middle and Divide}
-  \vspace{1em}
-\begin{tikzpicture}[label of pointer/.append style={rotate=20}, node of list/.append style={inner sep=3pt}]
-  % \LinkedList{65};
-  \LinkPtr[][above]{pHead}
-  \LinkedNode{65}
-  \onslide<2>{\TailPtr{pMid}}
-  \LinkedNode{18}
-  \onslide<2>{\TailPtr{pCurr}}
-  \onslide<3>{\TailPtr{pMid}}
-  \LinkedNode{85}
-  \onslide<4>{\TailPtr{pMid}}
-  \LinkedNode{95}
-  \onslide<5>{\TailPtr{pMid}}
-  \onslide<3>{\TailPtr{pCurr}}
-  \LinkedNode{25}
-  \onslide<6->{\TailPtr{pMid}}
-  \LinkedNode{20}
-  \onslide<4>{\TailPtr{pCurr}}
-  \LinkedNode{45}
-  \LinkedNode{75}
-  \onslide<5>{\TailPtr{pCurr}}
-  \LinkedNode{30}
-  \onslide<6>{\TailPtr[null]{pCurr}}
-\end{tikzpicture}
-\onslide<7->{%
-  \begin{tikzpicture}[label of pointer/.append style={rotate=20}, link pointer of list/.append style={minimum height=6mm,minimum width=3mm}, node of list/.append style={inner sep=3pt}]
-    \LinkPtr[][above]{pHead}
-    \LinkedNode{65}
-    \LinkedNode{18}
-    \LinkedNode{85}
-    \LinkedNode{95}
-    \LinkedNode{25}
-    \TailPtr{pMid}
-
-    \LinkPtr[-1.25][above]{pFirst2}
-    \LinkedNode{20}
-    \LinkedNode{45}
-    \LinkedNode{75}
-    \LinkedNode{30}
-  \end{tikzpicture}
-}
-\end{frame}
-
-\begin{frame}{Merge Sort: Merge}
-Sorted sub-lists are merged into one sorted list.
-\begin{itemize}
-\item
-  Compare elements of sub-lists
-\item
-  Adjust pointers of nodes with the smaller datum.
-\end{itemize}
-
-\begin{tikzpicture}[
-    node of list/.append style = {node distance=12.5mm, minimum width=5mm, minimum height = 7.2mm}, 
-    %node of list/.append style = {inner sep=4pt},
-    label of pointer/.append style={rotate=22},
-    link pointer of list/.append style= { minimum width=5mm, minimum height = 7.2mm }
-  ]
-  %\onslide<1>{\LinkPtr{pFirst1}}
-  \onslide<2->{\LinkPtr{pHead}}
-
-  \alt<1>{
-    \LinkedNode[ptrFlip1][false]{18}
-  }{
-    \LinkedNode[ptrFlip1]{18}
-  }
-  
-  \only<-3>{
-    \TailPtr<-4mm><4mm>{pFirst1}
-  }
-  \only<3-5>{\TailPtr<-4mm><-10mm>{pLastMerge}}
-  
-  \alt<-4>{\LinkedNode{25}}{\LinkedNode[ptrFlip3][false][elFlip2]{25}}
-  \onslide<4-9>{\TailPtr<-4mm><4mm>[last]{pFirst1}}
-  \onslide<9-11>{\TailPtr<-4mm><-10mm>[last]{pLastMerge}}
-  \alt<-10>{\LinkedNode{65}}{\LinkedNode[ptrFlip5][false][elFlip4]{65}}
-  \onslide<10-17>{\TailPtr<-4mm><8mm>[last]{pFirst1}}
-  \only<17-19>{\TailPtr<-4mm><-10mm>[last]{pLastMerge}}
-  \alt<-18>{\LinkedNode{85}}{\LinkedNode[ptr][false][elFlip5]{85}}
-  \onslide<18->{\TailPtr<-4mm><8mm>[last]{pFirst1}}
-  \LinkedNode{95}
-
-  
-  \coordinate (ptr) at (0,-2.75);
-  \LinkedNode[ptr][false]{20}
-  \only<-6>{\TailPtr<-4mm><4mm>{pFirst2}}
-  \onslide<5->{\draw[link] (ptrFlip1) to[bend left=10] (ele);}
-  \only<8->{\draw[link] (ptr) to[bend right=20] (elFlip2);}
-  \onslide<6-8>{\TailPtr<-4mm><-10mm>{pLastMerge}}
-  \alt<-7>{\LinkedNode{30}}{\LinkedNode[ptr][false]{30}}
-  \onslide<7-12>{\TailPtr<-4mm><4mm>{pFirst2}}
-  \onslide<12-13>{\TailPtr<-4mm><-10mm>{pLastMerge}}
-  \only<11->{\draw[link] (ptrFlip3) to[bend left=10] (ele);}
-  \LinkedNode{45}
-  \onslide<13-14>{\TailPtr<-4mm><4mm>{pFirst2}}
-  \onslide<14-16>{\TailPtr<-4mm><-10mm>{pLastMerge}}
-  \only<16->{\draw[link] (ptr) to[bend right=10] (elFlip4);}
-  \alt<-15>{\LinkedNode{75}}{\LinkedNode[ptr][false]{75}}
-  \only<19->{\draw[link] (ptrFlip5) to[bend left=10] (el75);}
-  \only<22->{\draw[link] (ptr) to[bend right=10] (el85);}
-  \only<15->{
-    \alt<-20>{
-      \TailPtr<-4mm><8mm>{pFirst2}
-    }{
-      \TailPtr<-4mm><8mm>[null]{pFirst2}
-    }
-  }
-  %\only<21->{\TailPtr<-4mm><4mm>[null]{pFirst2}}
-  \only<20->{\TailPtr<-4mm><-10mm>{pLastMerge}}
-  \onslide<22>{}
-\end{tikzpicture}
-\end{frame}
-
-\section{Merge Sort: Analysis}
-\begin{frame}{Analysis: Merge Sort}
-\begin{itemize}
-\item
-  Suppose that $L$ is a list of $n$ elements, with $n > 0$.
-\item
-  Suppose that $n$ is a power of $2$; that is, $n = 2^m$ for some integer $m > 0$, so that we can divide the list into two sub-lists, each of size:\\
-  \begin{equation*}
-    \frac{n}{2}=\frac{2^m}{2}=2^{m-1}
-  \end{equation*}
-  $m$ will be the number of recursion levels.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Analysis: Merge Sort}
-\centering
-\begin{forest}
-  % before drawing tree={
-  %     tikz+={\coordinate (a) at (current bounding box.west);},
-  %   },
-  % for tree={tier/.option=level},
-  % level label/.style={
-  %   before typesetting nodes={
-  %     for nodewalk={current,tempcounta/.option=level,group={root,tree breadth-first},ancestors}{if={>OR={level}{tempcounta}}{before drawing tree={label me=##1}}{}},
-  %   }
-  % },
-  % label me/.style={tikz+={\node [anchor=base] at (.parent |- a) {#1};}},
-  block/.style={, minimum height=1.3cm},
-  for tree={
-    anchor=center,
-    grow=south,
-  },
-  label/.style={anchor=center,align=left, no edge,font=\footnotesize}
-  [,phantom
-    [8,tier=l1
-      [4,tier=l2
-        [2,tier=l3
-          [1,tier=l4][1,tier=l4]
-        ]
-        [2,tier=l3
-          [1,tier=l4][1,tier=l4]
-        ]
-      ]
-      [4,tier=l2
-        [2,tier=l3
-          [1,tier=l4][1,tier=l4]
-        ]
-        [2,tier=l3
-          [1,tier=l4][1,tier=l4]
-        ]
-      ]
-    ]
-    [{Recursion Level: 0\\Calls to Merge Sort: 1 with 8 elements each}, label,tier=l1
-      [{Recursion Level: 1\\Calls to Merge Sort: 2 with 4 elements each}, label,tier=l2
-        [{Recursion Level: 2\\Calls to Merge Sort: 4 with 2 elements each}, label,tier=l3
-          [{Recursion Level: 3\\Calls to Merge Sort: 8 with 1 elements each}, label,tier=l4]
-        ]
-      ]
-    ]
-  ]
-\end{forest}
-\end{frame}
-
-\begin{frame}{Analysis: Merge Sort}
-\begin{itemize}[<+->]
-\item
-  To merge two sorted lists of size $s$ and $t$, the maximum number of comparisons is $s + t - 1$.
-\item
-  Merging two sorted lists into a sorted list is where the actual comparisons and assignments are done.
-\item
-  Max. \# of comparisons at level $k$ of recursion:
-  \begin{equation*}
-    2^k\left(\frac{n}{2^k} - 1\right) = n - 2^k = O(n)
-  \end{equation*}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Analysis: Merge Sort}
-\begin{itemize}[<+->]
-\item
-  There are at most \(O(n)\) comparisons per recursion level.
-\item
-  Therefore, there are \(O(nm)\) total comparisons, \\where \(m\) is the number of levels of recursion.
-\item
-  Thus, \(O(nm) \equiv O(n \log_2n)\).
-
-\item
-  Key comparisons in the worst case:\\[-1em]
-    \begin{equation*}
-      O\left(n\log_2n\right)
-    \end{equation*}
-\item
-  Key comparisons in average case:\\[-1em]
-    \begin{equation*}
-      n\log_2n - 1.25n = O\left(n\log_2n\right)
-    \end{equation*}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{}
-\Large\centering{}
-\href{https://www.toptal.com/developers/sorting-algorithms}{Sorting Algorithms Animation}
-\end{frame}
-
-\setbeamercovered{transparent}
-\section{Summary}
-\begin{frame}{Summary}
-\begin{itemize}[<+->]
-\item
-  By \emph{asymptotic}, we mean the rate of growth of function $f(n)$ as $n$ grows towards infinity.
-\item
-  On average, a sequential search searches half the list and makes $O(n)$ comparisons, which is inefficient.
-\item
-  The binary-search algorithm is the optimal worst-case algorithm for solving search problems by using the \textit{comparison method}.
-\item
-  A binary search requires the list to be sorted but takes only $2\log_2n - 3$ or O$(\log_2n)$ key comparisons.
-\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Summary}
-\begin{itemize}[<+->]
-\item
-  Bubble Sort: $O(n^2)$ key comparisons and item assignments.
-\item
-  Selection Sort: $O(n^2)$ key comparisons and $O(n)$ item assignments.
-\item
-  Insertion Sort: $O(n^2)$ key comparisons and item assignments.
-\item
-  Both the Quick Sort and Merge Sort algorithms partition a list to sort it.
-  \begin{itemize}
-    \item
-      Quick Sort: average number of key comparisons is $O(n\log_2n)$; worst case number of key comparisons is $O(n^2)$
-    \item
-      Merge Sort: the number of key comparisons is $O(n\log_2n)$ on average and in the worst case.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\section*{Lab 11}
-\begin{frame}{Lab 11: Insertion, Quick, and Merge Sort}
-\centering\Large
-  Let's take a look at Lab 11.
-\end{frame}
 \end{document}
