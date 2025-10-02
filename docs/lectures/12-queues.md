@@ -327,5 +327,6 @@ time:
 
 Let’s take a look at Lab 12.
 
-## Midterm Exam Expectations.
+## Midterm Exam Expectations
 
+See the [Midterm Exam Study Guide](/guides/midterm-study-guide) for more information.
