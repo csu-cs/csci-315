@@ -29,7 +29,8 @@
 - [Merge Sorting](/lectures/11-merge-sort)
 
 ## More Data Structures
-- [Stacks & Queues](/lectures/12-stacks-queues)
+- [Stacks](/lectures/12-stacks)
+- [Queues](/lectures/12-queues)
 - [2D Maze Search](/lectures/13-2D-search)
 - [Binary Search Trees (Part 1)](/lectures/14-binary-trees-1)
 - [Binary Search Trees (Part 2)](/lectures/15-binary-trees-2)

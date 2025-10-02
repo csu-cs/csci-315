@@ -219,7 +219,7 @@
   }
   \node[array index, anchor=east, name=index] at ([xshift=-1pt] val.west) {#2};
   \node[block] (prev) [fit=(val)]{};
-  % \node[block] (\detokenize{el#3}) [fit=(val)]{};
+  % \node[block] (\detokenize{index#2}) [fit=(val)]{};
   \node[block] (el#3) [fit=(val)]{};
   \node[block] (#2) [fit=(index) (val)]{};
   \stepcounter{arrayIndex}

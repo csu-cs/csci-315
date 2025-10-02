@@ -1,5 +1,5 @@
-Midterm Study Guide
-===================
+Midterm Exam Study Guide
+========================
 
 See [the syllabus](/syllabus#tentative-weekly-schedule) for the deadline.
 
@@ -13,7 +13,8 @@ The exam will consist of two sections. Take one part during class time.
     book, closed notes, closed internet, etc.
 
 > [!NOTE]
-> In-person students must take part 1 of the exam in class on the scheduled due date.
+> In-person students must take part 1 of the exam in class on the scheduled due date.  
+> You may take part 2 before or after part 1.
 
 The exam will consist of programming problems, understanding checks, and
 analysis of algorithms (showing the state at each step) through Blackboard. 
@@ -40,45 +41,49 @@ The material will cover what we have discussed so far, including:
 Example Problem 1
 -----------------
 
+See the `exam1-0` directory in your GitHub repository. To try out a similar problem.
+
 `DoubleList` is a doubly-linked list that has both head and tail pointers (to 
 the beginning and end of the list respectively):
 
 ```cpp
-class DoubleList {
+// Definition of the ListNode structure
+struct ListNode
+{
+    int datum;
+    ListNode* pNext;
 
-public:
-  DoubleList() : head(nullptr), tail(nullptr) {}
-  bool insertEnd(int val);
-  bool insertSorted(int val);
-  void mergeSortedLists(DoubleList* otherList);
-
-private:
-  struct Node {
-
-    //Note: Use of this constructor is optional
-    Node (int d=0, Node *n=nullptr, Node *p=nullptr)
-        : data(d), next(n), prev(p) {}
-
-    int data;
-    Node *pNext, *pPrev;
-  };
-  Node *pHead, *pTail;
+	// Constructor for convenience
+    ListNode(int val) : datum(val), pNext(nullptr) {}
 };
+
+// Returns a pointer to the head of the merged list.
+ListNode* mergeSortedLists(ListNode* pHeadA, ListNode* pHeadB);
+
+// Free up all the memory
+void destroyLinkedList(ListNode* pHead);
+
+// For debugging purposes
+void displayLinkedList(const ListNode* const pHead);
 ```
 
-(14 points) Implement the `mergeSortedLists` member function merges the list
-from the parameter into the member list so that the values are sorted. This
+(15 points) Implement the `mergeSortedLists` function, which merges two
+sorted linked lists with head pointers into a single sorted list. This
 function should not create new nodes but instead move the nodes from the
 parameter list into the correct positions in the member list. Therefore,
 the parameter list will be empty when the function returns.
 
 ```cpp
-void DoubleList::mergeSortedLists(const DoubleList* otherList) {
+ListNode* mergeSortedLists(ListNode* pHeadA, ListNode* pHeadB)
+{
+    return nullptr;
+}
 ```
 
-Note: We have covered Doubly-Linked Lists and Merge Sort but the exam will
-ask you to solve a new problem using what you already know. Therefore, on
-the exam I may add a twist to the data structure.
+> [!NOTE]
+> We have covered Doubly-Linked Lists and Merge Sort but the exam will
+> ask you to solve a new problem using what you already know. Therefore, on
+> the exam I may add a twist to the data structure.
 
 Example Problem 2
 -----------------
@@ -86,8 +91,8 @@ Example Problem 2
 Below is another example to be ready for. (You *will* see something like this on
 your midterm).
 
-(10 points) Perform Bubble, Selection, or Insertion sort on the following (be 
-sure to tell me which sort you are doing *AND* show each step):
+(10 points) Perform Bubble, Selection, or Insertion sort on the following array
+of values. (Be sure to tell me which sort you are doing *AND* show each step.)
 
 | **2** | **8** | **9** | **0** | **5** | **6** | **1** | **3** | **4** | **7** |
 |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
@@ -111,7 +116,7 @@ Exam Strategy
 
 Some things to keep in mind for the Auto-Graded section:
 
--   The exam1-0 problem will not count for a grade and should be used as 
+-   The `exam1-0` problem will not count for a grade and should be used as 
     practice before attempting the other problems.
 
 -   Generative AI is prohibited. Before starting, uninstall any AI extensions 
