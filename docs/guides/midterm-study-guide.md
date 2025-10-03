@@ -43,6 +43,10 @@ Example Problem 1
 
 See the `exam1-0` directory in your GitHub repository. To try out a similar problem.
 
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/PvMGApD6Kpg?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
 `DoubleList` is a doubly-linked list that has both head and tail pointers (to 
 the beginning and end of the list respectively):
 
