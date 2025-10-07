@@ -31,7 +31,7 @@
 ## More Data Structures
 - [Stacks](/lectures/12-stacks)
 - [Queues](/lectures/12-queues)
-- [2D Maze Search](/lectures/13-2D-search)
+- [Depth-First and Breadth-First Search](/lectures/13-2D-search)
 - [Binary Search Trees (Part 1)](/lectures/14-binary-trees-1)
 - [Binary Search Trees (Part 2)](/lectures/15-binary-trees-2)
 - [Heaps & Heapsort](/lectures/16-heaps-heapsort)

@@ -146,7 +146,7 @@ function sidebarNotes() {
 			items: [
 				{ text: "Stacks", link: "/lectures/12-stacks" },
 				{ text: "Queues", link: "/lectures/12-queues" },
-				{ text: "2D Maze Search", link: "/lectures/13-2D-search" },
+				{ text: "Depth-First and Breadth-First Search", link: "/lectures/13-2D-search" },
 				{ text: "Binary Search Trees (Part 1)", link: "/lectures/14-binary-trees-1" },
 				{ text: "Binary Search Trees (Part 2)", link: "/lectures/15-binary-trees-2" },
 				{ text: "Heaps & Heapsort", link: "/lectures/16-heaps-heapsort" },

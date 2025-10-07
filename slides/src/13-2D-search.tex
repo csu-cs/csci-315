@@ -1,22 +1,19 @@
 \documentclass[14pt,aspectratio=1610]{beamer}
 %\documentclass[12pt,aspectratio=1610,handout]{beamer}
 \usepackage{csu-theme}
+\usepackage{booktabs}
 
-\title{\Huge{} Depth-First Search \&\\Breadth-First Search\\in 2D Spaces}
+\title{\Huge{} Depth-First \& Breadth-First\\Search of 2D Grids}
 \subtitle{CSCI 315: Data Structure Analysis}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
 %% Comment out date to use default (today)
-% \date{February 25, 2025}
+% \date{October 7, 2025}
 \subject{Data-Strucutre Analysis}
 \keywords{programming}
 
 \setlength{\parskip}{0.5em}
-
-\definecolor{MyGreen}{HTML}{61ff7e}
-
-\graphicspath{{../imgs/performance}}
 
 \begin{document}
 
@@ -24,8 +21,36 @@
   \titlepage{}
 \end{frame}
 
-% \begin{frame}{Sorting Algorithm Comparison}
-% 	Test
-% \end{frame}
+\section*{Overview}
+
+\begin{frame}{Overview}
+    \emph{Goal}: Write programs to solve 2D mazes using Depth-First Search (DFS) and Breadth-First Search (BFS).
+
+    Reinforces key Data Structures concepts:
+
+    \begin{itemize}
+      \item  Recursion
+      \item  Stacks and Queues
+      \item  Searching algorithms
+      \item  Structs, pointers, and heap memory
+    \end{itemize}
+
+    Application links to Project 2 and upcoming Binary Search Trees and Graphs.
+\end{frame}
+
+\begin{frame}{DFS vs BFS Comparison }
+  \begin{tabular}{r l l}
+    \toprule
+      \emph{Feature}	& \emph{DFS}	& \emph{BFS}\\
+    \midrule
+      Data Structure	& Stack (or recursion) &	Queue\\
+      Search Style	& Deep	& Broad\\
+      Finds Shortest Path? & No & Yes\\
+      Overall Memory Usage	& Lower	& Higher\\
+      Implementation	& Often recursive	& Iterative\\
+      Backtracking	& Implicit	& Not needed\\
+    \bottomrule
+  \end{tabular}
+\end{frame}
 
 \end{document}
