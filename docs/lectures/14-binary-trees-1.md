@@ -22,7 +22,7 @@ In this lecture, we will:
 ## Lecture Video
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/uxqXkPNkBdA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/KY1RZtyg4S0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 
@@ -82,6 +82,17 @@ A ***binary tree*** is empty or has these properties:
 
 ![Binary Tree](/images/bst/binary-tree-1-dark.svg "A Binary Tree"){.dark-only}
 
+Example Trees:
+
+![Example binary trees with 1 to 3 nodes](/images/bst/binary-tree-1-3-node.svg "Example binary trees with 1 to 3 nodes"){.light-only}
+
+![Example binary trees with 1 to 3 nodes](/images/bst/binary-tree-1-3-node-dark.svg "Example binary trees with 1 to 3 nodes"){.dark-only}
+
+![More 3-node binary trees](/images/bst/binary-tree-3-node.svg "More 3-node binary trees"){.light-only}
+
+![More 3-node binary trees](/images/bst/binary-tree-3-node-dark.svg "More 3-node binary trees"){.dark-only}
+
+
 - A node (called a vertex in graph theory):
 
   - Has at most two children.
@@ -129,6 +140,10 @@ properties:
   and smaller than every key in the right subtree.
 
 - The left subtree and right subtree are binary search trees.
+
+![Example Binary Search Tree](/images/bst/binary-search-tree-1.svg "Example Binary Search Tree"){.light-only}
+
+![Example Binary Search Tree](/images/bst/binary-search-tree-1-dark.svg "Example Binary Search Tree"){.dark-only}
 
 ### Applications
 
@@ -202,8 +217,13 @@ behavior, everything will work.
 
 What is the Big-O performance of an operation?
 
-Best-Case (Perfectly-Balanced Tree)  
-  
+![Best-Case (Perfectly-Balanced Tree) is $O(\log_2 n)$](/images/bst/binary-search-tree-balanced.svg "Best-Case (Perfectly-Balanced Tree) is $O(\log_2 n)$"){.light-only}
+
+![Best-Case (Perfectly-Balanced Tree) is $O(\log_2 n)$](/images/bst/binary-search-tree-balanced-dark.svg "Best-Case (Perfectly-Balanced Tree) is $O(\log_2 n)$"){.dark-only}
+
+![A Worst-Case Example is $O(n)$](/images/bst/binary-search-tree-worst-case.svg "A Worst-Case Example is $O(n)$"){.light-only}
+
+![A Worst-Case Example is $O(n)$](/images/bst/binary-search-tree-worst-case-dark.svg "A Worst-Case Example is $O(n)$"){.dark-only}
 
 ### Average Performance a Binary Search Tree
 
@@ -214,8 +234,6 @@ Best-Case (Perfectly-Balanced Tree)
   tree:  
   Number of comparisons $\approx 2.77\log_2{n} = O(\log_2{n})$  
   Number of nodes visited $\approx 1.39\log_2{n} = O(\log_2{n})$
-
-## Performance of a Binary Search Tree
 
 What is the *average-case* Big-O of the following operations on a binary
 search tree?  
@@ -232,7 +250,7 @@ inorder traversal will take $O(n)$.
 
 ## Traversing the Entire Tree
 
-***Traversing*** a tree means `“***visiting***” each node exactly once.
+***Traversing*** a tree means “***visiting***” each node exactly once.
   
 We may visit each the nodes in a tree to determine its size, display it, 
 update it, delete it, sum the values, etc.
@@ -255,6 +273,10 @@ We can visit the notes in various orders.
 ### Example of Binary Tree Traversal
 
 - Input (one example): `E C F A D H B G`
+
+![Binary tree created from example input](/images/bst/binary-search-tree-traversal.svg "Binary tree created from example input"){.light-only}
+
+![Binary tree created from example input](/images/bst/binary-search-tree-traversal-dark.svg "Binary tree created from example input"){.dark-only}
 
 - In-order sequence:   `A B C D E F G H`
 

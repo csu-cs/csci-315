@@ -39,12 +39,12 @@ div.youtube div iframe {
 }
 
 figure {
-	display: table;
-	margin:auto;
+	display: block;
+	margin: 0 auto 1em auto;
 }
 
 figure img {
-	margin:auto;
+	margin: auto;
 	display: block;
 }
 
@@ -52,7 +52,7 @@ figure figcaption {
 	counter-increment: figures;
 	text-align:center;
 	caption-side: bottom;
-	display: table-caption;
+	display: block;
 }
 
 figure figcaption:before {
