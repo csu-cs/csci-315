@@ -30,7 +30,7 @@
 \forestset{
   treeNode/.style={%
     circle, % node shape
-    draw=white, %line and border color
+    draw, %line and border color
     edge=->, % show arrow to child
     edge=very thick, %edge weight
     very thick, % node boarder
@@ -38,8 +38,8 @@
     text=black,% text color
     %fit=rectangle, % the resulting tree will usually be wide
     fit=band,%
-    %inner sep=0.3em,
-    l sep=0em,% distnace between levels
+    inner sep=3pt, % space between text and border
+    l sep=0em,% distance between levels
   },
   default preamble={%
     for tree={%
@@ -49,7 +49,7 @@
   %
   headPtr/.style={
     anchor=north,l sep=0.5em,%
-    ellipse,draw=none, inner sep=0, fill=none, text=white
+    ellipse,draw=none, inner sep=0, fill=none, text=fg
   },
   %
   % Used for beamer overlays
@@ -67,5 +67,47 @@
   %
   edge highlight on/.style={
     edge+={/tikz/highlight on={#1}}
-  }
+  },
+  textColorDraw/.style={
+    draw, % enables border drawing
+    every node/.append style={color=text color},
+  },
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% For drawing null pointers
+\usetikzlibrary{circuits.ee.IEC}
+
+\tikzset{
+  %
+  % Used for Beamer overlays
+  empty/.style={ground, draw=none},
+}
+
+\forestset{
+  default preamble={%
+    for leaves={%
+      justText}
+  },%
+  justText on/.style={%
+    for tree={%
+      /tikz/justText on={#1},%
+      % edge={/tikz/justText on={#1}}
+    }%
+  },
+  treeNode/.append style={%
+   inner sep=3pt
+  },
+}
+
+\newsavebox\nullNode
+\savebox\nullNode{%
+  \begin{tikzpicture}[circuit ee IEC,scale=1]
+  \node[empty,rotate=90, draw=bg, thick] {};
+  \end{tikzpicture}%
+}
+
+\makeatletter\def\NullNode{%
+  \usebox{\nullNode}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

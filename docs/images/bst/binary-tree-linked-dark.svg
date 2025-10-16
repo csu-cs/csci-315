@@ -3,10 +3,10 @@
 <svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="62.114174mm" height="65.266258mm" viewBox="0 0 62.114174 65.266258" version="1.1" id="svg5" inkscape:version="1.4.2 (f4327f4, 2025-05-13)" sodipodi:docname="binary-tree-linked-fixed.svg">
   <style>
 	.themed-fill {
-		fill: black;
+		fill: white;
 	}
 	.themed-stroke {
-		stroke: black;
+		stroke: white;
 	}
   </style>
   <sodipodi:namedview id="namedview7" pagecolor="#002855" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:pagecheckerboard="0" inkscape:document-units="mm" showgrid="false" fit-margin-top="0" fit-margin-left="0" fit-margin-right="0" fit-margin-bottom="0" inkscape:zoom="4.5304435" inkscape:cx="45.359798" inkscape:cy="122.83566" inkscape:window-width="3840" inkscape:window-height="2054" inkscape:window-x="-11" inkscape:window-y="-11" inkscape:window-maximized="1" inkscape:current-layer="svg5" inkscape:showpageshadow="2" inkscape:deskcolor="#d1d1d1"/>

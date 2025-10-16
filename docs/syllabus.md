@@ -282,7 +282,7 @@ you talk to me **beforehand**.
     but not for any use for planning, debugging, developing, or any other use 
     for assignments, exams, or other assessments.
 
-### AI Policy for CSCI 235
+### AI Policy for CSCI 315
 
 **Level 1. Use of generative AI is *prohibited* in this course.**
 

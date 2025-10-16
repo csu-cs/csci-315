@@ -5,20 +5,11 @@
 \usepackage{binary-trees}
 \usepackage{booktabs}
 
-\usetikzlibrary{circuits.ee.IEC}
-
-\tikzset{
-  %
-  % Used for beamer overlays
-  empty/.style={ground, draw=none},
-}
-
 \forestset{
   default preamble={%
     for tree={%
       treeNode,%
       font=\small,%
-      inner sep=3pt,%
       % l sep=0.2em,%
       % level distance=0.5em,%
       % outer sep=0pt,
@@ -36,18 +27,6 @@
     }%
   },
 }
-
-\newsavebox\nullNode
-\savebox\nullNode{%
-  \begin{tikzpicture}[circuit ee IEC,scale=1]
-  \node[empty,rotate=90,white, draw, thick] {};
-  \end{tikzpicture}%
-}
-
-\makeatletter\def\NullNode{%
-  \usebox{\nullNode}
-}
-
 
 \title{\Huge{} Binary Search Trees\\Deletion \& Generic Traversal}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 19}

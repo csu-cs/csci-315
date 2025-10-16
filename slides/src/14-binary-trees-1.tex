@@ -4,39 +4,6 @@
 \usepackage{binary-trees}
 \usepackage{booktabs}
 
-\usetikzlibrary{circuits.ee.IEC}
-
-\tikzset{
-  %
-  % Used for beamer overlays
-  empty/.style={ground, draw=none},
-}
-
-\forestset{
-default preamble={%
-  for leaves={%
-    justText}
-  },%
-  justText on/.style={%
-    for tree={%
-      /tikz/justText on={#1},%
-      % edge={/tikz/justText on={#1}}
-    }%
-  },
-}
-
-\newsavebox\nullNode
-\savebox\nullNode{%
-  \begin{tikzpicture}[circuit ee IEC,scale=1]
-  \node[empty,rotate=90,white, draw, thick] {};
-  \end{tikzpicture}%
-}
-
-\makeatletter\def\NullNode{%
-  \usebox{\nullNode}
-}
-
-
 \title{\Huge{} Binary Search Trees\\Insertion \& Traversal}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 19}
 %\author{Sean T. Hayes, Ph.D.}
@@ -135,7 +102,7 @@ In this lecture, we will:
   \column{0.62\textwidth}
     \centering
     \begin{forest}
-    [root,headPtr,
+    [root,headPtr, for tree={fit=rectangle}
       [A
         [B
           [D,
@@ -274,7 +241,7 @@ In this lecture, we will:
         Stores its own information.
       \item
         Keeps track of its left subtree and right subtree using pointers\\
-        (e.g., \lstinline{left} and \lstinline{right}).
+        (e.g., \lstinline{pLeft} and \lstinline{pRight}).
       \end{itemize}
     \item
        A pointer to the root node of the binary tree is stored outside the tree.
@@ -397,7 +364,7 @@ In this lecture, we will:
     \item
       The left subtree and right subtree are binary search trees.
   \end{itemize}
-\column{0.29\textwidth}
+\column{0.34\textwidth}
   \begin{forest}
     [96, for tree={fit=tight}
       [27
@@ -420,7 +387,7 @@ In this lecture, we will:
 \end{frame}
 
 \begin{frame}{Applications}
-Used when data is frequently added/removed and a quick lookup is needed (e.g., maps, sets).\\[2em]
+Used when data is frequently added/removed and a \\quick lookup is needed (e.g., maps, sets).\\[2em]
 
 \begin{columns}[T]
 \column{0.3\textwidth}
@@ -563,16 +530,22 @@ As long as the \lstinline{insert()} and \lstinline{contains()} functions follow 
 
 \section{Performance}
 
-\begin{frame}[t]{Performance Analysis for a Binary Search Tree}
-What is the Big-O performance of an operation?
+\begin{frame}{Performance Analysis for a Binary Search Tree}
+  \centering\large
+  What is the Big-O performance of an operation?
+\end{frame}
 
+\begin{frame}[t]{Performance Analysis for a Binary Search Tree}
 \begin{columns}[T]
 \centering
 \column{0.6\textwidth}\centering
   %\begin{minipage}[c][.7\textheight][t]{\linewidth}
 
     Best-Case (Perfectly-Balanced Tree)\\
-    \onslide<2->{$O\left(\log_2{n}\right)$}\\[0.5em]
+    \onslide<2->{%
+      \(O\left(\log_2{n}\right)\)%
+    }%
+    \\[0.5em]
     \begin{forest}
       [49, for tree={fit=tight, l sep-=2em}
         [27
@@ -645,21 +618,33 @@ What is the \textit{average-case} Big-O of the following operations on a binary 
 \toprule
                 & \textbf{Array} & \textbf{Linked List} & \textbf{Binary Search Tree}\\
 \midrule
-  Random Access & {$O(1)$} & $O(n)$ & \onslide<2->{\textit{NA}}\\
-  Insert/Remove & {$O(n)$} & $O(n)$ & \onslide<3->{$O\left(\log_2{n}\right)$}\\
-  Search        & {$O(n)$} & $O(n)$ & \onslide<4->{$O\left(\log_2{n}\right)$}\\
-  Sort          & {$O\left(n \log_2{n}\right)$} & {$O\left(n \log_2{n}\right)$} & \onslide<5->{\textit{NA}\footnote[frame]{\onslide<5->{\small A binary-search tree is already sorted. To convert it to a \\sorted list, a inorder traversal will take $O(n)$.\\[1em]}}}\\
+  Random Access & {$O(1)$} & $O(n)$ & \onslide<2->{\textit{NA}} \\
+  Insert/Remove & {$O(n)$} & $O(n)$ & \onslide<3->{\(O\left(\log_2{n}\right)\)} \\
+  Search        & {$O(n)$} & $O(n)$ & \onslide<4->{\(O\left(\log_2{n}\right)\)} \\
+  Sort          & {\(O\left(n \log_2{n}\right)\)} & {\(O\left(n \log_2{n}\right)\)} & %
+    \onslide<5->{%
+      \textit{NA}\footnote[frame]{%
+        \onslide<5->{%
+          \small A binary-search tree is already sorted. To convert it to a \\sorted list, a inorder traversal will take \(O(n)\).\\[1em]%
+        }%
+      }%
+    } \\
 \bottomrule
 \end{tabular}
 \end{frame}
 
 
 \section{Traversal}
-\begin{frame}{Traversing the Entier Tree}
-We must ``\emph{visit}'' all the nodes in a tree determine its size, display it,
-delete it, sum the values, etc.\\[1em]
+\begin{frame}{Traversing the Entire Tree}
+  \emph{Traversing} a tree means ``\emph{visiting}'' each node exactly once.
+  
+  We may {visit} each the nodes in a tree to determine \\
+  its size, display it, update it, delete it, sum the values, etc.
+\end{frame}
+\begin{frame}{We can visit the notes in various orders.}
 \begin{columns}
-\onslide<2->\column{0.3\textwidth}
+\onslide<2->{%
+  \column{0.3\textwidth}
   In-order
   \begin{enumerate}
   \item
@@ -668,8 +653,10 @@ delete it, sum the values, etc.\\[1em]
     \textbf{\color{CSUcyan}Visit the node.}
   \item
     Traverse the right subtree.
-  \end{enumerate}
-\onslide<3->\column{0.3\textwidth}
+  \end{enumerate}%
+}
+\onslide<3->{%
+  \column{0.3\textwidth}
   Pre-order
   \begin{enumerate}
   \item
@@ -678,8 +665,10 @@ delete it, sum the values, etc.\\[1em]
     Traverse the left subtree.
   \item
     Traverse the right subtree.
-  \end{enumerate}
-\onslide<4->\column{0.3\textwidth}
+  \end{enumerate}%
+}
+\onslide<4->{%
+\column{0.3\textwidth}
   Post-order
   \begin{enumerate}
   \item
@@ -688,64 +677,82 @@ delete it, sum the values, etc.\\[1em]
     Traverse the right subtree.
   \item
     \textbf{\color{CSUcyan}Visit the node.}
-  \end{enumerate}
+  \end{enumerate}%
+}
 \end{columns}
 \end{frame}
 
 
 \begin{frame}{Example of Binary Tree Traversal}
 \begin{columns}
-  \onslide\column{0.5\textwidth}
+
+  \column{0.5\textwidth}
     \begin{itemize}
     \item
-      \onslide<2->{Input (one example):\\
-      \texttt{\bfseries E C F A D H B G}}
+      \onslide<2->{%
+        Input (one example):\\
+        \texttt{\bfseries E C F A D H B G}%
+      }
     \item
       In-order sequence:\\
-      \onslide<4->{\texttt{\bfseries A B C D E F G H}}
+      \onslide<4->{%
+        \texttt{\bfseries A B C D E F G H}%
+      }
     \item
       Pre-order sequence:\\
-      \onslide<5->{\texttt{\bfseries E C A B D F H G}\\
-        (Useful for copying a tree and preserving the structure.)}
+      \onslide<5->{%
+        \texttt{\bfseries E C A B D F H G}\\
+        (Use to copy and preserve a tree's structure.)%
+      }
     \item
       Post-order sequence:\\
-      \onslide<6->{\texttt{\bfseries B A D C G H F E}\\
-        (Useful for deleting a subtree.)}
+      \onslide<6->{%
+      \texttt{\bfseries B A D C G H F E}\\
+        (Use to delete a subtree.)%
+      }
     \end{itemize}
   \column{0.5\textwidth}
     \centering
     \onslide<3->{
-    \begin{forest}
-    [E, for tree={fit=tight}
-      [C
-        [A,
-          [\NullNode]
-          [B
+      \begin{forest}
+      [E, for tree={fit=tight}
+        [C
+          [A,
+            [\NullNode]
+            [B
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [D
             [\NullNode]
             [\NullNode]
           ]
         ]
-        [D
+        [F
           [\NullNode]
-          [\NullNode]
-        ]
-      ]
-      [F
-        [\NullNode]
-        [H
-          [G
-            [\NullNode]
+          [H
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
             [\NullNode]
           ]
-          [\NullNode]
         ]
       ]
-    ]
-    \end{forest}}
+      \end{forest}%
+    }
 \end{columns}
 \end{frame}
 
+\begin{frame}{Depth- and Breadth-First Traversals}
+  The in-order, pre-order, and post-order traversals we implemented are 
+  \alt<1>{\uline{\invisible{depth}}}{\uline{depth}}-first traversals.
 
+  \onslide<3->{We could also implement these traversal with a queue to make them breadth-first.}
+\end{frame}
+
+\section*{Other Operators}
 \begin{frame}{Typical Operations on Binary Tree}
 \setbeamercovered{transparent}
 \begin{itemize}[<+->]
@@ -772,8 +779,7 @@ delete it, sum the values, etc.\\[1em]
 
 \section*{Lab 14}
 \begin{frame}{Lab 14: Binary Trees (Part 1)}
-\begin{center}\Large
+\centering\Large
 Let's take a look at the lab based on today's lecture.
-\end{center}
 \end{frame}
 \end{document}
