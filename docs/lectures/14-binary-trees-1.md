@@ -25,6 +25,9 @@ In this lecture, we will:
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/KY1RZtyg4S0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
+<script setup>
+import insertDiagram from '/images/bst/insert-example.svg'
+</script>
 
 ## Motivation
 
@@ -193,6 +196,7 @@ For example, let’s insert these values:
 - 98
 - 77
 
+<ProgressiveDiagram :src="insertDiagram" />
 
 The helper function for the recursive insert needs a reference to a
 `Node` pointer.

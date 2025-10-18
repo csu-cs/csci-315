@@ -100,6 +100,15 @@ for texfile in "${OUTDIR}"/*.tex; do
             is_frame_in($spec, $f) ? $c1 : $c2;
         }gexs) {}
 
+        # Replace all justText on=<> and visibile on=<>
+        # Not quite correct, but good enough.
+        while (s{
+            \s*(justText|visible)\s+on\s*=\s*<([^>]+)>\s*
+        }{
+            my ($cmd, $spec) = ($1, $2);
+            is_frame_in($spec, $f) ? $cmd : "";
+        }gexs) {}
+
         sub is_frame_in {
             my ($spec, $frame) = @_;
             foreach my $part (split /,/, $spec) {
