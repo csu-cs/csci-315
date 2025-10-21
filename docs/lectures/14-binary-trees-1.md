@@ -185,16 +185,8 @@ If the node…
 
 ## Inserting Values into a Binary Search Tree
 
-For example, let’s insert these values:
-
-- 59
-- 70
-- 50
-- 58
-- 30
-- 44
-- 98
-- 77
+For example, let’s insert these values:  
+59, 70, 50, 58, 30, 44, 98, 77
 
 <ProgressiveDiagram :src="insertDiagram" />
 

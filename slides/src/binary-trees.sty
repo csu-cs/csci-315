@@ -1,7 +1,7 @@
 % Set the style and provide helper functions for binary trees
 % by Sean T. Hayes
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{binary-trees}[2022/08/01]
+\ProvidesPackage{binary-trees}[2025/08/21]
 
 \RequirePackage{forest}
 \usetikzlibrary{positioning}
@@ -15,16 +15,15 @@
   % Used for beamer overlays
   invisible/.style={opacity=0,text opacity=0},
   visible on/.style={alt=#1{}{invisible}},
-  invisible on/.style={alt=#1{invisible}{}},
-  alt/.code args={<#1>#2#3}{%
-    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
-  },
-  justText/.style={ellipse,draw=none, inner sep=0, fill=none, minimum size=1em},
-  justText on/.style={alt=#1{justText}{}},
+  invisible on/.style={only=#1{invisible}},
+  alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
+  only/.code args={<#1>#2}{\only<#1>{\pgfkeysalso{#2}}},
+  justText/.style={ellipse,draw=none, inner sep=1pt, fill=none},
+  justText on/.style={only=#1{justText}},
   %
   % The following is used to highlight edges as an overlay
   highlight/.style={draw, ultra thick, color=highlightColor},
-  highlight on/.style={alt=#1{highlight}{}},
+  highlight on/.style={only=#1{highlight}},
 }
 
 \forestset{
@@ -49,25 +48,39 @@
   %
   headPtr/.style={
     anchor=north,l sep=0.5em,%
-    ellipse,draw=none, inner sep=0, fill=none, text=fg
+    inner sep=0,
+    outer sep=0,
+    minimum size=0,
+    ellipse,
+    draw=none,
+    fill=none,
+    text=fg
   },
   %
   % Used for beamer overlays
-  visible on/.style={
-    for tree={
-      /tikz/visible on={#1},
-      edge+={/tikz/visible on={#1}}}},
+  visible on/.style={%
+    for tree={%
+      /tikz/visible on={#1},%
+      edge+={/tikz/visible on={#1}}}},%
   %
   % Hide just the node, not it's children (and the edges connecting it)
-  node visible on/.style={
-      /tikz/visible on={#1},
-      edge+={/tikz/visible on={#1}},
+  node visible on/.style={%
+      /tikz/visible on={#1},%
+      edge+={/tikz/visible on={#1}},%
       for children={edge+={/tikz/visible on={#1}}}%
   },%
   %
   edge highlight on/.style={
     edge+={/tikz/highlight on={#1}}
-  },
+  },%
+  %
+  justText on/.style={%
+    for tree={%
+      /tikz/justText on={#1},%
+      % edge={/tikz/justText on={#1}}
+    }%
+  },%
+  %
   textColorDraw/.style={
     draw, % enables border drawing
     every node/.append style={color=text color},
@@ -85,18 +98,20 @@
 }
 
 \forestset{
+  ground leaf/.style={
+    ellipse,
+    fill=none,
+    draw=none,
+    tikz+={%
+      \node[ground IEC, rotate=90, draw, thick, xscale=0.7, yscale=1.5]
+        at (.south) {};
+    },
+    minimum height=0.3em,
+    minimum width=1.6em,
+  },
   default preamble={%
     for leaves={%
       justText}
-  },%
-  justText on/.style={%
-    for tree={%
-      /tikz/justText on={#1},%
-      % edge={/tikz/justText on={#1}}
-    }%
-  },
-  treeNode/.append style={%
-   inner sep=3pt
   },
 }
 

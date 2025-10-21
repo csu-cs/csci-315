@@ -131,7 +131,7 @@ The weekly schedule is subject to change.
 |  7B  | Midterm Exam                                |                       |
 |  8A  | *Fall Break* (No Class)                     |                       |
 |  8B  | [Binary Search Trees (Part 1)](/lectures/14-binary-trees-1) | Lab 14                |
-|  9A  | [Binary Search Trees (Part 2)](/lectures/15-binary-trees-2) | Lab 15                |
+|  9A  | [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete) & [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |
 |  9B  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
 | 10A  | [Standard Template Library](/lectures/17-standard-template-library) | Lab 17                |
 | 10B  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |

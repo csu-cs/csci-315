@@ -9,23 +9,16 @@
   default preamble={%
     for tree={%
       treeNode,%
-      font=\small,%
+      %font=\small,%
       % l sep=0.2em,%
       % level distance=0.5em,%
       % outer sep=0pt,
       % outer ysep=0pt,
-      l=2.5em,
+      l=2.4em,
     },%
     for leaves={%
-      justText
-    }
+      justText},
   },%
-  justText on/.style={%
-    for tree={%
-      /tikz/justText on={#1},%
-      % edge={/tikz/justText on={#1}}
-    }%
-  },
 }
 
 \title{\Huge{} Binary Search Trees\\Deletion \& Generic Traversal}
@@ -48,48 +41,48 @@
 \end{frame}
 
 \section{Review}
-\begin{frame}[t]{Binary Trees}
-  \begin{columns}
-    \column{0.3\textwidth}
-      A \emph{binary tree} is empty or has these properties:
-      \begin{itemize}
-      \item
-        Has a root node.
-      \item
-        Has a left subtree and right subtree, which are binary trees.
-      \end{itemize}
-    \column{0.62\textwidth}
-      \centering
-      \begin{forest}
-      [root,headPtr,
-        [A
-          [B
-            [D,
-              [\NullNode]
-              [G
-                [\NullNode]
-                [\NullNode]
-              ]
-            ]
-            [E
+\begin{frame}{Binary Trees}
+\begin{columns}
+  \column{0.3\textwidth}
+    A \emph{binary tree} is empty or has these properties:
+    \begin{itemize}
+    \item
+      Has a root node.
+    \item
+      Has a left subtree and right subtree, which are binary trees.
+    \end{itemize}
+  \column{0.62\textwidth}
+    \centering
+    \begin{forest}
+    [root,headPtr, for tree={fit=band, s sep=6pt}
+      [A
+        [B
+          [D,
+            [\NullNode]
+            [G
               [\NullNode]
               [\NullNode]
             ]
           ]
-          [C
+          [E
             [\NullNode]
-            [F
-              [H
-                [\NullNode]
-                [\NullNode]
-              ]
+            [\NullNode]
+          ]
+        ]
+        [C
+          [\NullNode]
+          [F
+            [H
+              [\NullNode]
               [\NullNode]
             ]
+            [\NullNode]
           ]
         ]
       ]
-      \end{forest}
-  \end{columns}
+    ]
+    \end{forest}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Binary Trees}
@@ -125,6 +118,43 @@
         \emph{Leaf}: a node that has no children.
       \item
         A \emph{parent} has a branch to a \emph{child} node.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{forest}
+      [A, for tree={fit=tight}
+        [B
+          [D,
+            [\NullNode]
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [E
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [C
+          [\NullNode]
+          [F
+            [H
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+      \end{forest}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Binary Trees}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}[<+->]
       \item
         There is a unique \emph{path} from the root to every node.
       \item
@@ -216,7 +246,7 @@
       \item
         Has a root node.
       \item
-        Has two sets of nodes: the left and right subtrees.
+        Has two sets of nodes:\\the left and right subtrees.
       \item
         The key in the root node is larger than every key in the left subtree and smaller than every key in the right subtree.
       \item
@@ -252,10 +282,10 @@
   \toprule
                   & \textbf{Array} & \textbf{Linked List} & \textbf{Binary Search Tree}\\
   \midrule
-    Random Access & {$O(1)$} & $O(n)$ & {\textit{NA}}\\
-    Insert/Remove & {$O(n)$} & $O(n)$ & {$O\left(\log_2{n}\right)$}\\
-    Search        & {$O(n)$} & $O(n)$ & {$O\left(\log_2{n}\right)$}\\
-    Sort          & {$O\left(n \log_2{n}\right)$} & {$O\left(n \log_2{n}\right)$} & {\textit{NA}\footnote[frame]{{\small A binary-search tree is already sorted. To convert it to a \\sorted list, a inorder traversal will take $O(n)$.\\[1em]}}}\\
+    Random Access & {\(O(1)\)} & \(O(n)\) & {\textit{NA}}\\
+    Insert/Remove & {\(O(n)\)} & \(O(n)\) & {\(O\left(\log_2{n}\right)\)}\\
+    Search        & {\(O(n)\)} & \(O(n)\) & {\(O\left(\log_2{n}\right)\)}\\
+    Sort          & {\(O\left(n \log_2{n}\right)\)} & {\(O\left(n \log_2{n}\right)\)} & {\textit{NA}\footnote[frame]{{\small A binary-search tree is already sorted. To convert it to a \\sorted list, a inorder traversal will take \(O(n)\).\\[1em]}}}\\
   \bottomrule
   \end{tabular}
 \end{frame}
@@ -267,7 +297,7 @@
 \column{0.6\textwidth}
   %\begin{center}
     \begin{forest}
-      [root,headPtr, for tree={fit=tight}%l sep?
+      [root, headPtr, for tree={fit=tight, l=2.4em}, for leaves={justText},%l sep?
         [60
           [\alt<-9>{50}{40},name=delType4
             [30,
@@ -277,9 +307,9 @@
                   [\NullNode]
                   [\NullNode]
                 ]
-                [\alt<-9>{40}{\NullNode}, justText on=<10->, for descendants={visible on=<-9>},name=delType4Leaf
-                  [\NullNode]
-                  [\NullNode]
+                [\alt<-9>{40}{\NullNode}, name=delType4Leaf, justText on=<10->, for descendants={visible on=<-9>}
+                  [\NullNode, visible on=<-9>]
+                  [\NullNode, visible on=<-9>]
                 ]
               ]
             ]
@@ -315,6 +345,7 @@
       \onslide<9>{
         \draw[->,dotted, very thick] (delType4Leaf) to[bend right=15] node[midway,left] {\small{}move} (delType4);
       }
+      \only<10>{}
     \end{forest}
 %\end{center}
 
@@ -340,7 +371,7 @@
     %   treeNode/.append style={inner sep=2pt}
     % }
     \begin{forest}
-      for tree={fit=tight, s sep=7mm}
+      for tree={s sep=1mm}
       [root,headPtr%, l sep=0mm, for tree={fit=tight, l sep=-5mm}, for leaves={l sep=0mm}
         [60,l sep=0mm
           [50
@@ -395,7 +426,7 @@
     % }
     %\centering{}
     \begin{forest}
-      for tree={s sep=2mm}
+      for tree={s sep=1mm}
       %[root,headPtr, l sep=0mm
         [60,%l sep=0mm, for tree={fit=tight, l sep=-5mm}, for leaves={l sep=0mm}
           [50, name=el50, edge highlight on=<2->
@@ -440,8 +471,6 @@
             ]
           ]
         ]
-      %]
-            % \node[] at (el50.north west) (deletePtr) {toDelete};
       \begin{scope}[->,very thick,white]
         % \draw[->,dotted, very thick] () to[bend left] node[midway,left] {rotate} (p2);
         \onslide<2->{
@@ -451,7 +480,7 @@
         \onslide<3->{
           \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.45)}]el35.north east) {\texttt{\small pToMoveParent}};
           \draw(txtLabel.west) to[bend right] (el35);
-          \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.45)}]el40.north east) {\texttt{\small pToMove}};
+          \node[anchor=west, inner sep=1pt] (txtLabel) at ([shift={(0.2,0.25)}]el40.north east) {\texttt{\small pToMove}};
           \draw(txtLabel.west) to[bend right] (el40);
         }
         \onslide<4->{
@@ -472,7 +501,7 @@
       % }
       %\centering{}
       \begin{forest}
-        for tree={s sep=2mm}
+        for tree={s sep=1mm}
         %[root,headPtr, l sep=0mm
           [60,%l sep=0mm, for tree={fit=tight, l sep=-5mm}, for leaves={l sep=0mm}
             [50, name=el50
@@ -541,7 +570,7 @@
 
 \begin{frame}{Performance of Delete}
   \centering{}\Large
-  What is the Big-$O$ performance of delete?
+  What is the average-case Big-\(O\) performance of delete?
 \end{frame}
 
 \section{Generic Traversal}
@@ -587,14 +616,14 @@
 A recursive member function that accepts a node to tree to traverse and a function to call at each node.
 \begin{lstlisting}[basicstyle=\ttfamily\small]
 template<typename Type>
-void BinarySearchTree<Type>::inorder(Node *root,
+void BinarySearchTree<Type>::inorder(Node *pRoot,
       void (*visit)(Type& value)) {
-  if (root != nullptr)  {
-    inorder(root->left, visit);
+  if (pRoot != nullptr)  {
+    inorder(pRoot->left, visit);
 
-    visit(root->info);
+    visit(pRoot->value);
 
-    inorder(root->right, visit);
+    inorder(pRoot->right, visit);
   }
 }
 \end{lstlisting}
@@ -685,7 +714,9 @@ std::cout << "Sum: " << sumObj.sum << '\n';
   \item
     The worst-case performance for searching is \(O(n)\).
   \item
-    \emph{Self-Balancing Binary Trees} automatically minimize the tree's height when performing insertion and deletion operations.
+    \emph{Self-Balancing Binary Trees} automatically \\
+    minimize the tree's height when performing\\
+    insertion and deletion operations.
   \item
     Searching (and therefore insertion and deletion) becomes $O(log_2{n})$ (i.e., asymptotically optimal) in the worst case (and may average $O(1)$ for some operation depending on the implementation).
   \item
@@ -719,7 +750,7 @@ std::cout << "Sum: " << sumObj.sum << '\n';
 \centering
 
 \begin{forest}
-  [,phantom, for tree={fit=band, l sep-=1em, inner sep=0.3333em, font=\normalsize}, for leaves={treeNode}, for tree={s sep=0.5cm}, s sep=1.5cm
+  [,phantom, for tree={fit=band, l sep-=1em, minimum size=1.5em, font=\normalsize}, for leaves={treeNode}, for tree={s sep=0.5cm}, s sep=1.5cm
     [3
       [1, name=p1
         [,justText, no edge, for current={no edge}, name=hid1] {
