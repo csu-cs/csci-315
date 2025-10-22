@@ -335,17 +335,24 @@
             ]
           ]
         ]
-      ]
-      \onslide<5->{
-        \draw[->, very thick] (delType4) to[bend left=20] node[midway,left]{} (delType2Child);
-      }
-      \onslide<7->{
-        \draw[->, very thick] (delType4Parent) to[bend left] node[midway,left]{} (delType4Child);
-      }
-      \onslide<9>{
-        \draw[->,dotted, very thick] (delType4Leaf) to[bend right=15] node[midway,left] {\small{}move} (delType4);
-      }
-      \only<10>{}
+      ]{%
+        \node[anchor=north west, inner sep=3pt, align=left] at (current bounding box.north west) {%
+          \only<2-3>{Delete 77\\(a leaf)}%
+          \only<4-5>{Delete 53\\(empty left subtree)}%
+          \only<6-7>{Delete 80\\(empty right subtree)}%
+          \only<8-10>{Delete 50\\(nonempty subtrees)}%
+        };%
+        \onslide<5->{%
+          \draw[->, very thick] (delType4) to[bend left=20] node[midway,left]{} (delType2Child);%
+        }%
+        \onslide<7->{%
+          \draw[->, very thick] (delType4Parent) to[bend left] node[midway,left]{} (delType4Child);%
+        }%
+        \onslide<9>{%
+          \draw[->,dotted, very thick] (delType4Leaf) to[bend right=15] node[midway,left] {\small{}move} (delType4);%
+        }%
+        \only<10>{}%
+      }%
     \end{forest}
 %\end{center}
 

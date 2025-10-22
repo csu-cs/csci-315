@@ -7,6 +7,10 @@ Chapter 19
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/-0koufxaOPk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
+<script setup>
+import deleteCasesDiagram from '/images/bst/bst-delete-cases.svg'
+</script>
+
 ## Review
 
 ### Binary Trees
@@ -96,6 +100,8 @@ The four cases of delete depend on the node to be deleted:
 3.  Has an empty right subtree (e.g., 80)
 
 4.  Has nonempty left and right subtrees (e.g., 50) 
+
+<ProgressiveDiagram :src="deleteCasesDiagram" />
 
 *See the lecture video for examples of each case.*
 
