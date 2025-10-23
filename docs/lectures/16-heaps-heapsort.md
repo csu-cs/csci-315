@@ -4,7 +4,7 @@ Binary Heaps and Heapsort
 Chapter 10 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/8whFnn5ctgY?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/1wbi1UP5OY8?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Intro
@@ -249,9 +249,9 @@ What do heaps have to do with sorting an array?
 
 ## Implementation
 
-## Analysis
+*We implemented and tested a binary heap class in the lecture.*
 
-Let’s start implementing a heap structure.
+## Analysis
 
 ### Step 1, Heapify the Array
 
@@ -271,6 +271,7 @@ The sorting algorithm starts by ***heapifying the array***.
 - Here’s the rest of the algorithm:
 
   Algorithm Pseudocode (Part 2)
+
   ```plain
   While the array isn’t empty:
   {
@@ -285,11 +286,11 @@ The sorting algorithm starts by ***heapifying the array***.
 - Removing and replacing the root takes $O(1)$ time.
 
 - Therefore, the total time is $n$ times however long it takes the
-  re-heap method.
+  reheap method.
 
-### Step 3, Re-heap
+### Step 3, Reheap
 
-- To re-heap the root node, we must follow ***one path*** from the root
+- To reheap the root node, we must follow ***one path*** from the root
   to a leaf node (and we might stop before we reach a leaf).
 
 - The binary tree is perfectly balanced.
@@ -298,10 +299,10 @@ The sorting algorithm starts by ***heapifying the array***.
 
   - And we only do $O(1)$ operations at each node.
 
-  - Therefore, re-heaping takes $O(\log n)$ times.
+  - Therefore, a reheap takes $O(\log n)$ time.
 
-- Since we re-heap inside a while loop that we do $n$ times, the total
-  time for the while loop is $n \times O(\log n)$, or $O(n \log n$).
+- Since we reheap inside a while loop that we do $n$ times, the total
+  time for the while loop is $n \times O(\log n)$, or $O(n \log n)$.
 
 ### Performance of All Steps
 
