@@ -17,6 +17,14 @@
 
 \setlength{\parskip}{0.5em}
 
+% Don't show circle around leaves (for null pointers)
+\forestset{
+  default preamble={%
+    for leaves={%
+      justText}
+  },
+}
+
 \begin{document}
 
 \begin{frame}

@@ -4,8 +4,6 @@
 \usepackage{binary-trees}
 \usepackage{arrays}
 
-\definecolor{MyGreen}{HTML}{61ff7e}
-
 \title{\Huge{} Binary Heaps \& Heapsort}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 10 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
 %\author{Sean T. Hayes, Ph.D.}
@@ -59,7 +57,9 @@ array index/.style = {
   There are two definitions of \emph{heap}.
   \begin{enumerate}
   \item
-    \emph{Memory}: A large area of memory from which the programmer can allocate blocks as needed, and deallocate them (or allow them to be garbage collected) when no longer needed.
+    \emph{Memory}: A large area of memory from which the \\
+    programmer can allocate blocks as needed, and \\
+    deallocate them (or allow them to be garbage collected) when no longer needed.
   \item
     \emph{Data Structure}: A balanced, left-justified binary tree in which no node has a value greater than its parent (binary heap).
   \end{enumerate}
@@ -70,15 +70,14 @@ array index/.style = {
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Three Properties of a Binary Heap}
-The heap data structure is a binary tree that maintains three properties, which we will discuss.\\[1em]
+\begin{frame}{Two Properties of a Binary Heap}
+The heap data structure is a binary tree that maintains\\
+two properties, which we will discuss.\\[1em]
 \begin{enumerate}
 \item
-  Balanced
+  \emph{Shape Property}: Left Justified and, therefore, Balanced
 \item
-  Left Justified
-\item
-  Heap Property
+  \emph{Heap Property}: The relationship between elements
 \end{enumerate}
 \end{frame}
 
@@ -93,8 +92,8 @@ The heap data structure is a binary tree that maintains three properties, which 
     The \emph{depth of a tree} is the depth of the deepest node.
   \end{itemize}
 \item<4->
-  A binary tree of depth $n$ is \emph{balanced} if all the nodes at depths 0
-  through $n-2$ have two children.
+  A binary tree of depth \(n\) is \emph{balanced} if all the nodes \\
+  at depths 0 through $n-2$ have two children.
 \end{itemize}
 \begin{columns}[T]
 \column{0.4\textwidth}%
@@ -129,9 +128,10 @@ The heap data structure is a binary tree that maintains three properties, which 
       \path (levelLine |- root) node[anchor=east, align=right] {\footnotesize $0$};
       \path (levelLine |- lev1) node[anchor=east, align=right] {\footnotesize $n-2$};
       \path (levelLine |- lev2) node[anchor=east, align=right] {\footnotesize $n-1$};
-      \path (levelLine |- levN) node[anchor=east, align=right] {\footnotesize $n$};
+      \path (levelLine |- levN) node[anchor=east, align=right] {\footnotesize \(n\)};
     }
-  \end{forest}}
+  \end{forest}%
+}
 
 \column{0.3\textwidth}%
 \only<7->{%
@@ -160,7 +160,8 @@ The heap data structure is a binary tree that maintains three properties, which 
     ]
     \coordinate (labelLine) at ([yshift=0.25em]root);
     \path (root |- labelLine) node[anchor=south,align=center] {(b) Balanced};
-  \end{forest}}
+  \end{forest}%
+}
 
 \column{0.3\textwidth}%
 \only<8->{%
@@ -186,25 +187,25 @@ The heap data structure is a binary tree that maintains three properties, which 
     ]
     \coordinate (labelLine) at ([yshift=0.25em]root);
     \path (root |- labelLine) node[anchor=south,align=center] {(c) Unbalanced};
-  \end{forest}}
+  \end{forest}%
+}
 \end{columns}
 \end{frame}
 
 
 
-\begin{frame}{Left-Justified Binary Trees}
-A balanced binary tree is \emph{left-justified} if:
+\begin{frame}{Shape Property: Left-Justified Binary Trees}
+A binary tree has the \emph{shape properly} if:
 \begin{itemize}
 \item<2->
-  All levels, except possibly at depth $n$ (deepest), are filled.
+  Balanced
 \item<3->
-  All leaves at depth $n$ are to the left (without any missing).\\
-  (All leaves at depth $n - 1$ are to the right of all the nodes at depth $n$.)
+  All leaves at depth \(n\) are to the left without any missing.\\
+  (All leaves at depth \(n - 1\) are to the right of all the nodes at depth \(n\).)
 \end{itemize}
 \begin{columns}[T]
 \centering
-
-\onslide<4->{\column{0.5\textwidth}\centering
+\onslide<4->{\column{0.35\textwidth}\centering
   \begin{forest}
     [, for tree={fit=tight, l=7mm, inner sep=0.25em}, name=root
       [
@@ -230,9 +231,10 @@ A balanced binary tree is \emph{left-justified} if:
     ]
     \coordinate (labelLine) at ([yshift=0.25em]root);
     \path (root |- labelLine) node[anchor=south,align=center] {(a) Left-Justified};
-  \end{forest}}
+  \end{forest}%
+}
 
-\onslide<5->{\column{0.5\textwidth}\centering
+\onslide<5->{\column{0.35\textwidth}\centering
   \begin{forest}
     [, for tree={fit=tight, l=7mm, inner sep=0.25em}, name=root
       [
@@ -258,15 +260,16 @@ A balanced binary tree is \emph{left-justified} if:
     ]
     \coordinate (labelLine) at ([yshift=0.25em]root);
     \path (root |- labelLine) node[anchor=south,align=center] {(b) Not Left-Justified};
-  \end{forest}}
+  \end{forest}%
+}
 \end{columns}
 \end{frame}
 
 \begin{frame}{The Heap Property}
 \begin{itemize}[<+->]
 \item
-  A node has the \emph{heap property} if the value in the node\\
-  is at least as large as its children's values.
+  A node has the \emph{heap property} if the value in the\\
+  node is at least as large as its children's values.
 \item
   All leaves automatically have the heap property.
 \item
@@ -283,7 +286,8 @@ A balanced binary tree is \emph{left-justified} if:
       [3]
     ]
     \node[anchor=south,align=center,above=0.2em of root] {(a) heap};
-  \end{forest}}
+  \end{forest}%
+}
 
 \onslide<5->{\column{0.18\textwidth}\centering
   \begin{forest}
@@ -293,7 +297,8 @@ A balanced binary tree is \emph{left-justified} if:
       [12]
     ]
     \node[anchor=south,align=center,above=0.2em of root] {(b) heap};
-  \end{forest}}
+  \end{forest}%
+}
 
 \onslide<6->{\column{0.18\textwidth}\centering
   \begin{forest}
@@ -303,7 +308,8 @@ A balanced binary tree is \emph{left-justified} if:
       [14]
     ]
     \node[anchor=south,align=center,above=0.2em of root] {(c) not heap};
-  \end{forest}}
+  \end{forest}%
+}
 \end{columns}
 \end{frame}
 
@@ -343,7 +349,8 @@ its value with the larger child's value.
       }
     ]
     \node[anchor=south,align=center,above=0.2em of root] {(a) not heap};
-  \end{forest}}
+  \end{forest}%
+}
 
 \onslide<4->{\column{0.25\textwidth}\centering
   \begin{forest}
@@ -353,7 +360,8 @@ its value with the larger child's value.
       [12]
     ]
     \node[anchor=south,align=center,above=0.2em of root] {(b) heap};
-  \end{forest}}
+  \end{forest}%
+}
 \end{columns}
 
 \begin{itemize}
@@ -475,9 +483,8 @@ Here is a sample \emph{heapified} binary tree.
 \item<2->
   Heapified does \emph{not} mean sorted.
 \item<3->
-  Heapifying does \emph{not} change the shape of the binary tree.
-\item<3->
-  This binary tree was always balanced and left-justified.
+  Heapifying does \emph{not} change the shape of the binary tree.\\
+  The binary tree was always balanced and left-justified.
 \end{itemize}
 
 \column{0.6\textwidth}
@@ -649,7 +656,7 @@ Here is a sample \emph{heapified} binary tree.
   \item<3->
     We can sift down this node.
   \item<6->
-    It is a leaf, so not children can lost the heap property.
+    It is a leaf, so there are children to lost the heap property.
   \end{itemize}
 \column{0.6\textwidth}
 \vspace{1.5cm}
@@ -752,7 +759,8 @@ While the array isn't empty:\\
 \hspace{2em}Remove and replace the root.\\
 \hspace{2em}Re-heap the new root node.\\
 \}}
-\end{block}}
+\end{block}%
+}
 \end{columns}
 \end{frame}
 
@@ -935,13 +943,13 @@ Let's start implementing a heap structure.
 The sorting algorithm starts by \emph{heapifying the array}.
 \begin{itemize}[<+->]
 \item
-  We add each of $n$ nodes.
+  We add each of \(n\) nodes.
   \begin{itemize}
   \item
     Each node must be sifted up, possibly as far as the root.\\
     Because the binary tree is perfectly balanced, sifting up a single node takes $O(\log n)$ time.
   \item
-    Because we iterate $n$ times, heapifying takes $n \times O(\log n)$ time, that is, $O(n \log n)$ time.
+    Because we iterate \(n\) times, heapifying takes $n \times O(\log n)$ time, that is, $O(n \log n)$ time.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -960,11 +968,11 @@ The sorting algorithm starts by \emph{heapifying the array}.
   \end{columns}
 
 \item<2->
-  We do the while loop $n$ times (actually, $n-1$ times), because we remove one of the $n$ nodes each time.
+  We do the while loop \(n\) times (actually, $n-1$ times), because we remove one of the \(n\) nodes each time.
 \item<3->
-  Removing and replacing the root takes $O(1)$ time.
+  Removing and replacing the root takes \(O(1)\) time.
 \item<4->
-  Therefore, the total time is $n$ times however long it takes the re-heap method.
+  Therefore, the total time is \(n\) times however long it takes the reheap method.
 \end{itemize}
 \end{frame}
 
@@ -972,19 +980,21 @@ The sorting algorithm starts by \emph{heapifying the array}.
 \begin{frame}{Analysis: Step 3, Re-heap}
 \begin{itemize}[<+->]
 \item
-  To re-heap the root node, we must follow \emph{one path} from the root to a leaf node (and we might stop before we reach a leaf).
+  To reheap the root node, we follow {one path} \\
+  from the root to a leaf (or until the heap \\
+  property exists for the subtree).
 \item
   The binary tree is perfectly balanced.
 \item
   Therefore, this path is $O(\log n)$ long.
   \begin{itemize}
   \item
-    And we only do $O(1)$ operations at each node.
+    And we only do \(O(1)\) operations at each node.
   \item
-    Therefore, re-heaping takes $O(\log n)$ times.
+    Therefore, reheaping takes $O(\log n)$ times.
   \end{itemize}
 \item
-  Since we re-heap inside a while loop that we do $n$ times, the total time for the while loop is $n \times O(\log n)$, or $O(n \log n$).
+  Since we reheap inside a while loop that we do \(n\) times, the total time for the while loop is $n \times O(\log n)$, or $O(n \log n$).
 \end{itemize}
 \end{frame}
 
@@ -1013,17 +1023,23 @@ The sorting algorithm starts by \emph{heapifying the array}.
 \begin{frame}{Summary of Benefits}
 \begin{itemize}[<+->]
   \item
-    \emph{Efficient Operations}: Insertion and deletion are $O(\log n)$. Retrieval of the minimum (or maximum) element is $O(1)$.
+    \emph{Efficient Operations}:\\
+    Insertion and deletion are $O(\log n)$.\\
+    Retrieval of the maximum (or minimum) value is \(O(1)\).
   \item
-    \emph{Space Efficiency}: Binary heaps can be implemented using arrays, removing the need for pointers.
+    \emph{Space Efficiency}:\\
+    Binary heaps can be implemented using arrays, removing the need for pointers.
   \item
-    \emph{Ease of Implementation}: With arrays, the algorithms for insertion, deletion, and heapifying are intuitive.
+    \emph{Ease of Implementation}:\\
+    With arrays, the algorithms for insertion, deletion, and heapifying are intuitive.
   \end{itemize}
 \end{frame}
 \begin{frame}{Summary of Benefits}
   \begin{itemize}[<+->]
     \item
-    \emph{Heap Sort}: An always $O(n \log{n})$ in-place sorting algorithm (i.e., $O(1)$ additional space and with predictable performance).
+    \emph{Heap Sort}: An always $O(n \log{n})$ in-place\\
+    sorting algorithm\\
+    (i.e., \(O(1)\) additional space and with predictable performance).
   \item
     \emph{Priority Queue}: Many algorithms require elements with higher (or lower) priority to be processed first.
 \end{itemize}
