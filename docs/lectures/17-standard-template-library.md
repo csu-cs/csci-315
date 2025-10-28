@@ -4,7 +4,7 @@ C++ Standard Template Library (STL)
 Chapter 21
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/u80XHNjCmD8?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/maogsvShrwU?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 
@@ -93,8 +93,6 @@ The STL consists of three categories of components:
 
 Sequence container: every object in the container has a specific
 position.
-
-Three predefined sequence containers:
 
 1.  `array` – encapsulates a fixed size array
 
@@ -806,8 +804,7 @@ but you may use them for testing.)
 - Some algorithms like sort, merge, and accumulate can take a function
   object as an argument.
 
-- A function object is an object of a template class that has a single
-  member function: the overloaded `operator()`.
+- A function object is an instance of a class that overloads `operator()`.
 
 - It is also possible to use user-written functions in place of
   predefined function objects.

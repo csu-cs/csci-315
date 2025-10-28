@@ -1,4 +1,4 @@
-\documentclass[12pt,aspectratio=1610]{beamer}
+\documentclass[14pt,aspectratio=1610]{beamer}
 % \documentclass[12pt,aspectratio=1610,handout]{beamer}
 \usepackage{csu-theme}
 \usepackage{arrays}
@@ -40,7 +40,7 @@
   \item
     Be introduced the Standard Template Library (STL)
   \item
-    Become familiar with the three basic components of the STL: containers, iterators, and algorithms.
+    Become familiar with the three basic components of the STL:\@ containers, iterators, and algorithms.
   \item
     Become familiar with basic operations on vector objects
   \end{itemize}
@@ -69,7 +69,7 @@ The STL consists of three categories of components:
 \begin{frame}{Available Containers Types}
 \begin{itemize}[<+->]
 \item
-  \emph{Sequence Containers} implement data structures that can be accessed sequentially.
+  \emph{Sequence Containers} implement data structures \\that can be accessed sequentially.
 \item
   \emph{Ordered Associative Containers} implement sorted data structures that can be quickly searched (\(O(\log n)\) complexity).
 \item
@@ -77,15 +77,15 @@ The STL consists of three categories of components:
 \item
   \emph{Adapters} provide a different interface for sequential containers.
 \item
-  \emph{Views} provide flexible lightweight non-owning access to contiguous contains.
+  \emph{Views} provide flexible lightweight non-owning \\access to contiguous contains.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Available Sequence Containers Types in C++20}
+\begin{frame}{Sequence Containers Types in C++20}
 \renewcommand{\arraystretch}{1.1}
-\begin{tabularx}{0.9\textwidth}{l l l}
+\begin{tabular}{l l l}
 \toprule
-  \textbf{\large Sequence Containers} & \textbf{Header File} & \textbf{Iterator Support}\\
+  \textbf{Sequence Containers} & \textbf{Header File} & \textbf{Iterator Support}\\
   \midrule
   \href{https://en.cppreference.com/w/cpp/container/array}{array}
     & \lstinline{<array>} & Random access\\
@@ -98,15 +98,15 @@ The STL consists of three categories of components:
   \href{https://en.cppreference.com/w/cpp/container/forward_list}{forward\_list}
     & \lstinline{<forward_list>} & Forward\\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{frame}
 
 
-\begin{frame}{Available Associative Containers Types in C++20}
+\begin{frame}{Associative Containers Types in C++20}
   \renewcommand{\arraystretch}{1.1}
   \begin{tabular}{l l l}
   \toprule
-  \textbf{\large Associative Containers} & \textbf{Header File} & \textbf{Iterator Support}\\
+  \textbf{Associative Containers} & \textbf{Header File} & \textbf{Iterator Support}\\
   \midrule
 
     \href{https://en.cppreference.com/w/cpp/container/map}{map}
@@ -132,11 +132,11 @@ The STL consists of three categories of components:
 \end{frame}
 
 
-\begin{frame}{Available Adpaters and Views Types in C++20}
+\begin{frame}{Adpaters and Views Types in C++20}
   \renewcommand{\arraystretch}{1.1}
-  \begin{tabularx}{0.9\textwidth}{l l l}
+  \begin{tabular}{l l l}
     \toprule
-      \textbf{\large Adapters} & \textbf{Header File} & \textbf{Iterator Support}\\
+      \textbf{Adapters} & \textbf{Header File} & \textbf{Iterator Support}\\
     \midrule
       \href{https://en.cppreference.com/w/cpp/container/stack}{stack}
         & \lstinline{<stack>} & No iterator support\\
@@ -145,18 +145,17 @@ The STL consists of three categories of components:
       \href{https://en.cppreference.com/w/cpp/container/priority_queue}{priority queue}
         & \lstinline{<queue>} & No iterator support\\
     \midrule
-      \textbf{\large Views} & \textbf{Header File} & \textbf{Iterator Support}\\
+      \textbf{Views} & \textbf{Header File} & \textbf{Iterator Support}\\
         \href{https://en.cppreference.com/w/cpp/container/span}{span}
         & \lstinline{<span>} & Bidirectional\\
   \bottomrule
-  \end{tabularx}
+  \end{tabular}
   
   \end{frame}
 
 \begin{frame}{Sequence Containers in the STL}
 Sequence container: every object in the container has a specific position.
 
-Three predefined sequence containers:
 \begin{enumerate}
 \item
   \lstinline{array} -- encapsulates a fixed size array
@@ -194,6 +193,7 @@ std::vector<std::string> stringList;
 \end{frame}
 
 \begin{frame}[fragile]{Constructors for a \texttt{\bfseries vector}}
+  \small
 There are 10 different constructors for \lstinline{vector}; Here are some highlights.
 \begin{itemize}
 \item
@@ -213,6 +213,7 @@ There are 10 different constructors for \lstinline{vector}; Here are some highli
 \end{frame}
 
 \begin{frame}[fragile]{Operations on a \texttt{\bfseries vector}}
+  \small
 \begin{itemize}
 \item
   Basic vector operations
@@ -249,7 +250,7 @@ back();  // the last element
       ultra thick
     },
     array index/.style = {
-      font=\footnotesize\ttfamily,
+      font=\small\ttfamily,
     }]
     
     \ArrayLabel{}
@@ -327,6 +328,7 @@ back();  // the last element
 \end{frame}
 
 \begin{frame}[fragile]{Example use of the \texttt{\bfseries vector} Container}
+  \small
 \begin{lstlisting}
 #include <vector>
 #include <iostream>
@@ -346,6 +348,7 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile]{Example use of the \texttt{\bfseries vector} Container}
+  \small
 \begin{lstlisting}
 #include <vector>
 #include <iostream>
@@ -407,6 +410,7 @@ int main() {
 
 
 \begin{frame}{Iterators to a \texttt{\bfseries vector} Container}
+  \small
   \vspace{1em}
   \begin{tikzpicture}
 
@@ -458,6 +462,7 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile]{Iterators to a \texttt{\bfseries vector} Container}
+  \small
 \begin{lstlisting}
 std::vector<int> vec { 17, 5, 23, 12, 9, 11, 13, 9 };
 
@@ -476,7 +481,8 @@ std::vector<int>::iterator intVecIter2 = vec.end();
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Containers have \texttt{\bfseries begin} and \texttt{\bfseries end} Iterator Functions}
+\begin{frame}[fragile]{\texttt{\bfseries begin} and \texttt{\bfseries end} Iterator Functions}
+  \small
 \begin{itemize}
 \item
   \lstinline{begin()}: returns an iterator to the beginning of the container.
@@ -512,6 +518,7 @@ std::vector<int>::iterator intVecIter2 = vec.end();
 
 
 \begin{frame}[fragile]{Iterator Example}
+  \small
 \begin{lstlisting}
 template <typename Type>
 Type maxValue(const vector<Type> &vec) {
@@ -533,7 +540,7 @@ cout << "max of words = " << maxValue(words);
 \end{frame}
 
 \begin{frame}[fragile]{Types of Iterators}
-Every algorithm requires an iterator with a certain level of capability. For example, to use the \lstinline{[]} operator you need a random access iterator.
+Every algorithm requires an iterator with a certain capability.
 \begin{enumerate}[<+->]
 \item
   \emph{Input iterators} have read access; step forward element-by-element.
@@ -622,7 +629,7 @@ Store elements in sorted order according to some ordering criteria\\(often using
 \end{frame}
 
 \begin{frame}[fragile]{Sets Example}
-
+\small
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 #include <set>
 int main() {
@@ -648,8 +655,8 @@ int main() {
 
 
 \begin{frame}[fragile]{Sets Example}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
+\small
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 #include <set>
 
 int main() {
@@ -670,8 +677,7 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile]{Maps Example}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 #include <map>
 #include <algorithm>
 int main() {
@@ -731,7 +737,7 @@ Containers to accommodate special situations.\\[1em]
 
     % Span 1 Class Members
     \begin{scope}[node of array/.append style={minimum width=14mm}]
-      \ArrayLabel[-2.5][7]{}
+      \ArrayLabel[-2.5][8]{}
       
       %\ArrayNodeStack[CSUcyan][capacity]{8}
       
@@ -793,7 +799,8 @@ Containers to accommodate special situations.\\[1em]
 \section{Algorithms}
 
 \begin{frame}{Algorithms in the STL}
-Many algorithms that work on any STL container are found in the \lstinline{<algorithm>} library.
+Many algorithms that work on any STL container are \\
+found in the \lstinline{<algorithm>} library.
 \begin{itemize}
 \item
   Copy
@@ -857,6 +864,7 @@ These algorithms are provided generically to support many container types.
 
 
 \begin{frame}[fragile]{Example: The \texttt{for\_each()} Algorithm}
+  \small
 \begin{lstlisting}
 #include <vector>
 #include <algorithm>
@@ -876,6 +884,7 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile]{Example: The \texttt{find()} Algorithm}
+  
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 #include <vector>
 #include <algorithm>
@@ -936,7 +945,7 @@ int main() {
 \end{frame}
 
 \begin{frame}{Minimum/Maximum Algorithms}
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\small\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{r X}
 \href{https://en.cppreference.com/w/cpp/algorithm/max}{\lstinline{max}} &
   returns the greater of the given values\\
@@ -956,7 +965,7 @@ int main() {
 \end{frame}
 
 \begin{frame}{Set Algorithms (on Sorted Ranges)}
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\small\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{r X}
 \href{https://en.cppreference.com/w/cpp/algorithm/includes}{\lstinline{includes}} &
   returns true if one sequence is a subsequence of another\\
@@ -1020,7 +1029,7 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile]{Example: The \texttt{copy()} Algorithm}
-
+\small
 With insert operators, you can modify the behavior of the copy algorithm.\\[0.5em]
 
 \begin{tabular}{l l}
@@ -1030,26 +1039,27 @@ With insert operators, you can modify the behavior of the copy algorithm.\\[0.5e
 \end{tabular}\\[1em]
 
 \begin{lstlisting}[basicstyle=\small\ttfamily]
-std::list<int> l1{ 1, 3, 5, 7, 9 }, l2{ 2, 4, 6, 8, 10 };
+std::list<int> l1{ 1, 3, 5, 7, 9 };
+std::list<int> l2{ 2, 4, 6, 8, 10 };
 \end{lstlisting}
 
-\begin{lstlisting}[basicstyle=\small\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 std::copy(l1.begin(), l1.end(), std::back_inserter(l2));
 // l2 = { 2, 4, 6, 8, 10, 1, 3, 5, 7, 9  }
 \end{lstlisting}
 
-\begin{lstlisting}[basicstyle=\small\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 std::copy(l1.begin(), l1.end(), std::front_inserter(l2));
 // l2 = { 9, 7, 5, 3, 1, 2, 4, 6, 8, 10 }
 \end{lstlisting}
 
-\begin{lstlisting}[basicstyle=\small\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 std::copy(l1.begin(), l1.end(), std::inserter(l2, l2.begin()));
 // l2 = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Example: The \texttt{copy()} Algorithm with Output Iterator}
+\begin{frame}[fragile]{Example: \texttt{copy()} with Output Iterator}
 
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 #include <iostream>
@@ -1160,16 +1170,16 @@ Built-in heapsort.\\
 
 \section{Function Objects}
 \begin{frame}[fragile]{Function Objects}
-
+\small
 \begin{itemize}
 \item
   Some algorithms like sort, merge, and accumulate can take a function object as an argument.
 \item
-  A function object is an object of a template class that has a single member function: the overloaded \lstinline{operator()}.
+  A function object is an instance of a class that overloads \lstinline{operator()}.
 \item
   It is also possible to use user-written functions in place of predefined function objects.
 \end{itemize}
-
+\small
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 #include <list>
 #include <functional>
@@ -1184,7 +1194,7 @@ In C++, Function Objects are often called \emph{functors}, but that term has alt
 
 
 \begin{frame}[fragile]{Function Objects}
-
+\small
 The accumulate algorithm accumulates values over a range (e.g., the sum).
 
 \begin{lstlisting}[basicstyle=\small\ttfamily]
