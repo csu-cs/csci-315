@@ -160,15 +160,15 @@ the search key is their social security numbers (SSN).
 
 - The modulo is the remainder after integer division.
 
-- The modulo is the remainder. $$\begin{aligned}
-	  8 \bmod{5} & = 3\  
-	  9 \bmod{5} & = 4\  
-	  10 \bmod{5} & = 0\  
-	  15 \bmod{5} & = 0
-	
+- The modulo is the remainder.  
+  $$\begin{aligned}
+  8 \bmod{5} &= 3\\
+  9 \bmod{5} &= 4\\
+  10 \bmod{5} &= 0\\
+  15 \bmod{5} &= 0
   \end{aligned}$$
 
-- For keys $\bmod{} M$, multiples of $M$ give the same result, $0$.
+- For keys $\bmod{M}$, multiples of $M$ give the same result, $0$.
 
   - But multiples of other numbers do not give the same result.
 
