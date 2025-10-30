@@ -119,7 +119,8 @@ Insert, Delete, and Search/Find efficiently.
 \end{frame}
 
 \begin{frame}{Array Approach --- Example}
-An application stores information about US citizens where \\the search key is their social security numbers (SSN).
+An application searches for US citizens by\\
+their social security numbers (SSN).
 \begin{itemize}
 \item<2->
   You can use an array to hold references to all persons.
@@ -141,99 +142,251 @@ An application stores information about US citizens where \\the search key is th
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Array Approach --- Example}
-\begin{itemize}
-\item
+\begin{frame}{Array Approach}
   Very useful data structure.
   \begin{itemize}
   \item
     Good for storing and retrieving key-value pairs.
   \item
+    Stores the keys in order.
+  \item
     Not good for iterating through a list of items.
+  \item
+    A lot of waisted space.
   \end{itemize}
-\item
-  Example application:\\
-  Storing objects according to ID numbers.
+\end{frame}
+
+\begin{frame}{Hash Tables}
   \begin{itemize}
-    \item
-      When the ID numbers are widely spread out.
-    \item
-      When you don't need to access items in ID order.
+  \item
+    Hash Tables solve these problems by using a much smaller array and mapping keys with a hash function.
+  \item
+    Let universe of keys \(U\) and an array of size $m$. A hash function $h$ is a function from $U$ to \(0\ldots{}m\), that is:\\
+    \(h : U \to 0\ldots{}m\)
   \end{itemize}
-\end{itemize}
+  % \begin{figure}
+  %   \centering
+  %   \pgfdeclarelayer{background layer}
+  %   \pgfdeclarelayer{foreground layer}
+  %   \pgfsetlayers{background layer,main,foreground layer}
+    
+  %   \begin{tikzpicture}
+  %     \newcommand\elName[1]{el####1}
+
+  %     \foreach \n in {0,1,2,...,6}
+  %     {
+  %         \node[draw, minimum width=10mm, very thick, fill=CSUcyan, text=black, inner sep=0, minimum height=0.5cm] (el\n) at (0,3-\n*1/2) {\small\n};
+  %     }
+
+  %     \filldraw[color=white, fill=CSUcyan, very thick](-5,1.75) circle (1.5);
+  %     \node[anchor=north] at (-5,1.75-1.5) {Universe of Keys (U)};
+
+  %     % Seed the random number generator for reproducibility
+  %     \pgfmathsetseed{57}
+
+  %     % Loop to create 10 small circles
+  %     \foreach \i in {1,...,8} {
+  %       % Generate random angle and radius for polar coordinates within the large circle
+  %       \pgfmathsetmacro{\angle}{random(0,360)}
+  %       \pgfmathsetmacro{\radius}{sqrt(random()) * 1.25} % scale radius to stay within the larger circle
+
+  %       % Convert polar to Cartesian coordinates
+  %       \pgfmathsetmacro{\x}{\radius * cos(\angle) - 5}
+  %       \pgfmathsetmacro{\y}{\radius * sin(\angle) + 1.75}
+  %       \pgfmathsetmacro{\elNum}{int(mod(\i, 6))}
+        
+
+  %       % Draw the small circle and label it
+  %       \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
+        
+  %       \draw[->, very thick] (\x, \y) to (el\elNum);
+        
+  %       \begin{pgfonlayer}{foreground layer}
+  %         \node[text=black] at (\x-0.1,\y-0.1) {\small\(k_{\i}\)}; % Label the circle
+  %       \end{pgfonlayer}
+
+  %       %\node (el\elNum) {el{\elNum}};
+  %     }
+
+  %     % One extra circle at a specific spot.
+  %     \pgfmathsetmacro{\x}{0.8 - 5}
+  %     \pgfmathsetmacro{\y}{-0.9 + 1.75}
+  %     \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
+  %     \draw[->, very thick] (\x, \y) to (el6);
+  %     \begin{pgfonlayer}{foreground layer}
+  %       \node[text=black] at (\x-0.1,\y-0.1) {\small\(k_{10}\)}; % Label the circle
+  %     \end{pgfonlayer}
+
+  %     \node[anchor=west] at (el0.east) {\small \(h(k_6) = 0\)};
+  %     \node[anchor=west] at (el1.east) {\small \(h(k_1) = h(k_7) = 1\)};
+  %     \node[anchor=west] at (el2.east) {\small \(h(k_2) = h(k_8) = 2\)};
+  %     \node[anchor=west] at (el3.east) {\small \(h(k_3) = h(k_9) = 3\)};
+  %     \node[anchor=west] at (el4.east) {\small \(h(k_4) = 4\)};
+  %     \node[anchor=west] at (el5.east) {\small \(h(k_5) = 5\)};
+  %     \node[anchor=west] at (el6.east) {\small \(h(k_{10}) = 6\)};
+  %   \end{tikzpicture}
+  % \end{figure}
 \end{frame}
 
 \begin{frame}{A Conceptual View of Hash Tables}
-  \begin{figure}
-  \centering
-    \begin{tikzpicture}[node of array/.append style={minimum height=8mm,fill=CSUgold}]
-      \ArrayLabel{Table}
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \node[block] (firstEl) [fit=(val)]{};
+  %\centering
+  
+    \begin{tikzpicture}[
+        node of array/.append style={
+          minimum height=9.5mm,
+          minimum width=4.15cm,
+          fill=none,
+          thick,
+          rounded corners=2pt,
+        },
+        chain element/.style = {
+          fill=CSUcyan,
+          draw=white,
+          text height=1.25ex,
+          text depth=.25ex,
+          text=black,
+          minimum width=1.9em
+        }
+      ]
+      \pgfdeclarelayer{background layer}
+      \pgfdeclarelayer{foreground layer}
+      \pgfsetlayers{background layer,main,foreground layer}
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm, yshift=8mm] prev.east) {key = 1};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val5};
-      \begin{scope}[on background layer]
-        \node[chain bucket, fit=(key) (valval)] (bucket) {};
-        % \node[chain bucket] (bucket) [fit=(key) (valval)]{};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
-      \node[anchor=south] at(bucket.north) {Buckets};
+      \ArrayLabel{Hash Table Buckets}
+      \foreach \i in {0,...,6} {
+        \ArrayNodeVertical{}
+      }
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 2};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val4};
-      \begin{scope}[on background layer]
-        \node[chain bucket,fit=(key) (valval)] (bucket) {};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
+      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
+        \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {$k_{\k}$};
+        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\k}$};
+      }
 
+      \foreach \i [count=\k from 0] in {7,8} {
+        \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {$k_{\i}$};
+        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\i}$};
+      }
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
+      % \draw[thick, fill=MyPurple,name=hashFunction]
+      %   ([xshift=-3cm]elAt0.north west) rectangle ([xshift=-1.5cm]elAt6.south west);
+      \node[draw, thick, fill=MyPurple,
+        fit=(elAt0.north west)(elAt6.south west),
+        xshift=-2.5cm,
+        minimum width=1.5cm,
+        inner sep=0pt,
+        outer sep=0pt, 
+        name=hashFunction] {};
+      \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function ($h$)};
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 4};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val3};
+      % % Curly Braces
+      % \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
 
-      \node[chain element, anchor=west, name=key2] at ([xshift=5pt] valval.east) {key = 28};
-      \node[chain element, anchor=west, name=valval2] at ([xshift=-1pt] key2.east) {val2};
+      % Keys in Universe
+      \node[circle, minimum size=4.2cm, draw=white, fill=CSUgold, thick, name=universe] at (-8.25,-3.75) {};
+      \node[anchor=south, align=center, inner sep=0] at (universe.north) {Universe of Keys ($U$)};
 
-      \begin{scope}[on background layer]
-        \node[chain bucket,fit=(key) (valval) (key2) (valval2)] (bucket) {};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
+      % Seed the random number generator for reproducibility
+      \pgfmathsetseed{57}
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
+      % Loop to create 10 small circles
+      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3,7,8} {
+        % Generate random angle and radius for polar coordinates within the large circle
+        \pgfmathsetmacro{\angle}{random(0,360)}
+        \pgfmathsetmacro{\radius}{sqrt(random()) * 1.8} % scale radius to stay within the larger circle
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
+        % Convert polar to Cartesian coordinates
+        \pgfmathsetmacro{\x}{\radius * cos(\angle) - 8.25}
+        \pgfmathsetmacro{\y}{\radius * sin(\angle) -3.5}
+        \pgfmathsetmacro{\elNum}{int(mod(\i, 7))}
+        
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 15};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val1};
-      \begin{scope}[on background layer]
-        \node[chain bucket,fit=(key) (valval)] (bucket) {};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
+        % Draw the small circle and label it
+        \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
+        
+        \draw[-stealth, very thick] (\x, \y) to (index\elNum);
+        
+        % Label the circle
+        \begin{pgfonlayer}{foreground layer}
+          \node[text=black, anchor=north east, inner sep=0, outer sep=0] at (\x,\y) {\(k_{\k}\)}; 
+        \end{pgfonlayer}
 
-
-      \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
-
+        %\node (el\elNum) {el{\elNum}};
+      }
     \end{tikzpicture}
-  \end{figure}
 \end{frame}
+
+
+% \begin{frame}{A Conceptual View of Hash Tables}
+%   \begin{figure}
+%     \centering
+%     \begin{tikzpicture}[node of array/.append style={minimum height=8mm,fill=CSUgold}]
+%       \ArrayLabel{Table}
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+%       \node[block] (firstEl) [fit=(val)]{};
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+%       \coordinate (ptr) at (val);
+%       \node[chain element, anchor=west, name=key] at ([xshift=2cm, yshift=8mm] prev.east) {key = 1};
+%       \node[chain element, anchor=west, name=valval] at ([xshift=-0.8pt] key.east) {val5};
+%       \begin{scope}[on background layer]
+%         \node[chain bucket, fit=(key) (valval)] (bucket) {};
+%         % \node[chain bucket] (bucket) [fit=(key) (valval)]{};
+%       \end{scope}
+%       \draw[link] (ptr) -- (bucket);
+%       \node[anchor=south] at(bucket.north) {Buckets};
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+%       \coordinate (ptr) at (val);
+%       \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 2};
+%       \node[chain element, anchor=west, name=valval] at ([xshift=-0.8pt] key.east) {val4};
+%       \begin{scope}[on background layer]
+%         \node[chain bucket,fit=(key) (valval)] (bucket) {};
+%       \end{scope}
+%       \draw[link] (ptr) -- (bucket);
+
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+%       \coordinate (ptr) at (val);
+%       \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 4};
+%       \node[chain element, anchor=west, name=valval] at ([xshift=-0.8pt] key.east) {val3};
+
+%       \node[chain element, anchor=west, name=key2] at ([xshift=5pt] valval.east) {key = 28};
+%       \node[chain element, anchor=west, name=valval2] at ([xshift=-0.8pt] key2.east) {val2};
+
+%       \begin{scope}[on background layer]
+%         \node[chain bucket,fit=(key) (valval) (key2) (valval2)] (bucket) {};
+%       \end{scope}
+%       \draw[link] (ptr) -- (bucket);
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+
+%       \ArrayNodeVertical{}
+%       \fill (val) circle(2pt);
+%       \coordinate (ptr) at (val);
+%       \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 15};
+%       \node[chain element, anchor=west, name=valval] at ([xshift=-0.8pt] key.east) {val1};
+%       \begin{scope}[on background layer]
+%         \node[chain bucket,fit=(key) (valval)] (bucket) {};
+%       \end{scope}
+%       \draw[link] (ptr) -- (bucket);
+
+
+%       \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
+
+%     \end{tikzpicture}
+%   \end{figure}
+% \end{frame}
 
 % \begin{frame}{Hash Tables}
 % \begin{itemize}
@@ -249,79 +402,7 @@ An application stores information about US citizens where \\the search key is th
 % \end{figure}
 % \end{frame}
 
-\begin{frame}{Hash Tables}
-  \begin{itemize}
-  \item
-    Hash Tables solve these problems by using a much smaller array and mapping keys with a hash function.
-  \item
-    Let universe of keys \(U\) and an array of size $m$. A hash function h is a function from $U$ to $0\ldots{}m$, that is:\\
-    $h : U \to 0\ldots{}m$
-  \end{itemize}
-  \begin{figure}
-    \centering
-    \pgfdeclarelayer{background layer}
-    \pgfdeclarelayer{foreground layer}
-    \pgfsetlayers{background layer,main,foreground layer}
-    
-    \begin{tikzpicture}
-      \newcommand\elName[1]{el####1}
 
-      \foreach \n in {0,1,2,...,6}
-      {
-          \node[draw, minimum width=10mm, very thick, fill=CSUcyan, text=black, inner sep=0, minimum height=0.5cm] (el\n) at (0,3-\n*1/2) {\small\n};
-      }
-
-      \filldraw[color=white, fill=CSUcyan, very thick](-5,1.75) circle (1.5);
-      \node[anchor=north] at (-5,1.75-1.5) {Universe of Keys (U)};
-
-      % Seed the random number generator for reproducibility
-      \pgfmathsetseed{57}
-
-      
-
-      % Loop to create 10 small circles
-      \foreach \i in {1,...,8} {
-        % Generate random angle and radius for polar coordinates within the large circle
-        \pgfmathsetmacro{\angle}{random(0,360)}
-        \pgfmathsetmacro{\radius}{sqrt(random()) * 1.25} % scale radius to stay within the larger circle
-
-        % Convert polar to Cartesian coordinates
-        \pgfmathsetmacro{\x}{\radius * cos(\angle) - 5}
-        \pgfmathsetmacro{\y}{\radius * sin(\angle) + 1.75}
-        \pgfmathsetmacro{\elNum}{int(mod(\i, 6))}
-        
-
-        % Draw the small circle and label it
-        \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
-        
-        \draw[->, very thick] (\x, \y) to (el\elNum);
-        
-        \begin{pgfonlayer}{foreground layer}
-          \node[text=black] at (\x-0.1,\y-0.1) {\small\(k_{\i}\)}; % Label the circle
-        \end{pgfonlayer}
-
-        %\node (el\elNum) {el{\elNum}};
-      }
-
-      % One extra circle at a specific spot.
-      \pgfmathsetmacro{\x}{0.8 - 5}
-      \pgfmathsetmacro{\y}{-0.9 + 1.75}
-      \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
-      \draw[->, very thick] (\x, \y) to (el6);
-      \begin{pgfonlayer}{foreground layer}
-        \node[text=black] at (\x-0.1,\y-0.1) {\small\(k_{10}\)}; % Label the circle
-      \end{pgfonlayer}
-
-      \node[anchor=west] at (el0.east) {\small \(h(k_6) = 0\)};
-      \node[anchor=west] at (el1.east) {\small \(h(k_1) = h(k_7) = 1\)};
-      \node[anchor=west] at (el2.east) {\small \(h(k_2) = h(k_8) = 2\)};
-      \node[anchor=west] at (el3.east) {\small \(h(k_3) = h(k_9) = 3\)};
-      \node[anchor=west] at (el4.east) {\small \(h(k_4) = 4\)};
-      \node[anchor=west] at (el5.east) {\small \(h(k_5) = 5\)};
-      \node[anchor=west] at (el6.east) {\small \(h(k_{10}) = 6\)};
-    \end{tikzpicture}
-  \end{figure}
-\end{frame}
 
   
 \section{Hashing}
@@ -329,7 +410,7 @@ An application stores information about US citizens where \\the search key is th
 \begin{frame}{Hash Index/Value}
 \begin{itemize}
 \item<+->
-  A hash value or hash index is used to index the hash table (array).
+  A hash value or hash index is used to index the\\ hash table (array).
 \item<+->
   A hash function takes a key and returns a hash value/index.
   \begin{itemize}
@@ -465,11 +546,11 @@ with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence 
     \else % All but the last row
       \node[node of array, anchor=north, name=key] at ([yshift=1pt] prev.south) {\key};%
     \fi%
-    \node[node of array, right = of key.east, xshift=-1pt, name=valData, minimum width=1.5cm] {\value};%
+    \node[node of array, right = of key.east, xshift=-0.8pt, name=valData, minimum width=1.5cm] {\value};%
     \ifnum\i=1 % First element
       \node[, above = 2pt of valData] {value};%
     \fi%
-    \node[array index, anchor=east] at ([xshift=-1pt] key.west) {[\thearrayIndex]};%
+    \node[array index, anchor=east] at ([xshift=-0.8pt] key.west) {[\thearrayIndex]};%
     \node[block] (prev) [fit=(key)]{};%
     \stepcounter{arrayIndex}%
   }
@@ -585,9 +666,9 @@ Therefore, we have two goals:
 \begin{frame}{Choosing a Hash Function}
 \begin{itemize}[<+->]
   \item
-    Many programming languages (including Java) have built-in hash functions.
+    Many programming languages (including Java) \\have built-in hash functions.
   \item
-    The performance of the hash table depends on having a hash function that evenly distributes the keys.\\
+    The performance of the hash table depends on \\having a hash function that evenly distributes the keys.\\
     Uniform hashing is the ideal target.
   \item
     Choosing a good hash function requires accounting for the kind of data that will be used.
@@ -694,7 +775,7 @@ For example, assume:
 \begin{frame}{Dealing with Collisions}
 A problem arises when we have two keys that hash in the same array entry --- this is called a \emph{collision}.
 
-\onslide<2->{There are two ways to resolve collision:}
+\onslide<2->{Two ways to resolve collision are:}
 \begin{itemize}
   \item<3->
     \emph{Hashing with Chaining} (a.k.a., ``Separate Chaining''):\\

@@ -150,10 +150,11 @@
     \fi
   }
 
-  \node[array index, anchor=east] at ([xshift=-1pt] val.west) {\textcolor{white!75!CSUblue}{[}\thearrayIndex\textcolor{white!75!CSUblue}{]}};
+  \node[array index, anchor=east] (index\thearrayIndex) at ([xshift=-1pt] val.west) {\textcolor{white!75!CSUblue}{[}\thearrayIndex\textcolor{white!75!CSUblue}{]}};
   \node[block] (prev) [fit=(val)]{};
   \node[block] (\detokenize{el#2}) [fit=(val)]{};
   % \node[block] (el#2) [fit=(val)]{};
+  \node[block] (elAt\thearrayIndex) [fit=(val)]{}; % label element by index
   \coordinate (valPtr) at (val);
   \stepcounter{arrayIndex}
 }
