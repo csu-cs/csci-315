@@ -2,13 +2,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="274.174" height="166.806" viewBox="0 0 219.339 133.445">
 	<style>
 	.themed-fill {
-		fill: white;
+		fill: black;
 	}
 	.themed-stroke {
-		stroke: white;
+		stroke: black;
 	}
 	.themed-braces {
-		fill: rgb(75%, 78.921509%, 83.332825%)
+		fill: rgb(25%, 21.078491%, 16.667175%)
 	}
 	</style>
 <defs>
