@@ -14,6 +14,10 @@ Chapter 5 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 Map (dictionary) is a relation between a set of keys  
 and set of values.
 
+![Mapping keys to values](/images/hash-tables/maping-keys-values.svg "Mapping keys to values"){.light-only style="max-width: 430px"}
+
+![Mapping keys to values](/images/hash-tables/maping-keys-values-dark.svg "Mapping keys to values"){.dark-only style="max-width: 430px"}
+
 ### Implementing Dynamic Maps/Dictionaries
 
 - We want a data structure in which finds/searches  
@@ -207,6 +211,11 @@ Ideally, `hash(key)` has two properties:
 	cause lots of collisions depending on the nationality of the
 	population.
 
+![Distribution of the people’s surname initial letter according to the 2010 US Census.](/images/hash-tables/first-letter-of-last-name-distribution.svg "Distribution of the people’s surname initial letter according to the 2010 US Census."){.light-only}
+
+
+![Distribution of the people’s surname initial letter according to the 2010 US Census.](/images/hash-tables/first-letter-of-last-name-distribution-dark.svg "Distribution of the people’s surname initial letter according to the 2010 US Census."){.dark-only}
+
 ### Choosing a Hash Function
 
 Some hashing methods that convert a hash code, $f(v)$,  
@@ -287,9 +296,16 @@ Two ways to resolve collision are:
   filled table entry, systematically examine other table entries until
   an empty entry is found for the new key.
 
-## Chaining
+## Hashing with Chaining
 
-### Hashing with Chaining
+**Problem**: Collisions (e.g., the keys 34 and 54 both hash to 4 for a table with 5 buckets).
+
+**Solution**: Place keys that hash in the same hash-table
+entry in the same ***chain*** (linked list) or ***bucket*** (array).
+
+![Example hash table implemented via chaining.](/images/hash-tables/chaining.svg "Example hash table implemented via chaining."){.light-only}
+
+![Example hash table implemented via chaining.](/images/hash-tables/chaining-dark.svg "Example hash table implemented via chaining."){.dark-only}
 
 ## Performance of Hashing with Chaining
 
