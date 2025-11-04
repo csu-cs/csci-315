@@ -3,10 +3,21 @@ Project 3 and Hash Tables with Open Addressing
 
 Chapter 5 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
+### Project 3
+
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/E1b-ZWzrChI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/HWznz-PfyVk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
+### Lecture Video on Open Addressing
+
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/g3ivPTWl-HE?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
+<script setup>
+import openAddressingDiagram from '/images/hash-tables/open_addressing_example.svg'
+</script>
 
 ## Review
 
@@ -74,7 +85,7 @@ There are two ways to resolve collision:
 
 ## Hash Tables with Open Addressing
 
-Insert where the key is  
+<ProgressiveDiagram :src="openAddressingDiagram" />
 
 - So far, we have studied hashing with chaining, using a list to store
   the items that hash to the same location.

@@ -260,7 +260,7 @@ For example, assume:
 |       4       |   7   |
 |       5       |   7   |
 |       6       |   7   |
-|    (blank)    |       |
+|               |       |
 |  Grand Total  |  49   |
 
 ### Choosing Hash Function
