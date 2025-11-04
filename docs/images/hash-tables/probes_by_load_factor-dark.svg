@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-  width="2043.7323"
-  height="1406.7812"
+  width="2129.7323"
+  height="1492.7812"
+  viewBox="-86 0 2129.7323 1492.7812"
   xml:space="preserve"
   overflow="hidden"
   version="1.1"
@@ -12,34 +13,15 @@
   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview2169"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     showgrid="false"
-     inkscape:zoom="0.94791017"
-     inkscape:cx="1626.7364"
-     inkscape:cy="649.85061"
-     inkscape:window-width="3840"
-     inkscape:window-height="2054"
-     inkscape:window-x="2293"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g2165" />
     <style>
       .themed-fill {
-        fill: white;
+        fill: rgb(223, 223, 214);
       }
       .themed-stroke {
-        stroke: white;
+        stroke: rgb(223, 223, 214);
       }
       .stroke-secondary {
-        stroke: #00ffff;
+        stroke: rgb(94, 182, 205);
       }
       .stroke-tertiary {
         stroke: #ff00ff;
@@ -49,6 +31,7 @@
       }
       text {
         font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        fill: rgb(223, 223, 214);
       }
     </style>
   <defs id="defs5">
@@ -60,6 +43,9 @@
          height="1571"
          id="rect2" /></clipPath>
   </defs>
+  <text transform="translate(-25, 685) rotate(-90)" text-anchor="middle" dominant-baseline="text-bottom" style="font-size: 60pt;">Average # of Probes</text>
+  <text transform="translate(1060.0885, 1491.75)" text-anchor="middle" dominant-baseline="text-bottom" style="font-size: 60pt;">Load Factor</text>
+
     <g clip-path="url(#clip0)"
      transform="translate(-626.4115,-340)"
      id="g2165"><text

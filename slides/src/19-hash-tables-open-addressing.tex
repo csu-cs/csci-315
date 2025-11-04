@@ -57,10 +57,10 @@
 Map (dictionary) is a relation between a set of keys\\
 and set of values.
 
-\begin{figure}
+%\begin{figure}
 \centering
 \includegraphics[width=0.667\textwidth]{maping-keys-values}
-\end{figure}
+%\end{figure}
 \end{frame}
 
 
@@ -89,94 +89,110 @@ and set of values.
 \end{frame}
 
 \begin{frame}{A Conceptual View of Hash Tables}
-  \begin{figure}
-  \centering
-    \begin{tikzpicture}[node of array/.append style={minimum height=8mm,fill=CSUgold}]
-      \ArrayLabel{Table}
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \node[block] (firstEl) [fit=(val)]{};
+  %\centering
+  
+    \begin{tikzpicture}[
+        node of array/.append style={
+          minimum height=9.5mm,
+          minimum width=4.15cm,
+          fill=none,
+          thick,
+          rounded corners=2pt,
+        },
+        chain element/.style = {
+          fill=CSUcyan,
+          draw=white,
+          text height=1.25ex,
+          text depth=.25ex,
+          text=black,
+          minimum width=1.9em
+        }
+      ]
+      \pgfdeclarelayer{background layer}
+      \pgfdeclarelayer{foreground layer}
+      \pgfsetlayers{background layer,main,foreground layer}
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm, yshift=8mm] prev.east) {key = 1};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val5};
-      \begin{scope}[on background layer]
-        \node[chain bucket, fit=(key) (valval)] (bucket) {};
-        % \node[chain bucket] (bucket) [fit=(key) (valval)]{};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
-      \node[anchor=south] at(bucket.north) {Buckets};
+      \ArrayLabel{Hash Table Buckets}
+      \foreach \i in {0,...,6} {
+        \ArrayNodeVertical{}
+      }
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 2};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val4};
-      \begin{scope}[on background layer]
-        \node[chain bucket,fit=(key) (valval)] (bucket) {};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
+      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
+        \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {$k_{\k}$};
+        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\k}$};
+      }
 
+      \foreach \i [count=\k from 0] in {7,8} {
+        \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {$k_{\i}$};
+        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\i}$};
+      }
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
+      % \draw[thick, fill=MyPurple,name=hashFunction]
+      %   ([xshift=-3cm]elAt0.north west) rectangle ([xshift=-1.5cm]elAt6.south west);
+      \node[draw, thick, fill=MyPurple,
+        fit=(elAt0.north west)(elAt6.south west),
+        xshift=-2.5cm,
+        minimum width=1.5cm,
+        inner sep=0pt,
+        outer sep=0pt, 
+        name=hashFunction] {};
+      \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function ($h$)};
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 4};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val3};
+      % % Curly Braces
+      % \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
 
-      \node[chain element, anchor=west, name=key2] at ([xshift=5pt] valval.east) {key = 28};
-      \node[chain element, anchor=west, name=valval2] at ([xshift=-1pt] key2.east) {val2};
+      % Keys in Universe
+      \node[circle, minimum size=4.2cm, draw=white, fill=CSUgold, thick, name=universe] at (-8.25,-3.75) {};
+      \node[anchor=south, align=center, inner sep=0] at (universe.north) {Universe of Keys ($U$)};
 
-      \begin{scope}[on background layer]
-        \node[chain bucket,fit=(key) (valval) (key2) (valval2)] (bucket) {};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
+      % Seed the random number generator for reproducibility
+      \pgfmathsetseed{57}
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
+      % Loop to create 10 small circles
+      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3,7,8} {
+        % Generate random angle and radius for polar coordinates within the large circle
+        \pgfmathsetmacro{\angle}{random(0,360)}
+        \pgfmathsetmacro{\radius}{sqrt(random()) * 1.8} % scale radius to stay within the larger circle
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
+        % Convert polar to Cartesian coordinates
+        \pgfmathsetmacro{\x}{\radius * cos(\angle) - 8.25}
+        \pgfmathsetmacro{\y}{\radius * sin(\angle) -3.5}
+        \pgfmathsetmacro{\elNum}{int(mod(\i, 7))}
+        
 
-      \ArrayNodeVertical{}
-      \fill (val) circle(2pt);
-      \coordinate (ptr) at (val);
-      \node[chain element, anchor=west, name=key] at ([xshift=2cm] prev.east) {key = 15};
-      \node[chain element, anchor=west, name=valval] at ([xshift=-1pt] key.east) {val1};
-      \begin{scope}[on background layer]
-        \node[chain bucket,fit=(key) (valval)] (bucket) {};
-      \end{scope}
-      \draw[link] (ptr) -- (bucket);
+        % Draw the small circle and label it
+        \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
+        
+        \draw[-stealth, very thick] (\x, \y) to (index\elNum);
+        
+        % Label the circle
+        \begin{pgfonlayer}{foreground layer}
+          \node[text=black, anchor=north east, inner sep=0, outer sep=0] at (\x,\y) {\(k_{\k}\)}; 
+        \end{pgfonlayer}
 
-
-      \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
-
+        %\node (el\elNum) {el{\elNum}};
+      }
     \end{tikzpicture}
-  \end{figure}
 \end{frame}
 
 \begin{frame}{Generating Hash Codes}
-  \begin{itemize}
-    \item
-      Note that the key may not be an integer that can neatly be used for hashing.\\
-      For example,
-      \begin{itemize}
-        \item Floating-point numbers: (e.g., \texttt{3.14159}, \texttt{23543.43}, \texttt{3.997E-8})
-        \item String values: (e.g., \texttt{"Alice"}, \texttt{"Dear diary"}, \texttt{":-)"})
-        \item Objects of custom classes.
-      \end{itemize}
-    \item
-      We need to make a hash-code function for each type we want to use as a key in our hash table.
-  \end{itemize}
+\begin{itemize}
+  \item
+    A key may not be an integer to directly used for \\hashing.\\
+    For example,
+    \begin{itemize}
+      \item Floating-point numbers: (e.g., 3.14159, 23543.43, 3.997E-8)
+      \item String values: (e.g., \texttt{"Alice"}, \texttt{"Dear diary"}, \texttt{":-)"})
+      \item Objects of custom classes.
+    \end{itemize}
+  \item
+    We need to make a hash-code function for each type we want to use as a key in our hash table.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Dealing with Collisions}
-  A problem arises when we have two keys that hash in the same array entry --- this is called a \emph{collision}.
+  A problem arises when we have two keys that hash in \\
+  the same array entry --- this is called a \emph{collision}.
   
   \onslide<2->{There are two ways to resolve collision:}
   \begin{itemize}
@@ -193,31 +209,6 @@ and set of values.
 
 \begin{frame}{Hash Tables with Open Addressing}
   \centering{}
-  %\centerline{%
-    Insert where the key is
-    \alt<-2>{%
-      1.%
-    }{%
-      \alt<-4>{%
-        2.%
-      }{%
-        \alt<-6>{%
-          15.%
-        }{%
-          \alt<-8>{%
-            28.%
-          }{
-            \alt<-10>{%
-              4.%
-            }{%
-              5.%
-            }%
-          }%
-        }%
-      }%
-    }\\%
-  %}
-  %
   \begin{tikzpicture}[%
     node of array/.append style={%
       minimum height=8mm,
@@ -227,81 +218,106 @@ and set of values.
       %fill=CSUslate,
       %text=white!50!CSUslate
     },%
-    subcomponent of array el/.append style={minimum width=18mm, node distance=-1.4pt},%
+    subcomponent of array el/.append style={minimum width=16mm, node distance=-1.4pt},%
   ]%
     \ArrayLabel{}
     
+    \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
+      \ArrayNodeVertical{?,?}
+    \end{scope}
+    \node[anchor=south, text depth=.2ex, name=keyCol] at ([yshift=-1pt] val.north) {key};
+    \node[anchor=south, text depth=.2ex, name=keyCol] at ([yshift=-1pt] lastElValue.north) {value};
+  
+    \alt<1>{
       \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-        \ArrayNodeVertical{?,?}
+        \ArrayNodeVertical[]{?,?}
       \end{scope}
-      \node[anchor=south, text depth=.2ex, name=keyCol] at ([yshift=-1pt] val.north) {key};
-      \node[anchor=south, text depth=.2ex, name=keyCol] at ([yshift=-1pt] lastElValue.north) {value};
-    
-      \alt<1>{
-        \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-          \ArrayNodeVertical[]{?,?}
-        \end{scope}
-      }{
-        \ArrayNodeVertical[]{1,Obj1}
-      }
-      \onslide<2->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{1}};}
+    }{
+      \ArrayNodeVertical[]{1,$v_{1}$}
+    }
+    \onslide<2->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{1}};}
 
-      \alt<-3>{
-        \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-          \ArrayNodeVertical[]{?,?}
-        \end{scope}
-      }{
-        \ArrayNodeVertical[]{2,Obj2}
-      }
-      \onslide<4->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{2}};}
-
-      % Index 3
+    \alt<-3>{
       \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-        \ArrayNodeVertical{?,?}
+        \ArrayNodeVertical[]{?,?}
       \end{scope}
+    }{
+      \ArrayNodeVertical[]{2,$v_{2}$}
+    }
+    \onslide<4->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{2}};}
 
-      \node[rotate=90] at ([xshift=-1.5cm]val.south west) {hash index};
+    % Index 3
+    \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
+      \ArrayNodeVertical{?,?}
+    \end{scope}
 
-      % Index 4
-      \alt<-7>{
-        \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-          \ArrayNodeVertical[]{?,?}
-        \end{scope}
-      }{
-        \ArrayNodeVertical[]{28,Obj4}
-      }
-      \onslide<8->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{4}};}
+    \node[rotate=90] at ([xshift=-1.5cm]val.south west) {hash index};
 
-      % Index 5
-      \alt<-9>{
-        \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-          \ArrayNodeVertical[]{?,?}
-        \end{scope}
-      }{
-        \ArrayNodeVertical[]{4,Obj5}
-      }
-      \onslide<10->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{4}};}
+    % Index 4
+    \alt<-7>{
+      \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
+        \ArrayNodeVertical[]{?,?}
+      \end{scope}
+    }{
+      \ArrayNodeVertical[]{28,$v_{4}$}
+    }
+    \onslide<8->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{4}};}
 
-      % Index 6
-      \alt<-11>{
-        \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-          \ArrayNodeVertical[]{?,?}
-        \end{scope}
-      }{
-        \ArrayNodeVertical[]{5,Obj6}
-      }
-      \onslide<12->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{5}};}
+    % Index 5
+    \alt<-9>{
+      \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
+        \ArrayNodeVertical[]{?,?}
+      \end{scope}
+    }{
+      \ArrayNodeVertical[]{4,$v_{5}$}
+    }
+    \onslide<10->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{4}};}
 
-      % Index 7
-      \alt<-5>{
-        \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-          \ArrayNodeVertical[]{?,?}
-        \end{scope}
-      }{
-        \ArrayNodeVertical[]{15,Obj3}
-      }
-      \onslide<6->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{7}};}
-    
+    % Index 6
+    \alt<-11>{
+      \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
+        \ArrayNodeVertical[]{?,?}
+      \end{scope}
+    }{
+      \ArrayNodeVertical[]{5,$v_{6}$}
+    }
+    \onslide<12->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{5}};}
+
+    % Index 7
+    \alt<-5>{
+      \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
+        \ArrayNodeVertical[]{?,?}
+      \end{scope}
+    }{
+      \ArrayNodeVertical[]{15,$v_{3}$}
+    }
+    \onslide<6->{\node[name=bucketIndex, anchor=west, text depth=.1ex] at ([xshift=3pt]lastElValue.east) {index is \texttt{7}};}
+
+    % Add instructions (what to insert) at the top.
+    \node[anchor=south, inner sep=0] at (current bounding box.north) {
+        Insert where the key is
+        \alt<-2>{%
+          {1}.%
+        }{%
+          \alt<-4>{%
+            {2}.%
+          }{%
+            \alt<-6>{%
+              {15}.%
+            }{%
+              \alt<-8>{%
+                {28}.%
+              }{
+                \alt<-10>{%
+                  {4}.%
+                }{%
+                  {5}.%
+                }%
+              }%
+            }%
+          }%
+        }
+    };
   \end{tikzpicture}
 \end{frame}
 
@@ -542,7 +558,8 @@ bool insert(const Type &key) {
 \end{frame}
 
 \begin{frame}{Probes in Successful Search}
-\begin{figure}\centering
+%\begin{figure}
+\centering
 \begin{tabular}{rc}
     \rotatebox[origin=c]{90}{Average \# of Probes}
   &
@@ -551,11 +568,12 @@ bool insert(const Type &key) {
     }\\
   & Load Factor\\
 \end{tabular}
-\end{figure}
+%\end{figure}
 \end{frame}
 
 \begin{frame}{Probes in Unsuccessful Search}
-\begin{figure}\centering
+%\begin{figure}%
+\centering
 \begin{tabular}{rc}
     \rotatebox[origin=c]{90}{Average \# of Probes}
   &
@@ -564,13 +582,14 @@ bool insert(const Type &key) {
     }\\
   & Load Factor\\
 \end{tabular}
-\end{figure}
+%\end{figure}
 \end{frame}
 
 \begin{frame}{CPU Cache Misses Required for Look-Up}
 \begin{columns}
 \column{0.6\textwidth}
-\begin{figure}\centering
+%\begin{figure}
+\centering
 \begin{tabular}{rc}
     \rotatebox[origin=c]{90}{\small Average cache misses per lookup}
   &
@@ -579,7 +598,7 @@ bool insert(const Type &key) {
     }\\
   & {\small Load Factor}\\
 \end{tabular}
-\end{figure}
+%\end{figure}
 \column{0.4\textwidth}
 In large hash tables that far exceed the CPU cache size, linear probing performs better due to better locality of reference. However, linear probing performs poorly as the table gets full.
 \end{columns}
@@ -604,24 +623,24 @@ In large hash tables that far exceed the CPU cache size, linear probing performs
 ]%
   \ArrayLabel{}
   
-  \ArrayNodeVertical{0,\textellipsis}
+  \ArrayNodeVertical{0, $v_1$}
   \node[block] (firstArrayEl) [fit=(val) (lastElValue)]{};
   \node (Above) [above=of $(val)!0.5!(lastElValue)$] {\alt<-2>{insert(7)}{\alt<-4>{delete(2)}{find(7)}}};
   % \node[anchor=south, text depth=.2ex, name=keyCol] at ([yshift=-1pt] val.north) {key};
   % \node[anchor=south, text depth=.2ex, name=keyCol] at ([yshift=-1pt] lastElValue.north) {value};
 
 
-  \ArrayNodeVertical{1,\textellipsis}
+  \ArrayNodeVertical{1, $v_2$}
   \alt<-3>{
-    \ArrayNodeVertical{2,\textellipsis}
+    \ArrayNodeVertical{2, $v_1$}
   }{
     \alt<-7>{
       \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
-        \ArrayNodeVertical{?,?}
+        \ArrayNodeVertical{2, $v_3$}
       \end{scope}
     }{
       \begin{scope}[node of array/.append style = {fill=MyPurple, text=white!50!MyPurple}]
-        \ArrayNodeVertical{2,\textellipsis}
+        \ArrayNodeVertical{2, $v_3$}
       \end{scope}
     }
   }
@@ -634,7 +653,7 @@ In large hash tables that far exceed the CPU cache size, linear probing performs
     \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
       \ArrayNodeVertical{?,?}
     \end{scope}
-  }{\ArrayNodeVertical{7,\textellipsis}}
+  }{\ArrayNodeVertical{7, $v_4$}}
 
   \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]
     \ArrayNodeVertical{?,?}
@@ -647,8 +666,9 @@ In large hash tables that far exceed the CPU cache size, linear probing performs
     \node (RightNote) [right=of $(firstArrayEl.east)!0.5!(lastElValue.east)$, align=left, anchor=north west] {Must use lazy deletion!\\[0.5em]
     On insertion, treat a (lazily)\\ deleted item as an empty slot.};
   }
-\end{tikzpicture}}%
-\onslide<8>{}
+  \onslide<8>{}
+\end{tikzpicture}%
+}%
 % \column{0.5\textwidth}
 % \onslide<7->{%
 % Must use lazy deletion!
