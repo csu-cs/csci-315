@@ -3,6 +3,7 @@
 \usepackage{csu-theme}
 \usepackage{binary-trees}
 \usepackage{arrays}
+\usepackage{tabularx}
 
 \title{\Huge{} Priority Queues}
 \subtitle{CSCI 315: Data Structure Analysis}
@@ -31,14 +32,14 @@
   \item
     A queue is first in, first out.
   \item
-    A priority queue is a \textit{highest-priority-first-out} container.
+    A priority queue is a \textit{highest-priority first-out} container.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Introduction}
   \begin{itemize}[<+->]
   \item
-    The ``highest-priority'' element is the first one removed.\\
+    The ``highest-priority'' element is removed first.\\
     Priority is determined from the elements' values,\\ usually largest to smallest or vice versa.
   \item
     The definition of ``largest'' is up to the programmer (for example, you might define it by implementing a \href{https://en.cppreference.com/w/cpp/named_req/Compare}{Compare} function object.)
@@ -54,26 +55,19 @@
 \end{frame}
 
 
-\setbeamercovered{transparent}
+% \setbeamercovered{transparent}
 \begin{frame}{A Priority Queue ADT}
 Here is one possible ADT\@:
-\begin{itemize}
-\item<2->
-  \lstinline{PriorityQueue()}: a constructor
-\item<3->
-  \lstinline{void add(const Type &val)}: inserts \texttt{val} into the queue
-\item<4->
-  \lstinline{Type& pop()}: removes and returns the highest-priority element
-\item<5->
-  \lstinline{const Type& top() const}: returns (but does not remove) the highest-priority element
-\item<6->
-  \lstinline{bool isEmpty() const}: returns true IFF empty
-\item<7->
-  \lstinline{unsigned int size() const}: returns the element count
-\item<8->
-  \lstinline{void clear()}: discards all elements
-
-\end{itemize}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}\color{codeVariable}\ttfamily}l >{\raggedright\arraybackslash} X}
+  \onslide<2->{{PriorityQueue{\color{white}()}} & a constructor} \onslide<3->{\\
+  {{\color{codeKeyword}void} add{\color{white}(}{\color{codeKeyword}const} Type {\color{white}\&}val{\color{white})}} & inserts \texttt{val} into the queue} \onslide<4->{\\
+  {Type{\color{white}\&} pop{\color{white}()}} & removes and returns the highest-priority element} \onslide<5->{\\
+  \texttt{{\color{codeKeyword}const} Type{\color{white}\&} top{\color{white}()} {\color{codeKeyword}const}} & returns (but does not remove) the highest-priority element} \onslide<6->{\\
+  {{\color{codeKeyword}bool} isEmpty{\color{white}()} {\color{codeKeyword}const}} & returns true IFF empty} \onslide<7->{\\
+  {{\color{codeKeyword}unsigned int} size{\color{white}()} {\color{codeKeyword}const}} & returns the element count} \onslide<8->{\\
+  {{\color{codeKeyword}void} clear{\color{white}()}} & discards all elements}
+\end{tabularx}
 \end{frame}
 
 \setbeamercovered{transparent}
@@ -218,13 +212,13 @@ Here is one possible ADT\@:
 \column{0.43\textwidth}
 \begin{itemize}
 \item
-  Left child of node $i$ is at $2i + 1$; right child is at $2i + 2$.\\[0.25em]
+  Left child of node \(i\) is at $2i + 1$; right child is at $2i + 2$.\\[0.25em]
   %\begin{itemize}
   %\item
     {\small If the result is larger than the last index, there is no such child.}
   %\end{itemize}
 \item
-  Parent of node $i$ is $\frac{1}{2}(i - 1)$, unless $i$ == $0$.
+  Parent of node \(i\) is $\frac{1}{2}(i - 1)$, unless \(i\) == $0$.
 \end{itemize}
 
 \column{0.25\textwidth}\centering
@@ -346,19 +340,19 @@ std::cout << "The max value is "  << v1.front() << '\n';
     \ArrayElLabel<-9mm>{v1.end()}
     \ArrayNode[none]{}
   \end{scope}
-  
+  \onslide<3>{}
 \end{tikzpicture}
 
 \column{0.35\textwidth}
-\onslide<4>{
+%\onslide<4>{
 \begin{forest}
   for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
-  [40, name=root
+  [\alt<-2>{20}{40}, name=root
     [30
       [25]
       [15]
     ]
-    [20, name=p2
+    [\alt<-2>{40}{20}, name=p2
       [50, name=leaf, phantom]{
         %{\draw[<->,dotted, very thick] (leaf) to[bend left] node[midway,left] {sift 1} (p2);}
       }
@@ -367,7 +361,9 @@ std::cout << "The max value is "  << v1.front() << '\n';
       %{\draw[<->,dotted, very thick] (p2) to[bend right] node[midway,right] {sift 2} (root);}
     }
   ]
-\end{forest}}\\\vspace{10mm}
+\end{forest}%
+%}%
+\\\vspace{10mm}
 \end{columns}
 \end{frame}
 
@@ -497,21 +493,22 @@ std::cout << "The maximum after pop is " << v1.front() << '\n';
 \end{tikzpicture}
 \column{0.35\textwidth}
 \alt<-2>{
-\begin{forest}
-  for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
-  [50, name=root
-    [30
-      [25]
-      [15]
+  \begin{forest}
+    for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
+    [50, name=root
+      [30
+        [25]
+        [15]
+      ]
+      [40
+        [20, name=leaf]{%
+          \only<2>{\draw[<->,dotted, very thick] (root) to[bend right=45] node[midway,right] {swap} (leaf);}%
+        }
+        [, phantom]
+      ]
     ]
-    [40
-      [20, name=leaf]{%
-        \only<2>{\draw[<->,dotted, very thick] (root) to[bend right=45] node[midway,right] {swap} (leaf);}%
-      }
-      [, phantom]
-    ]
-  ]
-\end{forest}}{
+  \end{forest} %
+}{
   \alt<-3>{
     \begin{forest}
       for tree={inner sep=2pt, minimum size=2em, s sep=5mm}
@@ -591,9 +588,9 @@ std::cout << "The maximum after pop is " << v1.front() << '\n';
 \begin{frame}{Considerations}
 \begin{itemize}[<+->]
 \item
-  A \emph{priority queue} is a data structure that is designed to return elements in order of priority.
+  A \emph{priority queue} is a data structure that is designed \\to return elements in order of priority.
 \item
-  Efficiency is usually measured as the sum of the time it takes to add and remove elements.
+  Efficiency is usually measured as the sum of the \\time it takes to add and remove elements.
 \item
   Simple implementations take $O(n)$ time.
 \item
