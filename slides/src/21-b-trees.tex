@@ -9,7 +9,7 @@
   default preamble={%
     for tree={%
       draw, % show border
-      edge=->, % show arrow to child
+      edge={-stealth, shorten >=1pt, shorten <=-1pt}, % show arrow to child
       edge=very thick, % edge weight
       very thick, % node border
       fill=CSUcyan, % node fill
@@ -41,7 +41,7 @@
 }
 
 \NewDocumentCommand{\BTreeSep}{}{%
-  {\color{white}\rule[-0.5em]{1.25pt}{1.75em}}%
+  {\color{fg}\rule[-0.5em]{1.25pt}{1.75em}}%
 }
 
 \NewDocumentCommand{\BTreeVal}{ sD<>{CSUcyan}m }{%
@@ -111,9 +111,9 @@
 \begin{frame}{Motivation for B-Trees}
 \begin{itemize}[<+->]
   \item
-    Suppose an \href{https://en.wikipedia.org/wiki/AVL_tree}{AVL tree} is used to store 20 million records.
+    Suppose an \href{https://en.wikipedia.org/wiki/AVL_tree}{AVL tree} is used to store 20 million \\records.
   \item
-    This very deep binary tree requires lots of different disk accesses;\\
+    This very deep binary tree requires lots of different \\disk accesses;\\
     \(\log_2{20,000,000} \approx 24\), so this takes about 0.2 seconds.
   \item
     We know we can't improve on the \(\log_2{n}\) lower bound on the search for a binary tree.
@@ -129,38 +129,35 @@
 \begin{frame}{Example B-Tree, Order-5 with 26 Elements}
   \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{order-5-b-tree-exampe}
+  \includegraphics[width=\textwidth]{order-5-b-tree-example}
   \caption{Note that all the leaves are at the same level.}
   \end{figure}
 \end{frame}
 
 \begin{frame}{Definition of a B-tree}
-\begin{itemize}
-  \item<+->
-    A B-tree of order $m$ is an $m$-way tree (i.e., a tree where each node may have up to $m$ children) in which:
+  A B-tree of order \(m\) is an \(m\)-way tree (i.e., a tree where \\each node may have up to \(m\) children) in which:\pause{}
+
     \begin{enumerate}
       \item<+->
         All leaves are on the same level.
       \item<+->
         The number of children of a non-leaf node is always one more than the number of keys.
       \item<+->
-        All keys of a node are sorted in increasing order. These keys partition the child keys as a search tree.
+        The keys of a node are sorted in increasing order. These keys partition the child keys as a search tree.
       \item<+->
-        All non-leaf nodes except the root have at least \(\left\lceil {m / 2} \right\rceil\) children.
+        The root is either a leaf node or has two to \(m\) children.
       \item<+->
-        The root is either a leaf node or has two to $m$ children.
+        Other non-leaf nodes have at least \(\left\lceil {m / 2} \right\rceil\) children.
       \item<+->
-        A node contains no more than $m - 1$ keys.
+        A node contains no more than \(m - 1\) keys.
     \end{enumerate}
-  \item<+->
-    The number $m$ should always be odd.
-\end{itemize}
+    \onslide<+->{The number \(m\) should always be odd.}
 \end{frame}
 
 \begin{frame}{Example B-Tree, Order-5 with 26 Elements}
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{order-5-b-tree-exampe}
+\includegraphics[width=\textwidth]{order-5-b-tree-example}
 \caption{Note that all the leaves are at the same level.}
 \end{figure}
 \end{frame}
@@ -177,18 +174,20 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
     \centering
     \begin{forest}
       [%
-        \temporal<3>{%
-          \BTreeNode{1}
+        \alt<-2>{%
+          \BTreeNode{1}%
         }{%
-          \BTreeNode{1, 12}
-        }{%
-          \alt<-4>{%
-            \BTreeNode{1, 8, 12}
-          } {%
-            \BTreeNode{1, 2, 8, 12}
-          }
-        }
-      ]
+          \alt<-3>{%
+            \BTreeNode{1, 12}%
+          }{%
+            \alt<-4>{%
+              \BTreeNode{1, 8, 12}%
+            }{%
+              \BTreeNode{1, 2, 8, 12}%
+            }%
+          }%
+        }%
+      ]%
     \end{forest}
     \onslide<5>{}
     \end{figure}
@@ -199,7 +198,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
 1, 12, 8, 2, \alert{\textbf{25}}, 6, 14, 28, 17, 7, 52, 16, 48, 68, 3, 26, 29, 55, 45.
 \begin{itemize}\small{}
 \item<1->
-    To put the fifth item in the root would violate condition 5.
+    Putting the fifth item in the root would violate condition 5.
     \begin{figure}
     \centering
       \begin{forest}
@@ -236,8 +235,8 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
           \alt<-2>{%
             \BTreeNode{1, 2}%
           }{%
-            \BTreeNode{1, 2, 6}
-          }
+            \BTreeNode{1, 2, 6}%
+          }%
         ]
         [
           \alt<-3>{%
@@ -247,8 +246,8 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
               \BTreeNode{12, 14, 25}%
             }{%
               \BTreeNode{12, 14, 25, 28}%
-            }
-          }
+            }%
+          }%
         ]
       ]
     \end{forest}\onslide<5>{}
@@ -269,7 +268,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
             \BTreeNode{1, 2, 6}
           ]
           [
-            \BTreeNode{12, 14}\BTreeSep\alt<1>{}{\BTreeVal<red!75>{17}}\BTreeNode{25, 28}%
+            \BTreeNode{12, 14}\BTreeSep\only<2->{\BTreeVal<red!75>{17}}\BTreeNode{25, 28}%
           ]
         ]
       \end{forest}
@@ -305,10 +304,10 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
       \begin{forest}
         [\BTreeVal{8}\BTreeVal*{17}
           [
-            \BTreeNode{1, 2, 6}\alt<1>{}{\BTreeSep\BTreeVal*{7}}
+            \BTreeNode{1, 2, 6}\alt<1>{}{\BTreeSep\BTreeVal*{7}}%
           ]
           [
-            \BTreeNode{12, 14}\alt<-3>{}{\BTreeSep\BTreeVal*{16}}
+            \BTreeNode{12, 14}\alt<-3>{}{\BTreeSep\BTreeVal*{16}}%
           ]
           [
             \BTreeNode{25, 28}\alt<-2>{}{\alt<-4>{}{\BTreeSep\BTreeVal*{48}}\BTreeSep\BTreeVal*{52}%
@@ -336,7 +335,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
             \BTreeNode{12, 14, 16}
           ]
           [
-            \BTreeNode{25, 28, 48, 52}\alt<1>{}{\BTreeSep\BTreeVal*<red!75>{68}}
+            \BTreeNode{25, 28, 48, 52}\alt<1>{}{\BTreeSep\BTreeVal*<red!75>{68}}%
           ]
         ]
       \end{forest}
@@ -601,17 +600,26 @@ Insert the following keys to a 5-way B-tree:\\
 \section{Remove}
 
 \begin{frame}{Removal from a B-Tree}
-Key are always inserted \emph{into leaves}.  For deletion, we wish \\to remove \emph{from a leaf}. There are four cases to consider:
+  \center{}
+Key are always inserted \emph{into leaves}.
 
+For removal, we wish to remove \emph{from a leaf}.
+
+There are four removal cases to consider in order.
+\end{frame}
+
+\begin{frame}{Cases for Removal from a B-Tree}
 \begin{enumerate}
-  \item<2->
-    If the key is already in a leaf node and removing it doesn't cause that leaf node to have too few keys, then simply remove the key to be deleted.
-  \item<3->
+  \item<+->
+    If the key is already in a leaf node and removing it\\
+    doesn't cause that leaf node to have too few keys, \\
+    then simply remove the key to be deleted.
+  \item<+->
     If the key is \emph{not} in a leaf, then it is guaranteed (by the nature of a B-tree) that its predecessor and successor will be in leaves --- in this case, we can delete the key and promote the predecessor or successor key to the non-leaf deleted key's position.
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Removal from a B-Tree}
+\begin{frame}{Cases for Removal from a B-Tree}
 If deleting a key in a leaf with the minimum key count or if Case (2) leads to a leaf node containing fewer than the minimum key count, then:
 
 \begin{enumerate}
@@ -797,7 +805,7 @@ Delete these keys: 4, 5, 7, 3, 14, 45
 
 \section{Analysis}
 
-\begin{frame}{Maximum Keys in an Order-$m$ B-Tree}
+\begin{frame}{Maximum Keys in an Order-\(m\) B-Tree}
   \begin{columns}
     \column{0.3\textwidth}%
     Max keys per level:\\
@@ -831,11 +839,11 @@ Delete these keys: 4, 5, 7, 3, 14, 45
 \begin{table}
   \begin{tabular}{l l l}
     \toprule
-      \textbf{Operation} & \textbf{Balanced Binary Tree} & \textbf{M-Way B Tree}\\
+      \textbf{Operation} & \textbf{Balanced Binary Tree} & \textbf{\(m\)-Way B Tree}\\
     \midrule
-      Insert   & \onslide<2->{$O(\log_2{n})$} & \onslide<5->{$O(\log_2{n})$} \\
-      Find     & \onslide<3->{$O(\log_2{n})$} & \onslide<6->{$O(\log_2{n})$} \\
-      Delete   & \onslide<4->{$O(\log_2{n})$} & \onslide<7->{$O(\log_2{n})$} \\
+      Insert   & \onslide<2->{\(O(\log_2{n})\)} & \onslide<5->{\(O(\log_2{n})\)} \\
+      Find     & \onslide<3->{\(O(\log_2{n})\)} & \onslide<6->{\(O(\log_2{n})\)} \\
+      Delete   & \onslide<4->{\(O(\log_2{n})\)} & \onslide<7->{\(O(\log_2{n})\)} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -856,7 +864,7 @@ Delete these keys: 4, 5, 7, 3, 14, 45
 
 When searching tables held on a hard drive, the cost \\
 of each drive transfer is high but doesn't depend much \\
-on the amount of data transferred, especially if consecutive items are transferred.
+on the amount of data transferred, especially if \\consecutive items are transferred.
 
 \begin{itemize}
     \item
@@ -867,7 +875,7 @@ on the amount of data transferred, especially if consecutive items are transferr
 \end{frame}
 
 \begin{frame}{Reasons for Using B-Trees}
-If we take $m = 3$, we get a \emph{2--3 Tree}, in which non-leaf nodes have two or three children (i.e., one or two keys).
+If we take \(m = 3\), we get a \emph{2--3 Tree}, in which non-leaf nodes have two or three children (i.e., one or two keys).
 \begin{itemize}
   \item
     B-Trees are always balanced (since the leaves are all at the same level), so 2-3 Trees make a good type of balanced tree.
@@ -880,7 +888,7 @@ If we take $m = 3$, we get a \emph{2--3 Tree}, in which non-leaf nodes have two 
     Binary trees
     \begin{itemize}
       \item
-        Can become \emph{unbalanced} and lose their good time complexity (big $O$).
+        Can become \emph{unbalanced} and lose their good time \\complexity (Big $O$).
       \item
         \emph{AVL Trees} are strict binary trees that \emph{overcome the balance problem}.
       \item
@@ -890,7 +898,7 @@ If we take $m = 3$, we get a \emph{2--3 Tree}, in which non-leaf nodes have two 
     Multi-way trees
     \begin{itemize}
       \item
-        B-Trees are $m$-way, with any (odd) number of children.
+        B-Trees are \(m\)-way, with any (odd) number of children.
       \item
         The 3-Way B-Tree (a.k.a 2--3 Tree) approximates a self-balancing binary tree, exchanging the AVL tree's balancing operations for insertion and (more complex) deletion operations.
     \end{itemize}

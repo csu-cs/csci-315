@@ -6,3 +6,283 @@ Chapter 14 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 <div class="youtube">
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/9BydjzcHdFk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
+
+<script setup>
+import insert_part1_diagram from '/images/b-trees/insert_part1_example.svg'
+import insert_part2_diagram from '/images/b-trees/insert_part2_example.svg'
+import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
+</script>
+
+
+## Intro
+
+### Motivation for B-Trees
+
+- Index structures for large datasets cannot fit  
+  in main memory.
+
+- Hard drive storage requires a different approach  
+  to efficiency.
+
+- If a disk spins at 7,200 RPM, one revolution occurs in 1/120 of a
+  second, or 8.33ms.
+
+- One disk access takes more time than 200,000 instructions.
+
+- One access on a modern SSD is approximately 2,500 times slower than
+  reading from memory.
+
+- Suppose an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree) is used
+  to store 20 million records.
+
+- This very deep binary tree requires lots of different disk accesses;  
+  $\log_2{20,000,000} \approx 24$, so this takes about 0.2 seconds.
+
+- We know we can’t improve on the $\log_2{n}$ lower bound on the search
+  for a binary tree.
+
+- The solution is to use more branches and, thus, reduce the tree
+  height!
+
+  - As branching increases, depth decreases.
+
+### Example B-Tree, Order-5 with 26 Elements
+
+<!-- <figure>
+<img src="order-5-b-tree-exampe" />
+<figcaption>Note that all the leaves are at the same level.</figcaption>
+</figure> -->
+
+### Definition of a B-tree
+
+- A B-tree of order $m$ is an $m$-way tree (i.e., a tree where each node
+  may have up to $m$ children) in which:
+
+  1.  All leaves are on the same level.
+
+  2.  The number of children of a non-leaf node is always one more than
+      the number of keys.
+
+  3.  All keys of a node are sorted in increasing order. These keys
+      partition the child keys as a search tree.
+
+  4.  The root is either a leaf node or has two to $m$ children.
+
+  5.  Other non-leaf nodes have at least $\left\lceil {m / 2} \right\rceil$ children.
+
+  6.  A node contains no more than $m - 1$ keys.
+
+- The number $m$ should always be odd.
+
+## Insert
+
+### Constructing a B-Tree
+
+Starting with an empty ***Order-5*** B-tree, let’s insert the  
+following sequence of keys:  
+1, 12, 8, 2, 25, 6, 14, 28, 17, 7, 52, 16, 48, 68, 3, 26, 29, 55, 45.
+
+- The first four items (1, 12, 8, 2) go into the root:  
+  <ProgressiveDiagram :src="insert_part1_diagram" />
+
+- Putting the fifth item (25) in the root would violate condition 5.
+
+- Therefore, when 25 arrives, pick the middle key to make a new root.  
+  <ProgressiveDiagram :src="insert_part2_diagram" />
+
+- 6, 14, and 28 get added to the leaf nodes.
+
+- Adding 17 to the right leaf node would over-fill it.  
+  <ProgressiveDiagram :src="insert_part3_diagram" />
+
+- So, the middle key is promoted (to the root), splitting the leaves.
+
+- We can now add 7, 52, 16, 48 to the leaf nodes.
+
+- Adding 68 to the right leaf node would over-fill it.
+
+- So we split the rightmost leaf, promoting 48 to the root.
+
+- Adding 3 to the left leaf node would over-fill it
+
+- Adding 3 causes us to split the leftmost leaf, promoting 3 to the
+  root.
+
+- 26, 29, 55 then go into the leaves.
+
+- Adding 45 causes a split of the 4th leaf.
+
+- Promote 28 to the root, which causes the root to split.
+
+- Promote 28 to the root; doesn’t fit.
+
+- Promote the 17 as the new root.
+
+- Attempt to insert the new key into a leaf.
+
+- If this would result in that leaf becoming too big, split the leaf
+  into two, promoting the middle key to the leaf’s parent.
+
+- If this would result in the parent becoming too big, split the parent
+  into two, promoting the middle key.
+
+- This strategy may need to repeat to the root.
+
+- If necessary, the root is split in two and the middle key is promoted
+  to a new root, making the tree one level higher.
+
+### Exercise in Inserting a B-Tree 
+
+Insert the following keys to a 5-way B-tree:  
+3, 7, 9, 23, 45, 1, 5, 14, 25, 24, 13, 11, 8, 19, 4, 31, 35, 56, 2, 6,
+12.
+
+## Removal from a B-Tree
+
+Key are always inserted ***into leaves***. For deletion, we wish  
+to remove ***from a leaf***. There are four cases to consider:
+
+1.  If the key is already in a leaf node and removing it doesn’t cause
+	that leaf node to have too few keys, then simply remove the key to
+	be deleted.
+
+2.  If the key is ***not*** in a leaf, then it is guaranteed (by the
+	nature of a B-tree) that its predecessor and successor will be in
+	leaves — in this case, we can delete the key and promote the
+	predecessor or successor key to the non-leaf deleted key’s position.
+
+If deleting a key in a leaf with the minimum key count or if Case (2)
+leads to a leaf node containing fewer than the minimum key count, then:
+
+1.  If a sibling leaf has more than the min. number of keys, then we can
+	promote one of its keys and move the parent key into the lacking
+	leaf.
+
+2.  Otherwise, combine the lacking node and one of its neighbors with
+	their shared parent (the opposite of promoting a key). The new node
+	will have the correct number of keys. If the parent now has too few
+	keys, repeat this case (up to the root itself if required).
+
+### Type 1: Simple Removal from Leaf
+
+Assuming a 5-way B-Tree (as before), ***delete 2***.  
+
+
+Because there are enough keys in the node, just delete it.
+
+### Type 2: Simple Removal from Non-Leaf
+
+Assuming a 5-way B-Tree (as before), ***delete 52***.  
+
+Replace with the closest value from a leaf with enough values.
+
+### Type 4: Too few keys in node and its siblings
+
+Delete 72
+
+
+### Type 3: Enough siblings
+
+Delete 22
+
+
+### Exercise in Removal a B-Tree 
+
+Given a 5-way B-tree created by these data (last exercise):  
+3, 7, 9, 23, 45, 1, 5, 14, 25, 24, 13, 11, 8, 19, 4, 31, 35, 56, 2, 6,
+12  
+Delete these keys: 4, 5, 7, 3, 14, 45
+
+## Analysis
+
+### Maximum Keys in an Order-$m$ B-Tree
+
+Max keys per level:  
+
+|  Level   |  Key Count   |
+|:--------:|:------------:|
+|   root   |   $m - 1$    |
+|   $1$    | $m^1(m - 1)$ |
+|   $2$    | $m^2(m - 1)$ |
+| $\vdots$ |   $\vdots$   |
+|   $h$    | $m^h(m - 1)$ |
+
+So, the maximum number of items is:  
+$$\begin{aligned}
+	  t &= (1 + m + m^2 + m^3 + \cdots + m^h)(m - 1)\\  
+		&= \frac{m^{h+1} - 1}{m - 1} (m - 1)\\  
+		&= m^{h+1} - 1
+	
+\end{aligned}$$  
+When $m = 5$ and $h = 2$, this gives $5^{2 + 1} - 1 = 125 - 1 = 124$.
+
+### Big-$O$ of B-Trees
+
+| Operation | Balanced Binary Tree | $m$-Way B Tree |
+|:----------|:---------------------|:---------------|
+| Insert    | $O(\log_2{n})$       | $O(\log_2{n})$ |
+| Find      | $O(\log_2{n})$       | $O(\log_2{n})$ |
+| Delete    | $O(\log_2{n})$       | $O(\log_2{n})$ |
+
+
+The benefits are:
+
+1. Reduced hard-drive access (but the same number of instructions) and
+2. Reduced memory usage (fewer pointers).
+
+### Reasons for Using B-Trees
+
+When searching tables held on a hard drive, the cost 
+of each drive transfer is high but doesn’t depend much 
+on the amount of data transferred, especially if consecutive items are
+transferred.
+
+- For example, an order 101 B-tree can transfer each node in one drive
+  read operation.
+
+- An order 101 B-tree and height 3 can hold $101^4 - 1$ items
+  (approximately 100 million) and any item can be accessed with 3 drive
+  reads (assuming we hold the root in memory).
+
+If we take $m = 3$, we get a ***2–3 Tree***, in which non-leaf nodes
+have two or three children (i.e., one or two keys).
+
+- B-Trees are always balanced (since the leaves are all at the same
+  level), so 2-3 Trees make a good type of balanced tree.
+
+### Comparing Trees
+
+- Binary trees
+
+  - Can become ***unbalanced*** and lose their good time complexity (big
+	$O$).
+
+  - ***AVL Trees*** are strict binary trees that ***overcome the balance
+	problem***.
+
+  - Heaps remain balanced but are unsorted.
+
+- Multi-way trees
+
+  - B-Trees are $m$-way, with any (odd) number of children.
+
+  - The 3-Way B-Tree (a.k.a 2–3 Tree) approximates a self-balancing
+	binary tree, exchanging the AVL tree’s balancing operations for
+	insertion and (more complex) deletion operations.
+
+## What does the “B” in B-Tree stand for?
+
+- No one knows.
+
+- The inventors of the B-Tree will not say what it means.
+
+- It could mean: Boeing (where it was invented), balanced, between,
+  broad, bushy, and Bayer (the inventors are Bayer and McCreight).
+
+- “The more you think about what the ‘B’ in B-trees means, the better
+  you understand B-trees.”  
+  — Edward M. McCreight (2013)
+
+## Lab 20: B-Trees
+
+Let’s look at the lab based on today’s lecture.

@@ -14,9 +14,77 @@ fi
 
 echo "Extracting diagrams from ${TEX_FILE} to ${OUTDIR}."
 
+# B-Tree Style
+bCode='
+\usepackage{xparse}
+
+\forestset{
+  default preamble={%
+    for tree={%
+      draw, % show border
+      edge={-stealth, shorten >=1pt, shorten <=-1pt}, % show arrow to child
+      edge=very thick, % edge weight
+      very thick, % node border
+      fill=CSUcyan, % node fill
+      text=black,% text color
+      fit=tight,% options: tight|rectangle|band
+      inner ysep=0,
+      inner xsep=1pt,
+      minimum height=1.75em,
+    },%
+  },%
+  %
+  invalid/.style={%
+    {fill=red!25}%
+  },
+  visible on/.style={
+  for tree={
+    /tikz/visible on={#1},
+    edge+={/tikz/visible on={#1}}}}
+}
+
+\tikzset{
+  %
+  % Used for beamer overlays
+  invisible/.style={opacity=0,text opacity=0},
+  visible on/.style={alt=#1{}{invisible}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}
+  },
+}
+
+\NewDocumentCommand{\BTreeSep}{}{%
+  {\color{fg}\rule[-0.5em]{1.25pt}{1.75em}}%
+}
+
+\NewDocumentCommand{\BTreeVal}{ sD<>{CSUcyan}m }{%
+  \begingroup
+  \setlength{\fboxsep}{5.5pt}% make the spacing wider to cover the whole cell
+  \colorbox{#2}{\hspace{-5.5pt}\makebox[1.75em][c]{\vspace{1.5em}#3\vspace{1.5em}}\hspace{-5.5pt}}%
+  \IfBooleanTF #1%
+    {}%
+    {\BTreeSep}%
+  \endgroup
+}
+
+\NewDocumentCommand{\BTreeNode}{ m }{%
+	\begingroup
+	\foreach\element [count=\i from 1] in {#1} {%
+		\ifnum\i>1%After the first element
+      \BTreeSep%
+		\fi%
+      \makebox[1.75em][c]{\vspace{1.5em}\element\vspace{1.5em}}%
+	}%
+	\endgroup%
+}'
+
+
+# bCode=$(printf '%s' "$bCode" | awk '{printf "%s\\n", $0}')
+bCode=$(printf '%s' "$bCode" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/$/\\n/' | tr -d '\n')
+
 # Extract forest diagrams
 awk '/\\begin{forest}/, /\\end{forest}/ {print}' "$TEX_FILE" | \
-awk 'BEGIN{n=0} /\\begin{forest}/ {n++; fname=sprintf("'"$OUTDIR"'/forest-%02d.tex",n); print "\\documentclass[class=scrreprt,14pt]{standalone}\n\\usepackage{forest}\n\\usetikzlibrary {backgrounds}\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\\definecolor{bg}{HTML}{000000}\n\\definecolor{fg}{HTML}{000000}\n\n\\usepackage{binary-trees}\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{forest}/ {print "\\end{document}" >> fname; close(fname)}'
+awk 'BEGIN{n=0} /\\begin{forest}/ {n++; fname=sprintf("'"$OUTDIR"'/forest-%02d.tex",n); print "\\documentclass[class=scrreprt,14pt]{standalone}\n\n\\usepackage{forest}\n\\usetikzlibrary{backgrounds}\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\\definecolor{bg}{HTML}{000000}\n\\definecolor{fg}{HTML}{000000}\n\n\\usepackage{binary-trees}\n\n'"$bCode"'\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{forest}/ {print "\\end{document}" >> fname; close(fname)}'
 
 # Extract tikz diagrams
 awk '/\\begin{tikzpicture}/, /\\end{tikzpicture}/ {print}' "$TEX_FILE" | \
@@ -43,7 +111,7 @@ awk 'BEGIN{n=0} /\\begin{tikzpicture}/ {n++; fname=sprintf("'"$OUTDIR"'/tikz-%02
 for texfile in "${OUTDIR}"/*.tex; do
   base=$(basename "$texfile" .tex)
 
-  overlays=$(grep -oP '\\(only|onslide|alt)\s*<\K[0-9,\-]+' "$texfile" | tr ',' '\n' | \
+  overlays=$(grep -oP '\\(only|onslide|alt|temporal)\s*<\K[0-9,\-]+' "$texfile" | tr ',' '\n' | \
     perl -ne '
       while (/(\d+)(?:-(\d+))?/g) {
         if (defined $2) {
@@ -98,6 +166,19 @@ for texfile in "${OUTDIR}"/*.tex; do
             my $c1 = substr($braced1, 1, -1);
             my $c2 = substr($braced2, 1, -1);
             is_frame_in($spec, $f) ? $c1 : $c2;
+        }gexs) {}
+
+        while (s{
+            \\temporal\s*<([^>]+)>\s*
+            (\{(?:[^{}]*+|\{(?:[^{}]*+|\{[^{}]*\})*\})*\})\s*
+            (\{(?:[^{}]*+|\{(?:[^{}]*+|\{[^{}]*\})*\})*\})\s*
+            (\{(?:[^{}]*+|\{(?:[^{}]*+|\{[^{}]*\})*\})*\})
+        }{
+            my ($spec, $braced1, $braced2, $braced3) = ($1, $2, $3, $4);
+            my $c1 = substr($braced1, 1, -1);
+            my $c2 = substr($braced2, 1, -1);
+            my $c3 = substr($braced3, 1, -1);
+            is_frame_in($spec, $f) ? $c2 : $c3;
         }gexs) {}
 
         # Replace all justText on=<> and visibile on=<>
