@@ -4,7 +4,7 @@ B Trees
 Chapter 14 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/9BydjzcHdFk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/mPs6s-up2nA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -18,11 +18,9 @@ import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
 
 ### Motivation for B-Trees
 
-- Index structures for large datasets cannot fit  
-  in main memory.
+- Index structures for large datasets cannot fit in main memory.
 
-- Hard drive storage requires a different approach  
-  to efficiency.
+- Hard drive storage requires a different approach to efficiency.
 
 - If a disk spins at 7,200 RPM, one revolution occurs in 1/120 of a
   second, or 8.33ms.
@@ -46,12 +44,9 @@ import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
 
   - As branching increases, depth decreases.
 
-### Example B-Tree, Order-5 with 26 Elements
+![Example B-Tree, Order-5 with 26 Elements](/images/b-trees/order_5_with_pointers.svg  "Example B-Tree, Order-5 with 26 Elements"){.light-only style="max-width:550px"}
 
-<!-- <figure>
-<img src="order-5-b-tree-exampe" />
-<figcaption>Note that all the leaves are at the same level.</figcaption>
-</figure> -->
+![Example B-Tree, Order-5 with 26 Elements](/images/b-trees/order_5_with_pointers-dark.svg  "Example B-Tree, Order-5 with 26 Elements"){.dark-only style="max-width:550px"}
 
 ### Definition of a B-tree
 
