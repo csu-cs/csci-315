@@ -11,6 +11,7 @@ Chapter 14 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 import insert_part1_diagram from '/images/b-trees/insert_part1_example.svg'
 import insert_part2_diagram from '/images/b-trees/insert_part2_example.svg'
 import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
+import remove_case3_diagram from '/images/b-trees/remove_case3_example.svg'
 </script>
 
 
@@ -179,6 +180,8 @@ Delete 72
 ### Type 3: Enough siblings
 
 Delete 22
+
+<ProgressiveDiagram :src="remove_case3_diagram" />
 
 
 ### Exercise in Removal a B-Tree 

@@ -310,8 +310,9 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
             \BTreeNode{12, 14}\alt<-3>{}{\BTreeSep\BTreeVal*{16}}%
           ]
           [
-            \BTreeNode{25, 28}\alt<-2>{}{\alt<-4>{}{\BTreeSep\BTreeVal*{48}}\BTreeSep\BTreeVal*{52}%
-            }
+            \BTreeNode{25, 28}\only<2->{%
+              \only<5->{\BTreeSep\BTreeVal*{48}}\BTreeSep\BTreeVal*{52}%
+            }%
           ]
         ]
       \end{forest}\onslide<5>{}
@@ -775,23 +776,24 @@ Delete 22
             \BTreeVal*<red!75>{\textcolor{red!75}{22}}%
           }{%
             \BTreeVal*{29}%
-          }
-        }
-      ]{
-          \onslide<2>{\draw[<-,red!50!white, very thick] (.south)--++(0em,-1.5em)--++(0.5em,0pt)
-          node[anchor=west,align=center]{Too few keys!};}
-          \onslide<3>{
-              \draw[->,dotted, very thick] ([xshift=0.5em]root.south) to[bend right] ([xshift=1em].north);
-            }
-        }
-      [
-        \only<-3>{\BTreeVal{31}}\BTreeNode{43, 56, 69}
-      ]{\onslide<3>{
-            \draw[->,dotted, very thick] ([xshift=-3em].north) to[bend right=20] ([xshift=1.5em]root.south);
-          }
-        }
+          }%
+        }%
+      ]{%
+          \onslide<2>{\draw[<-,red!50!white, very thick] (.south)--++(0em,-1.5em)--++(0.5em,0pt)%
+          node[anchor=west,align=center]{Too few keys!};}%
+          \onslide<3>{%
+              \draw[->,dotted, very thick] ([xshift=0.5em]root.south) to[bend right] ([xshift=1em].north);%
+            }%
+        }%
+      [%
+        \only<-3>{\BTreeVal{31}}\BTreeNode{43, 56, 69}%
+      ]{\onslide<3>{%
+            \draw[->,dotted, very thick] ([xshift=-3em].north) to[bend right=20] ([xshift=1.5em]root.south);%
+          }%
+        }%
+      \onslide<4>{}%
     ]
-  \end{forest}\onslide<4>{}
+  \end{forest}
 \end{figure}
 \end{frame}
 
