@@ -156,7 +156,7 @@ function sidebarNotes() {
 				{ text: "Hash Tables via Open-Addressing", link: "/lectures/19-hash-tables-open-addressing" },
 				{ text: "Priority Queues", link: "/lectures/20-priority-queues" },
 				{ text: "B-trees", link: "/lectures/21-b-trees" },
-				{ text: "Graphs via Ajacency Matrices", link: "/lectures/22-graphs-adjacency-matrices" },
+				{ text: "Graphs via Adjacency Matrices", link: "/lectures/22-graphs-adjacency-matrices" },
 				{ text: "Graphs via Adjacency Lists", link: "/lectures/23-graphs-adjacency-lists" },
 				{ text: "Quadtrees", link: "/lectures/24-quadtrees" },
 			]

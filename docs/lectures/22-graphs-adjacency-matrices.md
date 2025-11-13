@@ -4,7 +4,7 @@ Graphs via Adjacency Matrices
 Chapter 20
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/dXAnlTohOCk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/SKmRkxxduEY?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Intro
@@ -201,11 +201,11 @@ The adjacency matrix of a directed graph is asymmetric.
 
 |  | `[0]` | `[1]` | `[2]` | `[3]` | `[4]` |
 |---:|:--:|:--:|:--:|:--:|:--:|
-| `[0]` | <span style="color: CSUgold">$\infty$</span> | **`10`** | **`1`** | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> |
-| `[1]` | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | **`2`** | **`4`** | **`1`** |
-| `[2]` | **`3`** | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | **`1`** | **`5`** |
-| `[3]` | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | **`6`** | <span style="color: CSUgold">$\infty$</span> |
-| `[4]` | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> | <span style="color: CSUgold">$\infty$</span> |
+| `[0]` | $\infty$ | **`10`** | **`1`** | $\infty$ | $\infty$ |
+| `[1]` | $\infty$ | $\infty$ | **`2`** | **`4`** | **`1`** |
+| `[2]` | **`3`** | $\infty$ | $\infty$ | **`1`** | **`5`** |
+| `[3]` | $\infty$ | $\infty$ | $\infty$ | **`6`** | $\infty$ |
+| `[4]` | $\infty$ | $\infty$ | $\infty$ | $\infty$ | $\infty$ |
 
 If the edges have weights, they are stored in the matrix.
 
