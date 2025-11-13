@@ -76,19 +76,59 @@ bCode='
       \makebox[1.75em][c]{\vspace{1.5em}\element\vspace{1.5em}}%
 	}%
 	\endgroup%
-}'
+}
+'
+
+graphCode='
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+
+\tikzset{
+  every state/.style={minimum size=12pt, inner sep=4pt, fill=CSUcyan, text=black, very thick},
+  marked/.style={text=white, fill=CSUslate},
+  visit/.style={text=black, fill=CSUgold},
+  %-stealth,
+  >=stealth'"'"',
+  auto,
+  node distance=1.5cm,
+  font=\ttfamily,
+  % main node/.style={circle,draw,font=\ttfamily\bfseries,minimum size=0pt, inner sep=2pt},
+  every text node part/.style={align=center},
+  %
+  % Used for Beamer overlays
+  invisible/.style={opacity=0,text opacity=0},
+  visible on/.style={alt=#1{}{invisible}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}
+  },
+}
+
+% Used to stylize 0 in the adjacency matrix
+\newcommand{\mFal}[1][0]{\texttt{\textcolor{CSUgold}{#1}}}
+\newcommand{\mTru}[1][1]{\texttt{\textbf{#1}}}
+
+\newcommand{\vertMark}[1][CSUgold]{full=#1}
+
+\newcommand{\textInf}{$\infty$}
+
+\newcommand{\arraySubscript}[1]{\texttt{\textcolor{white!75!CSUblue}{[}{#1}\textcolor{white!75!CSUblue}{]}}}
+
+\long\def\invisible#1{\iffalse #1\fi} % No-op the contents of this command.
+'
 
 
 # bCode=$(printf '%s' "$bCode" | awk '{printf "%s\\n", $0}')
 bCode=$(printf '%s' "$bCode" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/$/\\n/' | tr -d '\n')
 
+graphCode=$(printf '%s' "$graphCode" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/$/\\n/' | tr -d '\n')
+
 # Extract forest diagrams
 awk '/\\begin{forest}/, /\\end{forest}/ {print}' "$TEX_FILE" | \
-awk 'BEGIN{n=0} /\\begin{forest}/ {n++; fname=sprintf("'"$OUTDIR"'/forest-%02d.tex",n); print "\\documentclass[class=scrreprt,14pt]{standalone}\n\n\\usepackage{forest}\n\\usetikzlibrary{backgrounds}\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\\definecolor{bg}{HTML}{000000}\n\\definecolor{fg}{HTML}{000000}\n\n\\usepackage{binary-trees}\n\n'"$bCode"'\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{forest}/ {print "\\end{document}" >> fname; close(fname)}'
+awk 'BEGIN{n=0} /\\begin{forest}/ {n++; fname=sprintf("'"$OUTDIR"'/forest-%02d.tex",n); print "\\documentclass[class=scrreprt,14pt]{standalone}\n\n\\usepackage{forest}\n\\usetikzlibrary{backgrounds}\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\\definecolor{bg}{HTML}{000000}\n\\definecolor{fg}{HTML}{000000}\n\n\\usepackage{binary-trees}\n\n\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{forest}/ {print "\\end{document}" >> fname; close(fname)}'
 
 # Extract tikz diagrams
 awk '/\\begin{tikzpicture}/, /\\end{tikzpicture}/ {print}' "$TEX_FILE" | \
-awk 'BEGIN{n=0} /\\begin{tikzpicture}/ {n++; fname=sprintf("'"$OUTDIR"'/tikz-%02d.tex",n); print "\\documentclass[class=scrreprt,14pt]{standalone}\n\\usepackage{tikz}\n\\usetikzlibrary{shapes,shapes.multipart,positioning,fit,backgrounds,calc}\n\n\\usepackage{listings}\n\\definecolor{codeKeyword}{HTML}{569CD6}\n\\definecolor{codeVariable}{HTML}{D7BA7D}\n\\definecolor{codeString}{HTML}{CE9178}\n\\definecolor{codeBackground}{HTML}{0a0c10}\n\\definecolor{codeComment}{HTML}{72ab58}\n\\lstset{\n  language=C++,\n  basicstyle=\\ttfamily\\color{white},\n  breaklines=true,\n  breakatwhitespace=true,\n  breakindent=3em,\n  tabsize=4,\n  showspaces=false,\n  showstringspaces=false,\n  commentstyle=\\color{codeComment}\\fontfamily{lmtt}\\itshape,\n  upquote=true,\n  literate={~}{{\\textasciitilde}}1,\n  keepspaces,\n  keywordstyle=\\color{codeKeyword}\\bfseries,\n  identifierstyle=\\color{codeVariable},\n  stringstyle=\\color{codeString},\n  morekeywords={nullptr},\n  backgroundcolor=\\color{codeBackground},\n  frame=single,\n  numbers=left,\n  numbersep=5pt,\n  numberstyle=\\tiny\\color{CSUcyan},\n  xleftmargin=10pt\n}\n\n% Custom background to lstinline\n\\usepackage{realboxes}\n\\usepackage{xpatch}\n\\makeatletter\n\\xpretocmd\\lstinline@{\\Colorbox{codeBackground}\\bgroup\\appto\\lst@DeInit{\\egroup}}{}{}\n\\xpretocmd\\lst@InlineG{\\Colorbox{codeBackground}\\bgroup\\appto\\lst@DeInit{\\egroup}}{}{}\n\\makeatother\n\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\\definecolor{MyGreen}{HTML}{61ff7e}\n\n\\usepackage{ifthen}\n\\usepackage{xstring}\n\\usepackage{pgf-umlcd}\n\n\\usepackage{arrays}\n\\usepackage{linked-lists}\n\n\n\\tikzset{\n  point/.style={\n    circle,\n    fill=white,\n    draw=white,\n    very thick,\n    minimum size=8pt,\n    inner sep=0pt,\n  }\n}\n\n% For UML\n\\renewcommand{\\umlfillcolor}{CSUblue!80!black}\n\\renewcommand{\\umldrawcolor}{white}\n\\renewcommand{\\umltextcolor}{white}\n\n\n\n% Used for 3D Plot of Quadtree\n\\usepackage{pgfplots}\n\\pgfplotsset{compat=newest}\n\n\\tikzset{\n  stack/.style={%\n    rectangle split,\n    rectangle split parts=#1,\n    draw,\n    anchor=center,\n    minimum width=12mm,\n    minimum height=4mm,\n    font=\\tiny,\n    very thick,\n    line join=bevel,\n    fill=CSUcyan,\n    text=black,\n  },\n  stack top/.style={%\n    rectangle, draw, minimum size=12mm - 1pt,\n    yslant=0.5,xslant=-1, anchor=south west,\n    very thick,\n    xshift=-1pt,\n    yshift=-1pt,\n    line join=bevel,\n    fill=CSUcyan,\n    text=black,\n  },\n  stack instruction/.style={anchor=west, align=left, inner sep=0pt}\n}\n\\newcommand{\\Stack}[2][stack]{%\n  \\node[stack=#2, yslant=-0.5, anchor=south east, xshift=1pt] (A) {\n    #1\n  };\n\n  % Right of Stack\n  \\node[stack=#2, yslant=0.5, anchor=south west, xshift=-1pt] (B) {\n      #1\n  };\n\n  \n  % Top of Stack\n  \\node at (A.north east)  [anchor=west, shift={(-1pt, 0.7pt)}, stack top] (StackTop) {\n    \\rotatebox{-45}{#1}\n  };\n}\n\n\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{tikzpicture}/ {print "\\end{document}" >> fname; close(fname)}'
+awk 'BEGIN{n=0} /\\begin{tikzpicture}/ {n++; fname=sprintf("'"$OUTDIR"'/tikz-%02d.tex",n); print "\\documentclass[class=scrreprt,14pt]{standalone}\n\\usepackage{tikz}\n\\usetikzlibrary{shapes,shapes.multipart,positioning,fit,backgrounds,calc}\n\n\\usepackage{listings}\n\\definecolor{codeKeyword}{HTML}{569CD6}\n\\definecolor{codeVariable}{HTML}{D7BA7D}\n\\definecolor{codeString}{HTML}{CE9178}\n\\definecolor{codeBackground}{HTML}{0a0c10}\n\\definecolor{codeComment}{HTML}{72ab58}\n\\lstset{\n  language=C++,\n  basicstyle=\\ttfamily\\color{white},\n  breaklines=true,\n  breakatwhitespace=true,\n  breakindent=3em,\n  tabsize=4,\n  showspaces=false,\n  showstringspaces=false,\n  commentstyle=\\color{codeComment}\\fontfamily{lmtt}\\itshape,\n  upquote=true,\n  literate={~}{{\\textasciitilde}}1,\n  keepspaces,\n  keywordstyle=\\color{codeKeyword}\\bfseries,\n  identifierstyle=\\color{codeVariable},\n  stringstyle=\\color{codeString},\n  morekeywords={nullptr},\n  backgroundcolor=\\color{codeBackground},\n  frame=single,\n  numbers=left,\n  numbersep=5pt,\n  numberstyle=\\tiny\\color{CSUcyan},\n  xleftmargin=10pt\n}\n\n% Custom background to lstinline\n\\usepackage{realboxes}\n\\usepackage{xpatch}\n\\makeatletter\n\\xpretocmd\\lstinline@{\\Colorbox{codeBackground}\\bgroup\\appto\\lst@DeInit{\\egroup}}{}{}\n\\xpretocmd\\lst@InlineG{\\Colorbox{codeBackground}\\bgroup\\appto\\lst@DeInit{\\egroup}}{}{}\n\\makeatother\n\n\n\\usepackage[english]{babel}\n\\usepackage[latin1]{inputenc}\n\\usepackage[default]{roboto} % Font family\n\\usepackage[varqu]{inconsolata} % for tt font\n\\usepackage[T1]{fontenc}\n\n\\usepackage{xcolor}\n\\definecolor{CSUblue}{HTML}{002855} % CSU Blue (primary)\n\\definecolor{CSUgold}{HTML}{A89968} % CSU Gold (primary)\n\\definecolor{CSUcyan}{HTML}{5eb6cd}\n\\definecolor{CSUslate}{HTML}{383838}\n\\definecolor{DarkGreen}{HTML}{25413a} % For contrast with gold.\n\\definecolor{MyPurple}{HTML}{995FA3} % Alternative color for highlight.\n\\definecolor{MyGreen}{HTML}{61ff7e}\n\n\\usepackage{ifthen}\n\\usepackage{xstring}\n\\usepackage{pgf-umlcd}\n\n\\usepackage{arrays}\n\\usepackage{linked-lists}\n\n\n\\tikzset{\n  point/.style={\n    circle,\n    fill=white,\n    draw=white,\n    very thick,\n    minimum size=8pt,\n    inner sep=0pt,\n  }\n}\n\n% For UML\n\\renewcommand{\\umlfillcolor}{CSUblue!80!black}\n\\renewcommand{\\umldrawcolor}{white}\n\\renewcommand{\\umltextcolor}{white}\n\n\n\n% Used for 3D Plot of Quadtree\n\\usepackage{pgfplots}\n\\pgfplotsset{compat=newest}\n\n\\tikzset{\n  stack/.style={%\n    rectangle split,\n    rectangle split parts=#1,\n    draw,\n    anchor=center,\n    minimum width=12mm,\n    minimum height=4mm,\n    font=\\tiny,\n    very thick,\n    line join=bevel,\n    fill=CSUcyan,\n    text=black,\n  },\n  stack top/.style={%\n    rectangle, draw, minimum size=12mm - 1pt,\n    yslant=0.5,xslant=-1, anchor=south west,\n    very thick,\n    xshift=-1pt,\n    yshift=-1pt,\n    line join=bevel,\n    fill=CSUcyan,\n    text=black,\n  },\n  stack instruction/.style={anchor=west, align=left, inner sep=0pt}\n}\n\\newcommand{\\Stack}[2][stack]{%\n  \\node[stack=#2, yslant=-0.5, anchor=south east, xshift=1pt] (A) {\n    #1\n  };\n\n  % Right of Stack\n  \\node[stack=#2, yslant=0.5, anchor=south west, xshift=-1pt] (B) {\n      #1\n  };\n\n  \n  % Top of Stack\n  \\node at (A.north east)  [anchor=west, shift={(-1pt, 0.7pt)}, stack top] (StackTop) {\n    \\rotatebox{-45}{#1}\n  };\n}\n\n'"$graphCode"'\n\n\n\\begin{document}">fname} {if(n>0) print >> fname} /\\end{tikzpicture}/ {print "\\end{document}" >> fname; close(fname)}'
 
 # # Compile and convert each diagram
 # for f in "$OUTDIR"/*.tex; do

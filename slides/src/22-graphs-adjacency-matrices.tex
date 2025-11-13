@@ -5,6 +5,10 @@
 \usepackage{algpseudocode}
 \usepackage{booktabs}
 
+\usepackage{hhline}
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+
 \title{{\Huge{} Graphs}\\{\LARGE{} via Adjacency Matrices}}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 20}
 \author{Sean T. Hayes, Ph.D.}
@@ -26,7 +30,7 @@
   every state/.style={minimum size=12pt, inner sep=4pt, fill=CSUcyan, text=black, very thick},
   marked/.style={text=white, fill=CSUslate},
   visit/.style={text=black, fill=CSUgold},
-  %->,
+  %-stealth,
   >=stealth',
   auto,
   node distance=1.5cm,
@@ -43,8 +47,8 @@
 }
 
 % Used to stylize 0 in the adjacency matrix
-\newcommand{\mFal}[1][0]{\texttt{\textcolor{CSUgold}{#1}}}
-\newcommand{\mTru}[1][1]{\texttt{\textbf{#1}}}
+\newcommand{\mFal}[1][0]{\texttt{\textcolor{CSUblue!90!CSUcyan}{#1}}}
+\newcommand{\mTru}[1][1]{\texttt{\textbf{\textcolor{black}{#1}}}}
 
 \newcommand{\vertMark}[1][CSUgold]{full=#1}
 
@@ -52,6 +56,11 @@
 
 \newcommand{\arraySubscript}[1]{\texttt{\textcolor{white!75!CSUblue}{[}{#1}\textcolor{white!75!CSUblue}{]}}}
 
+% Define a new column type with a background color
+\newcolumntype{B}{>{\columncolor{CSUcyan}}c}
+
+% Make table lines thicker
+\setlength{\arrayrulewidth}{1.2pt}  % default is 0.4pt (very thick is 1.2pt)
 
 \begin{document}
 
@@ -127,15 +136,15 @@ to a variety of problems, including:
   \item
     \emph{Member} ($x \in A$): $x$ is an element of the set $X$.
   \item
-    \emph{Subset} ($A \subseteq B$): every element of $A$ is an element of $B$.
+    \emph{Subset} ($A \subseteq B$): every element of $A$ that is an\\element of $B$.
   \item
-    \emph{Intersection} ($A \cap B$): contains all the elements in $A$ and $B$.\\
+    \emph{Intersection} ($A \cap B$): all the elements in $A$ and $B$.\\
     $A \cap B = \{x \mid x \in A$ and $x \in B\}$
   \item
-    \emph{Union} ($A \cup B$): set of all the elements that are in $A$ or in $B$.\\
+    \emph{Union} ($A \cup B$): all the elements that are in $A$ or in $B$.\\
     $A \cup B = \{x \mid x \in A$ or $x \in B\}$
   \item
-    \emph{Ordered Pairs} ($A \times B$): set of all the ordered pairs of elements of $A$ and $B$.\\
+    \emph{Ordered Pairs} ($A \times B$): all the ordered pairs of elements of $A$ and $B$.\\
     $A \times B = \{(a, b) \mid a \in A, b \in B\}$
 
 \end{itemize}
@@ -163,7 +172,7 @@ to a variety of problems, including:
 \column{0.5\textwidth}
 \begin{figure}
 \centering
-\begin{tikzpicture}[very thick, ->, shorten >=0.5pt]
+\begin{tikzpicture}[very thick, -stealth, shorten >=0.5pt]
   \node[state] (A)                      {A};
   \node[state]         (B) [right of=A] {B};
 
@@ -183,7 +192,7 @@ to a variety of problems, including:
 \column{0.5\textwidth}
   \begin{figure}
   \centering
-  \begin{tikzpicture}[very thick, ->, shorten >=0.5pt]
+  \begin{tikzpicture}[very thick, -stealth, shorten >=0.5pt]
     \node[state] (0)              {0};
     \node[state] (1) [right of=0] {1};
     \node[state] (2) [right of=1] {2};
@@ -437,8 +446,8 @@ A_G(i, j) =
 \end{align}
 \end{frame}
 
-\begin{frame}{Adjacency Matrix: Undirected Example}
-\centering
+\begin{frame}[b]{Adjacency Matrix: Undirected Example}
+%\centering
 \begin{columns}
   \column{0.33\textwidth}
     %\begin{figure}
@@ -466,38 +475,39 @@ A_G(i, j) =
     }
     %\end{figure}
   \column{0.55\textwidth}
-    \begin{tabular}{r | c | c | c | c | c |}
+    \begin{tabular}{r | B | B | B | B | B |}
       \multicolumn{1}{c}{}
         & \multicolumn{1}{c}{\arraySubscript{0}}
         & \multicolumn{1}{c}{\arraySubscript{1}}
         & \multicolumn{1}{c}{\arraySubscript{2}}
         & \multicolumn{1}{c}{\arraySubscript{3}}
-        & \multicolumn{1}{c}{\arraySubscript{4}}\\\cline{2-6}
+        & \multicolumn{1}{c}{\arraySubscript{4}}\\\hhline{~|-----|}
       \arraySubscript{0}
-        & \mFal{} & \mTru{} & \mTru{} & \mFal{} & \mFal{} \\\cline{2-6}
+        & \mFal{} & \mTru{} & \mTru{} & \mFal{} & \mFal{} \\\hhline{~|-----|}
       \arraySubscript{1}
-        & \mTru{} & \mFal{} & \mTru{} & \mTru{} & \mTru{} \\\cline{2-6}
+        & \mTru{} & \mFal{} & \mTru{} & \mTru{} & \mTru{} \\\hhline{~|-----|}
       \arraySubscript{2}
-        & \mTru{} & \mTru{} & \mFal{} & \mTru{} & \mTru{} \\\cline{2-6}
+        & \mTru{} & \mTru{} & \mFal{} & \mTru{} & \mTru{} \\\hhline{~|-----|}
       \arraySubscript{3}
-        & \mFal{} & \mTru{} & \mTru{} & \mTru{} & \mFal{} \\\cline{2-6}
+        & \mFal{} & \mTru{} & \mTru{} & \mTru{} & \mFal{} \\\hhline{~|-----|}
       \arraySubscript{4}
-        & \mFal{} & \mTru{} & \mTru{} & \mFal{} & \mFal{} \\\cline{2-6}
+        & \mFal{} & \mTru{} & \mTru{} & \mFal{} & \mFal{} \\\hhline{~|-----|}
     \end{tabular}
 
     \vspace{1em}
     The adjacency matrix of an undirected graph is symmetric.
 \end{columns}
+\vspace{2em}
 \end{frame}
 
-\begin{frame}{Adjacency Matrix: Directed Example}
-\centering
+\begin{frame}[b]{Adjacency Matrix: Directed Example}
+% \centering
 \begin{columns}
   \column{0.33\textwidth}
     %\begin{figure}
     %\centering
     \centerline{%
-    \begin{tikzpicture}[very thick, ->, node distance=2.5cm, every loop/.style={->, in=255, out=195}, shorten >=0.5pt]
+    \begin{tikzpicture}[very thick, -stealth, node distance=2.5cm, every loop/.style={in=255, out=195}, shorten >=0.5pt]
         \node[state] (0)              {0};
         \node[state] (1) [right of=0] {1};
         \node[state] (2) [below of=0] {2};
@@ -521,38 +531,39 @@ A_G(i, j) =
     }
     %\end{figure}
   \column{0.55\textwidth}
-    \begin{tabular}{r | c | c | c | c | c |}
+    \begin{tabular}{r | B | B | B | B | B |}
       \multicolumn{1}{c}{}
         & \multicolumn{1}{c}{\arraySubscript{0}}
         & \multicolumn{1}{c}{\arraySubscript{1}}
         & \multicolumn{1}{c}{\arraySubscript{2}}
         & \multicolumn{1}{c}{\arraySubscript{3}}
-        & \multicolumn{1}{c}{\arraySubscript{4}}\\\cline{2-6}
+        & \multicolumn{1}{c}{\arraySubscript{4}}\\\hhline{~|-----|}
       \arraySubscript{0}
-        & \mFal{} & \mTru{} & \mTru & \mFal & \mFal \\\cline{2-6}
+        & \mFal{} & \mTru{} & \mTru & \mFal & \mFal \\\hhline{~|-----|}
       \arraySubscript{1}
-        & \mFal{} & \mFal{} & \mTru & \mTru & \mTru \\\cline{2-6}
+        & \mFal{} & \mFal{} & \mTru & \mTru & \mTru \\\hhline{~|-----|}
       \arraySubscript{2}
-        & \mTru{} & \mFal{} & \mFal & \mTru & \mTru \\\cline{2-6}
+        & \mTru{} & \mFal{} & \mFal & \mTru & \mTru \\\hhline{~|-----|}
       \arraySubscript{3}
-        & \mFal{} & \mFal{} & \mFal & \mTru & \mFal \\\cline{2-6}
+        & \mFal{} & \mFal{} & \mFal & \mTru & \mFal \\\hhline{~|-----|}
       \arraySubscript{4}
-        & \mFal{} & \mFal{} & \mFal & \mFal & \mFal \\\cline{2-6}
+        & \mFal{} & \mFal{} & \mFal & \mFal & \mFal \\\hhline{~|-----|}
     \end{tabular}
 
     \vspace{1em}
     The adjacency matrix of a directed graph is asymmetric.
 \end{columns}
+\vspace{2em}
 \end{frame}
 
-\begin{frame}{Adjacency Matrix: Weighted Directed Example}
-\centering
+\begin{frame}[b]{Adjacency Matrix: Weighted Directed Example}
+% \centering
 \begin{columns}
   \column{0.33\textwidth}
     %\begin{figure}
     %\centering
     \centerline{%
-      \begin{tikzpicture}[very thick, ->, node distance=2.5cm, every loop/.style={->, in=255, out=195}, shorten >=0.5pt]
+      \begin{tikzpicture}[very thick, -stealth, node distance=2.5cm, every loop/.style={in=255, out=195}, shorten >=0.5pt]
           \node[state] (0)              {0};
           \node[state] (1) [right of=0] {1};
           \node[state] (2) [below of=0] {2};
@@ -571,28 +582,29 @@ A_G(i, j) =
     }
     %\end{figure}
   \column{0.55\textwidth}
-    \begin{tabular}{r | c | c | c | c | c |}
+    \begin{tabular}{r |  B | B | B | B | B |}
       \multicolumn{1}{c}{}
         & \multicolumn{1}{c}{\arraySubscript{0}}
         & \multicolumn{1}{c}{\arraySubscript{1}}
         & \multicolumn{1}{c}{\arraySubscript{2}}
         & \multicolumn{1}{c}{\arraySubscript{3}}
-        & \multicolumn{1}{c}{\arraySubscript{4}}\\\cline{2-6}
+        & \multicolumn{1}{c}{\arraySubscript{4}}\\\hhline{~|-----|}
       \arraySubscript{0}
-        & \mFal[$\infty$] & \mTru[10] & \mTru[1] & \mFal[$\infty$] & \mFal[$\infty$] \\\cline{2-6}
+        & \mFal[$\infty$] & \mTru[10] & \mTru[1] & \mFal[$\infty$] & \mFal[$\infty$] \\\hhline{~|-----|}
       \arraySubscript{1}
-        & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[2] & \mTru[4] & \mTru[1] \\\cline{2-6}
+        & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[2] & \mTru[4] & \mTru[1] \\\hhline{~|-----|}
       \arraySubscript{2}
-        & \mTru[3] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[1] & \mTru[5] \\\cline{2-6}
+        & \mTru[3] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[1] & \mTru[5] \\\hhline{~|-----|}
       \arraySubscript{3}
-        & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[6] & \mFal[$\infty$] \\\cline{2-6}
+        & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[6] & \mFal[$\infty$] \\\hhline{~|-----|}
       \arraySubscript{4}
-        & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] \\\cline{2-6}
+        & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] \\\hhline{~|-----|}
     \end{tabular}
 
     \vspace{1em}
-    If the edges have weights, they are stored in the matrix.
+    If the edges have weights, they are stored in the matrix.\invisible{g}
 \end{columns}
+\vspace{2em}
 \end{frame}
 
 \section*{Operations}
@@ -609,6 +621,8 @@ A_G(i, j) =
     Traverse the graph.
   \item
     Visualize the graph.
+  \item
+    Modify the graph.
 \end{itemize}
 \end{frame}
 
@@ -654,7 +668,7 @@ Recursive depth-first traversal algorithm at a given node, $v$.
 \column{0.4\textwidth}
   \begin{figure}
   \centering
-    \begin{tikzpicture}[very thick, ->, shorten >=0.5pt]
+    \begin{tikzpicture}[very thick, -stealth, shorten >=0.5pt]
 
       % Node 0
       \alt<1>{
@@ -774,7 +788,8 @@ Recursive depth-first traversal algorithm at a given node, $v$.
                 edge (4)
             (5) edge (7)
                 edge (8)
-            (6) edge (4)
+            (6) edge [bend left] (0)
+                edge (4)
                 edge (7)
             (9) edge (7)
                 edge (8);
@@ -800,7 +815,7 @@ Recursive depth-first traversal algorithm at a given node, $v$.
     \textbf{Stack}\vspace{0.25em}
 
     \ttfamily
-    \begin{tabular}{|>{\centering\arraybackslash}p{1.5em}|}
+    \begin{tabular}{|>{\columncolor{CSUcyan}\color{black}\centering\arraybackslash}m{1.5em}|}
       \only<13>{7}\\
       \only<4>{1}\only<6>{4}\only<9>{2}\only<11>{5}\only<13-14>{8}\\
       \only<2>{0}\only<4-7>{3}\only<9-15>{4}\\%\only<17>{6}\only<19>{9}\\
@@ -829,7 +844,7 @@ Recursive depth-first traversal algorithm at a given node, $v$.
 \column{0.4\textwidth}
   \begin{figure}
   \centering
-    \begin{tikzpicture}[very thick, ->, shorten >=0.5pt]
+    \begin{tikzpicture}[very thick, -stealth, shorten >=0.5pt]
 
       % Node 0
       \alt<1>{
@@ -950,7 +965,8 @@ Recursive depth-first traversal algorithm at a given node, $v$.
                 edge (4)
             (5) edge (7)
                 edge (8)
-            (6) edge (4)
+            (6) edge [bend left] (0)
+                edge (4)
                 edge (7)
             (9) edge (7)
                 edge (8);
@@ -977,13 +993,16 @@ Recursive depth-first traversal algorithm at a given node, $v$.
     \textbf{Queue}\vspace{0.25em}
 
     \ttfamily
-    \begin{tabular}{r >{\centering}p{0.6em}>{ \centering}p{0.6em} >{\centering}p{0.6em}l}
-      \cmidrule(){2-4}
-      \textleftarrow{} & \only<2>{0}\only<4>{1}\only<5-6>{3}\only<7-8>{4}\only<9>{2}\only<10-11>{4}\only<12>{5}\only<14>{7}\only<15>{8}%\only<17>{6}\only<19>{9} 
+    \begin{tabular}{r | >{\columncolor{CSUcyan}\color{black}\centering}m{0.6em} >{\columncolor{CSUcyan}\color{black}\centering}m{0.6em} >{\columncolor{CSUcyan}\color{black}\centering}m{0.6em} | l}
+      \hhline{~|---|~}
+      \textleftarrow{} 
+      & \only<2>{0}\only<4>{1}\only<5-6>{3}\only<7-8>{4}\only<9>{2}\only<10-11>{4}\only<12>{5}\only<14>{7}\only<15>{8}%\only<17>{6}\only<19>{9} 
       &
-      \only<4>{3}\only<6>{4}\only<8>{2}\only<9>{4}\only<11>{5}\only<14>{8} & \only<8>{4} & \textleftarrow{}
+      \only<4>{3}\only<6>{4}\only<8>{2}\only<9>{4}\only<11>{5}\only<14>{8} 
+      & \only<8>{4} 
+      & \textleftarrow{}
       \\
-      \cmidrule(){2-4}
+      \hhline{~|---|~}
     \end{tabular}
   \end{center}
 \end{columns}
@@ -992,7 +1011,7 @@ Recursive depth-first traversal algorithm at a given node, $v$.
 
 % \begin{figure}
 %   \centering
-%     \begin{tikzpicture}[very thick, ->]
+%     \begin{tikzpicture}[very thick, -stealth]
 
 %       % Node 0
 %       \node[state] (0)              {0};
@@ -1057,7 +1076,7 @@ Recursive depth-first traversal algorithm at a given node, $v$.
 \column{0.35\textwidth}
     \begin{figure}
     \centering
-    \begin{tikzpicture}[very thick, ->, node distance=2.5cm, shorten >=0.5pt]
+    \begin{tikzpicture}[very thick, -stealth, node distance=2.5cm, shorten >=0.5pt]
         \node[state] (0)              {0};
         \node[state] (1) [right of=0] {1};
         \node[state] (2) [below of=0] {2};
@@ -1103,7 +1122,7 @@ Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
   \column{0.4\textwidth}
     \begin{figure}
     \centering
-    \begin{tikzpicture}[very thick, ->, node distance=3cm, shorten >=0.5pt]
+    \begin{tikzpicture}[very thick, -stealth, node distance=3cm, shorten >=0.5pt]
         % Vertex 0
         \alt<1>{
           \node[state] (0)              {0};
@@ -1287,7 +1306,7 @@ Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
 \end{columns}\onslide<19>{}
 \end{frame}
 
-% \begin{tikzpicture}[very thick, ->, node distance=3cm]
+% \begin{tikzpicture}[very thick, -stealth, node distance=3cm]
 %     \node[state] (0)              {0};
 %     \node[state] (1) [above right of=0, node distance=2.12132cm] {1};
 %     \node[state] (2) [right of=0] {2};
