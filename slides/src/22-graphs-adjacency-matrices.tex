@@ -1120,7 +1120,6 @@ Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
 \begin{frame}{Shortest Path Algorithm: Example}
 \begin{columns}
   \column{0.4\textwidth}
-    \begin{figure}
     \centering
     \begin{tikzpicture}[very thick, -stealth, node distance=3cm, shorten >=0.5pt]
         % Vertex 0
@@ -1200,7 +1199,7 @@ Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
       }{
         \path (2) edge [bend right, dotted, ultra thick, green!80] node [above] {3} (1);
       }
-        \path (3) edge [bend left=80] node []{12} (1)
+        \path (3) edge [out=130,in=180] node []{12} (1)
                   edge [bend right] node [below]{7} (4)
               (4) edge [bend left=16] node [right]{10} (1);
       \alt<-14>{
@@ -1211,7 +1210,6 @@ Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
         \path (4) edge [bend right] node [below]{5} (3);
 
     \end{tikzpicture}
-    \end{figure}
   \column{0.2\textwidth}\centering
     \begin{tikzpicture}
       \ArrayLabel{smallestWeight}
