@@ -201,17 +201,10 @@ The adjacency matrix of a directed graph is asymmetric.
 
 ### Adjacency Matrix: Weighted Directed Example
 
-![](/images/graphs/graph_for_matrix_weighted-dark.svg){.dark-only}
+![A weighted directed graph and it's representation using adjacency matrix.](/images/graphs/adjacency_matrix.svg "A weighted directed graph and it's representation using adjacency matrix."){.light-only}
 
-![](/images/graphs/graph_for_matrix_weighted.svg){.light-only}
+![A weighted directed graph and it's representation using adjacency matrix.](/images/graphs/adjacency_matrix-dark.svg "A weighted directed graph and it's representation using adjacency matrix."){.dark-only}
 
-|  | `[0]` | `[1]` | `[2]` | `[3]` | `[4]` |
-|---:|:--:|:--:|:--:|:--:|:--:|
-| `[0]` | $\infty$ | **`10`** | **`1`** | $\infty$ | $\infty$ |
-| `[1]` | $\infty$ | $\infty$ | **`2`** | **`4`** | **`1`** |
-| `[2]` | **`3`** | $\infty$ | $\infty$ | **`1`** | **`5`** |
-| `[3]` | $\infty$ | $\infty$ | $\infty$ | **`6`** | $\infty$ |
-| `[4]` | $\infty$ | $\infty$ | $\infty$ | $\infty$ | $\infty$ |
 
 If the edges have weights, they are stored in the matrix.
 
