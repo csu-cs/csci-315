@@ -164,8 +164,12 @@ for texfile in "${OUTDIR}"/*.tex; do
   if [[ -z "$overlays" ]]; then
     # No overlays: compile as-is
     echo "Compiling: $texfile"
-    pdflatex.exe -output-directory="${OUTDIR}" -interaction=nonstopmode "$texfile"
-    [[ -f "${OUTDIR}/${base}.pdf" ]] && pdf2svg "${OUTDIR}/${base}.pdf" "${OUTDIR}/${base}.svg"
+    # pdflatex.exe -output-directory="${OUTDIR}" -interaction=nonstopmode "$texfile"
+    # [[ -f "${OUTDIR}/${base}.pdf" ]] && pdf2svg "${OUTDIR}/${base}.pdf" "${OUTDIR}/${base}.svg"
+
+    latex.exe -output-directory="${OUTDIR}" -interaction=nonstopmode "$texfile"
+    [[ -f "${OUTDIR}/${base}.dvi" ]] && dvisvgm.exe --font-format=woff -o "${OUTDIR}/${base}.svg" "${OUTDIR}/${base}.dvi"
+
     [[ -f "${OUTDIR}/${base}.svg" ]] && rm -f "${OUTDIR}/${base}.log" "${OUTDIR}/${base}.aux"
   else
     echo "Overlays detected in $base: generating cumulative frames"
@@ -250,10 +254,18 @@ for texfile in "${OUTDIR}"/*.tex; do
       ' "$texfile" > "$newfile"
 
 
-      pdflatex.exe -output-directory="${OUTDIR}" -interaction=nonstopmode "$newfile"
+      # pdflatex.exe -output-directory="${OUTDIR}" -interaction=nonstopmode "$newfile"
 
-      if [ -f "${OUTDIR}/${outname}.pdf" ]; then
-        pdf2svg "${OUTDIR}/${outname}.pdf" "$OUTDIR/${outname}.svg"
+      # if [ -f "${OUTDIR}/${outname}.pdf" ]; then
+      #   pdf2svg "${OUTDIR}/${outname}.pdf" "$OUTDIR/${outname}.svg"
+      #   rm -f "${OUTDIR}/${outname}.aux"
+      #   # rm -f "$newfile" "${OUTDIR}/${outname}.log" "${OUTDIR}/${outname}.aux"
+      # fi
+
+      latex.exe -output-directory="${OUTDIR}" -interaction=nonstopmode "$newfile"
+
+      if [ -f "${OUTDIR}/${outname}.dvi" ]; then
+        dvisvgm.exe  --font-format=woff -o "${OUTDIR}/${outname}.svg" "${OUTDIR}/${outname}.dvi"
         rm -f "${OUTDIR}/${outname}.aux"
         # rm -f "$newfile" "${OUTDIR}/${outname}.log" "${OUTDIR}/${outname}.aux"
       fi
@@ -269,25 +281,25 @@ for texfile in "${OUTDIR}"/*.tex; do
   fi
 done
 
-# Change the height and width of all SVGs to be 125% of their original size using sed.
-for svg in "$OUTDIR"/*.svg; do
-  if [ -f "$svg" ]; then
-    # Extract current width and height (assumes px units or no units)
-    width=$(sed -n 's/.*<svg[^>]*width="\([0-9.]*\)[^"]*".*/\1/p' "$svg" | head -n1)
-    height=$(sed -n 's/.*<svg[^>]*height="\([0-9.]*\)[^"]*".*/\1/p' "$svg" | head -n1)
-    # Only proceed if both width and height are found and are numbers
-    if [[ $width =~ ^[0-9.]+$ && $height =~ ^[0-9.]+$ ]]; then
-      new_width=$(awk "BEGIN {printf \"%.3f\", $width * 1.25}")
-      new_height=$(awk "BEGIN {printf \"%.3f\", $height * 1.25}")
-      # Replace width and height in the SVG file
-      sed -i "0,/\(<svg[^>]*width=\"\)[0-9.]\+\([^\"]*\"\)/s//\1${new_width}\2/" "$svg"
-      sed -i "0,/\(<svg[^>]*height=\"\)[0-9.]\+\([^\"]*\"\)/s//\1${new_height}\2/" "$svg"
-      echo "Resized $svg"
-    else
-      echo "Could not extract width/height for $svg"
-    fi
-  fi
-done
+# # Change the height and width of all SVGs to be 125% of their original size using sed.
+# for svg in "$OUTDIR"/*.svg; do
+#   if [ -f "$svg" ]; then
+#     # Extract current width and height (assumes px units or no units)
+#     width=$(sed -n "s/.*<svg[^>]*width=[\"']\([0-9.]\+\)[^\"']*[\"'].*/\1/p" "$svg" | head -n1)
+#     height=$(sed -n "s/.*<svg[^>]*height=[\"']\([0-9.]\+\)[^\"']*[\"'].*/\1/p" "$svg" | head -n1)
+#     # Only proceed if both width and height are found and are numbers
+#     if [[ $width =~ ^[0-9.]+$ && $height =~ ^[0-9.]+$ ]]; then
+#       new_width=$(awk "BEGIN {printf \"%.4f\", $width * 1.25}")
+#       new_height=$(awk "BEGIN {printf \"%.4f\", $height * 1.25}")
+#       # Replace width and height in the SVG file
+#       sed -i "0,/\(<svg[^>]*width=[\"']\)[0-9.]\+\([^\"']*[\"']\)/s//\1${new_width}\2/" "$svg"
+#       sed -i "0,/\(<svg[^>]*height=[\"']\)[0-9.]\+\([^\"']*[\"']\)/s//\1${new_height}\2/" "$svg"
+#       echo "Resized $svg"
+#     else
+#       echo "Could not extract width/height for $svg"
+#     fi
+#   fi
+# done
 
 # Clean up generated PDFs
 # rm -f $OUTDIR/*.pdf

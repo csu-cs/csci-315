@@ -4,6 +4,9 @@
 \usepackage{arrays}
 \usepackage{linked-lists}
 \usepackage{algpseudocode}
+\usepackage{hhline}
+\usepackage{colortbl}
+\usepackage{booktabs}
 
 \title{\Huge Graphs\\\LARGE via Adjacency Lists}
 \subtitle{CSCI 315: Data Structure Analysis\\Chapter 20}
@@ -90,14 +93,20 @@
 % }
 
 % Used to stylize 0 in the adjacency matrix
-\newcommand{\mFal}[1][0]{\texttt{\textcolor{CSUgold}{#1}}}
-\newcommand{\mTru}[1][1]{\texttt{\textbf{#1}}}
+\newcommand{\mFal}[1][0]{\texttt{\textcolor{CSUblue!90!CSUcyan}{#1}}}
+\newcommand{\mTru}[1][1]{\texttt{\textbf{\textcolor{black}{#1}}}}
 
 \newcommand{\vertMark}[1][CSUgold]{full=#1}
 
-\newcommand{\textInf}{$\infty$}
+\newcommand{\textInf}{\(\infty\)}
 
 \newcommand{\arraySubscript}[1]{\texttt{\textcolor{white!75!CSUblue}{[}{#1}\textcolor{white!75!CSUblue}{]}}}
+
+% Define a new column type with a background color
+\newcolumntype{B}{>{\columncolor{CSUcyan}}c}
+
+% Make table lines thicker
+\setlength{\arrayrulewidth}{1.2pt}  % default is 0.4pt (very thick is 1.2pt)
 
 
 \begin{document}
@@ -124,10 +133,9 @@
   \centering
   \begin{columns}
     \column{0.33\textwidth}
-      %\begin{figure}
-      %\centering
-      \centerline{%
-        \begin{tikzpicture}[very thick, ->, node distance=2.5cm, every loop/.style={->, in=255, out=195}, shorten >=0.5pt]
+      \centering
+      \begin{figure}
+        \begin{tikzpicture}[very thick, -stealth, node distance=2.5cm, every loop/.style={in=255, out=195}, shorten >=0.5pt]
             \node[state] (0)              {0};
             \node[state] (1) [right of=0] {1};
             \node[state] (2) [below of=0] {2};
@@ -143,29 +151,33 @@
                       edge             node [left] {1} (4)
                   (3)  edge [loop] node [below] {6} ();
         \end{tikzpicture}%
-      }
-      %\end{figure}
+        \caption{(a) Example Graph}
+      \end{figure}
     \column{0.55\textwidth}
-      \begin{tabular}{r | c | c | c | c | c |}
-        \multicolumn{1}{c}{}
-          & \multicolumn{1}{c}{\arraySubscript{0}}
-          & \multicolumn{1}{c}{\arraySubscript{1}}
-          & \multicolumn{1}{c}{\arraySubscript{2}}
-          & \multicolumn{1}{c}{\arraySubscript{3}}
-          & \multicolumn{1}{c}{\arraySubscript{4}}\\\cline{2-6}
-        \arraySubscript{0}
-          & \mFal[$\infty$] & \mTru[10] & \mTru[1] & \mFal[$\infty$] & \mFal[$\infty$] \\\cline{2-6}
-        \arraySubscript{1}
-          & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[2] & \mTru[4] & \mTru[1] \\\cline{2-6}
-        \arraySubscript{2}
-          & \mTru[3] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[1] & \mTru[5] \\\cline{2-6}
-        \arraySubscript{3}
-          & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[6] & \mFal[$\infty$] \\\cline{2-6}
-        \arraySubscript{4}
-          & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] \\\cline{2-6}
-      \end{tabular}
-  
-      \vspace{1em}
+      \centering
+      \begin{figure}
+        
+        \begin{tabular}{r | B | B | B | B | B |}
+          \multicolumn{1}{c}{}
+            & \multicolumn{1}{c}{\arraySubscript{0}}
+            & \multicolumn{1}{c}{\arraySubscript{1}}
+            & \multicolumn{1}{c}{\arraySubscript{2}}
+            & \multicolumn{1}{c}{\arraySubscript{3}}
+            & \multicolumn{1}{c}{\arraySubscript{4}}\\\hhline{~|-----|}
+          \arraySubscript{0}
+            & \mFal[\(\infty{}\)] & \mTru[10] & \mTru[1] & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] \\\hhline{~|-----|}
+          \arraySubscript{1}
+            & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mTru[2] & \mTru[4] & \mTru[1] \\\hhline{~|-----|}
+          \arraySubscript{2}
+            & \mTru[3] & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mTru[1] & \mTru[5] \\\hhline{~|-----|}
+          \arraySubscript{3}
+            & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mTru[6] & \mFal[\(\infty{}\)] \\\hhline{~|-----|}
+          \arraySubscript{4}
+            & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] & \mFal[\(\infty{}\)] \\\hhline{~|-----|}
+        \end{tabular}
+        \caption{(b) Adjacency Matrix Representation}
+      \end{figure}
+      % \vspace{1em}
       If the edges have weights, they are stored in the matrix.
   \end{columns}
 \end{frame}
@@ -189,7 +201,7 @@ Implemented using a vector of lists. Each node of a list represents an edge (des
   \pause%
     \begin{figure}
     \centering
-    \begin{tikzpicture}[very thick, ->, node distance=2.5cm, shorten >=0.5pt]
+    \begin{tikzpicture}[very thick, -stealth, node distance=2.5cm, shorten >=0.5pt]
         \node[state] (0)              {0};
         \node[state] (1) [right of=0] {1};
         \node[state] (2) [below of=0] {2};
@@ -205,7 +217,10 @@ Implemented using a vector of lists. Each node of a list represents an edge (des
                   edge             node [left] {12} (4)
 
               (3) edge             node [above]{2}(4);
+
+        % \node[anchor=south] at (current bounding box.south) {(a)};
     \end{tikzpicture}
+    % \caption{(a) Example Graph}
     \end{figure}
 
 \column{0.67\textwidth}
@@ -247,6 +262,7 @@ Implemented using a vector of lists. Each node of a list represents an edge (des
         \coordinate (ptr) at (val);
         \fill (val) circle(2pt);
     \end{tikzpicture}
+    % \caption{(b) Adjacency Lists Representation}
     \end{figure}
 
 \end{columns}
@@ -552,33 +568,33 @@ Well-known algorithms to find a minimal spanning tree \\of an \emph{undirected} 
   \centering
 
   \begin{tabular}{c m{2.25cm}}
-  \hline
+  \toprule
     Edge & Weight\\
-  \hline
-    \alt<-21>{$(0, 1)$ & $6$ \only<21>{(least)}}{$(3, 4)$ & $8$}\\
+  \midrule
+    \alt<-21>{\((0, 1)\) & \(6\) \only<21>{(least)}}{\((3, 4)\) & \(8\)}\\
     \alt<-5>{%
-      $(0, 2)$ & $5$ \only<5->{(least)}%
+      \((0, 2)\) & \(5\) \only<5->{(least)}%
     }{%
       \alt<-21>{%
-        $(3, 4)$ & $8$%
+        \((3, 4)\) & \(8\)%
       }{%
         \alt<-23>{%
-          $(2, 5)$ & $7$ \only<23->{(least)}%
+          \((2, 5)\) & \(7\) \only<23->{(least)}%
         }{%
-          $(1, 4)$ & $10$%
+          \((1, 4)\) & \(10\)%
         }%
       }%
     }\\
     \alt<-21>{%
-      \only<1>{$(0, 3)$ & $2$ (least)}%
-      \only<4-5>{$(3, 4)$ & $8$}\only<8->{$(2, 5)$ & $7$}%
+      \only<1>{\((0, 3)\) & \(2\) (least)}%
+      \only<4-5>{\((3, 4)\) & \(8\)}\only<8->{\((2, 5)\) & \(7\)}%
     }{%
-      \only<-23>{$(1, 4)$ & $10$}%
+      \only<-23>{\((1, 4)\) & \(10\)}%
     }\\
-    \only<8-9>{$(2, 6)$ & $5$ \only<9->{(least)}}%
-    \only<12-13>{$(6, 1)$ & $4$ \only<13->{(least)}}%
-    \only<16-17>{$(1, 4)$ & $2$ \only<17->{(least)}}\only<20-21>{$(4, 5)$ & $10$}\\
-  \hline
+    \only<8-9>{\((2, 6)\) & \(5\) \only<9->{(least)}}%
+    \only<12-13>{\((6, 1)\) & \(4\) \only<13->{(least)}}%
+    \only<16-17>{\((1, 4)\) & \(2\) \only<17->{(least)}}\only<20-21>{\((4, 5)\) & \(10\)}\\
+  \bottomrule
   \end{tabular}
 \end{columns}\onslide<25>{}
 \end{frame}
