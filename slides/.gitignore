@@ -11,3 +11,4 @@ objs/
 *.synctex.gz
 *.toc
 *.vrb
+*.bak

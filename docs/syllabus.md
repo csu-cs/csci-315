@@ -65,7 +65,7 @@ the cheaper 7th edition for this course.*
 
 This class is driven through [GitHub](https://github.com/). Assignments and
 lectures are located on GitHub at
-<https://github.com/csu-cs/CSCI-315-2025-Fall>. If you are not able to access
+<https://github.com/csu-cs/CSCI-315-2026-Spring>. If you are not able to access
 it, please send me an email so I can grant you access.
 
 ABET Learning Outcomes
@@ -87,35 +87,14 @@ Students completing this course will have an ability to:
 6.  Apply computer science theory and software development fundamentals to 
     produce computing-based solutions.
 
-Objectives and Tasks
---------------------
-
-**From previous experience, those who keep up with the work do well.**
-
-**Section 1 Topics**:  
-Unix/Linux topics: Bash, Compilation, Pointers, Memory Management, 
-Performance Analysis, Big-O
-
-**Section 2 Topics**:  
-Arrays (review), Abstract Data Types (Classes), Linked Lists,
-Object-Oriented Programming, Inheritance, Strings.
-
-**Section 3 Topics**:  
-Stacks, Queues, Templates, Standard Template Library (STL), Casting, 
-Sorting (Insertion, Selection, Mergesort, Quicksort), Streams.
-
-**Section 4 Topics**:  
-Recursion, Binary Search Trees (BST), Maps, Heaps, Priority Queues, Heapsort,
-Hash tables, Operator Overloads, Graphs.
-
 Tentative Weekly Schedule
 -------------------------
 
-The weekly schedule is subject to change.
+The weekly schedule is subject to change. **Those who keep up with the work generally do well.**
 
 | Week | Lectures                                    | Related Assignment    |
 |------|---------------------------------------------|-----------------------|
-|  1A  | [Introduction](/lectures/01-introduction), [Unix Commands](/lectures/01-basic-unix) | Lab 01                |
+|  1A  | [Introduction](/lectures/01-introduction) and [Unix/Linux Commands](/lectures/01-basic-unix) | Lab 01                |
 |  1B  | [C++ Compilation is Linux](/lectures/02-unix-compilation)  | Lab 02                |
 |  2A  | [Memory Management](/lectures/03-memory-management) | Lab 03                |
 |  2B  | [Pointers](/lectures/04-pointers) and [Testing](/lectures/04-testing) | Lab 04, 05, & Ethics  |
@@ -129,22 +108,22 @@ The weekly schedule is subject to change.
 |  6B  | [Stacks](/lectures/12-stacks), [Queues](/lectures/12-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |
 |  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) | Project 2 & Lab 13    |
 |  7B  | Midterm Exam                                |                       |
-|  8A  | *Fall Break* (No Class)                     |                       |
-|  8B  | [Binary Search Trees (Part 1)](/lectures/14-binary-trees-1) | Lab 14                |
-|  9A  | [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete) & [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |
-|  9B  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
-| 10A  | [Standard Template Library](/lectures/17-standard-template-library) | Lab 17                |
-| 10B  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
-| 11A  | [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | Project 3 & Lab 19    |
-| 11B  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |
-| 12A  | [B-Trees](/lectures/21-b-trees) | Lab 21                |
-| 12B  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |
-| 13A  | [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists) | Lab 23                |
-| 13B  | [Quadtrees](/lectures/24-quadtrees) | Lab 24                |
-| 14A  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |                       |
-| 14B  | *Thanksgiving Holiday* (No Class)           |                       |
-| 15A  | [Comparison of Data-Structure Performance](/lectures/26-review)    | Make-up Work          |
-| 16B  | Final Exam on 12/11 at 10:30 a.m. [per the Exam Schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
+|  8A  | [Binary Search Trees: Insertion, Search, \& Traversal](/lectures/14-binary-trees-1) | Lab 14                |
+|  8B  | [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete) & [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |
+|  9   | *Spring Break* (No Class)                     |                       |
+| 10A  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
+| 10B  | [Standard Template Library](/lectures/17-standard-template-library) | Lab 17                |
+| 11A  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
+| 11B  | [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | Project 3 & Lab 19    |
+| 12A  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |
+| 12B  | [B-Trees](/lectures/21-b-trees) | Lab 21                |
+| 13A  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |
+| 13B  | [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists) | Lab 23                |
+| 14A  | [Quadtrees](/lectures/24-quadtrees) | Lab 24                |
+| 14B  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |                       |
+| 15A  | [Comparison of Data-Structure Performance](/lectures/26-review)    |                    |
+| 15B  | [Final Exam (Part 1)](/guides/final-study-guide)    | Make-up Work          |
+| 16B  | [Final Exam (Part 2)](/guides/final-study-guide) on 4/30 at 8 a.m. [per the Exam Schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
 
 {#schedule-table}
 
@@ -169,7 +148,7 @@ Grading
 The assessment categories will be weighted as follows.
 
 | Task         | Percentage |
-|-------------:|:----------:|
+|-------------:|-----------:|
 | Ethics Paper |  5%        |
 | Labs         | 36%        |
 | Projects     | 30%        |
@@ -178,23 +157,25 @@ The assessment categories will be weighted as follows.
 
 ### Grading Scale for Letter Grade
 
-Letter grades will be calculated from the following ranges.
+The final letter grades will be calculated from the following ranges.
 
-| Average   | Letter Grade |
-|:---------:|--------------|
-| 90 – 100  | A            |
-| 87 – 89.9 | B+           |
-| 86 – 80.9 | B            |
-| 77 – 79.9 | C+           |
-| 70 – 76.9 | C            |
-| 60 – 69.9 | D            |
-| below 60  | F            |
+| Letter Grade | Grade Range % | Grade Points per Credit |
+|:-------------|:--------------|:------------------------|
+| A            | 90% and 100%  | 4.0                     |
+| B+           | 87% and < 90% | 3.5                     |
+| B            | 80% and < 87% | 3.0                     |
+| C+           | 77% and < 80% | 2.5                     |
+| C            | 70% and < 77% | 2.0                     |
+| D            | 60% and < 70% | 1.0                     |
+| F            | less than 60% | 0                       |
+| FA           | Failure for Absences | 0                |
+| FD           | Academic Dishonesty | 0                 |
 
 ### Late Work
 
 If a lab or project is submitted within 7 days of the deadline (and before the
 last day of class), the work will earn 80% credit. After 7 days, the work will
-earn 0% credit. Late work will **not** be accepted after December 8, 2025. Exams
+earn 0% credit. Late work will **not** be accepted after April 23, 2026. Exams
 and papers may **not** be submitted late.
 
 ### Teamwork and Assistance
@@ -223,7 +204,7 @@ Any student who has missed 25% of course meetings will be awarded a grade of FA
 (Failure due to Absences). In this course, **FA is awarded after missing 7 class
 meetings**. Three (3) instances of tardiness or leaving class early are equal to
 one absence. For more information, please see the [CSU Excessive Absence
-Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-10-revised-August-2022.pdf).
+Policy](https://www.charlestonsouthern.edu/wp-content/uploads/policy-r-10-revised-sept-2025.pdf).
 If you arrive after the roll is called, check in with the professor directly
 after class so that you will be recorded as tardy instead of absent.
 
@@ -238,7 +219,7 @@ for 28 consecutive days will be awarded a grade of FA (Failure due to Absences).
 Academic activities include completing assignments, quizzes, and exams (simply
 logging in does **not** count as attendance). For more information, please see
 [CSU's Excessive Absences
-policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-10-revised-August-2022.pdf).
+policy](https://www.charlestonsouthern.edu/wp-content/uploads/policy-r-10-revised-sept-2025.pdf).
 
 Course, Department, and University Policies
 -------------------------------------------
@@ -247,7 +228,7 @@ Course, Department, and University Policies
 
 All students are expected to adhere to [Charleston Southern University's 
 Academic Integrity 
-Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-58-updated-July-2025.pdf) 
+Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-58-updated-November-2025.pdf) 
 and the [Computer Science Departmental 
 Guidelines](/integrity). **All assignments** 
 are individual assignments unless explicitly specified by the professor. Do not 
@@ -304,41 +285,44 @@ coursework.](/integrity#artificial-intelligence-ai)
 [Click here for additional guidance on academic integrity for Computer Science
 coursework.](/integrity)
 
-#### A Community of Honor
+### A Community of Honor
 
->   As a liberal arts university committed to the Christian faith,
->   Charleston Southern University seeks to develop ethical men and women
->   of disciplined, creative minds and lives that focus on leadership,
->   service, and learning. The Honor System of Charleston Southern
->   University is designed to provide an academic community of trust in
->   which students can enjoy the opportunity to grow both intellectually
->   and personally. For these purposes, the following rules and guidelines
->   will be applied.
+> As a liberal arts university committed to the Christian faith, Charleston 
+> Southern University seeks to develop ethical men and women of disciplined, 
+> creative minds and lives, focusing on leadership, service, and learning. The 
+> Honor System of Charleston Southern University is designed to provide an 
+> academic community of trust in which students can enjoy the opportunity to 
+> grow both intellectually and personally. For these purposes, the following 
+> rules and guidelines will be applied.
 
->   “*Academic Dishonesty*” is the transfer, receipt, or use of academic 
->   information, or the attempted transfer, receipt, or use of academic 
->   information in a manner not authorized by the instructor or by university 
->   rules. It includes, but is not limited to, cheating, plagiarism, and 
->   forgery, as well as aiding or encouraging another to commit academic 
->   dishonesty.
+### Academic Dishonesty
 
->   “*Cheating*” is defined as wrongfully giving, taking, or presenting any 
->   information or material borrowed from another source (including the 
->   Internet) by a student with the intent of aiding himself or another in 
->   academic work. This includes, but is not limited to, a test, examination, 
->   presentation, experiment, or any written assignment, which is considered in 
->   any way in the determination of the final grade. Using AI in violation of a 
->   course or assessment’s stated AI protocol is cheating.
+> “*Academic Dishonesty*” is the transfer, receipt, or use of academic 
+> information, or the attempted transfer, receipt, or use of academic 
+> information in a manner not authorized by the instructor or by university 
+> rules. It includes, but is not limited to, cheating, plagiarism, and forgery 
+> as well as aiding or encouraging another to commit academic dishonesty.
 
->   “*Plagiarism*” is the taking or attempted taking of an idea, a writing, a 
->   graphic, a music composition, art, or datum of another person or Artificial 
->   Intelligence (AI) tool without giving proper credit and presenting or 
->   attempting to present it as one's own, with or without intent. It is also 
->   taking written materials of one's own that have been used for a previous 
->   course assignment and using them without reference to them in their original 
->   form. Any use of AI models without proper citation is plagiarism. Students 
->   are encouraged to ask their instructor(s) for clarification regarding their 
->   academic dishonesty standards.
+> “*Cheating*” is defined as wrongfully giving, taking, or presenting any 
+> information or material borrowed from another source (including the Internet) 
+> by a student with the intent of aiding themself or another in academic work. 
+> This includes, but is not limited to, a test, examination, presentation, 
+> experiment, or any written assignment, which is considered in any way in the 
+> determination of the final grade. Using AI in violation of a course or 
+> assessment’s stated AI protocol is cheating.
+
+> “*Plagiarism*” is the taking or attempted taking of an idea, a writing, a 
+> graphic, music composition, art, or datum of another person or Artificial 
+> Intelligence (AI) tool without giving proper credit and presenting or 
+> attempting to present it as one's own, with or without intent. It is also 
+> taking written material of one's own that have been used for a previous 
+> course assignment and using it without reference to it in its original form. 
+> Any use of AI models without proper citation is plagiarism.
+
+> Students are encouraged to ask their instructor(s) for clarification 
+> regarding their academic dishonesty standards. Instructors will include 
+> academic dishonesty/integrity standards, including explicit permissible AI 
+> use, on their course syllabi and each individual assignment.
 
 Violations of this policy will result in academic discipline, up to and
 including expulsion from the University.
@@ -410,12 +394,12 @@ CSU's basic netiquette rules are:
     topic.
 
 -   Respect the time and availability of students, faculty, and staff. Emails
-    should be addressed within 24 hours of receipt. Remember that
+    should be addressed within one business day. Remember that
     traditional faculty work hours are 8 a.m. - 5 p.m. EST.
 
 ### Accessibility Services
 
-Any student who may need accommodations should review the requirements/procedures on the [Accessibility Services website](https://www.charlestonsouthern.edu/academics/student-success-center/accessibility-services/). Once approved to receive accommodations, the student must contact the instructor.
+Any student who may need accommodations should review the requirements/procedures on the [Accessibility Services website](https://www.charlestonsouthern.edu/student-life/student-support/student-success/accessibility-services/). Once approved to receive accommodations, the student must contact the instructor.
 
 ### Title IX: Confidentiality and Responsible Employee Statement
 Charleston Southern University is committed to maintaining a safe learning environment for everyone. In accordance with Title IX of the Education Amendments of 1972, the university prohibits any form of sexual harassment, including quid pro quo harassment, hostile environments, sexual assault, dating/domestic violence, and stalking. This policy applies to all students, employees, and visitors.
@@ -442,6 +426,6 @@ import { onMounted } from 'vue';
 import { appendScheduleDates } from '/.vitepress/theme/appendScheduleDates.js';
 
 onMounted(() => {
-    appendScheduleDates("2025-08-25");
+    appendScheduleDates("2026-01-12");
 });
 </script>

@@ -100,7 +100,7 @@ GitHub.
 
 1.  Click the email link to become a collaborator with the course repository.
 
-2.  Fork the [course repository](https://github.com/csu-cs/CSCI-315-2025-Fall/).
+2.  Fork the [course repository](https://github.com/csu-cs/CSCI-315-2026-Spring/).
 
 3.  Clone your fork of the class repository.
 
@@ -148,7 +148,7 @@ pull updates from the course repository to your forked repository.
 3.  Add the course repository as a new remote named upstream.
 
     ```bash
-     git remote add upstream https://github.com/csu-cs/CSCI-315-2025-Fall.git
+     git remote add upstream https://github.com/csu-cs/CSCI-315-2026-Spring.git
     ```
 
 4.  Set the merging method for divergent branches.

@@ -12,13 +12,30 @@ export function appendScheduleDates(startMonday) {
         if (match) {
             const weekNum = parseInt(match[1], 10);
             const dayLetter = match[2].toUpperCase();
-            const dayOffset = (dayLetter === "A" ? 2 : 4) + (weekNum - 1) * 7;
+            const dayOffset = (dayLetter === "A" ? 1 : 3) + (weekNum - 1) * 7;
 
             const newDate = new Date(monday);
             newDate.setDate(monday.getDate() + dayOffset);
 
             const formatted = `${newDate.getMonth() + 1}/${newDate.getDate()}`;
             cell.textContent = `${cell.textContent} (${formatted})`;
+        }
+        else
+        {
+            const match = /^(\d+)$/i.exec(cell.textContent.trim());
+            if (match) {
+                const weekNum = parseInt(match[1], 10);
+                const dayOffset = (weekNum - 1) * 7;
+
+                const newMonday = new Date(monday);
+                newMonday.setDate(monday.getDate() + dayOffset);
+
+                const newFriday = new Date(monday);
+                newFriday.setDate(monday.getDate() + dayOffset + 4);
+
+                const formatted = `${newMonday.getMonth() + 1}/${newMonday.getDate()} – ${newFriday.getMonth() + 1}/${newFriday.getDate()}`;
+                cell.textContent = `${cell.textContent} (${formatted})`;
+            }
         }
     }
 }
