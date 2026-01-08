@@ -120,9 +120,9 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 | 13A  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |
 | 13B  | [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists) | Lab 23                |
 | 14A  | [Quadtrees](/lectures/24-quadtrees) | Lab 24                |
-| 14B  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |                       |
-| 15A  | [Comparison of Data-Structure Performance](/lectures/26-review)    |                    |
-| 15B  | [Final Exam (Part 1)](/guides/final-study-guide)    | Make-up Work          |
+| 14B  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |  |
+| 15A  | [Comparison of Data-Structure Performance](/lectures/26-review)    |        |
+| 15B  | [Final Exam (Part 1)](/guides/final-study-guide)    |           |
 | 16B  | [Final Exam (Part 2)](/guides/final-study-guide) on 4/30 at 8 a.m. [per the Exam Schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
 
 {#schedule-table}
