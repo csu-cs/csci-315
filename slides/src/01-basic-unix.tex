@@ -27,8 +27,8 @@
 
 \begin{frame}{Learning Outcomes}
 \begin{itemize}
-    \item Identify and use common Unix/Linux commands for file and directory management.
-    \item Choose and operate basic text editors in a Unix environment.
+    \item Identify and use common Unix/Linux commands \\for file and directory management.
+    \item Operate basic text editors in a Unix environment.
     \item Understand and apply file permissions and user/group management commands.
     \item Use input/output redirection and pipes to manipulate command-line data.
     \item Utilize regular expressions for pattern matching in file operations.
@@ -108,10 +108,10 @@ Lightweight with a high learning curve, but \textit{fast} once learned.
 \begin{columns}
 \column{0.6\textwidth}
 \begin{itemize}
-\item Lots of features -- tons of capabilities
+\item Lots of features --- tons of capabilities
 \item LISP
 \item Your hand may be warped from all the hotkeys.
-\item Not always the same on every machine
+\item Not always the same on every machine.
 \end{itemize}
 \column{0.4\textwidth}
 \includegraphics[width=1\textwidth]{emacs-meme}
@@ -153,7 +153,7 @@ Lightweight with a high learning curve, but \textit{fast} once learned.
 
 \section{Directory Operations}
 % \subsection{}
-\begin{frame} {ls -- List files and directories.}
+\begin{frame} {\texttt{\textbf{ls}} -- List files and directories.}
 \lstinline{ls} displays a list of files in the current working directory, like
 \lstinline{dir} in DOS.
 \vspace{1em}
@@ -169,7 +169,7 @@ Lightweight with a high learning curve, but \textit{fast} once learned.
 \end{tabular}
 \end{frame}
 
-\begin{frame}{cd -- Change directories (change the working directory).}
+\begin{frame}{\texttt{\textbf{cd}} -- Change the working directory.}
 Usage: cd \lstinline{DIRECTORY}\\\vspace{1em}
 
 \begin{tabular}{l l}
@@ -181,7 +181,7 @@ Usage: cd \lstinline{DIRECTORY}\\\vspace{1em}
 \end{frame}
 
 
-\begin{frame}{Making Directories}
+\begin{frame}{\texttt{\textbf{mkdir}} -- Making Directories}
   \lstinline{mkdir DIRECTORY} -- Create the DIRECTORY(ies) that do not already exist.
   \begin{tabularx}{1\textwidth}{l X}
     \lstinline{mkdir temp}            & Make a directory named \lstinline{temp}.\\
@@ -190,8 +190,8 @@ Usage: cd \lstinline{DIRECTORY}\\\vspace{1em}
   \end{tabularx}\\\vspace{1em}
 \end{frame}
 
-\begin{frame}{Removing Directories}
-\lstinline{rmdir DIRECTORY} -- Remove the DIRECTORY(ies) if they are empty.
+\begin{frame}{\texttt{\textbf{rmdir}}/\texttt{\textbf{rm}} -- Removing Directories}
+\lstinline{rmdir DIRECTORY} -- Remove \textit{empty} DIRECTORY(ies).
   \begin{tabularx}{1\textwidth}{l X}
     \lstinline{rmdir temp}            & Remove a directory named \lstinline{temp}.\\
     \lstinline{rmdir temp2}           & Remove a directory named \lstinline{temp2}\\
@@ -204,7 +204,7 @@ Usage: cd \lstinline{DIRECTORY}\\\vspace{1em}
 
 \begin{frame}{Directory Usage}
 \begin{itemize}
-\item Any command that accepts a file or folder as a parameter assumes that the file is in the present working directory (PWD) unless told otherwise.
+\item Any command that accepts a file or folder as a parameter assumes that the file is in the \emph{present working directory} (PWD) unless told otherwise.
 \item Use relative or absolute paths to indicate where a file is.
 \item Absolute paths start with a \lstinline{/} and the path begins from the highest level.
 \item Relative paths NEVER start with a \lstinline{/} and are how to get to the file from the PWD.
@@ -424,9 +424,11 @@ Usage: \lstinline{rm [OPTIONS] [FILES]}
 \begin{itemize}
   \item \lstinline{ls -al | more}
   \item \lstinline{more data1.txt}
-  \item Type \lstinline{:q} to exit.
 \end{itemize}
 \item \lstinline{less} -- Hmmm, what does less do?
+  \begin{itemize}
+    \item Type \lstinline{:q} to exit.
+  \end{itemize}
 \item \lstinline{cat} -- Display or \textit{concatenate} files.
 \begin{itemize}
 \item \lstinline{cat data1.txt | more}
@@ -659,6 +661,22 @@ Sets of special characters that help you match a pattern.\\\vspace{0.5em}
 \end{center}
 \end{frame}
 
+\begin{frame}[fragile]{}
+  \begin{itemize}
+  \item The password file is \texttt{/etc/passwd}, and it is the database file for all users on the system. The format of each line is as follows:\\
+  \lstinline{username:password:uid:gid:gecos:homedir:shell}\\
+  \item Example:\\
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, identifierstyle=\color{white}]
+root:x:0:0:root:/root:/bin/bash
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+rpc:x:32:32:Portmapper RPC user:/:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
+\end{lstlisting}
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Group Hug}
   Groups establish relationships among users where they\\
   share a common set of permissions.
@@ -692,22 +710,6 @@ Sets of special characters that help you match a pattern.\\\vspace{0.5em}
   \end{tabular}
 
 \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{}
-  \begin{itemize}
-  \item The password file is \texttt{/etc/passwd}, and it is the database file for all users on the system. The format of each line is as follows:\\
-  \lstinline{username:password:uid:gid:gecos:homedir:shell}\\
-  \item Example:\\
-\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, identifierstyle=\color{white}]
-root:x:0:0:root:/root:/bin/bash
-sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
-rpc:x:32:32:Portmapper RPC user:/:/sbin/nologin
-rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
-nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
-mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
-\end{lstlisting}
-  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{File Permissions using \texttt{\textbf{chmod}}}

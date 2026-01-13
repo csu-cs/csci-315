@@ -41,26 +41,36 @@
 
 \section{Defining the Topic}
 
-\begin{frame}{What is a Data Structure?}
+\begin{frame}{\alt<-4>{What is a Data Structure?}{Why?}}
 \begin{columns}[c]
 \column{0.56\textwidth}
-\begin{itemize}
-\item<2-> A \emph{data structure} is a scheme for organizing data in computer memory.
-\item<3-> Common data structures:
+\begin{overlayarea}{\linewidth}{10\baselineskip}
+\alt<0-4>{%
   \begin{itemize}
-    \item lists,
-    \item arrays,
-    \item stacks,
-    \item queues,
-    \item heaps,
-    \item trees, and
-    \item graphs.
+  \item<2-> A \emph{data structure} is a scheme for organizing data in computer memory.
+  \item<3-> Common data structures:
+    \begin{itemize}
+      \item lists,
+      \item arrays,
+      \item stacks,
+      \item queues,
+      \item heaps,
+      \item trees, and
+      \item graphs.
+    \end{itemize}
   \end{itemize}
-\end{itemize}
+}{%
+  \begin{itemize}
+  \item<6-> How the data is \emph{organized} affects the performance of different tasks.
+  \item<7-> Computer programmers choose data structures based on the \emph{nature of the data} and the \emph{processes performed} on that data.
+  \end{itemize}
+}
+\end{overlayarea}
+
 \column{0.44\textwidth}
 \centering%
 \onslide<4->{\begin{forest}
-  [A, for tree={minimum size=1.5em, inner sep=0, font=\small}
+    [A, for tree={minimum size=1.5em, inner sep=0}
     [B
       [D,
         [H
@@ -79,52 +89,55 @@
     ]
   ]
 \end{forest}}\vspace{6pt}
-\end{columns}
+\end{columns}\onslide<7>{}
 \end{frame}
 
-\begin{frame}{Why?}
-\begin{columns}[c]
-\column{0.56\textwidth}
-\begin{itemize}
-\item<2-> How the data is \emph{organized} affects the performance of different tasks.
-\item<3-> Computer programmers choose data structures based on the \emph{nature of the data} and the \emph{processes performed} on that data.
-\end{itemize}
-\column{0.44\textwidth}
-\centering%
-\begin{forest}
-    [A, for tree={minimum size=1.5em, inner sep=0, font=\small}
-      [B
-        [D,
-          [H
-          ]
-          [I]
-        ]
-        [E
-        ]
-      ]
-      [C
-        [F
-          [, phantom]
-          [J]
-        ]
-        [G]
-      ]
-    ]
-    \end{forest}
-\end{columns}
-\end{frame}
+% \begin{frame}{Why?}
+% \begin{columns}[c]
+% \column{0.56\textwidth}
+% \begin{itemize}
+% \item<2-> How the data is \emph{organized} affects the performance of different tasks.
+% \item<3-> Computer programmers choose data structures based on the \emph{nature of the data} and the \emph{processes performed} on that data.
+% \end{itemize}
+% \column{0.44\textwidth}
+% \centering%
+% \begin{forest}
+%     [A, for tree={minimum size=1.5em, inner sep=0}
+%       [B
+%         [D,
+%           [H
+%           ]
+%           [I]
+%         ]
+%         [E
+%         ]
+%       ]
+%       [C
+%         [F
+%           [, phantom]
+%           [J]
+%         ]
+%         [G]
+%       ]
+%     ]
+%     \end{forest}
+% \end{columns}
+% \end{frame}
 
 \begin{frame}{Binary Trees}
-  \begin{columns}[c]
-  \column{0.50\textwidth}
+\begin{columns}[c]
+\column{0.56\textwidth}
+\begin{overlayarea}{\linewidth}{10\baselineskip}
   \begin{itemize}
   \item A \emph{binary tree} is common data structure organized like an upside-down tree.
   \item Each spot on the tree, called a \emph{node}, holds an item of data along with a left pointer and a right pointer.
   \end{itemize}
-  \column{0.50\textwidth}
+\end{overlayarea}
+
+\column{0.44\textwidth}
   \centering%
-  \begin{forest}
-      [A, for tree={minimum size=1.6em, inner sep=0}
+    \begin{forest}
+      [A, for tree={minimum size=1.5em, inner sep=0}
         [B
           [D,
             [H
@@ -142,19 +155,20 @@
           [G]
         ]
       ]
-      \end{forest}
+    \end{forest}\vspace{6pt}
   \end{columns}
 \end{frame}
   
 \begin{frame}{Binary Trees}
-  \begin{columns}[c]
-  \column{0.50\textwidth}
+\begin{columns}[c]
+\column{0.56\textwidth}
+\begin{overlayarea}{\linewidth}{10\baselineskip}
   The \emph{pointers} are lined up so that the structure forms the upside-down tree with a single node at the top (called the \textit{root node}) and branches increasing on the left and right as you go down the tree.
-  
-  \column{0.50\textwidth}
+\end{overlayarea}
+\column{0.44\textwidth}
   \centering%
-  \begin{forest}
-      [A, for tree={minimum size=1.6em, inner sep=0}
+    \begin{forest}
+      [A, for tree={minimum size=1.5em, inner sep=0}
         [B
           [D,
             [H
@@ -172,7 +186,7 @@
           [G]
         ]
       ]
-      \end{forest}
+    \end{forest}\vspace{6pt}
   \end{columns}
 \end{frame}
 
@@ -182,9 +196,29 @@ A \emph{queue} is an example of a commonly used simple data structure.  A queue 
 
 \centerline{%
   % \includegraphics[width=0.7\textwidth]{queue}%
-  \def\svgwidth{0.45\textwidth}
-  \input{../imgs/intro/queue.pdf_tex}
-}
+  % \def\svgwidth{0.45\textwidth}
+  % \input{../imgs/intro/queue.pdf_tex}
+
+  \begin{forest}
+    for tree={minimum size=1.6em, inner sep=0, grow=east, outer sep=3pt, s sep-=8mm}
+    [F, invisible, no edge
+      [., invisible, no edge [., invisible, no edge, parent anchor=west [, tier=head, invisible, edge=-, child anchor=east]]]
+      [E, invisible, no edge
+        [D,
+          [C, no edge, outer sep=0pt, l-=3mm
+            [B, no edge, outer sep=0pt, l-=3mm
+              [A, no edge, l-=3mm, tier=head
+                [0, invisible]
+              ]
+            ]
+          ]
+        ]
+      ]
+      [., invisible, no edge [., invisible, no edge, parent anchor=west [, tier=head, invisible, edge=-, child anchor=east]]]
+    ]
+  \end{forest}
+  }
+
 
 Data enters the queue at one end and leaves at the other. Because of this, data exits the queue in the same order in which it enters the queue, like people in a checkout line at a supermarket.
 \end{frame}
@@ -196,16 +230,32 @@ Data enters the queue at one end and leaves at the other. Because of this, data 
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Decisions, decisions\textellipsis\\When to choose one over other?}
-\begin{columns}[c]
-\column{0.4\textwidth}
-  \centering
-  % \includegraphics[width=1.0\textwidth]{queue}
-  \def\svgwidth{1\textwidth}
-  \input{../imgs/intro/queue.pdf_tex}
+\begin{frame}{Decisions, decisions\textellipsis}
+  \large When to choose one over other?
 
-\column{0.50\textwidth}
-\centering%
+\begin{columns}
+  \normalsize
+  \column{0.6\textwidth}
+\begin{forest}
+  % for tree={minimum size=1.6em, inner sep=0, grow=east, outer sep=3pt, s sep-=8mm}
+  [F, invisible, no edge, for tree={minimum size=1.6em, inner sep=0, grow=east, outer sep=3pt, s sep-=8mm}
+    [., invisible, no edge [., invisible, no edge, parent anchor=west [, tier=head, invisible, edge=-, child anchor=east]]]
+    [E, invisible, no edge
+      [D,
+        [C, no edge, outer sep=0pt, l-=3mm
+          [B, no edge, outer sep=0pt, l-=3mm
+            [A, no edge, l-=3mm, tier=head
+              [0, invisible]
+            ]
+          ]
+        ]
+      ]
+    ]
+    [., invisible, no edge [., invisible, no edge, parent anchor=west [, tier=head, invisible, edge=-, child anchor=east]]]
+  ]
+\end{forest}
+
+\column{0.6\textwidth}
 \begin{forest}
     [A, for tree={minimum size=1.6em, inner sep=0}
       [B
@@ -243,6 +293,8 @@ Data enters the queue at one end and leaves at the other. Because of this, data 
 \end{frame}
 
 \begin{frame}{How you will be assessed.}
+
+  \large
 \begin{enumerate}[<+->]
   \item Solve numerous programming problems.
   \item Fix broken code.
@@ -253,7 +305,7 @@ Data enters the queue at one end and leaves at the other. Because of this, data 
 
 \begin{frame}{Related Goals}
 \begin{itemize}[<+->]
-  \item Analyze a problem: find errors and performance issues.
+  \item Analyze a problem: find errors and performance \\issues.
   \item Generate reports explaining performance issues and solutions.
   \item Demonstrate a basic understanding of the Unix/Linux environment.
   \item Become a competent programmer, who can get a job as a junior programmer.
@@ -302,82 +354,82 @@ Data enters the queue at one end and leaves at the other. Because of this, data 
 % Start block
 \node[draw,
     minimum width=4cm,
-    minimum height=0.5cm] (block1) {CSCI 235 Procedural Programming};
+    minimum height=0.5cm] (block1) {CSCI 235 \textit{Procedural Programming}};
 
 \node[draw,
     below=7mm of block1,
     minimum width=4cm,
-    minimum height=0.5cm] (OOP) {CSCI 325 Object Oriented Programming};
+    minimum height=0.5cm] (OOP) {CSCI 325 \textit{Object Oriented Programming}};
 
 \node[draw,
     left=of OOP,
     minimum width=2.5cm,
-    minimum height=0.5cm] (block3) {CSCI 301 Survey of Scripting Languages};
+    minimum height=0.5cm] (block3) {CSCI 301 \textit{Survey of Scripting Languages}};
 
 \node[draw,
     right=of OOP,
     minimum width=2.5cm,
     minimum height=0.5cm,
-    align=center] (block4) {CSCI 332 Applied Networking};
+    align=center] (block4) {CSCI 332 \textit{Applied Networking}};
 
 \node[draw,
     right=of block4,
     minimum width=2.5cm,
     minimum height=0.5cm,
-    align=center] (332Elet) {Electives:\\CSCI 334 UI Programming\\CSCI 360 Mobiles App Dev.\\CSCI 432 Mobile Networks\\CSCI 433 Network Security\\CSCI 425 Network Penetration};
+    align=center] (332Elet) {\textbf{Electives:}\\CSCI 334 \textit{UI Programming}\\CSCI 360 \textit{Mobiles App Dev.}\\CSCI \textit{432 Mobile Networks}\\CSCI 433 \textit{Network Security}\\CSCI 452 \textit{Network Penetration}};
 
 \node[draw,
     below=7mm of OOP,
     minimum width=4cm,
     minimum height=0.5cm,
     fill=CSUgold,
-    text=black] (DS) {\bfseries CSCI 315 Data Structure Analysis };
+    text=black] (DS) {\bfseries CSCI 315 \textit{Data Structure Analysis} };
 
 \node[draw,
     left=of DS,
     minimum width=2.5cm,
-    minimum height=0.5cm] (Arch) {CSCI 330 Computer Architecture };
+    minimum height=0.5cm] (Arch) {CSCI 330 \textit{Computer Architecture} };
 
 \node[draw,
     right=of DS,
     minimum width=2.5cm,
-    minimum height=0.5cm] (block7) {CSCI 495 Systems Analysis \& Software Design};
+    minimum height=0.5cm] (block7) {CSCI 495 \textit{Systems Analysis \& Software Design}};
 
 \node[draw,
     below=12mm of DS,
     minimum width=4cm,
-    minimum height=0.5cm] (Alg) {CSCI 415 Algorithms };
+    minimum height=0.5cm] (Alg) {CSCI 415 \textit{Algorithms} };
 
 \node[draw,
     below=12mm of Arch,
     minimum width=2.5cm,
-    minimum height=0.5cm] (OS) {CSCI 431 Operating Systems };
+    minimum height=0.5cm] (OS) {CSCI 431 \textit{Operating Systems} };
 
 \node[draw,
     right=of Alg,
     minimum width=2.5cm,
     minimum height=0.5cm,
-    align=center] (proj1) {CSCI 496 Senior Portfolio Review\\CSCI 497 Senior Project Design };
+    align=center] (proj1) {CSCI 496 \textit{Senior Portfolio Review}\\CSCI 497 \textit{Senior Project Design} };
 
 \node[draw,
     right=of proj1,
     minimum width=2.5cm,
     minimum height=0.5cm,
-    align=center] (dsElect) {Electives: \\ CSCI 409 A.I.\\CSCI 450 Graphics };
+    align=center] (dsElect) {\textbf{Electives}: \\ CSCI 409 \textit{A.I.}\\CSCI 450 \textit{Graphics} };
 
 \node[draw,
-    below=7mm of proj1,
+    below=5mm of proj1,
     minimum width=2.5cm,
     minimum height=0.5cm,
-    align=center] (proj2) {CSCI 498 Senior Project Construction };
+    align=center] (proj2) {CSCI 498 \textit{Senior Project Construction} };
 
 \node[draw,
-    below=7mm of proj2,
+    below=5mm of proj2,
     minimum width=2.5cm,
     minimum height=0.5cm,
-    align=center] (proj3) {CSCI 498 Senior Project Defense };
+    align=center] (proj3) {CSCI 498 \textit{Senior Project Defense} };
 
-\draw[-latex] (block1) edge (OOP)
+\draw[-stealth] (block1) edge (OOP)
     (block1) edge (block3)
     (block1) edge (block4)
     (OOP) edge (DS)
@@ -440,7 +492,7 @@ AH 208 at 4:30 PM on April 5, 2005
     \end{block}
 \end{frame}
 
-\section{Syllabus}
+\section{\href{https://csu-cs.github.io/csci-315/syllabus}{Syllabus}}
 
 \begin{frame}{Warning:}
 \begin{itemize}
@@ -627,7 +679,7 @@ Warning: passwords will be saved as plain text on your computer.
   \item Post your user name to the Blackboard assignment.
   \item You will receive an email to become a collaborator.
   \item Click the email link and join.
-  \item Click on the \href{https://github.com/csu-cs/CSCI-315-2025-Fall/}{\texttt{CSCI-315-2025-Fall}} repository.
+  \item Click on the \href{https://github.com/csu-cs/CSCI-315-2026-Spring/}{\texttt{CSCI-315-2026-Spring}} repository.
   \item Click ``Fork''.
   \item Clone your forked repository:\\
   \lstinline{git clone <your repo>}

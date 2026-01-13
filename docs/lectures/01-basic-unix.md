@@ -13,7 +13,7 @@ By the end of this lecture, you should be able to:
 6.  Locate and interpret system and user information using Unix commands.
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/t8TXuGYjbV0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/S3tTi4doJTA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Text Editors
@@ -301,9 +301,9 @@ The Pipe Operator (**`|`**)
 
     -   `more data1.txt`
 
-    -   Type `:q` to exit.
+-   `less` -- Like, `more` but with more features.
 
--   `less` -- Hmmm, what does less do?
+    -   Type `:q` to exit.
 
 -   `cat` -- Display or *concatenate* files.
 
@@ -407,6 +407,63 @@ share a common set of permissions.
         she can add new users to the group.  
         `gpasswd -A shelley`
 
+
+### File Permissions
+
+Try `ls -l` to see the current file permissions.
+
+```txt
+- rwxr-xr-x joe acctg archive.sh
+- rw-rw-r-- joe acctg orgchart.gif
+- rw-rw-r-- joe acctg personnel.txt
+- r--rw-r-- joe acctg public.html
+d rwxr-xr-x joe acctg sales
+- rw-r----- joe acctg topsecret.inf
+- rwxr-xr-x joe acctg wordmatic
+```
+
+The first set of three letters after the file type describes the
+permissions the owner of the file has.  
+
+An `r` in the first position means you are permitted to read the file.  
+A `w` in the second position means you may write to or delete the file.  
+An `x` in the third position means you may execute the file.  
+
+A hyphen represents a denied permission at its position.
+
+Use `chmod` to change file permissions.
+
+File Permissions using **`chmod`** The most succinct way to use `chmod`
+is with numbers. Each permission is assigned a value:  
+r = 4, w = 2, x = 1, Therefore,  
+
+|           |                 |            |
+|:---------:|:----------------|:----------:|
+| **Value** | **Meaning**     | **Binary** |
+|     0     | No permission   |   `000`    |
+|     1     | Execute only    |   `001`    |
+|     4     | Read only       |   `100`    |
+|     5     | Read & Execute  |   `101`    |
+|     6     | Read & Write    |   `110`    |
+|     7     | Full permission |   `111`    |
+
+Using **`chmod`** With `chmod` you have three numbers: first for the
+owner, second for group, third for everyone else.
+
+Let's look at some examples.  
+
+|          |                              |
+|---------:|:-----------------------------|
+|  Before: | `-rwxr-xr-x  archive.sh`     |
+| Command: | `chmod 754 archive.sh`       |
+|   After: | `-rwxr-xr-- archive.sh`      |
+|  Before: | `-rw-r--r-- topsecret.txt`   |
+| Command: | `chmod 600 topsecret.txt`    |
+|   After: | `-rw------- topsecret.txt`   |
+|  Before: | `-rw-------  publicity.html` |
+| Command: | `chmod 665 publicity`        |
+|   After: | `-rw-rw-r--  publicity.html` |
+
 ### User Accounts
 
 -   Usually, `/etc/passwd` holds user account information. Each user,
@@ -439,58 +496,6 @@ share a common set of permissions.
     nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
     mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
     ```
-
-File Permissions using **`chmod`** Try `ls -l`.  
-
-```txt
-- rwxr-xr-x joe acctg archive.sh
-- rw-rw-r-- joe acctg orgchart.gif
-- rw-rw-r-- joe acctg personnel.txt
-- r--rw-r-- joe acctg public.html
-d rwxr-xr-x joe acctg sales
-- rw-r----- joe acctg topsecret.inf
-- rwxr-xr-x joe acctg wordmatic
-```
-
-The first set of three letters after the file type describes the
-permissions the owner of the file has.  
-
-An `r` in the first position means you are permitted to read the file.  
-A `w` in the second position means you may write to or delete the file.  
-An `x` in the third position means you may execute the file.  
-
-A hyphen represents a denied permission at its position.
-
-File Permissions using **`chmod`** The most succinct way to use `chmod`
-is with numbers. Each permission is assigned a value:  
-r = 4, w = 2, x = 1, Therefore,  
-
-|           |                 |            |
-|:---------:|:----------------|:----------:|
-| **Value** | **Meaning**     | **Binary** |
-|     0     | No permission   |   `000`    |
-|     1     | Execute only    |   `001`    |
-|     4     | Read only       |   `100`    |
-|     5     | Read & Execute  |   `101`    |
-|     6     | Read & Write    |   `110`    |
-|     7     | Full permission |   `111`    |
-
-Using **`chmod`** With `chmod` you have three numbers: first for the
-owner, second for group, third for everyone else.
-
-Let's look at some examples.  
-
-|          |                              |
-|---------:|:-----------------------------|
-|  Before: | `-rwxr-xr-x  archive.sh`     |
-| Command: | `chmod 754 archive.sh`       |
-|   After: | `-rwxr-xr-- archive.sh`      |
-|  Before: | `-rw-r--r-- topsecret.txt`   |
-| Command: | `chmod 600 topsecret.txt`    |
-|   After: | `-rw------- topsecret.txt`   |
-|  Before: | `-rw-------  publicity.html` |
-| Command: | `chmod 665 publicity`        |
-|   After: | `-rw-rw-r--  publicity.html` |
 
 ### Become Root!
 
