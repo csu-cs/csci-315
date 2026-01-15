@@ -21,7 +21,7 @@ After studying this lecture, students should be able to:
   - Diagnose common compiler and linker errors.
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/GraM3jlYrIM?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/lDmXP2gDHH0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Linux Philosophy
@@ -252,15 +252,19 @@ See all options at
 ### Even More Compiler Warnings
 
 ``` Bash
-g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wnull-dereference greeting.cpp -o welcome
+g++ -Wall -Wextra -Wpedantic -Wconversion \
+  -Wshadow -Wnull-dereference -Wold-style-cast \
+  -std=c++23 greeting.cpp -o welcome
 ```
 
-- `-Wall` all the warnings about constructions that some users consider questionable, and that are easy to avoid
--  `-Wextra` some extra warning flags that are not enabled by `-Wall`
-- `-Wpedantic` warnings demanded by strict ISO C++
-- `-Wconversion` implicit conversions that may alter a value
-- `-Wshadow` when a local variable/type declaration shadows another variable, parameter, type, class member, etc.
-- `-Wnull-dereference` detect *some* null pointer dereferencing. 
+-   `-Wall` all the warnings about constructions that some users consider questionable, and that are easy to avoid
+-   `-Wextra` some extra warning flags that are not enabled by `-Wall`
+-   `-Wpedantic` warnings demanded by strict ISO C++
+-   `-Wconversion` implicit conversions that may alter a value
+-   `-Wshadow` when a local variable/type declaration shadows another variable, parameter, type, class member, etc.
+-   `-Wnull-dereference` detect *some* null pointer dereferencing. 
+-   `-Wold-style-cast` warns about use of C-style casts
+-   `-std=c++23` Use the newer 2023 standard for C++, which has more features.
 
 See all options at
 <https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html>
@@ -291,9 +295,9 @@ See all options at
 - To overcome, we compile in multiple steps.
 
   ``` bash
-  g++ -c main.cpp # Create main.o
-  g++ -c a.cpp    # Create a.o
-  g++ -c b.cpp    # Create b.o
+  g++ -c main.cpp  # Create main.o
+  g++ -c a.cpp     # Create a.o
+  g++ -c b.cpp     # Create b.o
   g++ main.o a.o b.o -o hello # link files
   ```
 
@@ -317,10 +321,21 @@ See all options at
 - Variable Definitions – Define values for variables for reuse.
 
   ``` makefile
-  CPPFLAGS  = -Wall -Wextra -Wconversion -Wshadow -Wpedantic
+  CPPFLAGS  = \
+    -std=c++23 \
+    -Wall \
+    -Wextra \
+    -Wconversion \
+    -Wshadow \
+    -Wpedantic \
+    -Wnull-dereference \
+    -Wold-style-cast \
+    -Wduplicated-cond -Wduplicated-branches \
+    -Wzero-as-null-pointer-constant \
+    -I src/
   CPPFLAGS += -g -fsanitize=return -fsanitize=undefined -fsanitize=address
   SRCS = main.cpp file1.cpp file2.cpp
-  CC = g++
+  CXX = g++
   ```
 
 ### Makefile Structure
@@ -343,17 +358,17 @@ See all options at
 
 ``` makefile
 # First,  list your variable(s)
-CC = g++
+CXX = g++
 # First rule, which creates the program.
 #    By convention, the first rule is usually all.
 all: main
 # compiling the source file, main.o depends on main.c
 main.o: main.cpp
-        ${CC} -g -Wall -Wextra -c main.cpp
-# ${CC} uses the value of CC variable, case sensitive
+        ${CXX} -g -Wall -Wextra -c main.cpp
+# ${CXX} uses the value of CXX variable, case sensitive
 # linking the program, the program name is main
 main: main.o
-        ${CC} -g main.o -o main
+        ${CXX} -g main.o -o main
 # cleaning everything that can be recreated with "make"
 # (basically, objects, the executable, and temp files).
 clean:

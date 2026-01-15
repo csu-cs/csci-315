@@ -127,7 +127,7 @@
 }
 
 \NewDocumentCommand{\ArraySwap}{ d<> O{} m m } {
-  \draw[link, <->] ([xshift=-2mm] #3.south east) to[bend right=#2] node[below] {\IfNoValueTF{#1}{swap}{#1}} ([xshift=2mm] #4.south west);
+  \draw[link, stealth-stealth] ([xshift=-2mm] #3.south east) to[bend right=#2] node[below] {\IfNoValueTF{#1}{swap}{#1}} ([xshift=2mm] #4.south west);
 }
 
 
@@ -209,7 +209,7 @@
 }
 
 \NewDocumentCommand{\ArraySwapVerticle}{ d<> O{} m m } {
-  \draw[link, <->] ([yshift=-1mm]#3.east) to[bend left=#2] node[right] {\IfNoValueTF{#1}{swap}{#1}} ([yshift=1mm]#4.east);
+  \draw[link, stealth-stealth] ([yshift=-1mm]#3.east) to[bend left=#2] node[right] {\IfNoValueTF{#1}{swap}{#1}} ([yshift=1mm]#4.east);
 }
 
 \NewDocumentCommand{\ArrayNodeStack}{ o O{[\thearrayIndex]} m }{%

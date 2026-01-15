@@ -13,7 +13,7 @@
 \setlength{\parskip}{0.5\baselineskip}
 
 \title{\Huge{}{\ttfamily\bfseries C++} Development\\in Linux}
-\subtitle{CSCI 315: Data Structure Analysis}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 %% Comment out date to use default (today)
@@ -59,20 +59,33 @@
 
 \section{Linux Philosophy}
 
-\begin{frame}{The Linux File Structure and Inodes}
+\begin{frame}{The Linux File Structure}
 \begin{itemize}
   \item<+-> In Linux, \href{https://en.wikipedia.org/wiki/Everything_is_a_file}{everything is a file}! Well, almost.
   \item<+-> Drives, ports, and devices (e.g., printers) are file descriptors.
-  \item<+-> A file has a name and an \href{https://en.wikipedia.org/wiki/Inode}{\emph{inode} (index node)} that stores its metadata or ``administrative information.''
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Linux File Structure uses Inodes}
+
+\begin{itemize}
+  \item<+-> What an \href{https://en.wikipedia.org/wiki/Inode}{\emph{inode}} is:
   \begin{itemize}
-    \item creation/modification date
-    \item permissions
-    \item properties are stored in the file's inode
+    \item index node
+    \item administrative metadata
     \item a special block of data in the file system
-    \item contains administrative information
-    \item contains the length of the file
-    \item where on the disk it's stored
   \end{itemize}
+
+  \item<+-> 
+    What it contains:
+    \begin{itemize}
+      \item owner
+      \item group
+      \item permissions
+      \item timestamps (creation/modification date)
+      \item file size
+      \item disk locations
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -108,7 +121,7 @@ Files are arranged in directories, which may contain sub-directories.
 \begin{frame}{Example Directories Tree}
 \centerline{%
   \begin{forest}
-    for tree={font=\ttfamily\large}
+    for tree={font=\ttfamily\large, edge=very thick}
     [/
       [bin]
       [etc]
@@ -299,36 +312,40 @@ g++ -g -fsanitize=return -fsanitize=undefined -fsanitize=address greeting.cpp -o
 \begin{frame}[fragile, t]{Even More Compiler Warnings}
 
 \begin{lstlisting}[language=Bash, deletekeywords={test}, basicstyle=\small\ttfamily\color{codeVariable}]
-g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wnull-dereference greeting.cpp -o welcome
+g++ -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wnull-dereference -Wold-style-cast greeting.cpp -o welcome
 \end{lstlisting}
 
-\begin{description}[\texttt{-Wconversion~~}]
+\begin{overlayarea}{\linewidth}{7\baselineskip}
+\begin{description}[\texttt{-Wnull-dereference~}]
   \alt<1>{
     \item[\colorbox{codeBackground}{-Wall}] all the warnings about constructions that some users consider questionable, and that are easy to avoid
     \item[\colorbox{codeBackground}{-Wextra}] some extra warning flags that are not enabled by \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-Wall}
     \item[\colorbox{codeBackground}{-Wpedantic}] warnings demanded by strict ISO C++
   }{
-    \item[\colorbox{codeBackground}{-Wconversion}] implicit conversions that may alter a value
-    \item[\colorbox{codeBackground}{-Wshadow}] when a local variable/type declaration shadows another variable, parameter, type, class member, etc.}
-    \item[\colorbox{codeBackground}{-Wnull-dereference}] \textit{some} null pointer dereferencing. 
+    \item[\colorbox{codeBackground}{-Wconversion}] implicit casts that may alter a value
+    \item[\colorbox{codeBackground}{-Wshadow}] when a local variable/type declaration shadows another variable, parameter, type, class member, etc.
+    \item[\colorbox{codeBackground}{-Wnull-dereference}] \textit{some} null pointer dereferencing
+    \item[\colorbox{codeBackground}{-Wold-style-cast}] warns about use of C-style casts
+  }
 \end{description}
 \onslide<2>{}
-See all options at \url{https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html}
+\end{overlayarea}
+
+See all options at \small{\url{https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html}}
 
 \end{frame}
 
 \begin{frame}{Compiling Multi-Source Programs}
 \begin{itemize}
-\item Compile them with:
-\begin{itemize}
-\item \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ main.cpp a.cpp b.cpp -o hello}
-\end{itemize}
+\item
+  Compile them with:\\
+  \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ main.cpp a.cpp b.cpp -o hello}
 \item Comments:
-\begin{itemize}
-\item If external symbols are needed, use the \lstinline{extern} keyword.
-\item Source file order becomes important.
-\item As program size increases, so does compilation time.
-\end{itemize}
+  \begin{itemize}
+  \item If external symbols are needed, use the \lstinline{extern} keyword.
+  \item Source file order becomes important.
+  \item As program size increases, so does compilation time.
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -338,7 +355,7 @@ See all options at \url{https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html}
   box/.style={draw, fill=CSUcyan, text=black, minimum width=2.9cm}
   ]
   % Start block
-  \node[box] (block1) {Code};
+  \node[box] (block1) {Source Code};
   \node[left=of block1] {Step 1};
 
   \node[box, below=of block1] (block2) {Preprocess};
@@ -359,14 +376,16 @@ See all options at \url{https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html}
   \node[left=of block6] {Step 6};
 
   % Arrows
-  \draw[->, very thick] (block1) edge (block2);
-  \draw[->, very thick] (block2) edge (block3);
-  \draw[->, very thick] (block3) edge (block4);
-  \draw[->, very thick, dashed] (block4) edge (block5);
-  \draw[->, very thick] (blockLibs) edge (block4);
-  \draw[->, very thick] (block5) edge (block6);
+  \draw[-stealth, very thick] (block1) edge (block2);
+  \draw[-stealth, very thick] (block2) edge (block3);
+  \draw[-stealth, very thick] (block3) edge (block4);
+  \draw[-stealth, very thick, dashed] (block4) edge (block5);
+  \draw[-stealth, very thick] (blockLibs) edge (block4);
+  \draw[-stealth, very thick] (block5) edge (block6);
 
-  \draw [<-, very thick] (block1) -- ++ (5cm,0) |- node[anchor=south east]{Syntax Error} (block3);
+  \draw [stealth-, very thick] (block1) -- ++ (5cm, 0) |- node[anchor=south east]{Syntax Error} (block3);
+
+  \draw [stealth-, very thick] (block1) -- ++ (5.5cm,0) |- node[anchor=south east]{Semantic Error} (block6);
 \end{tikzpicture}
 \end{frame}
 
@@ -381,7 +400,7 @@ g++ -c b.cpp    # Create b.o
 g++ main.o a.o b.o -o hello # link files
 \end{lstlisting}
 
-\item \lstinline{-c} tells the compiler to only create an object file.
+\item \lstinline[basicstyle=\ttfamily\color{codeVariable}]{-c} tells the compiler to only create an object file.
 \item The final command links the objects into an executable.
 \end{itemize}
 \end{frame}
@@ -404,7 +423,7 @@ g++ main.o a.o b.o -o hello # link files
 CPPFLAGS  = -Wall -Wextra -Wconversion -Wshadow -Wpedantic
 CPPFLAGS += -g -fsanitize=return -fsanitize=undefined -fsanitize=address
 SRCS = main.cpp file1.cpp file2.cpp
-CC = g++
+CXX = g++
 \end{lstlisting}
 \end{itemize}
 \end{frame}
@@ -427,20 +446,20 @@ main.o: main.cpp
 
 \lstset{language=make}
 
-\begin{frame}[fragile]{Single Source Makefile Example}
+\begin{frame}[fragile]{Single-Source Makefile Example}
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make]
 # First,  list your variable(s)
-CC = g++
+CXX = g++
 # First rule, which creates the program.
 #    By convention, the first rule is usually all.
 all: main
 # compiling the source file, main.o depends on main.c
 main.o: main.cpp
-        ${CC} -g -Wall -Wextra -c main.cpp
-# ${CC} uses the value of CC variable, case sensitive
+        ${CXX} -g -Wall -Wextra -c main.cpp
+# ${CXX} uses the value of CXX variable, case sensitive
 # linking the program, the program name is main
 main: main.o
-        ${CC} -g main.o -o main
+        ${CXX} -g main.o -o main
 # cleaning everything that can be recreated with "make"
 # (basically, objects, the executable, and temp files).
 clean:
@@ -497,9 +516,9 @@ clean:
 
 \pause
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily, language=make, firstnumber=6]
-# Make an object folder and put a .gitignore file in it.
+# Make an object folder
 obj:
-  mkdir -p obj && echo *.o > obj/.gitignore
+  mkdir -p obj
 
 # The thing to the right of | is an order-only rule
 obj/main.o: main.cpp | obj
@@ -619,7 +638,8 @@ main: obj/main.o obj/a.o obj/b.o
 \begin{frame}{System Calls And Device Drivers}
 \begin{itemize}
 \item System calls access and control files and devices.
-\item At the heart of the operating system, the kernel, are some device drivers.
+\item At the heart of the operating system (the \emph{kernel})\\
+  are some device drivers.
 \item The low-level functions used to access the device drivers, the system calls, include:
 \begin{description}[close~]
 \item[{open}] Open a file or device
@@ -647,41 +667,43 @@ main: obj/main.o obj/a.o obj/b.o
   \begin{tikzpicture}[thick, every node/.style={node distance=4mm, minimum height=7mm}]
     % Start block
     \node[,
-      minimum width=4.1cm] (user) {User Program};
+      minimum width=4.4cm] (user) {User Program};
     \node[text=black, fill=CSUcyan,
       minimum width=3cm] (library) [below=of user.west, anchor=north west] { Library };
 
-    \node [draw, fit={(user) (library)}, inner sep=0pt] (userAll) {};
-
+    \begin{scope}[on background layer, thick]
+      \node [draw, fit={(user) (library)}, inner sep=0pt, fill=CSUslate, thick] (userAll) {};
+    \end{scope}
     \node[right=of userAll] (userSpace) {User Space};
 
 
     \node[text=black, fill=CSUcyan,
       below=10mm of userAll,
-      minimum width=4.1cm] (sys) {System Calls};
+      minimum width=4.4cm] (sys) {System Calls};
 
     \node[
       below=of sys.center,
-      minimum width=4.1cm] (kernel) {Kernel};
+      minimum width=4.4cm] (kernel) {Kernel};
 
     \node[text=black, fill=CSUcyan,
       below=of kernel.west, anchor=north west,
       minimum width=3cm] (dev) {Device Drivers};
 
-
-    \node[draw, fit={(sys) (dev) (kernel)}, inner sep=0pt] (systemAll) {};
+    \begin{scope}[on background layer]
+      \node[draw, fit={(sys) (dev) (kernel)}, inner sep=0pt, fill=CSUslate, thick] (systemAll) {};
+    \end{scope}
     \node[right=of systemAll] (kernelSpace) {Kernel Space};
 
 
     \node[draw,
       below=of systemAll,
-      minimum width=4.1cm, align=center] (hardware) {Hardware Devices};
+      minimum width=4.4cm, align=center, fill=CSUslate] (hardware) {Hardware Devices};
 
     % Arrows
-    \draw[->, very thick] (userAll) edge node[anchor=west]{Calls} (sys);
-    \draw[->, very thick] (systemAll) edge (hardware);
-    \draw[->, very thick] (kernelSpace) edge (systemAll);
-    \draw[->, very thick] (userSpace) edge (userAll);
+    \draw[-stealth, very thick, shorten >=1pt] (userAll) edge node[anchor=west]{Calls} (sys);
+    \draw[-stealth, very thick, shorten >=1pt] (systemAll) edge (hardware);
+    \draw[-stealth, very thick, shorten >=1pt] (kernelSpace) edge (systemAll);
+    \draw[-stealth, very thick, shorten >=1pt] (userSpace) edge (userAll);
 
   \end{tikzpicture}
 \end{columns}
@@ -768,7 +790,7 @@ int main()
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Memory Usage detection}
+\begin{frame}[fragile]{Memory Usage Checking}
 A better version:
 
 \begin{columns}
@@ -904,18 +926,18 @@ We will use it soon to observe the performance of our data structures and algori
     \node[text=CSUgold!60!white] (githubText) at ($(upstream.north)!0.5!(origin.north)$)[yshift=5pt, anchor=south] { \textbf{GitHub} };
 
     \begin{scope}[on background layer]
-    \node [draw=CSUgold, fit={(userAll) (githubText)}, fill=CSUslate, inner sep=1pt] (github) {};
+    \node [draw=CSUgold, thick, fit={(userAll) (githubText)}, fill=CSUslate, inner sep=1pt] (github) {};
     \end{scope}
 
     \node[text=black, fill=CSUcyan,
-      minimum width=3cm] (local) [below=20mm of origin.south, anchor=north] { local };
+      minimum width=3cm, draw=CSUgold, thick] (local) [below=20mm of origin.south, anchor=north] { local };
 
     % Arrows
-    \draw[->, very thick, color=white] (upstream) edge node[text=white, anchor=south]{fork} (origin);
-    \draw[->, very thick] (origin)  to[bend right] node[anchor=east,align=right]{clone/pull} (local);
-    \draw[->, very thick] (local)  to[bend right] node[anchor=west]{push} (origin);
+    \draw[-stealth, shorten >=1pt, very thick, color=white] (upstream) edge node[text=white, anchor=south]{fork} (origin);
+    \draw[-stealth, shorten >=1pt, very thick] (origin)  to[bend right] node[anchor=east,align=right]{clone/pull} (local);
+    \draw[-stealth, shorten >=1pt, very thick] (local)  to[bend right] node[anchor=west]{push} (origin);
 
-    \onslide<2->{\draw[->, very thick] (upstream)  to[bend right] node[anchor=east]{pull} (local);}
+    \onslide<2->{\draw[-stealth, shorten >=1pt, very thick] (upstream)  to[bend right] node[anchor=east]{pull} (local);}
 
   \end{tikzpicture}
 
@@ -929,7 +951,7 @@ We will use it soon to observe the performance of our data structures and algori
 git remote -v
 
 # Add the course repository as a remote repository
-git remote add upstream https://github.com/csu-cs/CSCI-315-2025-Fall.git
+git remote add upstream https://github.com/csu-cs/CSCI-315-2026-Spring.git
 
 # Set the merging method for divergent branches
 git config pull.rebase false # merge
