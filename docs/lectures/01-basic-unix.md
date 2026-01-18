@@ -67,7 +67,7 @@ Lightweight with a high learning curve, but *fast* once learned.
 
 ### EMACS (Editor MACroS)
 
--   Lots of features -- tons of capabilities
+-   Lots of features, tons of capabilities
 -   LISP
 -   Your hand may be warped from all the hotkeys.
 -   Not always the same on every machine
@@ -88,7 +88,7 @@ Lightweight with a high learning curve, but *fast* once learned.
 
 ## Directory Operations
 
-### `ls` -- List files and directories.
+### `ls` – List files and directories.
 
 `ls` displays a list of files in the current working directory, like `dir` in DOS.
 
@@ -102,7 +102,7 @@ Lightweight with a high learning curve, but *fast* once learned.
 | `-s` | Display file size.                             |
 | `-h` | Display sizes in a more human readable format. |
 
-### `cd` -- Change directories (change the working directory).
+### `cd` – Change directories (change the working directory).
 
 Usage: `cd <DIRECTORY>`  
 
@@ -115,7 +115,7 @@ Usage: `cd <DIRECTORY>`
 
 ### Making Directories
 
-`mkdir DIRECTORY` -- Create the DIRECTORY(ies) that do not already
+`mkdir DIRECTORY` – Create the DIRECTORY(ies) that do not already
 exist.
 
 |                         |                                            |
@@ -126,7 +126,7 @@ exist.
 
 ### Removing Directories
 
-`rmdir DIRECTORY` -- Remove the DIRECTORY(ies) if they are empty.
+`rmdir DIRECTORY` – Remove the DIRECTORY(ies) if they are empty.
 
 |  |  |
 |:---|:---|
@@ -134,7 +134,7 @@ exist.
 | `rmdir temp2` | Remove a directory named `temp2` |
 | `rmdir temp/insideTemp` | Remove the `insideTemp` directory that is within `temp`. |
 
-`rm -r DIRECTORY` -- Remove directories and their contents recursively.
+`rm -r DIRECTORY` – Remove directories and their contents recursively.
 
 ### Directory Usage
 
@@ -154,7 +154,28 @@ exist.
 
 ## File Operations
 
-### **`cp`** -- Copy SOURCE to DEST. Usage: `cp [OPTIONS] SOURCE DEST`
+### **`touch`** – Create empty FILE(s).
+
+Updates the access and modification times of each existing FILE to the current time.
+
+Creates an empty file if the file does not exist.
+
+Usage: `touch [OPTIONS] [FILES]`
+
+-   touch data1.txt
+-   touch data2.txt data3.txt temp/data4.txt
+-   Options:
+    
+    | argument | operation                          |
+    |:--------:|------------------------------------|
+    | `-c`     | Do not create any files.           |
+    | `-a`     | Change only the access time.       |
+    | `-m`     | Change only the modification time. |
+
+
+### **`cp`** – Copy SOURCE to DESTINATION
+
+Usage: `cp [OPTIONS] SOURCE DEST`
 
 -   `cp data1.txt data2.txt`
 
@@ -168,10 +189,10 @@ exist.
     | `-v` | Display copying process.                   |
     | `-R` | Recursive copy, including sub-directories. |
 
--   `cp -R * backup` -- Copy all files in current directory into
+-   `cp -R * backup` – Copy all files in current directory into
     `backup`.
 
-### **`rm`** -- Remove the FILE(s).
+### **`rm`** – Remove the FILE(s).
 
 Usage: `rm [OPTIONS] [FILES]`
 
@@ -188,57 +209,57 @@ Usage: `rm [OPTIONS] [FILES]`
     | `-v` | Display removing process.                          |
 
 
--   `rm -f *.txt` -- Removes all files ending in .txt from the current
+-   `rm -f *.txt` – Removes all files ending in .txt from the current
     directory.
 
--   `rm -r *` -- Removes all files and folders from the current
+-   `rm -r *` – Removes all files and folders from the current
     directory.
 
 ### Other File Operations
 
--   `mv` -- Move files or rename a file.
+-   `mv` – Move files or rename a file.
 
     -   `mv data1.txt ..`
 
     -   `mv data1.txt data4.txt`
 
--   `pwd` -- Print (present) working directory.
+-   `pwd` – Print (present) working directory.
 
--   `file` -- Display file type.
+-   `file` – Display file type.
 
     -   `file filename`
 
     -   `file *`
 
--   `head` -- Displays the first 10 lines of each FILE.
+-   `head` – Displays the first 10 lines of each FILE.
 
     -   `head data1.txt` shows first 10 lines of `data1.txt`
 
     -   `head -20 data1.txt` shows first 20 lines
 
--   `tail` -- Displays the last 10 lines of each FILE.
+-   `tail` – Displays the last 10 lines of each FILE.
 
     -   `tail data1.txt` shows last 10 lines of `data1.txt`
 
--   `wc` -- Displays line count, unique *word count*, and total *word
+-   `wc` – Displays line count, unique *word count*, and total *word
     count* for each FILE (and a total line if more than one FILE is
     specified).
 
--   `find` -- Find files and directories (and perform operations on
+-   `find` – Find files and directories (and perform operations on
     them).
 
-    -   `-name` -- the filename you are looking for
+    -   `-name` – the filename you are looking for
 
-    -   `-print` -- output results
+    -   `-print` – output results
 
     -   `find /usr -name config -print`  
         Displays where all the files named `compress` are located.
 
--   `grep` -- Search for PATTERNS in each FILE.
+-   `grep` – Search for PATTERNS in each FILE.
 
     -   Usage: `grep [OPTIONS] PATTERNS [FILE].`
 
--   `ln` -- Create a link to TARGET with the name LINK_NAME.
+-   `ln` – Create a link to TARGET with the name LINK_NAME.
 
     -   Usage: `ln [OPTIONS] TARGET LINK\_NAME`
 
@@ -295,17 +316,17 @@ The Pipe Operator (**`|`**)
 
     -   Force overwrite output.dat.
 
--   `more` -- Pause viewing output.
+-   `more` – Pause viewing output.
 
     -   `ls -al | more`
 
     -   `more data1.txt`
 
--   `less` -- Like, `more` but with more features.
+-   `less` – Like, `more` but with more features.
 
     -   Type `:q` to exit.
 
--   `cat` -- Display or *concatenate* files.
+-   `cat` – Display or *concatenate* files.
 
     -   `cat data1.txt | more`
 
@@ -313,7 +334,7 @@ The Pipe Operator (**`|`**)
 
     -   `cat data1.txt data2.txt >> data3.txt`
 
--   `tac` -- Hmmm, what does `tac` do?
+-   `tac` – Hmmm, what does `tac` do?
 
 ### Looking up how a command works.
 
@@ -321,11 +342,11 @@ The Pipe Operator (**`|`**)
 
     -   `ls --help`
 
--   `man` -- Display the *manual* for a command.
+-   `man` – Display the *manual* for a command.
 
     -   `man ls`
 
--   `info` -- Displays the information about a command.
+-   `info` – Displays the information about a command.
 
     -   `info ls`
 
@@ -351,32 +372,32 @@ Sets of special characters that help you match a pattern.
 
 ### User-Management Tools
 
--   `useradd` -- Adds a new user account to the system. Its options
+-   `useradd` – Adds a new user account to the system. Its options
     permit the sysadmin to specify the user's home directory and initial
     group or to create the user with the default home directory and
     group assignments.
 
--   `useradd -D` -- Displays default settings for new users
+-   `useradd -D` – Displays default settings for new users
 
--   `useradd -G` -- Sets the system defaults for creating the users'
+-   `useradd -G` – Sets the system defaults for creating the users'
     home directory, account expiration date, default group, and command
     shell. See the specific options in `man useradd`. Used without any
     arguments, it displays the defaults for the system. The default set
     of files for a user are found in `/etc/skel`.
 
-    -   `ls -al /etc/skel` -- will list the files with the defaults.
+    -   `ls -al /etc/skel` – will list the files with the defaults.
 
--   `userdel` -- Will completely remove a user's account (thereby
+-   `userdel` – Will completely remove a user's account (thereby
     eliminating that user's home directory and all files it contains).
 
--   `passwd` -- Change a user's *password*.
+-   `passwd` – Change a user's *password*.
 
--   `usermod` -- Changes several user attributes. The most commonly used
+-   `usermod` – Changes several user attributes. The most commonly used
     arguments are -s to change the shell and -u to change the UID. No
     changes can be made while the user is logged in or running a
     process.
 
--   `chsh` -- Changes the user's default shell. For Fedora, Debian, and
+-   `chsh` – Changes the user's default shell. For Fedora, Debian, and
     others, the default shell is `/bin/bash`, known as the Bash (or
     Bourne Again Shell).
 

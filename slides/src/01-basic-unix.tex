@@ -220,6 +220,24 @@ Usage: cd \lstinline{DIRECTORY}\\\vspace{1em}
 %\includegraphics[width=1.0\textwidth]{file-create.png} \\
 %\end{frame}
 
+\begin{frame}{\texttt{\textbf{touch}} -- Create empty FILE(s).}
+  Updates the access and modification times of each existing FILE to the current time.
+
+  Creates an empty file if the file does not exist.
+
+Usage: \lstinline{touch [OPTIONS] [FILES]}
+\begin{itemize}
+  \item \lstinline{touch data1.txt}
+  \item \lstinline{touch data2.txt data3.txt temp/data4.txt}
+  \item Options:\\
+  \begin{tabular}{l l}
+    \lstinline{-c} & Do not create any files.\\
+    \lstinline{-a} & Change only the access time.\\
+    \lstinline{-m} & Change only the modification time.\\
+  \end{tabular}
+\end{itemize}
+\end{frame}
+
 \begin{frame}{\texttt{\textbf{cp}} -- Copy SOURCE to DEST.}
 Usage: \lstinline{cp [OPTIONS] SOURCE DEST}
 
@@ -395,7 +413,7 @@ Usage: \lstinline{rm [OPTIONS] [FILES]}
 
 
 \begin{itemize}
-\item This can continue on\textellipsis
+\item This can continue on\textellipsis{}
 \item What Data Structure does this look like?
 \end{itemize}
 \end{frame}
