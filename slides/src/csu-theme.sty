@@ -70,6 +70,7 @@
 
   \setbeamercolor{caption name}{fg=CSUgold!70}
 
+
   % Show the sections at the top of each frame (but not subsections)
   \if@myShowsubsect
     \useoutertheme[subsection=true]{miniframes} % Alternatively: miniframes, infolines, split
@@ -82,11 +83,32 @@
   \setbeamerfont{title}{size=\LARGE}
   \setbeamerfont{block title}{size=\normalsize}
 
+  \setbeamertemplate{mini frames}[default] % default, box, tick
+  \setbeamertemplate{section in head/foot shaded}[default][60]
+  \setbeamercolor{section in head/foot}{fg=black}
+
   %% gets rid of footer
   % \setbeamertemplate{footline}{}
 
   % set the caption option of the template (no prefix)
   \setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+
+  % % Move mini-frames from the headline to the footline
+  % \makeatletter
+  % % helper
+  % \newcommand\letbeamertemplate[2]{%
+  %   \csletcs{beamer@@tmpl@#1}{beamer@@tmpl@#2}%
+  % }
+
+  % % Currently template `headline` is `miniframes theme`.
+  % % First, copy `headline` to `footline`.
+  % \letbeamertemplate{footline}{headline}
+  % % Then, reset `headline`
+  % \setbeamertemplate{headline}[default]
+  % \makeatother
+
+  % \setbeamercolor{mini frame}{fg=black,bg=}
 }
 
 % % Remove gradient between block title and body.

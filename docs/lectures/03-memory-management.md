@@ -248,13 +248,13 @@ int main()
 
 ### Heap Management Operations
 
-- `delete` returns a storage block to the heap.
+- `delete` release a storage block to the heap.
 
-- The status of the block returns to *unused* and is available for
+- The storage block's status is set to *unused* and is available for
   allocation by future calls to `new`.
 
 - One cause of heap overflow is a failure on the part of the program to
-  return unused storage.
+  release unused storage.
 
 ## Pointers
 
@@ -324,20 +324,19 @@ A pointer must have a value before you can *dereference* it (follow the
 pointer).  
 
 ```cpp
-int *x;
-*x = 3;
+int *p;
+*p = 3;
 ```
 
 Error! Override the value located in some unknown address.
 
 ```cpp
 int foo;
-int *x;
-x = &foo;
-*x = 3;
+int *p = &foo;
+*p = 3;
 ```
 
-This is fine. `x` points to `foo`.
+This is fine. `p` points to `foo`.
 
 ### Pointers to Pointers
 

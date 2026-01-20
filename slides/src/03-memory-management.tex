@@ -9,7 +9,7 @@
 \usetikzlibrary{backgrounds,calc}
 
 \title{\Huge{}{Memory Management}\\\Large{}Static, Stack, Heap, and Pointers}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 12}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 12}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -34,9 +34,9 @@
 \section{References \& Aliases}
 \begin{frame}[fragile]{A Review of C++ References \& Aliases}
 \begin{enumerate}
-\item
-  In a parameter declaration, \lstinline{&} makes a \textit{reference}.\\
-  The parameter refers to the memory location of the original variable.
+\item 
+  A \textit{reference} parameter holds the memory \\
+  location of the original variable.
 
 \begin{lstlisting}
 void limit(double& value, double max) {
@@ -86,6 +86,7 @@ std::cout << &score; // score's address.
 \begin{frame}{The 3 Memory Sections (for Data Storage)}
 \begin{columns}
 \column{0.67\textwidth}
+\begin{overlayarea}{\linewidth}{12\baselineskip}
   \begin{itemize}[<+->]
   \item
     \textbf{Static}: storage requirements are known and allocated before execution and remain for the entire program execution.
@@ -97,7 +98,9 @@ std::cout << &score; // score's address.
   \item
     \textbf{Heap}: dynamically allocated storage; the least organized and most dynamic storage area.
   \end{itemize}
+\end{overlayarea}
 \column{0.33\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 
@@ -106,6 +109,7 @@ std::cout << &score; // score's address.
 \begin{frame}{Static Data Memory}
 \begin{columns}
 \column{0.67\textwidth}
+\begin{overlayarea}{\linewidth}{12\baselineskip}
   \begin{itemize}
   \item<+->
     The simplest memory to manage.
@@ -130,7 +134,9 @@ std::cout << &score; // score's address.
       The size of the static storage area is constant throughout execution.
     \end{itemize}
   \end{itemize}
+\end{overlayarea}
 \column{0.33\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -141,6 +147,7 @@ std::cout << &score; // score's address.
 \begin{frame}{The Call Stack}
 \begin{columns}
   \column{0.67\textwidth}
+  \begin{overlayarea}{\linewidth}{10.5\baselineskip}
   \begin{itemize}[<+->]
   \item
     The \emph{Call Stack} (i.e., the \textit{Runtime Stack} or \textit{Execution Stack}) is a contiguous memory region that grows and shrinks.
@@ -156,9 +163,9 @@ std::cout << &score; // score's address.
     It \textbf{shrinks} when the function terminates; storage is
     deallocated.
   \end{itemize}
-
+  \end{overlayarea}
 \column{0.33\textwidth}
-  \vspace{1em}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -166,6 +173,7 @@ std::cout << &score; // score's address.
 \begin{frame}{Stack Frames}
 \begin{columns}
 \column{0.67\textwidth}
+  \begin{overlayarea}{\linewidth}{10.5\baselineskip}
   \begin{itemize}
   \item
     For each function call, a \emph{stack frame} stores local variables, parameters, and
@@ -176,9 +184,9 @@ std::cout << &score; // score's address.
   \item
     How is variable lifetime affected by stack management techniques?
   \end{itemize}
-
+  \end{overlayarea}
 \column{0.33\textwidth}
-  \vspace{1em}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -284,7 +292,7 @@ $sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
     \end{itemize}
   \end{itemize}
 \column{0.3\textwidth}
-  \vfill{}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -344,6 +352,7 @@ int main()
   \end{itemize}
 
 \column{0.3\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -360,6 +369,7 @@ int main()
     \textit{garbage collection} to reclaim unused heap space.
   \end{itemize}
 \column{0.3\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -377,6 +387,7 @@ int main()
     requires at least allocated $3 \times 4$ bytes.
   \end{itemize}
 \column{0.3\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -393,6 +404,7 @@ int main()
     pointer to the new block.
   \end{itemize}
 \column{0.3\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -402,15 +414,16 @@ int main()
 \column{0.67\textwidth}
   \begin{itemize}[<+->]
   \item
-    \lstinline{delete} returns a storage block to the heap.
+    \lstinline{delete} releases a storage block to the heap.
   \item
-    The status of the block returns to \textit{unused} and
+    The storage block's status is set to \textit{unused} and
     is available for allocation by future calls to \lstinline{new}.
   \item
     One cause of heap overflow is a failure on the part of the program to
-    return unused storage.
+    release unused storage.
   \end{itemize}
 \column{0.3\textwidth}
+  \vspace{1.5em}
   \input{../imgs/memory-management/memory-structure}
 \end{columns}
 \end{frame}
@@ -426,7 +439,7 @@ int main()
 
 \begin{itemize}[<+->]
 \item
-  Pointers are addresses (i.e., the value of a pointer variable is an address).
+  Pointers are addresses (i.e., the value of a pointer\\ variable is an address).
 \item
   Memory that is accessed through a pointer is dynamically allocated in
   the heap.
@@ -504,77 +517,84 @@ True/False:
 
 \begin{frame}[fragile]{Assigning a value to a \textit{dereferenced} pointer.}
 
-A pointer must have a value before you can \textit{dereference} it (follow
+A pointer must have a value before you can \textit{dereference}\\ it (follow
 the pointer).\\[1em]
 
 \begin{columns}[T]
 \column{0.5\textwidth}
 \begin{lstlisting}
-int *x;
-*x = 3;
+int *p;
+*p = 3;
 \end{lstlisting}
-  \pause
+  \pause%
   \centering\textbf{Error! Override the value located in some unknown address.}
 \column{0.5\textwidth}
-  \pause
+  \pause%
 \begin{lstlisting}
 int foo;
-int *x;
-x = &foo;
-*x = 3;
+int *p = &foo;
+*p = 3;
 \end{lstlisting}
-  \pause
-  \centering\textbf{This is fine. \lstinline{x} points to \lstinline{foo}.}
+  \pause%
+  \centering\textbf{This is fine.\ \lstinline{p} points to \lstinline{foo}.}
 \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Pointers to Pointers}\center
-% \renewcommand{\arraystretch}{4}
+\begin{frame}[fragile]{Pointers to Pointers}
+  \center%
+  \bgroup%
+  \def\arraystretch{2.5}%
+
 \begin{tabular}{|>{\columncolor{codeBackground}}l l|}
-\hline
-&\\
-\lstinline|int *x = &num;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<2->{%
+\hline%
+
+\lstinline|int *pNum = &num;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<2->{%
 \begin{tikzpicture}[pointer/.append style = {thick}, node of list/.append style = {thick, node distance=10mm}]
-  \LinkPtr{x}
+  \LinkPtr{\texttt{pNum}}
   \node[node of list, right = of ptr, name=firstElValue, minimum width=20mm,] {?};
-  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1mm] firstElValue.north) {some \texttt{int}};
+  \node[inner sep=0pt, align=center, anchor=south, text depth=.25ex] at ([yshift=1mm] firstElValue.north) {some \texttt{int}};
   \draw[link] (ptr) to[bend left=8] (firstElValue);
-\end{tikzpicture}}}\\
-&\\ \hline
-&\\
-\lstinline|double *y;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<3->{%
+\end{tikzpicture}}%
+}\\[0.5em]
+
+\hline%
+
+\lstinline|double *pDub;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<3->{%
 \begin{tikzpicture}[pointer/.append style = {thick}, node of list/.append style = {thick, node distance=10mm}]
-  \LinkPtr{y}
+  \LinkPtr{\texttt{pDub}}
   \node[node of list, right = of ptr, name=firstElValue, minimum width=30mm,] {?};
-  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1mm] firstElValue.north) {some \texttt{double}};
+  \node[inner sep=0pt, align=center, anchor=south, text depth=.25ex] at ([yshift=1mm] firstElValue.north) {some \texttt{double}};
   \draw[link] (ptr) to[bend left=8] (firstElValue);
-\end{tikzpicture}}} \\
-&\\ \hline
-&\\
-\lstinline|int **z = &x;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<4->{%
+\end{tikzpicture}}%
+}\\[0.5em]
+
+\hline%
+
+\lstinline|int **ppNum = &pNum;| & \raisebox{-.5\dimexpr\totalheight-\ht\strutbox}{\onslide<4->{%
 \begin{tikzpicture}[pointer/.append style = {thick}, node of list/.append style = {thick}]
-  \LinkPtr{z}
+  \LinkPtr{\texttt{ppNum}}
   
-  \node[pointer, name=ptr2, node distance=10mm, right = of ptr2] {};
-  \node[node of list, node distance=10mm, right = of ptr2, name=firstElValue, minimum width=20mm,] {?};
+  \node[pointer, name=ptr2, node distance=6.915mm, right = of ptr2] {};
+  \node[node of list, node distance=6.915mm, right = of ptr2, name=firstElValue, minimum width=20mm,] {?};
   
   \fill (ptr2) circle(2pt);
   
-  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1.5mm] ptr2.north) {\texttt{x}};
+  \node[inner sep=0pt, align=center, anchor=south, text depth=.25ex] at ([yshift=1.5mm] ptr2.north) {\texttt{pNum}};
 
-  \node[inner sep=0pt, align=center, anchor=south] at ([yshift=1mm] firstElValue.north) {some \texttt{int}};
+  \node[inner sep=0pt, align=center, anchor=south, text depth=.25ex] at ([yshift=1mm] firstElValue.north) {some \texttt{int}};
 
   \draw[link] (ptr) to[bend left=8] (ptr2);
   \coordinate (ptr2) at (ptr2);
   \draw[link] (ptr2) to[bend left=8] (firstElValue);
-\end{tikzpicture}}} \\
-& \\ \hline
-\end{tabular}
+\end{tikzpicture}}%
+}\\[0.5em]
 
+\hline%
+\end{tabular}
+\egroup%
 \end{frame}
 
 \begin{frame}[fragile]{Pointers to Pointers: An Example}
-
 
 \begin{lstlisting}
 int num = 5;
@@ -631,15 +651,15 @@ Object[] arr2 = new Object[100];
   The identifier of an array on the stack is basically a \\\emph{const pointer}
   pointing at the beginning of the array.
 \item
-  You can use the \lstinline{{[}{]}} operator with pointers!
+  You can use the \lstinline{\[ \]} operator with pointers!
 \item
   Example:\\
-  \lstinline{int A{[}5{]};}
+  \lstinline|int A\[5\];|
   \begin{itemize}
   \item
-    Creates a memory block of 5 integers on the stack ($5\times4$ bytes).
+    Creates a memory block of 5 integers on the stack (\(5 \times 4\) bytes).
   \item
-    \lstinline{A} (the pointer) points at the beginning of the array. A $\rightarrow$ \lstinline{A{[}0{]}}.\\
+    \lstinline{A} (the pointer) points at the beginning of the array. A \(\rightarrow{}\) \lstinline{A{[}0{]}}.\\
     \lstinline{(A == \&A[0])}
 
     \begin{tikzpicture}
@@ -652,7 +672,7 @@ Object[] arr2 = new Object[100];
 
 \begin{frame}[fragile]{Pointers and Arrays}
 \begin{lstlisting}
-int *x;
+int *x {nullptr};
 int a[5] {-1, -2, -3, -4, -5};
 x = &a[2]; // x is the address of a[2]
 
@@ -738,7 +758,7 @@ int *ptr = a;
 
 \begin{frame}{Pointer Arithmetic}
   \begin{center}\Large
-  Let's look at another example using pointer arithmetic.
+  Let's look at an example using\\ pointer arithmetic.
 \end{center}
 \end{frame}
 
@@ -907,6 +927,11 @@ delete q;    // Frees the heap memory.
 
 \item C++ includes \href{https://en.cppreference.com/w/cpp/memory}{smart pointers}, enabling automatic object lifetime management.
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering\Large
+Why do you think C/C++ include\\ garbage collection?
 \end{frame}
 
 
