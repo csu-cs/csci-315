@@ -309,12 +309,41 @@ See all options at
 
 ### Automating Program Compilation
 
-- A ***makefile*** is a collection of instructions that should be used
-  to compile your program.
+- A ***makefile*** is a file named `Makefile` usually in the root of your project
+  containing instructions for compiling and running your program.
 
 - Once you modify some source files and type the command `make` (or
   `gmake` if using GNU’s make), your program will be recompiled using as
   few compilation commands as possible.
+
+### Running a Make Command
+
+A Makefile is a list of named build steps called "targets." Run `make` with the name of the target you want to build:
+
+```
+make target
+```
+
+If you omit the target, `make` executes the first rule in the file (commonly named `all`). In practice you will often run the default target with:
+
+```
+make
+```
+
+Common examples:
+
+- `make all` — build the default program(s).
+- `make clean` — remove build artifacts (usually declared as a phony target).
+- `make -n target` — perform a dry run; print commands without executing them.
+- `make -j4` — run up to 4 jobs in parallel to speed up the build.
+
+How make decides to rebuild: make compares file timestamps for a target and its prerequisites and only rebuilds when prerequisites are newer. To force a rebuild use `make -B` or run `make clean` followed by `make`.
+
+Important notes:
+
+- Makefile command lines must be indented with hard tabs (not spaces).
+- Declare non-file targets as phony to avoid conflicts: `.PHONY: clean all`.
+
 
 ### Makefile Structure
 
