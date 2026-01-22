@@ -5,7 +5,24 @@ More with Pointers
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/MbnggmlMIME?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
-## Overview
+## Learning Outcomes
+
+After completing this lecture and the related lab, students will be able to:
+
+- **Explain:** Describe the conceptual difference between stack and heap memory and how pointers reference each.
+- **Read & Write:** Declare pointers, use `&` and `*`, and correctly read from and write to referenced memory.
+- **Manage Memory:** Allocate and deallocate dynamic memory with `new`, `delete`, and `delete[]`, and explain common issues (memory leaks, dangling pointers).
+- **Apply Pointer Arithmetic:** Use pointer arithmetic and show equivalence between array indexing (`ary[i]`) and pointer expressions (`*(ary + i)`).
+- **Practice Const-Correctness:** Distinguish `const` variants (e.g., `const int *`, `int * const`, `const int * const`) and apply them appropriately.
+- **Understand Casting Risks:** Explain pointer casting (including `reinterpret_cast`) and identify when casts cause undefined behavior.
+- **Use Object Pointers:** Create and manipulate pointers to `struct`/`class` instances and use the `->` operator.
+- **Use Function Pointers:** Declare, assign, call, and pass function pointers (callbacks) safely.
+- **Compare Languages:** Contrast C++ pointers with Java references and explain practical implications.
+- **Identify Bugs:** Recognize and fix common pointer-related bugs (nullptr checks, double delete, use-after-free).
+
+## Review
+
+### Java vs. C++ Objects
 
 - Objects in C++ share many similarities with Java,  
   but are considered more powerful:
@@ -20,8 +37,6 @@ More with Pointers
     construct, not run time.
 
 - Remember, C++ is compiled to machine code; Java compiles to byte code!
-
-## Review
 
 ### Pointers to Stack Memory
 

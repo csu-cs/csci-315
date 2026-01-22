@@ -5,14 +5,26 @@ Testing and Unit Testing
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/xhCX4EourBI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
-## Ethics Essay: THERAC-25
+## Learning Outcomes
+
+After completing this lecture and the related lab, students will be able to:
+
+- **Explain:** Articulate the purpose of testing, differences between unit testing and other testing types, and why tests improve developer productivity.
+- **Design Tests:** Design effective unit tests including normal cases, edge cases, and failure cases.
+- **Write Tests:** Write unit tests using Doctest and use common test macros/assertions.
+- **Interpret Results:** Run tests, read test output, and diagnose failing tests to locate defects.
+- **Automate:** Integrate tests into a simple automated workflow using Makefiles.
+- **Use Test-First Practices:** Apply basic test-driven development to guide incremental implementation.
+- **Debug & Prevent Regressions:** Create regression tests for fixed bugs and use tests to prevent regressions.
+
+## Ethics Essay on the Importance of Testing
 
 Review the instructions for the ethics essay today!
 
 ## Test Your Code
 
 ***Testing will make you more productive.***  
-Meaning, you will spend less time working on problems because you will
+Meaning, you will spend less time working on problems because you will...
 
 - increase your chances of getting it right the first time AND
 
@@ -69,7 +81,22 @@ Meaning, you will spend less time working on problems because you will
   in your test repository.
 
 - I have provided a full template in class-code.  
-  Let’s take a look
+  Take a look in the git repository.
+
+## Regression Testing
+
+Regression testing focuses on preventing previously fixed bugs from reappearing by adding automated tests that reproduce the bug. With Doctest, write a focused `TEST_CASE` that encodes the failing scenario (use `CHECK`/`REQUIRE` to assert expected behavior), commit the test alongside the fix, and include it in your test suite so CI or the auto-grader will catch regressions.
+
+Example:
+
+```cpp
+// Regression test: previously failed on empty input
+TEST_CASE("handle empty input") {
+  CHECK_EQ(handle(""), expectedValue);
+}
+```
+
+Keep regression tests small, deterministic, and fast so they reliably prevent regressions without slowing development.
 
 ## Lab 5
 
