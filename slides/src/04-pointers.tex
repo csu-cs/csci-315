@@ -4,7 +4,7 @@
 % \documentclass[14pt,aspectratio=1610, handout]{beamer}
 \usepackage{csu-theme}
 
-\title{\Huge{}{\ttfamily\bfseries C++} Pointers and Testing}
+\title{\Huge{}{\ttfamily\bfseries C++} Pointers}
 \subtitle{CSCI 315: \textit{Data Structure Analysis}}
 \institute{Charleston Southern University}
 
@@ -343,113 +343,6 @@ Pointers can point to many things.
 \begin{frame}{Lab 4: Pointers}
 \centering\Large
 Let's talk about Lab 4, which is more practice with pointers.
-\end{frame}
-
-
-\section*{Ethics Essay}
-
-\begin{frame}{Ethics Essay on the Importance of Testing}
-\centering\Large
-\href{https://github.com/csu-cs/CSCI-315-2026-Spring/blob/master/ethics/README.md}{Let's go over your ethics essay today!}
-\end{frame}
-
-\section{Test Your Code}
-
-\begin{frame}{Learning Outcomes: Testing}
-  Students will be able to:
-  \begin{overlayarea}{\linewidth}{9\baselineskip}
-    \begin{enumerate}
-      \item \emph{Explain}: Articulate the purpose of testing, differences between unit testing and other testing types, and why tests improve developer productivity.
-      \item \emph{Design Tests}: Design effective unit tests including normal cases, edge cases, and failure cases.
-      \item \emph{Write Tests}: Write unit tests using Doctest and use common test macros/assertions.
-    \end{enumerate}
-  \end{overlayarea}
-\end{frame}
-
-\begin{frame}{Learning Outcomes: Testing}
-  Students will be able to:
-  \begin{overlayarea}{\linewidth}{9\baselineskip}
-
-    \begin{enumerate}\addtocounter{enumi}{3}
-      \item \emph{Interpret Results}: Run tests, read test output, and diagnose failing tests to locate defects.
-      \item \emph{Automate}: Integrate tests into a simple automated workflow using Makefiles.
-      \item \emph{Use Test-First Practices}: Apply basic test-driven development to guide incremental implementation.
-      \item \emph{Debug \& Prevent Regressions}: Create regression tests for fixed bugs and use tests to prevent regressions.
-    \end{enumerate}
-\end{overlayarea}
-\end{frame}
-
-\begin{frame}{Testing}
-\textbf{\large\textit{Testing will make you more productive.}}\\[1em]
-Meaning, you will spend less time working on problems because you will\textellipsis{}
-\begin{itemize}
-\item
-  increase your chances of getting it right the first time AND
-\item
-  rarely make the same mistake twice.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Warning}
-\begin{itemize}[<+->]
-\item A computer program \textit{cannot} sufficiently generate \\test cases for your code.
-\item \href{https://en.wikipedia.org/wiki/Halting_problem}{The Halting Problem}: Alan Turing proved that it is impossible for a computer to determine if any program halts (finishes).\\
-(\href{https://youtu.be/92WHN-pAFCs?t=14}{see Explanation on YouTube.})
-\item If we don't know if it halts, how can we test?
-\item This is your job, and an advantage you have over computation.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Unit Test}
-\begin{itemize}
-\item
-  For this course, unit testing is sufficient.
-\item
-  There are many other forms of testing, but this\\ course focuses on (relatively) small units of code.
-\item
-  There are numerous unit-testing tools, but no \textit{de facto} standard for C++.
-  \begin{itemize}
-  \item Unlike Java's JUnit
-  \end{itemize}
-\item
-  Popular testing frameworks for C++ include \href{https://google.github.io/googletest/}{GoogleTest}, \href{https://www.boost.org/doc/libs/1_81_0/libs/test/doc/html/index.html}{Boost.Test}, \href{CppUnit}{CppUnit}, \href{https://cxxtest.com/}{CxxTest}, and \href{https://github.com/catchorg/Catch2}{Catch2}.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Doctest -- Unit Testing for C++}
-\begin{itemize}
-\item
-  We will use \href{https://github.com/doctest/doctest\#readme}{Doctest} for this course.
-  \begin{itemize}
-  \item
-    Doctest is simple, yet has a rich feature set.
-  \end{itemize}
-\item
-  You only need to place the one file, \href{https://github.com/doctest/doctest/blob/master/doctest/doctest.h?raw=true}{doctest.h}, in your test repository.
-\item
-  I have provided a full template in class-code.\\Let's take a look\textellipsis{}
-\end{itemize}
-\end{frame}
-
-\section*{Lab 5}
-
-\begin{frame}{Auto-Grader}
-  \begin{itemize}
-  \item An auto-grader will provide a grade for most of\\ the labs (starting in Lab 5).
-  \begin{itemize}
-    \item It will not say what test cases you failed.
-    \item It may not mention if there is a timeout.
-    \item It may not say if there are compilation errors.
-    \item It \textit{may} tell you which part of the lab you got right or wrong.
-  \end{itemize}
-  \item Test cases from the auto-grader will \textbf{NOT} be disclose.  You \textbf{must} learn how to write your own test cases!
-  \item The grade from the auto-grader should be pushed to your repository shortly after you push your solution.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Lab 5: A Review of C++ Arrays}
-\centering\Large
-Let's talk about Lab 5.
 \end{frame}
 
 \end{document}
