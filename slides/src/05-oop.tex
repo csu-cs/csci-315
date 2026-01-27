@@ -8,7 +8,7 @@
 \usepackage{eqparbox}
 
 \title{\Huge{}Classes, Composition, \& Inheritance in {\ttfamily\bfseries C++}}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 10 \& 11}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 10 \& 11}
 %\author{}
 \institute{Charleston Southern University}
 
@@ -44,7 +44,7 @@ class ClassIdentifier
 \begin{frame}[fragile]{Syntax of Class}
   \begin{itemize}
   \item<+->
-    \emph{Data members} of a class are declared just like ordinary variables.
+    \emph{Data members} of a class are declared just like\\ ordinary variables.
   \item<+->
     \emph{Function members} of a class (i.e., methods) are declared withing the class as a prototype.
     \begin{itemize}
@@ -57,13 +57,13 @@ class ClassIdentifier
 \end{frame}
 
 \begin{frame}{Class Organization}
-  Access restrictions for members are set with the following keywords.
-  \begin{itemize}
-  \item \lstinline{public}: accessible outside the class.
-  \item \lstinline{private}: cannot be accessed outside the class.
-  \item \lstinline{protected}: access for the class and its subclasses.
-  \item \lstinline{friend}: grant member-level access to non-member functions or classes. Use sparingly (or not at all); this reduces encapsulation and increases coupling.
-  \end{itemize}
+  Access restrictions for members are set with\\ the following keywords.
+  \begin{description}[protected~~~~]
+  \item[\colorbox{codeBackground}{\texttt{\bfseries\color{codeKeyword}public}}:] accessible outside the class.
+  \item[\colorbox{codeBackground}{\texttt{\bfseries\color{codeKeyword}private}}:] cannot be accessed outside the class.
+  \item[\colorbox{codeBackground}{\texttt{\bfseries\color{codeKeyword}protected}}:] access for the class and its subclasses.
+  \item[\colorbox{codeBackground}{\texttt{\bfseries\color{codeKeyword}friend}}:] grant member-level access to non-member functions or classes. Use sparingly (or not at all); this reduces encapsulation and increases coupling.
+  \end{description}
 \end{frame}
 
 
@@ -84,7 +84,7 @@ class ClassIdentifier
 \begin{itemize}[<+->]
 \item
   By default, members of a \lstinline{struct} are public.\\
-  Use the \lstinline{private} specifier to make a member private.
+  Use \lstinline{private} specify that members are private.
 \item
   By default, the members of a \lstinline{class} are private.
 \item
@@ -98,7 +98,7 @@ class ClassIdentifier
 
 \begin{frame}{Member Functions}
 \begin{itemize}
-\item \emph{Methods} are member functions, which define object behavior.
+\item \emph{Methods} are member functions, which define\\ object behavior.
 \item Including only prototypes in class declaration keeps the class smaller and hides the implementation.
 \end{itemize}
 \end{frame}
@@ -139,17 +139,16 @@ void AClass::size(int size)
 \end{lstlisting}
 \end{columns}
 
-\lstinline{mSize} starts with 'm' to indicate member variable.
+\lstinline{mSize} starts with `\texttt{m}' to indicate member variable.
 \end{frame}
 
 \begin{frame}[fragile]{Class File Organization}
   \begin{itemize}
   \item
-    Typically, each class declaration is in its own \texttt{.hpp} file.
+    Each class is typically declared in its own \texttt{.hpp} file.
     \begin{itemize}
     \item
-      Avoid including this code multiple times in a program
-      by using preprocessor directives to check for a unique definition.\\[0.5em]
+      Avoid including code multiple times in a program by using\\ preprocessor directives to check for a unique definition.\\[0.5em]
       \texttt{MyClass.hpp}
       \begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
 #ifndef MY_CLASS
@@ -187,7 +186,7 @@ void AClass::size(int size)
 \begin{frame}{Types of Member Functions}
 \begin{itemize}
 \item<1->
-  Instance methods -- accessible through an instantiated object.
+  \emph{Instance} methods -- accessible through an instantiated object.
 \item<2->
   \emph{Static} methods -- accessible using the class name and the scope resolution operator (\lstinline{::}).
   \begin{itemize}
@@ -212,7 +211,7 @@ void AClass::size(int size)
   \protect\hypertarget{pointer-this}{}
   \begin{itemize}
   \item
-    Every object of a class maintains a (hidden) pointer to itself called
+    Every object of a class maintains a (hidden)\\ pointer to itself called
     \lstinline{this}.
   \item
     When an object invokes a member function, \lstinline{this} is referenced by the member function.
@@ -277,8 +276,9 @@ AClass::AClass(int size)
 
 \begin{frame}[fragile]{Invoking a Constructor}
 \begin{itemize}[<+->]
-\item In Java, a constructor is invoked only through the \lstinline{new} keyword because all object variables are references.
-\item In C++, a constructor is called upon variable declaration, or explicitly through \lstinline{new} with pointers, or in other situations.\\
+\item In Java, a constructor is invoked only with the \lstinline{new}\\ keyword because all object variables are references.
+\item In C++, a constructor is called a variable is declared,\\
+      or explicitly \lstinline{new}, or in other situations.\\
 \begin{lstlisting}[basicstyle=\ttfamily\bfseries\small]
 Clock myClock; // Invokes the default constructor.
 Clock *pClock = new Clock; // Invokes the default constructor
@@ -366,7 +366,7 @@ AClass::~AClass()
 \section{Copying Objects}
 
 \begin{frame}{Control Over Copy and Assignment in C++}
-The \emph{copy constructor} and \emph{assignment operator} define the semantics of \lstinline{a = b}.
+The \emph{copy constructor} and \emph{assignment operator} define\\ the semantics of \lstinline{a = b}.
 \begin{itemize}
   \item<2->
     The \textit{copy constructor} defines how a \emph{new} object is created as a copy of an existing object (e.g., when function parameters are passed).
@@ -382,7 +382,8 @@ The \emph{copy constructor} and \emph{assignment operator} define the semantics 
 \begin{frame}{Assignment Operator}
   \begin{itemize}[<+->]
     \item
-      The assignment operator (\lstinline{a = b}) where object \lstinline{a} is an existing object. Means that we are replacing the values in \lstinline{a} with a copy of the values in \lstinline{b}.
+      The assignment operator (\lstinline{a = b}) where object \lstinline{a} \\
+      is an existing object. Means that we are replacing\\ the values in \lstinline{a} with a copy of the values in \lstinline{b}.
 
     \item
       Therefore, we must define how this should happen.
@@ -399,7 +400,7 @@ The \emph{copy constructor} and \emph{assignment operator} define the semantics 
 
 \begin{frame}[fragile]{Operator Overloading}
 \begin{itemize}
-\item In C++, operators like \texttt{=}, \texttt{+}, \texttt{*}, \texttt{==}, etc.\ can be defined, just like methods.
+\item In C++, operators like \texttt{=}, \texttt{+}, \texttt{*}, \texttt{==}, etc.\ can be defined,\\ just like methods.
 \item Example:
 
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
@@ -465,9 +466,9 @@ std::ostream& operator<<(std::ostream& out,
 \begin{frame}{Objects as Function Parameters}
 \begin{itemize}
 \item<1->
-  Objects can be passed as parameters to functions and returned as function values.
+  Objects can be passed as parameters to functions\\ and returned as function values.
 \item<2->
-  Class objects can be passed by value or by reference.
+  Objects can be passed by \emph{value} or by \emph{reference}.
 \item<3->
   If an object is passed by value, the data members' values are copied (using the copy constructor).
   \begin{itemize}
@@ -494,7 +495,7 @@ Two common ways to relate two classes in a meaningful way are:
 
 \begin{frame}{Inheritance}
 \begin{itemize}
-\item Feature that allows a class to be defined based on another class.
+\item Feature that allows a class to be defined based on\\ another class.
 \begin{itemize}
 \item Methods and attributes are inherited.
 \end{itemize}
@@ -511,10 +512,8 @@ Two common ways to relate two classes in a meaningful way are:
 
 \begin{frame}{Static vs. Dynamic Binding}
 \begin{itemize}
-\item Let \texttt{Teacher} be a subclass of \texttt{Employee} \\
-\begin{itemize}
-\item Also, suppose \lstinline{promote()} is a method defined in both classes.
-\end{itemize}
+\item Let \texttt{Teacher} be a subclass of \texttt{Employee}. \\
+\item \lstinline{promote()} is a method defined in both classes.
 \item Employee variables can refer to Teachers
   \begin{tabular}{l @{\hskip 4em} l}
     \textbf{Java} & \textbf{C++}\\
@@ -582,7 +581,7 @@ public:
 \begin{frame}{There is more.}
 \begin{itemize}
 \item
-  We have quickly skimmed the material in Chapters 10 -- 11 in these slides.
+  We have quickly skimmed the material in\\ Chapters 10 -- 11 in these slides.
 \item
   Reference the textbook for details and examples.
 \end{itemize}

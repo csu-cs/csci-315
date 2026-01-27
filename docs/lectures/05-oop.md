@@ -20,7 +20,7 @@ After completing this lecture and the related lab, students will be able to:
 ## Lecture Video
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/rSD8MJiVA3Y?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/2e7rOwowFH8?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Intro to Classes
@@ -495,8 +495,6 @@ Two common ways to relate two classes in a meaningful way are:
   - As determined at run-time, because the actual type of the referred
     object is checked then (dynamic binding)
 
-### Static vs. Dynamic Binding
-
 - A function can be declared *virtual* to use dynamic binding instead of
   static.  
 
@@ -509,8 +507,68 @@ Two common ways to relate two classes in a meaningful way are:
   };
   ```
 
-- With inheritance, it is a good idea to make the destructors virtual to
-  ensure that the child object’s memory is freed.
+  ```C++
+  // Example showing polymorphic call through base-class pointer
+  #include <iostream>
+
+  class Dog : public Animal
+  {
+  public:
+    void print() const override
+    {
+      // child-specific behavior
+      std::cout << "Dog::print()\n";
+    }
+  };
+
+  // Polymorphic use:
+  // Animal* a = new Dog();
+  // a->print(); // calls Dog::print because print is virtual
+  // delete a;
+  ```
+
+  **Note:** The `override` specifier (introduced in C++11) can be
+  added to a function definition to indicate it overrides a virtual
+  function from a base class. It is optional but recommended as a
+  best practice because the compiler will check the function
+  signature and warn if it does not actually override any base
+  method.
+
+::: tip
+
+With inheritance, it is a good idea to make the destructors virtual to
+ensure that the child object’s memory is freed.
+
+:::
+
+### Pure Abstract Methods
+
+- A *pure abstract method* (also called a *pure virtual function*) is
+  declared by assigning `= 0` in the declaration. It makes the class
+  abstract (it cannot be instantiated) and forces derived classes to
+  implement the method, establishing an interface for dynamic binding.
+
+```C++
+class Shape {
+public:
+  virtual ~Shape() = default;
+  virtual void draw() const = 0; // pure virtual
+};
+
+class Circle : public Shape {
+public:
+  void draw() const override {
+    // draw a circle...
+  }
+};
+
+// Polymorphic use:
+// Shape* s = new Circle; s->draw(); delete s;
+```
+
+ - Use pure abstract methods when you want to define an interface
+   that all subclasses must implement, enabling polymorphic calls
+   through base-class pointers or references.
 
 ### Design Paradigms
 
