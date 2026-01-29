@@ -107,12 +107,12 @@ function sidebarNotes() {
 			]
 		},
 		{
-			text: 'C++ Object-Oriented Programming',
+			text: 'C++ Programming',
 			collapsed: true,
 			items: [
 				{ text: "C++ Object-Oriented Programming", link: "/lectures/05-oop" },
 				{ text: "Operator Overloading", link: "/lectures/06-operator-overloading" },
-				{ text: "Templates", link: "/lectures/06-templates" },
+				{ text: "C++ Templates", link: "/lectures/06-templates" },
 			]
 		},
 		{

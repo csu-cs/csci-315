@@ -1,5 +1,5 @@
-C++ Templates
-=============
+Polymorphism via C++ Templates
+==============================
 
 Chapter 13
 
@@ -20,7 +20,7 @@ After completing this lecture and the related lab, students will be able to:
 ## Lecture Video
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/bdbtNR4fuS0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/oD-Mxxzx3Is?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Introduction
@@ -193,7 +193,7 @@ compile time, enabling stronger type safety and optimizations
 ### Benefits of C++ Templates over Java Generics
 
 - C++ templates work directly with the actual type, including
-primitives, so there;s zero runtime overhead.
+primitives, so there's zero runtime overhead.
 - C++ templates can perform compile-time logic (template
 metaprogramming).
 - C++ allows template specialization: you can write

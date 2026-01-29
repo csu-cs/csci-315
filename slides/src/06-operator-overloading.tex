@@ -5,8 +5,8 @@
 \usepackage{csu-theme}
 \usepackage{booktabs}
 
-\title{\Huge{}Operator Overloading \\{\&} Templates}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 13}
+\title{\Huge{}Operator\\ Overloading}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 13}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -20,10 +20,10 @@
 \begin{document}
 
 \begin{frame}
-  \titlepage
+  \titlepage%
 \end{frame}
 
-\section{Objectives}
+\section{Motivation}
 
 \begin{frame}[fragile]{Objectives on Opeartor Overloading}
 
@@ -41,20 +41,6 @@ In this lecture, you will:
   Apply the \emph{Rule of Three} to properly handle pointer member variables.
 \end{itemize}
 \end{frame}
-
-\begin{frame}{Objectives on Templates}
-In this lecture, you will:
-\begin{itemize}
-\item
-  Define and use function and class templates.
-\item
-  Organize template code properly.
-\item
-  Use C++11 random number facilities.
-\end{itemize}
-\end{frame}
-
-\section{Operator Overloading}
 
 \begin{frame}[fragile]{Why Operator Overloading Is Needed}
 \protect\hypertarget{why-operator-overloading-is-needed-1-of-2}{}
@@ -105,6 +91,8 @@ if (local == yourTime)
   \end{itemize}
 \end{itemize}
 \end{frame}
+
+\section{Operator Overloading}
 
 \begin{frame}[fragile]{Operator Overloading}
 \protect\hypertarget{operator-overloading}{}
@@ -238,13 +226,33 @@ Functions}
 \item
   Function definition:\\
   \begin{lstlisting}[basicstyle=\ttfamily\small]
-returnType operator#(const Type& otherObject) const
+returnType ClassType::operator#(const Type& otherObject) const
 {
   // algorithm to perform the operation
   return value;
 }
 \end{lstlisting}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading the Assignment Operator (\texttt{=})}
+\protect\hypertarget{overloading-the-assignment-operator}{}
+  Function prototype:
+  \lstinline{const Type& operator=(const Type&);}
+
+  Function definition:
+  \begin{lstlisting}[basicstyle=\ttfamily\small]
+const Type& operator=(const Type& rightObject)
+{
+  // local declaration, if any
+  // Avoid self-assignment
+  if (this != &rightObject)
+  {
+    // Copy rightObject into this object
+  }
+  return *this; // return the object assigned
+}\end{lstlisting}
+
 \end{frame}
 
 \begin{frame}[fragile]{Binary Operator Overloads as Nonmember}
@@ -267,9 +275,8 @@ returnType operator#(const Type& leftObject, const Type& rightObject) const
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Overloading the Stream Insertion
+\begin{frame}[fragile]{Insertion
 (\texttt{{<}<}) and Extraction (\texttt{{>}>}) Operators}
-\protect\hypertarget{overloading-the-stream-insertion-and-extraction-operators}{}
 \begin{itemize}
 
 \item
@@ -335,26 +342,6 @@ std::istream& operator>>(std::istream& in, Type& cObject) {
 
 \end{frame}
 
-\begin{frame}[fragile]{Overloading the Assignment Operator (\texttt{=})}
-\protect\hypertarget{overloading-the-assignment-operator}{}
-  Function prototype:
-  \lstinline{const Type& operator=(const Type&);}
-
-  Function definition:
-  \begin{lstlisting}[basicstyle=\ttfamily\small]
-const Type& operator=(const Type& rightObject)
-{
-  // local declaration, if any
-  // Avoid self-assignment
-  if (this != &rightObject)
-  {
-    // Copy rightObject into this object
-  }
-  return *this; // return the object assigned
-}\end{lstlisting}
-
-\end{frame}
-
 \begin{frame}{Classes with Pointer Members (Revisited)}
 \begin{itemize}
 \item
@@ -394,7 +381,7 @@ friend Type operator+(const Type&, const Type&);
 Member Function for Operator Overload:
 \begin{itemize}
   \item
-    As a member function, the operation has direct access to data
+    As a member function, the operation has direct\\ access to data
     members of one of the objects.
   \item
     Need to pass only one object as a parameter.
@@ -501,24 +488,40 @@ Type operator++(Type& incObj, int) {
 May need to declare as a \lstinline{friend} function in the class definition.
 \end{frame}
 
-\section*{Restrictions}
+\section{Restrictions}
 \begin{frame}[fragile]{Overloading an Operator: Some Restrictions}
-%\protect\hypertarget{overloading-an-operator-some-restrictions}{}
+
+\emph{Only the behavior is customizable},\\ not the syntax rules.
+
+The following are all fixed by the language and\\ cannot be changed:
+
+\pause{}
 \begin{itemize}[<+->]
 \item
-  Cannot change the precedence of an operator.
+  Precedence
+
 \item
-  Associativity cannot be changed.
+  Associativity
+
 \item
-  Default parameters cannot be used.
-\item
+  Arity (unary vs binary)\\
   Cannot change number of parameters.
+
+\item
+  Short-circuit evaluation for \lstinline{&&} and \lstinline{||}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Overloading an Operator: Some Restrictions}
+\begin{itemize}[<+->]
 \item
   Cannot create new operators.
 \item
-  Cannot overload: \lstinline{.}~~\lstinline{.*}~~\lstinline{::}~~\lstinline{?:}~~\lstinline{sizeof}
+  Cannot overload: \lstinline{.}~~\lstinline{.*}~~\lstinline{::}~~\lstinline{?:}~~\lstinline{sizeof}~~\\
+  and casting operators.
 \item
-  Operators on built-in types cannot be redefined.
+  Operators on built-in types cannot be redefined.\\
+  For example, cannot redefine \lstinline{+} for two \lstinline{int} values.
 \item
   Can overload for user-defined objects or for a combination of
   user-defined and built-in objects.
@@ -554,331 +557,13 @@ May need to declare as a \lstinline{friend} function in the class definition.
 % \end{itemize}
 % \end{frame}
 
-\section{Templates}
-
-\begin{frame}{Introduction}
-  %\protect\hypertarget{introduction}{}
-  \begin{itemize}
-  \item
-    \emph{Templates} enable you to write generic code for related
-    functions and classes.
-  \item
-    \emph{Function templates} simplify function overloading.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Templates}
-
-\begin{itemize}
-\item
-  Templates give us similar functionality as \textit{generics} in Java, but
-  also so much more!
-\item
-  We can get the C++ compiler to write code for us, based on a set of rules we
-  give it.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Templates}
-\protect\hypertarget{templates-1-of-2}{}
-\begin{itemize}
-\item
-  \emph{Template} -- a single code body for a set of related functions
-  (\emph{function template}) and related classes (\emph{class template})
-\item
-  Syntax:
-\begin{lstlisting}
-template <typename Type>
-declaration;
-\end{lstlisting}
-  \begin{itemize}
-  \item
-    \lstinline{typename} denotes that we are creating a formal type parameter
-    (\lstinline{class} can also be used).
-  \item
-    \lstinline{Type}, in this example, is the type ``placeholder'' (because it is listed after
-    \lstinline{typename}).
-  \item
-    \lstinline{declaration} is either a function declaration or a class
-    declaration.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Templates}
-\protect\hypertarget{templates-2-of-2}{}
-\begin{itemize}
-\item
-  \lstinline{typename} in the heading refers to any user-defined type or
-  built-in type.
-\item
-  \lstinline{Type} is a formal parameter to the template
-\item
-  Just as variables are parameters to functions, data types are
-  parameters to templates
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Function Templates}
-\protect\hypertarget{function-templates}{}
-\begin{itemize}
-\item
-  Syntax of the function template:
-\begin{lstlisting}
-template <typename Type>
-function declaration;
-\end{lstlisting}
-\item
-  Type is a formal parameter of the template used to:
-  \begin{itemize}
-  \item
-    Specify the parameter types of the function.
-  \item
-    Specify the return type of the function.
-  \item
-    Declare variables within the function.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Function Templates}
-\begin{itemize}
-\item
-  {\large{A function template is not an actual function!}}\footnote[frame]{\tiny Source: \href{https://youtu.be/LMP_sxOaz6g}{Back to Basics: Function and Class Templates - Dan Saks - CppCon 2019}}
-\item
-  It is a generalization of an algorithm that can generate generate similar, but distinct, function definitions.
-\item
-  Each generates function implements the algorithm for operands of different types.
-\end{itemize}
-\end{frame}
-
-% \begin{frame}{Function Templates}
-% \begin{itemize}
-% \item
-%   {\large{A function template is not an actual function!}}\footnote[frame]{\tiny Source: \href{https://youtu.be/LMP_sxOaz6g}{Back to Basics: Function and Class Templates - Dan Saks - CppCon 2019}}
-% \item
-%   It is a generalization of an algorithm that can generate generate similar, but distinct, function definitions.
-% \item
-%   Each generates function implements the algorithm for operands of different types.
-% \end{itemize}
-% \end{frame}
-
-\begin{frame}[fragile]{Abbreviated Function Templates}
-
-As of C++20, the \lstinline{auto} keyword can be used as a shorthand for parameter type in a function template declaration.
-
-The following function declarations are identical.
-
-\begin{lstlisting}
-template <typename Type>
-void fun1(Type val);
-
-template <typename Type>
-void fun2(const Type& val);
-\end{lstlisting}
-
-\begin{lstlisting}
-void fun1(auto val);
-void fun2(const auto& val);
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}{Abbreviated Function Templates}
-\texttt{g++} may default to an older C++ standard. If so, add \lstinline[language=Bash, identifierstyle=\color{white}]{-std=c++20} to your compiler arguments to use template abbreviation.
-
-The auto-grader uses the C++20 when checking your code.
-\end{frame}
-
-\begin{frame}[fragile]{Class Templates}
-\protect\hypertarget{class-templates}{}
-\begin{itemize}
-\item
-  Class template: a single code segment for a set of related classes
-\item
-  Called parameterized types
-\item
-  Syntax:
-\begin{lstlisting}
-template <typename Type>
-class declaration;
-\end{lstlisting}
-\item
-  A template instantiation can be created with either a built-in or
-  user-defined type
-\item
-  The function members of a class template are considered to be function
-  templates
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Source Files for Templated Classes}
-\protect\hypertarget{header-file-and-implementation-file-of-a-class-template-1-of-2}{}
-\begin{itemize}
-\item
-  Passing a parameter to a function occurs at \emph{run time}.
-\item
-  Passing a parameter to a class template occurs at \emph{compile time}.
-\item
-  Therefore, the implementation file cannot be compiled independently of the client
-  code.
-  \begin{itemize}
-  \item
-    Can put class- and function-template definitions
-    directly in the client code.
-  \item
-    Can put class- and function-template definitions
-    in the same header file.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Source Files for Templated Classes}
-\protect\hypertarget{header-file-and-implementation-file-of-a-class-template-2-of-2}{}
-\begin{itemize}
-\item
-  Another alternative is to put class definition and function
-  definitions in separate files.
-  \begin{itemize}
-  \item
-    Include the directive to the implementation file at the end of the header
-    file.
-  \end{itemize}
-\item
-  In either case, function definitions and client code are compiled
-  together.
-\end{itemize}
-\end{frame}
-
-\section{Java vs. C++}
-
-\begin{frame}{Type Erasure vs Code Generation}
-\begin{itemize}
-\item
-  Java generics use \emph{type erasure}: at runtime, all generic types are compiled to Object (or primitive wrappers), and type information is lost.
-\item 
-  C++ templates are \emph{code generators}: the compiler creates a new, fully typed version of the function or class for each instantiation.
-\item
-  C++ templates can lead to code bloat if many different types are used.
-\item
-  However, it also allows for optimizations that are not possible in Java.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Type Erasure vs Code Generation}
-
-Java generics example
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-List<Integer> ints = new ArrayList<>();
-List<String> strs = new ArrayList<>();
-// At runtime, both are really just List<Object>
-\end{lstlisting}
-
-C++ templates example
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-std::vector<int> ints;
-std::vector<std::string> strs;
-// At compile time, two classes are generate.
-\end{lstlisting}
-
-In C++, \lstinline{vector<int>} and \lstinline{vector<string>} are distinct types at compile time, enabling stronger type safety and optimizations.
-\end{frame}
-
-\begin{frame}{Benefits of C++ Templates over Java Generics}
-\begin{itemize}
-\item C++ templates work directly with the actual type, including primitives, so there;s zero runtime overhead.
-\item C++ templates can perform compile-time logic (template metaprogramming).
-\item C++ allows template specialization: you can write different implementations for specific types.
-\item With C++20, templates can specify constraints using concepts (e.g., \lstinline{requires Integral<T>}).
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Java Generics vs C++ Templates}
-  \begin{table}[h!]
-\centering\small
-\begin{tabular}{lll}
-\toprule
-\textbf{Feature} & \textbf{Java Generics} & \textbf{C++ Templates} \\
-\midrule
-Runtime behavior & Type erasure  & Code generation per type \\
-Performance      & boxing/unboxing & Zero overhead, fully typed \\
-Compile-time power & None & Metaprogramming, \texttt{constexpr} \\
-Specialization   & Not supported & Full or partial \\
-Constraints      & Interfaces only & C++20 Concepts, etc. \\
-\bottomrule
-\end{tabular}
-\caption{Comparison of Java Generics and C++ Templates}
-\end{table}
-
-\end{frame}
-
-
-\section*{ADT}
-\begin{frame}{Array-Based Lists}
-\protect\hypertarget{array-based-lists-revisited}{}
-\begin{itemize}
-\item
-  Using class templates allows the creation of generic code.
-\item
-  Can create abstract class \lstinline{ArrayList} as an abstract data type (ADT).
-  \begin{itemize}
-  \item
-    Must overload the assignment operator.
-  \end{itemize}
-\item
-  Can derive \lstinline{UnorderedArrayList} or \lstinline{OrderedArrayList} from
-  \lstinline{ArrayList}.
-\end{itemize}
-\end{frame}
-
-\section{Random Numbers}
-\begin{frame}[fragile]{C++11 Random-Number Generator}
-\begin{itemize}
-\item
-  To use C++11 random-number generator functions, we use an engine and a
-  distributor.
-  \begin{itemize}
-  \item
-    An engine returns unpredictable (random) bits.
-  \item
-    A distribution returns random numbers whose likelihoods correspond to
-    a specific shape such as a uniform or normal distribution.
-  \end{itemize}
-\item
-  The C++11 standard library provides 25 distribution types in five
-  categories.
-  \begin{itemize}
-  \item
-    \lstinline{uniform_int_distribution} and
-    \lstinline{uniform_real_distribution} fall in the category of uniform
-    distributions.
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{C++11 Random-Number Generator}
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-#include <random>
-
-int main() {
-  std::random_device randDevice;
-  std::default_random_engine num{ randDevice() };
-  std::uniform_int_distribution<int> dist{1, 6};
-
-  // Generate 10 ints that are between 1 and 6.
-  for (int count = 1; count <= 10; ++count) {
-    std::cout << dist(num) << ' ';
-  }
-}
-\end{lstlisting}
-\end{frame}
-
 \section{Review}
 \begin{frame}[fragile]{Quick Review}
 \begin{itemize}[<+->]
 \item
-  \emph{Overloaded} operator -- an operator that has different meanings with different data types.
+  \emph{Overloaded operator} -- an operator that has different meanings with different data types.
 \item
-  Operator function -- a function that overloads an operator.
+  \emph{Operator function} -- a function that overloads an operator.
 \item
   Operator functions are value-returning.
 \item
@@ -903,29 +588,19 @@ int main() {
 \end{frame}
 
 \begin{frame}[fragile]{Quick Review}
-\begin{itemize}[<+->]
+\begin{itemize}
 \item
-  Classes with pointer variables \emph{must} overload the assignment operator,
-  and include both the copy constructor and the destructor.
-\item
-  In C++, \lstinline{template} is a reserved word.
-\item
-  Function template: a single code segment for a set of related
-  functions.
-\item
-  Class template: a single code segment for a set of related classes.
-\item
-  Are called \emph{parameterized types}.
-\item
-  C++11 provides many functions to implement random number generators.
+  \emph{Rule of 3}: Classes with pointer variables\\ \emph{must} overload the
+  \pause{}
+  \begin{enumerate}[<+->]
+  \item
+    copy constructor,
+  \item 
+    destructor, and
+  \item 
+    assignment operator.
+  \end{enumerate}
 \end{itemize}
-\end{frame}
-
-\section*{Lab 6}
-\begin{frame}{Lab 6: Templates and Operator Overloading}
-\begin{center}\Large
-Let's take a look at Lab 6.
-\end{center}
 \end{frame}
 
 \end{document}

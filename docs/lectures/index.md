@@ -13,7 +13,7 @@
 ## C++ Object-Oriented Programming
 - [C++ Object-Oriented Programming](/lectures/05-oop)
 - [Operator Overloading](/lectures/06-operator-overloading)
-- [Templates](/lectures/06-templates)
+- [Polymorphism via C++ Templates](/lectures/06-templates)
 
 ## Performance Analysis
 - [Performance Analysis](/lectures/07-performance-analysis)
