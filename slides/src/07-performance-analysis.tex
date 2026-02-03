@@ -5,8 +5,15 @@
 \usepackage{csu-theme}
 \usepackage{booktabs}
 
-\title{\Huge{}Performance Analysis}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 18}
+\usepackage{tikz}
+\usepackage{gnuplot-lua-tikz}
+\usepackage{gnuplottex}
+% \usetikzlibrary{arrows,patterns,plotmarks,backgrounds,fit}
+% \input gnuplot-lua-tikz-common.tex
+% \endinput
+
+\title{\Huge{}Performance\\ Analysis}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 18}
 %\author{Sean T. Hayes, PhD}
 \institute{Charleston Southern University}
 
@@ -20,17 +27,17 @@
 \begin{document}
 
 \begin{frame}
-  \titlepage
+  \titlepage{}
 \end{frame}
 
 \section{Intro}
 
 \begin{frame}{Analysis of Algorithms}
-  Dilemma: You have two (or more) methods to solve a problem.\\
+  \emph{Dilemma}: You have two (or more) solutions to a\\ problem.\\
   How do you choose the BEST method?
 \begin{itemize}
 \item<2->
-  One approach: Implement each algorithm in C++; test how long each takes to run.
+  One approach: Implement each algorithm in C++;\\ test how long each takes to run.
 \item<3->
   Problems:
   \begin{itemize}
@@ -58,19 +65,19 @@ algorithm.\\[1em]
 \end{frame}
 
 \begin{frame}{Approaches to Analyzing Performance}
-  Comment on the ``general'' performance of the algorithm using one of two options:
+  Two approaches to describing ``general'' algorithm performance:
   \begin{enumerate}
   \item<2->
-    \textbf{Empirical}: Measure performance for several examples.\\But, what does this tell us in general?
+    \textbf{Empirical}: Measure performance for examples.\\ But, what does this tell us in general?
   \item<3->
     \textbf{Analytical}:
     \begin{itemize}
-    \item<4-> Instead, assess performance in an abstract, generalized manner.
+    \item<4-> Assess performance in an abstract, generalized manner.
     \item<5-> Idea: analyze performance as the size of problem growth.
     \item<6-> Examples:
     \begin{itemize}
-    \item Sorting: How many comparisons for an array of size $n$?
-    \item Searching: How many comparisons for an array of size $n$?
+    \item Sorting: How many comparisons for an array of size \(n\)?
+    \item Searching: How many comparisons for an array of size \(n\)?
     \end{itemize}
     \item<7-> Challenge: It may be difficult to discover a reasonable formula.
     \end{itemize}
@@ -80,11 +87,11 @@ algorithm.\\[1em]
 
 \begin{frame}{Analytical Approach: Step 1 of 2}
 
-Characterize performance by counting the number of of key operations.
+Characterize performance by counting the number of\\ operations.
 
 \begin{itemize}
 \item <2->
-  For a \emph{sorting} algorithm, the key operations includes\\the number of times:
+  \emph{Sorting}: the operations include when:
   \begin{itemize}
   \item
     two values are compared and
@@ -92,13 +99,13 @@ Characterize performance by counting the number of of key operations.
     two values are swapped.
   \end{itemize}
 \item <3->
-  Search:
+  \emph{Search}:
   \begin{itemize}
   \item
     Count the number of times the value being searched for is compared to values in an array.
   \end{itemize}
 \item <4->
-  Recursive function:
+  \emph{Recursion}:
   \begin{itemize}
   \item
     Count the number of recursive calls.
@@ -113,39 +120,40 @@ However, the number of operations is dependent on \\the size and characteristics
 \begin{frame}{Analysis with Varying Results}
 \begin{itemize}
 \item
-  Example: some sorting algorithms may require as few as $n-1$ comparisons and as many as $\frac{1}{2}n^2$.
+  Example: some sorting algorithms may require\\ as few as \(n-1\) comparisons and as many as \(\frac{1}{2}n^2\).
 \item<2->
   Types of analyses based a problem of size \(n\):
   \begin{itemize}
   \item
-    Best case: What is the shortest an algorithm can run?
+    \emph{Best} case: What is the shortest an algorithm can run?
   \item
-    Average case: On average, how fast does an algorithm run?
+    \emph{Average} case: On average, how fast does an algorithm run?
   \item
-    Worst case: What is the longest an algorithm can run?
+    \emph{Worst} case: What is the longest an algorithm can run?
   \end{itemize}
 \item<3->
   Computer scientists \textit{usually} use worst-case or average-case analysis.
-  \begin{itemize}
-  \item<4->
-    What are some example domains where you may care more about the worst case than the average case and vice versa?
   \end{itemize}
-\end{itemize}
 \end{frame}
 
-\begin{frame}{Notice: We Are \textbf{Estimating}}
+\begin{frame}{Worst Case vs. Average Case}
+  \centering\large
+What are some examples of domains where you may care more about the \emph{worst case} than the \emph{average case} and vice versa?
+\end{frame}
+
+\begin{frame}{Notice: We Are \textbf{Approximating}}
 \begin{itemize}
-\item Usually, we approximate or estimate the performance of an algorithm, assuming it is operating on a very large data set.
-\item Estimation is an important skill to learn and use.
+\item We usually \emph{approximate} the an algorithm's performance, assuming it is operating on a very large data set.
+\item Approximating is an important skill to learn and use.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Simpler Question: How many hotdogs tall is the Empire State Building?}
+\begin{frame}{Simpler Question: How many hotdogs\\ tall is the Empire State Building?}
 \begin{columns}
 \column{0.670\textwidth}
 \begin{itemize}
-\item<2-> The ESB is $1,250$ feet tall.
-\item<3-> Assuming that a hotdog is 6 inches from end to end, you would need, $1,250 \cdot 2 = 2,500$ hotdogs.
+\item<2-> The ESB is \(1,250\) feet tall.
+\item<3-> Assuming that a hotdog is 6 inches from end to end, you would need, \(1,250 \cdot 2 = 2,500\) hotdogs.
 \end{itemize}
 \column{0.33\textwidth}
 \includegraphics[width=0.8\textwidth]{empire-state-building}
@@ -157,7 +165,7 @@ However, the number of operations is dependent on \\the size and characteristics
 
 \begin{frame}{Analysis}
 \begin{itemize}[<+->]
-\item An objective way to evaluate the cost of an algorithm or code section.
+\item Utilize an objective way to evaluate the \emph{cost} of an\\ algorithm or code section.
 \item The cost is usually computed in terms of \emph{time} or \emph{space}.
 \item The goal is to have a meaningful way to compare algorithms based on a common measure.
 % \item Complexity analysis has two phases,
@@ -198,8 +206,9 @@ However, the number of operations is dependent on \\the size and characteristics
 \begin{lstlisting}[mathescape]
 count = count + 1;  // Cost: $\color{codeComment}c_1$
 sum = sum + count;  // Cost: $\color{codeComment}c_2$ 
-\end{lstlisting}\vspace{2em}
-\emph{Total Cost} = $c_1 + c_2$. \\[1em]
+\end{lstlisting}
+\vspace{2em}
+\emph{Total Cost} \(= c_1 + c_2\). \\[1em]
 Because we assume the addition costs 1 and assignment costs 1, the total cost is 4 units.
 \end{frame}
 
@@ -213,14 +222,14 @@ if (n < 0) {     // Cost: $\color{codeComment}c_1 \onslide<2->{= 1}$
 \end{lstlisting}
 \begin{itemize}[<+->]
 \item
-  $\mathrm{Total Cost} \le c_1 + \mathrm{max}(c_2, c_3)$
-\item $c_1$ is the cost of the boolean evaluation ($1$ instruction).
-\item $c_2$ is the cost of the negating a number ($1$) + the cost of assignment ($1$).
-\item $c_3$ is the cost of an assignment ($1$).
+  \(\mathrm{Total Cost} \le c_1 + \max(c_2, c_3)\)
+\item \(c_1\) is the cost of the boolean evaluation (\(1\) instruction).
+\item \(c_2\) is the cost of the negating a number (\(1\)) + the cost of assignment (\(1\)).
+\item \(c_3\) is the cost of an assignment (\(1\)).
 \item
   \begin{tabular}{ccc}
     Worse Case & Best Cast & Average\\
-    $3$ & $2$ & $2.5$
+    \(3\) & \(2\) & \(2.5\)
   \end{tabular}
 \end{itemize}
 \end{frame}
@@ -235,11 +244,11 @@ while (i <= n) {   // Cost: $\color{codeComment}c_3\onslide<4->{= 1}$
 }
 \end{lstlisting}
 \begin{itemize}
-\item<5-> Remember assignment (\lstinline{=}) and addition (\lstinline{+}) each cost $1$.
+\item<5-> Remember assignment (\lstinline{=}) and addition (\lstinline{+}) each cost \(1\).
 \item<7-> How many times does the loop execute?\\
-  \onslide<8->{$n$ times.}
-\item<9-> $\mathrm{Total Cost} = c_1 + c_2 + (n+1) c_3 + n \left(c_4 + c_5\right) =$ \\
-$c_1 + c_2 + c_3 + n\left(c_3 + c_4 + c_5\right)$
+  \onslide<8->{\(n\) times.}
+\item<9-> \(\mathrm{Total Cost} = c_1 + c_2 + (n+1) c_3 + n \left(c_4 + c_5\right) =\) \\
+\(c_1 + c_2 + c_3 + n\left(c_3 + c_4 + c_5\right)\)
 \end{itemize}
 \end{frame}
 
@@ -274,15 +283,15 @@ while (i <= n) {
 \column{0.1\textwidth}
 {\footnotesize
 \textbf{Cost}\\[6pt]
-$c_1 = 1$\\
-$c_2 = 1$\\
-$c_3 = 1$\\
-$c_4 = 1$\\
-$c_5 = 1$\\
-$c_6 = 2$\\
-$c_7 = 2$\\
+\(c_1 = 1\)\\
+\(c_2 = 1\)\\
+\(c_3 = 1\)\\
+\(c_4 = 1\)\\
+\(c_5 = 1\)\\
+\(c_6 = 2\)\\
+\(c_7 = 2\)\\
 ~\\
-$c_8 = 2$
+\(c_8 = 2\)
 }
 % \begin{lstlisting}[basicstyle=\footnotesize\ttfamily,language={},numbers=none,keepspaces=true]
 % Cost
@@ -301,8 +310,8 @@ $c_8 = 2$
 
 \column{0.5\textwidth}
 \begin{itemize}
-\item <2-> The outer loop iterates $n$ times.
-\item <3-> For each iteration of the outer loop, the inner loop iterates $n$ times.
+\item <2-> The outer loop iterates \(n\) times.
+\item <3-> For each iteration of the outer loop, the inner loop iterates \(n\) times.
 \item <4-> The total cost is:\vspace{-1em}
   {\small
   \begin{align*}
@@ -312,7 +321,8 @@ $c_8 = 2$
   \end{align*}}
 \end{itemize}
 \end{columns}
-\onslide<5->{\centerline{\textbf{Important Note:} $n^2$ is the highest (largest) term!}}
+\vspace{-0.5em}
+\onslide<5->{\centerline{\textbf{Important Note:} \(n^2\) is the highest (largest) term!}}
 \end{frame}
 
 \section{Big \textit{O} Notation}
@@ -322,40 +332,42 @@ $c_8 = 2$
   \begin{itemize}[<+->]
   \item An algorithm's time requirement is a function of the problem size.
   \item The problem size depends on the application (e.g., the number of list elements for a sorting algorithm). % , the number of disks for the \href{https://en.wikipedia.org/wiki/Tower_of_Hanoi}{Towers of Hanoi}
-  \item For instance, we say that (if the problem size is $n$)
+  \item For instance, we say that (if the problem size is \(n\))
   \begin{itemize}
-    \item Algorithm A requires $5n^2$ time units to solve a problem of size $n$.
-    \item Algorithm B requires $7n + 100$  time units to solve a problem of size $n$.
+    \item Algorithm A requires \(5n^2\) time units to solve a problem of size \(n\).
+    \item Algorithm B requires \(7n + 100\)  time units to solve a problem of size \(n\).
   \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Comparing Algorithms}
   \begin{itemize}[<+->]
-    \item An algorithm's proportional time requirement is known as the \emph{growth rate}.
+    \item An algorithm's proportional time requirement\\ is known as the \emph{growth rate}.
     \item We can compare the efficiency of algorithms by comparing their growth rates.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Comparing Algorithms}
+\begin{frame}[fragile]{Comparing Algorithms}
 \setbeamercolor{block body}{bg=white, fg=black}
+
 %\begin{block}{}
-\centerline{\includegraphics[width=0.7\textwidth]{performance-growth-rate1}}
+\input plots/07-performance-analysis/performance-growth-rate1.tex
+% \centerline{\includegraphics[width=0.8\textwidth]{performance-growth-rate1}}
 %\end{block}
 
 \end{frame}
 
 \begin{frame}{Example: Which is faster?}
 % \begin{columns}
-% \column{0.45\textwidth}$50n^2 + 31n^3 + 24n + 15$
-% \column{0.5\textwidth}$3n^2 + n + 21 + 4 \cdot 3^n$
+% \column{0.45\textwidth}\(50n^2 + 31n^3 + 24n + 15\)
+% \column{0.5\textwidth}\(3n^2 + n + 21 + 4 \cdot 3^n\)
 % \end{columns}
 % \pause{}
 %\centering
-\onslide<2->{It depends on $n$.}\\
+\onslide<2->{It depends on \(n\).}\\
 \begin{tabular}{r @{\hskip 0.75cm} r @{\hskip 1cm} r}
 \toprule{}
-  \uncover<3->{$n$}  & $50n^2 + 31n^3 + 24n + 15$ & $3n^2 + n + 21 + 4 \cdot 3^n$ \\
+  \uncover<3->{\(n\)}  & \(50n^2 + 31n^3 + 24n + 15\) & \( 4 \cdot 3^n + 3n^2 + n + 21 \) \\
 \midrule{}
   \onslide<3->{  1   &        120     &            37 }\\
   \onslide<3->{  2   &        511     &            71 \\}
@@ -377,7 +389,7 @@ $c_8 = 2$
 \onslide<2->{
   \begin{tabular}{r @{\hskip 0.75cm} r r c }
     \toprule{}
-    $n$  & $3n^2 + n + 21 + 4 \cdot 3^n$  & $4 \cdot 3^n$ & Proportion \\
+    \(n\)  & \( 4 \cdot 3^n + 3n^2 + n + 21\)  & \(4 \cdot 3^n\) & Proportion \\
     \midrule{}
     1  &          37  &         12  &      32.4\% \\
     2  &          71  &         36  &      50.7\% \\
@@ -399,69 +411,71 @@ $c_8 = 2$
 
 \end{frame}
 
-\begin{frame}{As $n$ Grows, Some Terms Dominate}
+\begin{frame}{As \(n\) Grows, Some Terms Dominate}
 
 \begin{tabular}{r r r r r r}
   \toprule{}
-            & n=10   & n=100  & n=1,000 & n=10,000 & n=100,000 \\
+      \(n\)      & \(10\)   & \(100\)  & \(1,000\) & \(10,000\) & \(100,000\) \\
   \midrule{}
-$n^0$ or $1$  & $k$      & $k$      & $k$      & $k$      & $k$ \\
-$\log_2n$   & $3$      & $6$      & $9$      & $13$      & $16$ \\
-$n$        & $10$     & $100$    & $1,000$   & $10,000$   & $100,000$ \\
-$n\log_2n$ & $30$     & $664$    & $9965$   & $10^5$  & $10^6$ \\
-$n^2$      & $10^2$ & $10^4$ & $10^6$ & $10^8$  & $10^{10}$ \\
-$n^3$      & $10^3$ & $10^6$ & $10^9$ & $10^{12}$  & $10^{15}$ \\
-$2^n$      & $10^3$ & $10^{30}$ & $10^{301}$ & $10^{3010}$  & $10^{30103}$\\
-$n!$       & $4 \cdot 10^6$ & $9 \cdot 10^{157}$ & ...\\
+\(n^0\) or \(1\)  & \(k\)      & \(k\)      & \(k\)      & \(k\)      & \(k\) \\
+\(\log_2n\)   & \(3\)      & \(6\)      & \(9\)      & \(13\)      & \(16\) \\
+\(n\)        & \(10\)     & \(100\)    & \(1,000\)   & \(10,000\)   & \(100,000\) \\
+\(n\log_2n\) & \(30\)     & \(664\)    & \(9965\)   & \(10^5\)  & \(10^6\) \\
+\(n^2\)      & \(10^2\) & \(10^4\) & \(10^6\) & \(10^8\)  & \(10^{10}\) \\
+\(n^3\)      & \(10^3\) & \(10^6\) & \(10^9\) & \(10^{12}\)  & \(10^{15}\) \\
+\(2^n\)      & \(10^3\) & \(10^{30}\) & \(10^{301}\) & \(10^{3010}\)  & \(10^{30103}\)\\
+\(n!\)       & \(4 \cdot 10^6\) & \(9 \cdot 10^{157}\) & ...\\
 \bottomrule{}
 \end{tabular}
 
 %\vspace{2em}
-$1 < \log_2n < n < n\log_2n < n^2 < n^3 < 2^n < 3^n$
+\(1 < \log_2n < n < n\log_2n < n^2 < n^3 < 2^n < 3^n\)
 
 \end{frame}
 
 \begin{frame}{Growth rates of common complexity functions}
-  \centering\includegraphics[width=\textwidth]{big-o-growth-rates}
+  % \centering
+  % \includegraphics[width=\textwidth]{big-o-growth-rates}
+  \input plots/07-performance-analysis/big-o-growth-rates.tex
 \end{frame}
 
 
-\begin{frame}{Big $O$}
+\begin{frame}{Big \(O\)}
 \begin{itemize}
-\item If  Algorithm A requires time proportional to $f(n)$, \\Algorithm A is said to be order $f(n)$, and it is denoted as $O(f(n))$.
-\item The function $f(n)$ is called the algorithm's growth-rate function.
-\item Since the capital $O$ is used in the notation,  this notation is called the Big-$O$ notation.
-\item If Algorithm A requires time proportional to $n^2$, it is $O(n^2)$.
-\item If Algorithm A requires time proportional to $n$, it is $O(n)$.
+\item If  Algorithm A requires time proportional to \(f(n)\),\\ Algorithm A is said to be order \(f(n)\), denoted as\\ \(O(f(n))\).
+\item The function \(f(n)\) is called the algorithm's growth-rate function.
+\item Since the capital \(O\) is used in the notation,  this notation is called the Big-\(O\) notation.
+\item If Algorithm A requires time proportional to \(n^2\), it is \(O(n^2)\).
+\item If Algorithm A requires time proportional to \(n\), it is \(O(n)\).
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Example 1}
 \begin{itemize}[<+->]
-\item If an algorithm requires $n^2 - 3n + 10$ seconds to solve a problem size, $n$.
-\item If constants $k$ and $n_0$ exist such that \\
-$kn^2 + n_0 > n^2 - 3n + 10$ for all $n$ and $n_0$,\\
-then the algorithm is order $n^2$.  (In fact, $k$ is 3 and $n_0$ is 2)
-\item Thus, the algorithm requires no more than $kn^2$ time units.
-\item So it is $O(n^2)$
+\item If an algorithm requires \(n^2 - 3n + 10\) seconds to\\ solve a problem size, \(n\).
+\item If constants \(k\) and \(n_0\) exist such that \\
+\(kn^2 + n_0 > n^2 - 3n + 10\) for all \(n\) and \(n_0\),\\
+then the algorithm is order \(n^2\).  (In fact, \(k\) is 3 and \(n_0\) is 2)
+\item Thus, the algorithm requires no more than \(kn^2\) time units.
+\item So it is \(O(n^2)\)
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{More Examples}
 
-  This game of ``spot the highest term'' is actually not difficult!
+  This game of ``spot the highest term'' is usually easy!
 
   \begin{itemize}\setlength\itemsep{0.25em}
-    \item $50n^2 + 31n^3 + 24n + 15$ = \alt<2->{$O\left(n^3\right)$}{?}
-    \item<3-> $3n^2 + n + 21 + 4 \cdot 3^n$  = \alt<4->{$O\left(3^n\right)$}{?}
+    \item \(50n^2 + 31n^3 + 24n + 15\) = \alt<2->{\(O\left(n^3\right)\)}{?}
+    \item<3-> \(3n^2 + n + 21 + 4 \cdot 3^n\)  = \alt<4->{\(O\left(3^n\right)\)}{?}
   \end{itemize}\vspace{1em}
 
   \onslide<5->{It can get somewhat tricky:}
   \begin{itemize}\setlength\itemsep{0.25em}
-    \item<6-> $n\left(3 + n(9+n)\right) + n^2$ = \alt<7->{$O\left(n^3\right)$}{?}
-    \item<8-> $n\left(10 + \log_2n\right) + n$ = \alt<9->{$O\left(n\log_2n\right)$}{?}
+    \item<6-> \(n\left(3 + n(9+n)\right) + n^2\) = \alt<7->{\(O\left(n^3\right)\)}{?}
+    \item<8-> \(n\left(10 + \log_2n\right) + n\) = \alt<9->{\(O\left(n\log_2n\right)\)}{?}
   \end{itemize}\onslide<9>{}
 \end{frame}
 
@@ -471,21 +485,21 @@ then the algorithm is order $n^2$.  (In fact, $k$ is 3 and $n_0$ is 2)
   \toprule{}
     \textbf{Big O} & \textbf{Time requirement as problem size increase}\\
   \midrule{}
-  $O(1)$        & \emph{Constant} is independent of the problem's size.\\
-  $O(\log_2n)$  & \emph{Logarithmic} increases increases slowly.\\
-  $O(n)$        & \emph{Linear} increases directly.\\
-  $O(n\log_2n)$ & Increases more rapidly than linear algorithms.\\
-  $O(n^2)$      & \emph{Quadratic} increases rapidly.\\
-  $O(n^3)$      & \emph{Cubic} increases more rapidly
+  \(O(1)\)        & \emph{Constant} is independent of the problem's size.\\
+  \(O(\log_2n)\)  & \emph{Logarithmic} increases increases slowly.\\
+  \(O(n)\)        & \emph{Linear} increases directly.\\
+  \(O(n\log_2n)\) & Increases more rapidly than linear algorithms.\\
+  \(O(n^2)\)      & \emph{Quadratic} increases rapidly.\\
+  \(O(n^3)\)      & \emph{Cubic} increases more rapidly
                   than a quadratic algorithm.\\
-  $O(2^n)$     & \emph{Exponential} is impractical.\\
+  \(O(2^n)\)     & \emph{Exponential} is impractical.\\
   \bottomrule{}
 \end{tabularx}
 \end{frame}
 
 \section{Practice}
 
-\begin{frame}[fragile]{Example 1: \alt<3->{$O(n)$}{$O($?$)$}}
+\begin{frame}[fragile]{Example 1: \alt<3->{\(O(n)\)}{\(O(\)?\()\)}}
 \begin{lstlisting}[mathescape]
 i = 1;           // Cost: $\color{codeComment}c_1$
 sum = 0;         // Cost: $\color{codeComment}c_2$
@@ -503,7 +517,7 @@ while (i <= n) { // Cost: $\color{codeComment}c_3$
 \pause{}
 \end{frame}
 
-\begin{frame}[fragile]{Example 2: \alt<3->{$O(n^2)$}{$O($?$)$}}
+\begin{frame}[fragile]{Example 2: \alt<3->{\(O(n^2)\)}{\(O(\)?\()\)}}
 \begin{lstlisting}[mathescape, basicstyle=\small\ttfamily]
 i = 1;               // Cost: $\color{codeComment}c_1$
 sum = 0;             // Cost: $\color{codeComment}c_2$
@@ -526,11 +540,11 @@ $ \displaystyle
 $
 
 \pause%
-%Therefore, the growth-rate function for this algorithm is $O(n^2)$.
+%Therefore, the growth-rate function for this algorithm is \(O(n^2)\).
 \par} % Necessary for centering to work
 \end{frame}
 
-\begin{frame}[fragile]{Example 3: \alt<3->{$O(n^3)$}{$O($?$)$}}
+\begin{frame}[fragile]{Example 3: \alt<3->{\(O(n^3)\)}{\(O(\)?\()\)}}
 \begin{lstlisting}[mathescape, basicstyle=\small\ttfamily]
 for (i = 1; i <= n; i++) {         // Cost: $\color{codeComment}c_1$
     for (j = 1; j <= i; j++) {     // Cost: $\color{codeComment}c_2$
@@ -548,9 +562,9 @@ T(n)  =&  c_1 (n+1) + c_2 ((n+1) (n+2)) / 2 \\
       =& k_1 n^3 + k_2 n^2 + k_3 n + k_4
 \end{align*}%
 %\begin{itemize}
-%  \item <3-> So, the growth-rate function for this algorithm is $O(n^3)$
+%  \item <3-> So, the growth-rate function for this algorithm is \(O(n^3)\)
   %\item <4-> 
-  \onslide<4->{\textbf{Notice:} We do NOT need to know the exact number of iterations to find the Big-$O$.}
+  \onslide<4->{\textbf{Notice:} We do NOT need to know the exact number of iterations to find the Big \(O\).}
 %\end{itemize}
 \end{frame}
 
@@ -571,7 +585,7 @@ void hanoi(int n, char source, char dest, char spare) { // Function-call cost
 }
 \end{lstlisting}
 \begin{itemize}
-\item By now, I hope you see that constant and coefficient costs are virtually superfluous when working with Big $O$.
+\item By now, I hope you see that constant and coefficient costs are virtually superfluous when working with Big \(O\).
 \item To find the growth-rate function for a recursive algorithm, we have to solve its recurrence relation.
 \item You will learn how to do this in Discrete Math.
 \end{itemize}
@@ -581,39 +595,40 @@ void hanoi(int n, char source, char dest, char spare) { // Function-call cost
 \begin{frame}{Example 4 continued}
 What is the cost of \lstinline{hanoi(n, 'A', 'B', 'C')}?
 \begin{itemize}
-\item When $n=0$,
-     $ T(0) = c_1$
-\item When $n>0$,
-      $T(n) = c_1 + c_2 + T(n-1) + c_3 + c_4 + T(n-1)$ \\
-           = $2 \cdot T(n-1) + (c_1+c_2+c_3+c_4)$ \\
-           = $2 \cdot T(n-1) + c$   $\to$ recurrence equation for the growth-rate function of hanoi-towers algorithm. \\
+\item When \(n=0\),
+     \( T(0) = c_1 \)
+\item When \(n>0\),\\
+      \(T(n) = c_1 + c_2 + T(n-1) + c_3 + c_4 + T(n-1)\) \\
+           = \(2 \cdot T(n-1) + (c_1+c_2+c_3+c_4)\) \\
+           = \(2 \cdot T(n-1) + c \) \textrightarrow{} recurrence equation for the growth-rate function of hanoi-towers algorithm. \\
 \item Now, we have to solve this recurrence equation to find the growth-rate function of the hanoi-towers algorithm.
-\item This turns out to be $O(2^n)$ because for every $n$ we make $2(n-1)$ calls.
+\item This turns out to be \(O(2^n)\) because for every \(n\) we make \(2(n-1)\) calls.
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}[fragile]{Example 5: $O($\alt<2->{$n$}{?}$)$}
+\begin{frame}[fragile]{Example 5: \(O(\)\alt<2->{\(n\)}{?}\()\)}
 \begin{lstlisting}[]
-int bigOExample5(int n) {
+int bigOExample5(const int N) {
+  const int M = 4 * N;
   int res = 0;
-  int m = 4 * n;
-  int *pArray = new int[m] {};
-  for(int i = 0; i < m; i++) {
+  
+  int *pArray = new int[M] {};
+  for(int i = 0; i < M; i++) {
     m_pArray[i] = i;
   }
-  for(int i = 0; i < m; i++) {
+  for(int i = 0; i < M; i++) {
     res += m_pArray[i];
   }
   delete[] pArray;
   return res;
 }
 \end{lstlisting}
-%$O($\alt<2->{$n$}{?}$)$
+%\(O(\)\alt<2->{\(n\)}{?}\()\)
 \onslide<2>{}
 \end{frame}
 
-\begin{frame}[fragile]{Example 6: $O($\alt<2->{$n$}{?}$)$}
+\begin{frame}[fragile]{Example 6: \(O(\)\alt<2->{\(n\)}{?}\()\)}
 \begin{lstlisting}[]
 int bigOExample6(int n) {
   int total = 0;
@@ -630,7 +645,7 @@ int bigOExample6(int n) {
 \onslide<2>{}
 \end{frame}
 
-\begin{frame}[fragile]{Example 7: $O($\alt<2->{$n \log{n}$}{?}$)$}
+\begin{frame}[fragile]{Example 7: \(O(\)\alt<2->{\(n \log{n}\)}{?}\()\)}
 \begin{lstlisting}[]
 int bigOExample7(int n) {
   int total = 0;
@@ -817,7 +832,7 @@ int bigOExample7(int n) {
 
 \begin{frame}{Empirical Measurement}
 \begin{itemize}
-\item While \emph{analytical} performance measures are important, an empirical approach is also insightful.
+\item While \emph{analytical} performance measures are\\ important, an empirical approach is also insightful.
 \item The naive way to take timings:
 \begin{enumerate}
 \item Record the start time.
@@ -836,26 +851,27 @@ int bigOExample7(int n) {
 #include <chrono>   // Required for taking timings
 
 void checkTime(const unsigned int MIN_N, const unsigned int MAX_N, const unsigned int CHANGE_IN_N) {
-  using namespace std::chrono;
+	using namespace std::chrono;
+	using clock = std::chrono::steady_clock; // type alias to easily change clock types
 
-  // We want to run our algorithm over varying sizes.
-  for (unsigned int size = MIN_N; size < MAX_N; size += CHANGE_IN_N) {
-    // Capture the start clock (stored as clock_t)
-    const auto START_TIME = (high_resolution_clock::now());
+	// We want to run our algorithm over varying sizes.
+	for (unsigned int size = MIN_N; size <= MAX_N; size += CHANGE_IN_N){
+		// Capture the start clock (stored as clock_t)
+		const auto START_TIME = clock::now();
 
-    // To Do: This is were your algorithm should be called.
-    // Note: size is the SIZE or the input; you may have to change it.
-    // functionCallToYouAlgorithm(size);
+		// To Do: This is where your algorithm should be called.
+		// Note: size is the SIZE or the input; you may have to change it.
+		// functionCallToYouAlgorithm(size);
 
-    // Capture the clock and subtract the start to get the total time elapsed.
-    const auto DIFF = duration_cast<microseconds>(high_resolution_clock::now() - START_TIME);
+		// Capture the clock and subtract the start to get the total time elapsed.
+		const std::chrono::duration<double> ELAPSED = clock::now() - START_TIME;
 
-    // Convert clock_t into seconds as a floating point number.
-    const auto TIME_AMOUNT = static_cast<double>(DIFF.count()) * 1e-6;
+		// Convert into seconds as a floating point number.
+		const auto TIME_IN_SECS = ELAPSED.count();
 
-    // Print out first the size (size) and then the elapsed time.
-    std::cout << size << '\t' << TIME_AMOUNT << '\n';
-  }
+		// Print out first the size (size) and then the elapsed time.
+		std::cout << size << '\t' << TIME_IN_SECS << '\n';
+	}
 }
 \end{lstlisting}
 \end{frame}
@@ -865,27 +881,27 @@ void checkTime(const unsigned int MIN_N, const unsigned int MAX_N, const unsigne
 
 First is the size (1000) and second is the number of seconds (pretty small).
 
-\begin{lstlisting}[basicstyle=\scriptsize\ttfamily\bfseries,identifierstyle=\color{white}]
-1000  4e-06
-2000  8e-06
-3000  1.2e-05
-4000  2.5e-05
-5000  2.9e-05
-6000  2.4e-05
-7000  3.5e-05
-8000  2.9e-05
-9000  3.2e-05
-10000 3.5e-05
-11000 3.9e-05
-12000 4.2e-05
-13000 4.5e-05
-14000 5.2e-05
-15000 5.6e-05
-16000 6e-05
-17000 6.5e-05
-18000 6.8e-05
-19000 7e-05
-20000 7.6e-05
+\begin{lstlisting}[basicstyle=\scriptsize\ttfamily\bfseries,identifierstyle=\color{white}, firstnumber=5, firstline=5]
+1000	1.711e-06
+2000	3.139e-06
+3000	4.802e-06
+4000	6.423e-06
+5000	7.835e-06
+6000	9.637e-06
+7000	1.0264e-05
+8000	1.1698e-05
+9000	1.4457e-05
+10000	1.5668e-05
+11000	1.6472e-05
+12000	1.9292e-05
+13000	2.0971e-05
+14000	1.857e-05
+15000	2.124e-05
+16000	2.5269e-05
+17000	2.4437e-05
+18000	2.6614e-05
+19000	2.5403e-05
+20000	3.0695e-05
 \end{lstlisting}
 \end{frame}
 
@@ -1017,7 +1033,7 @@ To save the current plot to a file.\\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Opening PDF files in Visual Studio Code}
+\begin{frame}{Opening PDF files in VSCodium}
 \begin{itemize}
   \item
     For convince, I recommend installing a PDF viewer extension to Visual Studio Code like \href{https://marketplace.visualstudio.com/items?itemName=tomoki1207.pdf}{vscode-pdf}.
@@ -1092,7 +1108,7 @@ data.out: main
 
 data.pdf: data.out data.plot
   gnuplot data.plot
-  code data.pdf # Open PDF in VS Code (extension required)
+  codium data.pdf # Open PDF in VS codium (extension required)
 
 plot: data.pdf
 \end{lstlisting}
@@ -1106,8 +1122,8 @@ plot: data.pdf
 \begin{itemize}
 \item With gnuplot, we can graph both: \\
 \begin{lstlisting}[language=Bash, basicstyle=\footnotesize\ttfamily]
-plot "sumOfOneTo.data" using 1:2 with line,\
-"intersectionCount.data" using 1:2 with line
+plot "algorithm1.data" using 1:2 with line,\
+"algorithm2.data" using 1:2 with line
 \end{lstlisting}
 \item {You can append more and more data files in this manner.}
 \end{itemize}
@@ -1185,9 +1201,8 @@ plot [:][:0.0001] "linear1.data" using 1:2 with line lw 4 title "Linear Algorith
 
 \section*{Lab 7}
 \begin{frame}{Lab 7: Performance Analysis}
-\begin{center}\Large
+\centering\Large
 Let's take a look at Lab 7.
-\end{center}
 \end{frame}
 
 \end{document}

@@ -25,10 +25,18 @@ After completing this lecture and the related lab, students will be able to:
 
 8. **Combine analytical and empirical results** to make informed decisions about algorithm or implementation choices, recognizing limitations of each method (e.g. machine, implementation, data-specific effects).
 
-## Lecture Video
+## Lecture Videos
+
+Analytical Performances:
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/bCiqntabxa0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/xlld9VkiMGA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
+Empirical Performances:
+
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/rVfRS8DdLJ4?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Intro
@@ -529,22 +537,21 @@ void hanoi(int n, char source, char dest, char spare) { // Function-call cost
 ### Example 5: $O(n)$
 
 ```cpp
-int bigOExample5(int n)
+int bigOExample5(const int N)
 {
+  const int M = 4 * N;
   int res = 0;
-  int m = 4 * n;
-  int *pArray = new int[m] {};
-
-  for(int i = 0; i < m; i++) {
+  
+  int *pArray = new int[M] {};
+  for(int i = 0; i < M; i++)
+  {
     m_pArray[i] = i;
   }
-
-  for(int i = 0; i < m; i++) {
+  for(int i = 0; i < M; i++)
+  {
     res += m_pArray[i];
   }
-
   delete[] pArray;
-
   return res;
 }
 ```
@@ -614,30 +621,42 @@ int bigOExample7(int n) {
 #include <iostream> // To display information
 #include <chrono>   // Required for taking timings
 
+/**
+ * Example function that will measure the time to run an algorithm over a 
+ * range of sizes.
+ * @param Constants describing the range of sizes with which we
+ *        will test the algorithm.
+ */
+void checkTime(const unsigned int MIN_N = 10000,
+	const unsigned int MAX_N = 10000000,
+	const unsigned int CHANGE_IN_N = 10000);
+
+
 void checkTime(const unsigned int MIN_N,
 	const unsigned int MAX_N,
 	const unsigned int CHANGE_IN_N)
 {
 	using namespace std::chrono;
+	using clock = std::chrono::steady_clock; // type alias to easily change clock types
 
 	// We want to run our algorithm over varying sizes.
 	for (unsigned int size = MIN_N; size <= MAX_N; size += CHANGE_IN_N)
 	{
 		// Capture the start clock (stored as clock_t)
-		const auto START_TIME = (high_resolution_clock::now());
+		const auto START_TIME = clock::now();
 
-		// To Do: This is were your algorithm should be called.
+		// To Do: This is where your algorithm should be called.
 		// Note: size is the SIZE or the input; you may have to change it.
 		// functionCallToYouAlgorithm(size);
 
 		// Capture the clock and subtract the start to get the total time elapsed.
-		const auto DIFF = duration_cast<microseconds>(high_resolution_clock::now() - START_TIME);
+		const std::chrono::duration<double> ELAPSED = clock::now() - START_TIME;
 
-		// Convert clock_t into seconds as a floating point number.
-		const auto TIME_AMOUNT = static_cast<double>(DIFF.count()) * 1e-6;
+		// Convert into seconds as a floating point number.
+		const auto TIME_IN_SECS = ELAPSED.count();
 
 		// Print out first the size (size) and then the elapsed time.
-		std::cout << size << '\t' << TIME_AMOUNT << '\n';
+		std::cout << size << '\t' << TIME_IN_SECS << '\n';
 	}
 }
 ```
@@ -650,26 +669,26 @@ First is the size (1000) and second is the number of seconds (pretty
 small).
 
 ```plain
-1000  4e-06
-2000  8e-06
-3000  1.2e-05
-4000  2.5e-05
-5000  2.9e-05
-6000  2.4e-05
-7000  3.5e-05
-8000  2.9e-05
-9000  3.2e-05
-10000 3.5e-05
-11000 3.9e-05
-12000 4.2e-05
-13000 4.5e-05
-14000 5.2e-05
-15000 5.6e-05
-16000 6e-05
-17000 6.5e-05
-18000 6.8e-05
-19000 7e-05
-20000 7.6e-05
+1000	1.711e-06
+2000	3.139e-06
+3000	4.802e-06
+4000	6.423e-06
+5000	7.835e-06
+6000	9.637e-06
+7000	1.0264e-05
+8000	1.1698e-05
+9000	1.4457e-05
+10000	1.5668e-05
+11000	1.6472e-05
+12000	1.9292e-05
+13000	2.0971e-05
+14000	1.857e-05
+15000	2.124e-05
+16000	2.5269e-05
+17000	2.4437e-05
+18000	2.6614e-05
+19000	2.5403e-05
+20000	3.0695e-05
 ```
 
 ## [Gnuplot](http://www.gnuplot.info/)
@@ -743,14 +762,14 @@ To save the current plot to a file.
 save "plotname.pdf"
 ```
 
-### Opening PDF files in Visual Studio Code
+### Opening PDF files in VSCodium
 
 For convince, I recommend installing a PDF viewer extension to VSCodium like
 [vscode-pdf](https://github.com/tomoki1207/vscode-pdfviewer).
 
 ![vscode-pdf extension](/images/performance/pdf-extention.png "Installing a PDF Extension"){style="max-width:354px"}
 
-The following examples assume you can open PDFs in Visual Studio Code.
+The following examples assume you can open PDFs in VSCodium.
 
 ### Huge Time Saver!
 
