@@ -119,7 +119,8 @@ function sidebarNotes() {
 			text: 'Performance Analysis',
 			collapsed: true,
 			items: [
-				{ text: "Performance Analysis", link: "/lectures/07-performance-analysis" },
+				{ text: "Analytical Analysis", link: "/lectures/07-analytical-analysis" },
+				{ text: "Empirical Analysis", link: "/lectures/07-empirical-analysis" },
 			]
 		},
 		{

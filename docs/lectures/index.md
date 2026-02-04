@@ -16,7 +16,8 @@
 - [Polymorphism via C++ Templates](/lectures/06-templates)
 
 ## Performance Analysis
-- [Performance Analysis](/lectures/07-performance-analysis)
+- [Analytical Analysis](/lectures/07-analytical-analysis)
+- [Empirical Analysis](/lectures/07-empirical-analysis)
 
 ## Linked Lists
 - [Singly-Linked Lists](/lectures/08-linked-lists)

@@ -100,7 +100,7 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 |  2B  | [Pointers](/lectures/04-pointers) and [Testing](/lectures/04-testing) | Lab 04, 05, & Ethics  |
 |  3A  | [C++ Object-Oriented Programming](/lectures/05-oop) |                       |
 |  3B  | [Operator Overloading](/lectures/06-operator-overloading) and [Templates](/lectures/06-templates)  | Lab 06                |
-|  4A  | [Performance Analysis](/lectures/07-performance-analysis) | Lab 07                |
+|  4A  | [Empirical Analysis](/lectures/07-empirical-analysis) and [Analytical Analysis](/lectures/07-analytical-analysis) | Lab 07                |
 |  4B  | [Linked Lists](/lectures/08-linked-lists) | Lab 08                |
 |  5A  | [Debugging](/lectures/09-debugging) and [Doubly-Linked Lists, & the STL](/lectures/09-doubly-linked-lists) | Project 1 & Lab 09    |
 |  5B  | [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort) | Lab 10                |
