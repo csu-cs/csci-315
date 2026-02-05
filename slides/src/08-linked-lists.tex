@@ -6,7 +6,7 @@
 \usepackage{booktabs}
 
 \title{\Huge{} Singly-Linked Lists}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 16}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 16}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -28,7 +28,7 @@
 \begin{frame}{Introduction}
 \begin{itemize}
 \item
-  Often, data is organized and processed sequentially (in a \emph{sequential list}).
+  Often, data is organized and processed sequentially\\ (in a \emph{sequential list}).
 \item
   An array is a useful data structure for sequential processing, but has its limitations.
   \begin{itemize}
@@ -43,7 +43,7 @@
 \end{frame}
 
 \begin{frame}{Array Performance}
-What is the order of approximation (Big O) of the following operations on an array?
+What is the order of approximation (Big \(O\)) of the\\ following operations on an array?
 \begin{tabular}{r c}
 \toprule
                                & \textbf{Array}\\
@@ -51,7 +51,7 @@ What is the order of approximation (Big O) of the following operations on an arr
   Element Access               & \onslide<2->{$O(1)$} \\
   Insert/Remove from Beginning & \onslide<3->{$O(n)$} \\
   Insert at the End       & \onslide<4->{$O(1)$, but $O(n)$ if full} \\
-  Remove from End       & \onslide<5->{$O(1)$ with wasted space} \\
+  Remove from End       & \onslide<5->{$O(n)$ else wasted space} \\
   Insert/Remove from Middle    & \onslide<6->{$O(n)$} \\
   Unsorted Search              & \onslide<7->{$O(n)$} \\
 \bottomrule
@@ -62,9 +62,9 @@ What is the order of approximation (Big O) of the following operations on an arr
 \begin{itemize}
 \item
   \emph{Linked lists} store data in \emph{nodes}, where each node \\contains
-  the data and a pointer to the next node.
+  the data and\\ a pointer to the next node.
 \item
-  The first node is called the head, and the last is the tail.
+  The first node is called the \emph{head}; the last is the \emph{tail}.
 \end{itemize}
 \center%
 \begin{tikzpicture}
@@ -83,12 +83,14 @@ What is the order of approximation (Big O) of the following operations on an arr
 \begin{frame}{Advantages of Linked Lists}
 \begin{itemize}
 \item
-  A variable size; memory is allocated and released \\as needed.
+  Has a \emph{variable size};\\
+  memory is allocated and released as needed.
 \item
-  Some algorithms are faster with linked lists compared to arrays.
+  Some algorithms are \emph{faster} with linked lists compared to arrays.
 \item
-  Expandable to nonlinear data structures (nodes with multiple pointers).\\
-  For example, trees and graphs.
+  Expandable to \emph{nonlinear data structures}\\
+  (i.e., nodes with multiple pointers)\\
+  (e.g., trees and graphs).
 \end{itemize}
 \end{frame}
 
@@ -151,6 +153,29 @@ struct Node {
   \LinkedNode{\textquotesingle{}C\textquotesingle{}}
 }
 \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}{Traversing a Linked List}
+Given a pointer to the first node, step through each node.
+
+\begin{tikzpicture}
+  \LinkedList{\textquotesingle{}A\textquotesingle{}}
+  \node[block] (ANode) [fit=(last)]{};
+  \LinkedNode{\textquotesingle{}B\textquotesingle{}}
+  \node[block] (BNode) [fit=(last)]{};
+  \LinkedNode{\textquotesingle{}C\textquotesingle{}}
+  \node[block] (CNode) [fit=(last)]{};
+  \onslide<2>{\TailPtr[ANode][BNode][bend left=8]{pCurr}}
+  \mode<beamer>{\onslide<3>{\TailPtr[BNode][BNode]{pCurr}}}
+  \mode<beamer>{\onslide<4>{\TailPtr[last][BNode][bend right=8]{pCurr}}}
+  \LinkedNode{\textquotesingle{}D\textquotesingle{}}
+  \mode<beamer>{\onslide<5>{\TailPtr[last][BNode][bend right=10]{pCurr}}}
+  \LinkedNode{\textquotesingle{}E\textquotesingle{}}
+  \mode<beamer>{\onslide<6>{\TailPtr[last][BNode][bend right=10]{pCurr}}}
+  \mode<beamer>{\onslide<7>{\TailPtr[null][BNode][bend right=10]{pCurr}}}
+\end{tikzpicture}
+
 \end{frame}
 
 \begin{frame}[fragile]{Traversing a Linked List}
@@ -230,7 +255,7 @@ void display(const Node * const pHead) {
 
 \begin{itemize}
 \item
-  To support data use, we should create a container class.
+  Create a container class to support data use.
 \item
   Provide methods for using the list.
   \begin{itemize}
@@ -266,7 +291,7 @@ public:
 private:
   Node *mpHead;
   Node *mpTail;
-  int mSize;
+  unsigned int mLength;
 };
 \end{lstlisting}
 \end{frame}
@@ -279,7 +304,7 @@ The default constructor for a \lstinline{LinkedList} creates an empty list.
 LinkedList::LinkedList()
   : mpHead{nullptr},
     mpTail{nullptr},
-    mSize{0}
+    mLength{}
 {
 }
 \end{lstlisting}
@@ -423,7 +448,7 @@ void LinkList::prepend(const std::string &value) {
   Node *pNewNode{new Node{value}};
   pNewNode->pNext = mpHead;
   mpHead = pNewNode;
-  ++mSize;
+  ++mLength;
 
   // If it was empty, update the tail pointer.
   if(mpTail != nullptr) {
@@ -431,6 +456,62 @@ void LinkList::prepend(const std::string &value) {
   }
 }
 \end{lstlisting}
+\end{frame}
+
+\section{Destructor}
+
+\begin{frame}[fragile]{Removing the First Element}
+\begin{itemize}
+\item Before deleting, save the old head and update \lstinline{mpHead}.\\
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+const Node *pOldHead{mpHead};
+mpHead = mpHead->pNext;
+delete pOldHead;
+\end{lstlisting}%
+\vspace{1em}
+\end{itemize}
+\begin{center}
+  \begin{tikzpicture}
+    \LinkPtr{mpHead}
+    \alt<-2>{
+      \LinkedNode[ptr]{"A"}
+    }{
+      \onslide<-3>{
+        \LinkedNode[ptr][false]{"A"}
+      }
+    }
+    \onslide<2->{
+      \TailPtr{pOldHead}
+    }
+    \alt<-3>{
+      \LinkedNode{"B"}
+    }{
+      \LinkedNode[ptr][false]{"B"}
+    }
+    \onslide<3->{
+      \draw[link] (headPtr) to[bend left] (ele);
+    }
+    \LinkedNode{"C"}
+    \LinkedNode{\textellipsis}
+    \onslide<4>{}
+  \end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Destructor}
+The destructor function must traverse the list, deallocating each
+node.
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+LinkedList::~LinkedList() {
+  while (mpHead != nullptr) {
+    const Node *pOldHead = mpHead;
+    mpHead = mpHead->pNext;
+    delete pToDelete;
+  }
+}
+\end{lstlisting}
+If you create a function to clear a list without destroying it,\\
+remember to also update \lstinline{mpTail} and \lstinline{mLength}.
 \end{frame}
 
 \section{Append}
@@ -531,7 +612,7 @@ void LinkList::append(const std::string &value) {
   }
   mpTail = pNewNode;
 
-  ++mSize;
+  ++mLength;
 }
 \end{lstlisting}
 \end{frame}
@@ -567,7 +648,7 @@ void LinkList::insert(const std::string &val, int index) {
   if (index <= 0) {
     prepend(val);
   }
-  else if (index >= mSize) {
+  else if (index >= mLength) {
     append(val);
   }
   else {
@@ -687,8 +768,8 @@ Common tasks using these objects:
 {
   LinkedList src;           // Default constructor
   LinkedList copy1{src}     // Copy constructor
-  LinkedList copy1(src)     // Copy constructor
-  LinkedList copy2 = two;   // Copy constructor
+  LinkedList copy2(src)     // Copy constructor
+  LinkedList copy3 = two;   // Copy constructor
   auto *pDyn = new LinkedList{src}; // Copy cons.
   copy1 = src;              // Assignment operator
   // ...
@@ -698,31 +779,12 @@ Common tasks using these objects:
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Destructor}
-The destructor function must traverse the list, deallocating each
-node.
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-LinkedList::~LinkedList() {
-  Node *pToDelete;
-
-  while (mpHead != nullptr) {
-    pToDelete = mpHead;
-    mpHead = mpHead->pNext;
-    delete pToDelete;
-  }
-}
-\end{lstlisting}
-If you create a function to clear a list without destroying it,\\
-remember to also update \lstinline{mpTail} and \lstinline{mSize}.
-\end{frame}
-
-
 \begin{frame}[fragile]{Copy Constructor}
 Traverse the other list while adding each value to this list.
 \begin{lstlisting}[basicstyle=\small\ttfamily]
 LinkedList::LinkedList(const LinkedList& source)
   : mpHead{nullptr}, mpTail{nullptr},
-    mSize{0};
+    mLength{0};
 {
   for (Node *pCurr = source.mpHead; pCurr != nullptr;
     pCurr = pCurr->pNext)
@@ -740,8 +802,6 @@ LinkedList& LinkedList::operator=(const LinkedList& src) {
     return *this;
 
   clear(); // Clear out existing nodes
-  mpHead = mpTail = nullptr; // Reset pointers
-  mSize = 0;
 
   // Copy values over
   for (Node *pCurr = src.mpHead; pCurr != nullptr;
@@ -771,7 +831,8 @@ LinkedList& LinkedList::operator=(const LinkedList& src) {
 Node *pOldHead{mpHead};
 mpHead = mpHead->pNext;
 delete pOldHead;
-\end{lstlisting}\vspace{1em}
+\end{lstlisting}%
+\vspace{1em}
 \end{itemize}
 \begin{center}
   \begin{tikzpicture}
@@ -818,7 +879,7 @@ std::string LinkedList::removeFirst() {
     if (mpHead == nullptr) { // Only 1 element
       mpTail = nullptr;
     }
-    --mSize;
+    --mLength;
     value = pOldHead->datum;
     delete pOldHead;
   }
@@ -832,7 +893,7 @@ std::string LinkedList::removeFirst() {
 \item Before deleting, traverse to the node before the tail\\(the new tail).\\
 \begin{lstlisting}
 Node *pBefore{mpHead};
-for (int iter{2}; iter < mSize; ++iter)
+for (int iter{2}; iter < mLength; ++iter)
 {
   pBefore = pBefore->pNext;
 }
@@ -892,7 +953,7 @@ std::string LinkedList::removeLast() {
   if (mpHead != nullptr) {
     value = mpTail->datum; // return value
     Node* pBefore = mpHead;
-    for (int iter{2}; iter < mSize; ++iter)
+    for (int iter{2}; iter < mLength; ++iter)
       pBefore = pBefore->pNext;
     pBefore->pNext = nullptr;
     delete mpTail;
@@ -900,7 +961,7 @@ std::string LinkedList::removeLast() {
       mpHead = mpTail = nullptr;
     else
       mpTail = pBefore; // update tail
-    --mSize;
+    --mLength;
   }
   return value;
 }
@@ -981,7 +1042,7 @@ std::string LinkedList::removeAt(int index) {
   if (index == 0) {
     value = removeFirst();
   }
-  else if (index >= mSize) { // true for empty lists
+  else if (index >= mLength) { // true for empty lists
     value = removeLast();
   }
   else {
@@ -1004,9 +1065,9 @@ for (int iter{1}; iter < index; ++iter) {
   pBefore = pBefore->pNext;
 }
 
-Node *pDel = pDel = pBefore->pNext;
+Node *pDel = pBefore->pNext;
 pBefore->pNext = pDel->pNext; // Adjust pointers
---mSize;
+--mLength;
 
 value = pDel->datum; // save the return value
 delete pDel; // Delete the node.
@@ -1076,8 +1137,8 @@ Each function definition must be updated to match. For example,
 // Copy Constructor Definition
 template <typename Type>
 LinkedList::LinkedList(const LinkedList<Type> &src)
-  : mpHead(nullptr), mpTail(nullptr),
-    mSize(0)
+  : mpHead{nullptr}, mpTail{nullptr},
+    mLength{}
 {
   for (Node *pCurr = src.mpHead; pCurr != nullptr;
     pCurr = pCurr->pNext)

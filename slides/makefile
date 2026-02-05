@@ -32,7 +32,7 @@ $(BUILD_DIR)/%.pdf: $(SRC_DIR)/%.tex $(SRC_DIR)/csu-theme.sty $(SRC_DIR)/binary-
 	# pdflatex.exe -halt-on-error -shell-escape --enable-write18 -output-directory=objs -include-directory=./src $(<F) && \
 	pdflatex.exe -halt-on-error -shell-escape --enable-write18 -output-directory=objs -include-directory=./src -include-directory=./ $(<F)
 	mv -f objs/$(@F) "$(BUILD_DIR)/$(@F)"
-	SumatraPDF.exe "$(BUILD_DIR)/$(@F)" -view "single page" -reuse-instance
+	SumatraPDF.exe "$(BUILD_DIR)/$(@F)" -view "single page" -reuse-instance &
 
 # PHONY shortcut targets that depend on the corresponding PDF
 $(TEX_FILES): %: $(BUILD_DIR)/%.pdf

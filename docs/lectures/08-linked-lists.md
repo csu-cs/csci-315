@@ -42,7 +42,7 @@ on an array?
 |               Element Access |           $O(1)$           |
 | Insert/Remove from Beginning |           $O(n)$           |
 |            Insert at the End | $O(1)$, but $O(n)$ if full |
-|              Remove from End |  $O(1)$ with wasted space  |
+|              Remove from End |  $O(n)$ else wasted space  |
 |    Insert/Remove from Middle |           $O(n)$           |
 |              Unsorted Search |           $O(n)$           |
 
@@ -51,7 +51,7 @@ on an array?
 - ***Linked lists*** store data in ***nodes***, where each node contains
   the data and a pointer to the next node.
 
-- The first node is called the head, and the last is the tail.
+- The first node is called the ***head***; the last is the ***tail***.
 
 ![Example of a linked list](/images/singly-linked-lists/linked_list-example1.svg "Example of a linked list."){.light-only}
 
@@ -59,7 +59,7 @@ on an array?
 
 ### Advantages of Linked Lists
 
-- A variable size; memory is allocated and released as needed.
+- Has a *variable size*; memory is allocated and released as needed.
 
 - Some algorithms are faster with linked lists compared to arrays.
 
@@ -81,14 +81,14 @@ on an array?
 Each node contains a data value (datum) and a pointer to the next node.
 
 ```C++
-struct Node {
-  Node (const char &value = ' ')
+struct LinkedNode {
+  LinkedNode (const char &value = ' ')
     : datum{value},
       pNext{nullptr}
   {}
 
   char datum; // holds a value in the list
-  Node* pNext;
+  LinkedNode* pNext;
 }
 ```
 
@@ -119,8 +119,9 @@ struct Node {
 Given a pointer to the first node, step through each node.
 
 ```C++
-Node *pCurr{pHead}; // Start at the front
-while (pCurr != nullptr) {
+LinkedNode *pCurr{pHead}; // Start at the front
+while (pCurr != nullptr)
+{
   // Do something with this node's datum.
   pCurr = pCurr->pNext; // Go to next node.
 }
@@ -131,7 +132,7 @@ Given a pointer to the first node, step through each node.
 <ProgressiveDiagram :src="traversalDiagram" />
 
 ```C++
-for (Node *pCurr = pHead; pCurr != nullptr;
+for (LinkedNode *pCurr = pHead; pCurr != nullptr;
     pCurr = pCurr->pNext)
 {
   // Do something with this node's datum.
@@ -143,8 +144,9 @@ for (Node *pCurr = pHead; pCurr != nullptr;
 Our traversal algorithm can display our list.
 
 ```C++
-void display(const Node * const pHead) {
-  for (const Node *pCurr = pHead; pCurr != nullptr;
+void display(const LinkedNode * const pHead)
+{
+  for (const LinkedNode *pCurr = pHead; pCurr != nullptr;
       pCurr = pCurr->pNext)
   {
     std::cout << pCurr->datum << ", ";
@@ -155,7 +157,7 @@ void display(const Node * const pHead) {
 
 ## Linked-List Class
 
-- To support data use, we should create a container class.
+- Create a container class to support data use.
 
 - Provide methods for using the list.
 
@@ -174,13 +176,22 @@ Private data includes pointers to the head and tail and an integer node
 count.
 
 ```C++
-class LinkedList {
+template <typename Type>
+class LinkedList
+{
 public:
 	// constructors and functions
+
 private:
+  struct Node
+  {
+    Type datum;
+    Node *pNext;
+  };
+
 	Node *mpHead;
 	Node *mpTail;
-	int mSize;
+	unsigned int mLength;
 };
 ```
 
@@ -189,10 +200,11 @@ private:
 The default constructor for a `LinkedList` creates an empty list.
 
 ```C++
-LinkedList::LinkedList()
+template <typename Type>
+LinkedList<Type>::LinkedList()
 	: mpHead{nullptr},
 	mpTail{nullptr},
-	mSize{0}
+	mLength{}
 {
 }
 ```
@@ -231,14 +243,16 @@ If the list was empty (and now has one element), update the tail.
 <ProgressiveDiagram :src="prepend_emptyDiagram" />
 
 ```C++
-void LinkList::prepend(const std::string &value) {
+void LinkList::prepend(const std::string &value)
+{
   Node *pNewNode{new Node{value}};
   pNewNode->pNext = mpHead;
   mpHead = pNewNode;
-  ++mSize;
+  ++mLength;
 
   // If it was empty, update the tail pointer.
-  if(mpTail != nullptr) {
+  if(mpTail != nullptr)
+  {
     mpTail = mpHead;
   }
 }
@@ -273,7 +287,7 @@ void LinkList::append(const std::string &value)
   }
   mpTail = pNewNode;
 
-  ++mSize;
+  ++mLength;
 }
 ```
 
@@ -292,7 +306,7 @@ void LinkList::insert(const std::string &val, int index)
   {
     prepend(val);
   }
-  else if (index >= mSize)
+  else if (index >= mLength)
   {
     append(val);
   }
@@ -365,8 +379,8 @@ Common tasks using these objects:
 {
   LinkedList src;           // Default constructor
   LinkedList copy1{src}     // Copy constructor
-  LinkedList copy1(src)     // Copy constructor
-  LinkedList copy2 = two;   // Copy constructor
+  LinkedList copy2(src)     // Copy constructor
+  LinkedList copy3 = two;   // Copy constructor
   auto *pDyn = new LinkedList{src}; // Copy cons.
   copy1 = src;              // Assignment operator
   // ...
@@ -392,7 +406,7 @@ LinkedList::~LinkedList() {
 ```
 
 If you create a function to clear a list without destroying it,  
-remember to also update `mpTail` and `mSize`.
+remember to also update `mpTail` and `mLength`.
 
 ### Copy Constructor
 
@@ -401,7 +415,7 @@ Traverse the other list while adding each value to this list.
 ```C++
 LinkedList::LinkedList(const LinkedList& source)
   : mpHead{nullptr}, mpTail{nullptr},
-    mSize{0};
+    mLength{};
 {
   for (Node *pCurr = source.mpHead; pCurr != nullptr;
     pCurr = pCurr->pNext)
@@ -414,18 +428,20 @@ LinkedList::LinkedList(const LinkedList& source)
 ### Assignment Operator
 
 ```C++
-LinkedList& LinkedList::operator=(const LinkedList& src) {
-  if (&src == this) // self-assignment (a = a)
-    return *this;
+LinkedList& LinkedList::operator=(const LinkedList& src)
+{
+  if (&src != this) // self-assignment (a = a)
+  {
+    clear(); // Clear out existing nodes
 
-  clear(); // Clear out existing nodes
-  mpHead = mpTail = nullptr; // Reset pointers
-  mSize = 0;
-
-  // Copy values over
-  for (Node *pCurr = src.mpHead; pCurr != nullptr;
-    pCurr = pCurr->pNext)
-    append(pCurr->datum);
+    // Copy values over
+    for (Node *pCurr = src.mpHead; pCurr != nullptr;
+      pCurr = pCurr->pNext)
+    {
+      append(pCurr->datum);
+    }
+  }
+  
   return *this;
 }
 ```
@@ -447,15 +463,20 @@ LinkedList& LinkedList::operator=(const LinkedList& src) {
 If the list is now empty, set the head and tail pointers to null.
 
 ```C++
-std::string LinkedList::removeFirst() {
+std::string LinkedList::removeFirst()
+{
   std::string value;
-  if (mpHead != nullptr) { // not empty
+
+  // not empty
+  if (mpHead != nullptr)
+  { 
     Node *pOldHead{mpHead};
     mpHead = mpHead->pNext;
-    if (mpHead == nullptr) { // Only 1 element
+    if (mpHead == nullptr) // Only 1 element
+    { 
       mpTail = nullptr;
     }
-    --mSize;
+    --mLength;
     value = pOldHead->datum;
     delete pOldHead;
   }
@@ -469,7 +490,7 @@ std::string LinkedList::removeFirst() {
     (the new tail).  
     ```C++
     Node *pBefore{mpHead};
-    for (int iter = 2; iter < mSize; ++iter)
+    for (int iter = 2; iter < mLength; ++iter)
     {
       pBefore = pBefore->pNext;
     }
@@ -492,15 +513,24 @@ std::string LinkedList::removeLast()
   {
     value = mpTail->datum; // return value
     Node* pBefore = mpHead;
-    for (int iter = 2; iter < mSize; ++iter)
+    for (int iter = 2; iter < mLength; ++iter)
+    {
       pBefore = pBefore->pNext;
+    }
+
     pBefore->pNext = nullptr;
     delete mpTail;
+
     if(mpHead == mpTail) // removing the only element
+    {
       mpHead = mpTail = nullptr;
+    }
     else
+    {
       mpTail = pBefore; // update tail
-    --mSize;
+    }
+
+    --mLength;
   }
   return value;
 }
@@ -531,15 +561,19 @@ std::string LinkedList::removeLast()
 <ProgressiveDiagram :src="remove_middleDiagram" />
 
 ```C++
-std::string LinkedList::removeAt(int index) {
+std::string LinkedList::removeAt(int index)
+{
   std::string value;
-  if (index == 0) {
+  if (index == 0)
+  {
     value = removeFirst();
   }
-  else if (index >= mSize) { // true for empty lists
+  else if (index >= mLength)
+  { // true for empty lists
     value = removeLast();
   }
-  else {
+  else
+  {
     // Traverse to node before index..
     // Adjust the pointers.
     // Delete the node.
@@ -553,13 +587,14 @@ The final else statement contains the following code:
 ```C++
 Node *pPrev{mpHead};
 
-for (int iter = 1; iter < index; ++iter) {
+for (int iter = 1; iter < index; ++iter)
+{
   pPrev = pPrev->pNext;
 }
 
-Node *pDel = pDel = pPrev->pNext;
+Node *pDel = pPrev->pNext;
 pPrev->pNext = pDel->pNext; // Adjust pointers
---mSize;
+--mLength;
 
 value = pDel->datum; // save the return value
 delete pDel; // Delete the node.
@@ -585,8 +620,8 @@ make an abstract data type.
 
 ```C++
 template<typename Type>
-struct Node {
-  Node();
+struct Node
+{
   Node(Type value);
 
   Type datum;
@@ -596,7 +631,8 @@ struct Node {
 
 ```C++
 template<typename Type>
-class LinkedList {
+class LinkedList
+{
 public:
   // ...
 private:
@@ -611,8 +647,8 @@ Each function definition must be updated to match. For example,
 // Copy Constructor Definition
 template <typename Type>
 LinkedList::LinkedList(const LinkedList<Type> &src)
-  : mpHead(nullptr), mpTail(nullptr),
-    mSize(0)
+  : mpHead{nullptr}, mpTail{nullptr},
+    mLength{}
 {
   for (Node *pCurr = src.mpHead; pCurr != nullptr;
     pCurr = pCurr->pNext)
