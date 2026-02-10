@@ -1,0 +1,231 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{arrays}
+\usepackage{linked-lists}
+\usetikzlibrary{positioning,backgrounds}
+
+\title{\Huge{} C++ Debugging\\ with GDB}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{February 11, 2025}
+\subject{Data-Strucutre Analysis}
+%\keywords{programming}
+
+\setlength{\parskip}{0.5em}
+
+\graphicspath{{../imgs/debugging}}
+
+% Make the item in a description block have white text
+\setbeamercolor{description item}{parent=normal text}
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Common Types of Bugs}
+  \begin{itemize}\setlength\itemsep{0.5em}
+    \item 
+      \emph{Syntax Errors}: Mistakes in the code that prevent it from compiling.
+    \item 
+      \emph{Logical (Semantic) Errors}: The program runs but produces incorrect results.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{What is Debugging?}
+  \begin{itemize}\setlength\itemsep{0.5em}
+    \item 
+      The process of finding and fixing errors (bugs) in a program.
+    \item 
+      Can involve various techniques, including print statements, code reviews, and using debugging tools.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why Debug with Debuggers?}
+  \begin{itemize}\setlength\itemsep{0.5em}
+    \item 
+      Even the best programmers make mistakes.
+    \item 
+      Debugging is an essential skill for every programmer.
+    \item 
+      Learning to use a debugger effectively can save you hours of frustration.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Debugging Approaches}
+  \begin{itemize}\setlength\itemsep{0.5em}
+    \item 
+      Print statements (\lstinline{std::cout}).
+    \item 
+      Code reviews and pair programming.
+    \item 
+      Debugging tools like GDB\@.
+  \end{itemize}
+\end{frame}
+
+\section{Debugging with GDB}
+
+\begin{frame}{What is GDB?}
+
+  \begin{minipage}[t]{\textwidth}
+    \begin{columns}[T]
+    \column{0.68\textwidth}
+      \begin{itemize}\setlength\itemsep{0.5em}
+        \item 
+          \emph{GDB} stands for \emph{GNU Project Debugger} and was first written in 1986.
+        \item 
+          A debugging tool for C++ (and other languages).
+      \end{itemize}
+    \column{0.25\textwidth}
+      \includegraphics[width=\textwidth]{gdb-logo}
+    \end{columns}
+  \end{minipage}
+  
+  \begin{itemize}\setlength\itemsep{0.5em}
+    \item 
+      Let's you step through the code one instruction at a time to see what is happening.
+    \item 
+      Loads executable files that were compiled with debug information (\lstinline{-g}).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Compiling a Program for Debugging}
+  \begin{center}\Large
+    \texttt{{\color{codeVariable}\$} g++ \textbf{-g} }<source>\texttt{ -o }<executable>
+  \end{center}
+\end{frame}
+
+
+\begin{frame}{Launching and Exiting GDB}
+  \begin{description}\setlength\itemsep{0.5em}
+    \item[\texttt{{\color{codeVariable}\$} gdb}\hfill]~\\Start GDB.
+    \item[\texttt{{\color{codeVariable}\$} gdb} <program>\hfill]~\\Start GDB.
+    \item[\texttt{{\color{codeVariable}\$} gdb -{}-args} <program> <args\ldots>\hfill]~\\
+      Start GDB and pass arguments to executable.
+  \end{description}
+
+  \begin{description}
+    \item[\texttt{quit}\hfill]~\\
+      Exit GDB\@.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Run a Program to be Debugged}
+  \begin{description}\setlength\itemsep{0.5em}
+    \item[\texttt{run}\hfill]~\\
+      Run the executable that was previously set.
+    \item[\texttt{file} <executable>]~\\
+      Set the executable to run.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Breakpoints}
+  \begin{description}\setlength\itemsep{0.5em}
+    \item[\texttt{break} <where>\hfill]~\\
+      Set a new breakpoint.
+    \item[\texttt{enable} <breakpoint\#>]~\\
+      Enable a disabled breakpoint
+    \item[\texttt{disable} <breakpoint\#>\hfill]~\\
+      Disable a breakpoint.
+    \item[\texttt{delete} <breakpoint\#>]~\\
+      Remove a breakpoint.
+    \item[\texttt{clear}\hfill]~\\
+      Delete all breakpoints.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Stepping through Lines of Code}
+  \begin{description}\setlength\itemsep{0.5em}
+    \item[\texttt{step}\hfill]~\\
+      Go to next instruction (source line), diving into function calls.
+    \item[\texttt{next}\hfill]~\\
+      Go to next instruction (source line) in this function.
+    \item[\texttt{continue}\hfill]~\\
+      Continue execution until the next breakpoint.
+    \item[\texttt{finish}\hfill]~\\
+      Continue until the current function returns.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Variables and Memory}
+  \begin{description}\setlength\itemsep{0.5em}
+    \item[\texttt{print} <what>\hfill]~\\
+      Print content of variable/memory location.
+    \item[\texttt{display} <what>\hfill]~\\
+      Like \texttt{print} but shows the information with each step.
+    \item[\texttt{undisplay} <display\#>\hfill]~\\
+      Remove the \texttt{display} with the given number.
+    \item[\texttt{info locals} or \texttt{info args}\hfill]~\\
+      Print the local variables or arguments in the current stack frame.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Summary of Steps}
+  \begin{enumerate}\setlength\itemsep{0.5em}
+    \item 
+      Compile with \lstinline{-g}.
+    \item 
+      Start GDB and load the executable.
+    \item 
+      Set breakpoints where you want to pause execution.
+    \item 
+      Use stepping commands to navigate through the code.
+    \item 
+      Use \texttt{print}, \texttt{display}, and \texttt{info} commands to inspect variables and memory.
+  \end{enumerate}
+\end{frame}
+
+\section{GDB in VSCodium}
+
+\begin{frame}{Prerequisites}
+  \begin{enumerate}
+    \item Install the \href{https://open-vsx.org/extension/KylinIdeTeam/cppdebug}{C/C++ Debug (gdb)} extension.
+
+    \item If running in WSL, install the \href{https://open-vsx.org/extension/jeanp413/open-remote-wsl}{Open Remote - WSL} extension.
+    
+      \begin{itemize}
+        \item Ensure that the \href{https://open-vsx.org/extension/KylinIdeTeam/cppdebug}{C/C++ Debug (gdb)} extension is installed within WSL\@.
+      \end{itemize}
+
+    \item Open the lab/project folder (not just a source file or the whole repository).
+    
+      \begin{itemize}
+        \item If using WSL, make sure to open the folder in WSL (remote connection).
+      \end{itemize}
+
+    \item Open a C++ file.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Project Setup}
+  \begin{enumerate}\setlength\itemsep{0.5em}
+    \item Open a C++ File in the Folder.
+    \item Click on the ``Run'' menu at the top.
+    \item Click on the ``Add Configuration'' menu item and select ``G++ (GDB/LLDB)''.
+    \item Click ``Add Configuration'' on the bottom right.
+    \item Select ``C/C++: (gdb) Launch''.
+    \item Modify the ``name'', ``program'', ``args'', and ``cwd'' fields as desired.
+  \end{enumerate}
+  {\footnotesize\url{https://code.visualstudio.com/docs/cpp/launch-json-reference}}
+\end{frame}
+
+\section*{Excluding Files from Version Control}
+\begin{frame}[fragile]{Use \texttt{.gitignore} files}
+  There are often files you do not want to share (executable, debug configuration).
+
+  Git will not track files and folders specified in a \texttt{.gitignore} file.
+\begin{lstlisting}[language={}]
+.vscode/*
+obj/*
+main
+test-runner
+\end{lstlisting}
+\end{frame}
+
+\end{document}

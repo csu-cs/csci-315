@@ -105,6 +105,11 @@
   \node[block] (last) [fit=(ele)]{};%
   \coordinate (ptr) at (ptr2);%
   \fill (ptr) circle(2pt);%
+
+  % % Named components for custom connections to nodes
+  \coordinate ({prevPtr\detokenize{#3}}) at (leftPtr);%
+  \coordinate ({nextPtr\detokenize{#3}}) at (ptr);
+  \node[block] ({el\detokenize{#3}}) [fit=(last)]{};%
 }
 
 \NewDocumentCommand{\LinkPtr}{ O{0} O{left} m }{%

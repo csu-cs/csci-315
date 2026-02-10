@@ -5,8 +5,8 @@
 \usepackage{linked-lists}
 \usetikzlibrary{positioning,backgrounds}
 
-\title{\Huge{} C++ Debugging,\\Doubly-Linked Lists, \& Project 1}
-\subtitle{CSCI 315: Data Structure Analysis}
+\title{\Huge{} Doubly-Linked Lists\\ \& Project 1}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -27,172 +27,7 @@
   \titlepage{}
 \end{frame}
 
-\section{Debugging with GDB}
-
-
-% \begin{frame}{What is GDB?}
-%   \renewcommand\windowpagestuff{%
-%     \hspace{6pt}\includegraphics[width=0.95\textwidth]{gdb-logo}
-%   }
-%   \opencutright
-%   %\vfill
-  
-%   \begin{cutout}{0}{0.75\textwidth}{0.2\textwidth}{5}
-%     \begin{itemize}\setlength\itemsep{0.5em}
-%       \item 
-%         \emph{GDB} stands for \emph{GNU Project Debugger} and was first written in 1986. 
-%       \item 
-%         A debugging tool for C++ (and other languages).
-%       \item 
-%         Lets you step through the code one instruction at a time to see what is happening.
-%       \item 
-%         Loads executable files that were compiled with debug information (\lstinline{-g}).
-%     \end{itemize}
-%   \end{cutout}
-% \end{frame}
-
-\begin{frame}{What is GDB?}
-
-  \begin{minipage}[t]{\textwidth}
-    \begin{columns}[T]
-    \column{0.68\textwidth}
-      \begin{itemize}\setlength\itemsep{0.5em}
-        \item 
-          \emph{GDB} stands for \emph{GNU Project Debugger} and was first written in 1986.
-        \item 
-          A debugging tool for C++ (and other languages).
-      \end{itemize}
-    \column{0.25\textwidth}
-      \includegraphics[width=\textwidth]{gdb-logo}
-    \end{columns}
-  \end{minipage}
-  
-  \begin{itemize}\setlength\itemsep{0.5em}
-    \item 
-      Lets you step through the code one instruction at a time to see what is happening.
-    \item 
-      Loads executable files that were compiled with debug information (\lstinline{-g}).
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Compiling a Program for Debugging}
-  \begin{center}\large
-    \texttt{{\color{codeVariable}\$} g++ \textbf{-g} }<source>\texttt{ -o }<executable>
-  \end{center}
-\end{frame}
-
-
-\begin{frame}{Launching and Exiting GDB}
-  \begin{description}\setlength\itemsep{0.5em}
-    \item[\texttt{{\color{codeVariable}\$} gdb}\hfill]~\\Start GDB.
-    \item[\texttt{{\color{codeVariable}\$} gdb} <program>\hfill]~\\Start GDB.
-    \item[\texttt{{\color{codeVariable}\$} gdb -{}-args} <program> <args\ldots>\hfill]~\\
-      Start GDB and pass arguments to executable.
-  \end{description}
-
-  \begin{description}
-    \item[\texttt{quit}\hfill]~\\
-      Exit GDB.
-  \end{description}
-\end{frame}
-
-\begin{frame}{Run a Program to be Debugged}
-  \begin{description}\setlength\itemsep{0.5em}
-    \item[\texttt{run}\hfill]~\\
-      Run the executable that was previously set.
-    \item[\texttt{file} <executable>]~\\
-      Set the executable to run.
-  \end{description}
-\end{frame}
-
-\begin{frame}{Breakpoints}
-  \begin{description}\setlength\itemsep{0.5em}
-    \item[\texttt{break} <where>\hfill]~\\
-      Set a new breakpoint.
-    \item[\texttt{enable} <breakpoint\#>]~\\
-      Enable a disabled breakpoint
-    \item[\texttt{disable} <breakpoint\#>\hfill]~\\
-      Disable a breakpoint.
-    \item[\texttt{delete} <breakpoint\#>]~\\
-      Remove a breakpoint.
-    \item[\texttt{clear}\hfill]~\\
-      Delete all breakpoints.
-  \end{description}
-\end{frame}
-
-\begin{frame}{Stepping through Lines of Code}
-  \begin{description}\setlength\itemsep{0.5em}
-    \item[\texttt{step}\hfill]~\\
-      Go to next instruction (source line), diving into function calls.
-    \item[\texttt{next}\hfill]~\\
-      Go to next instruction (source line) in this function.
-    \item[\texttt{continue}\hfill]~\\
-      Continue execution until the next breakpoint.
-    \item[\texttt{finish}\hfill]~\\
-      Continue until the current function returns.
-  \end{description}
-\end{frame}
-
-\begin{frame}{Variables and Memory}
-  \begin{description}\setlength\itemsep{0.5em}
-    \item[\texttt{print} <what>\hfill]~\\
-      Print content of variable/memory location.
-    \item[\texttt{display} <what>\hfill]~\\
-      Like \texttt{print} but shows the information with each step.
-    \item[\texttt{undisplay} <display\#>\hfill]~\\
-      Remove the \texttt{display} with the given number.
-    \item[\texttt{info locals} or \texttt{info args}\hfill]~\\
-      Print the local variables or arguments in the current stack frame.
-  \end{description}
-\end{frame}
-
-\section{GDB in VSCodium}
-
-\begin{frame}{Prerequisites}
-  \begin{enumerate}
-    \item Install the \href{https://open-vsx.org/extension/KylinIdeTeam/cppdebug}{C/C++ Debug (gdb)} extension.
-
-    \item If running in WSL, install the \href{https://open-vsx.org/extension/jeanp413/open-remote-wsl}{Open Remote - WSL} extension.
-    
-      \begin{itemize}
-        \item Ensure that the \href{https://open-vsx.org/extension/KylinIdeTeam/cppdebug}{C/C++ Debug (gdb)} extension is installed within WSL\@.
-      \end{itemize}
-
-    \item Open the lab/project folder (not just a source file or the whole repository).
-    
-      \begin{itemize}
-        \item If using WSL, make sure to open the folder in WSL (remote connection).
-      \end{itemize}
-
-    \item Open a C++ file.
-  \end{enumerate}
-\end{frame}
-
-\begin{frame}{Project Setup}
-  \begin{enumerate}\setlength\itemsep{0.5em}
-    \item Open a C++ File in the Folder.
-    \item Click on the ``Run'' menu at the top.
-    \item Click on the ``Add Configuration'' menu item and select ``G++ (GDB/LLDB)''.
-    \item Click ``Add Configuration'' on the bottom right.
-    \item Select ``C/C++: (gdb) Launch''.
-    \item Modify the ``name'', ``program'', ``args'', and ``cwd'' fields as desired.
-  \end{enumerate}
-  {\footnotesize\url{https://code.visualstudio.com/docs/cpp/launch-json-reference}}
-\end{frame}
-
-\begin{frame}[fragile]{Use \texttt{.gitignore} files}
-  There are often files you do not want to share (executable, debug configuration).
-
-  Git will not track files and folders specified in a \texttt{.gitignore} file.
-\begin{lstlisting}[language={}]
-.vscode/*
-obj/*
-main
-test-runner
-\end{lstlisting}
-\end{frame}
-
-\section{Doubly-Linked List}
+\section{Motivation}
 
 \begin{frame}{What if we want to traverse the list in reverse?}
   Three Options:\vspace{-0.25em}
@@ -226,6 +61,8 @@ test-runner
 \end{tikzpicture}%
 }
 \end{frame}
+
+\section{Insertion}
 
 \begin{frame}{Prepending a Doubly-Linked List}
 \center
@@ -312,7 +149,7 @@ test-runner
 \begin{frame}[fragile]{Insert in the Middle}
   
 \begin{center}
-  Example: Insert a new node after at index 2 (after ``B'')
+  Example: Insert a new node after at\\ index 2 (after ``B'')
 
 \begin{tikzpicture}
     \LinkPtr{mpHead}
@@ -360,16 +197,67 @@ test-runner
 \end{center}
 \end{frame}
 
+\section{Faster Lookup}
+
+\section{Remove}
+
+\begin{frame}[fragile, c]{Remove an Element at an Index}
+%\begin{center}
+  \begin{tikzpicture}[node of list/.append style = {
+    %minimum height=6mm,
+    minimum width=3mm,
+    node distance=6mm,
+    %font=\small,
+  },
+  link pointer of list/.append style= {
+    %minimum height=6mm,
+    minimum width=3.5mm
+  }]
+    \LinkPtr{mpHead}
+    \DoublyLinkedNode[first]{"A"}
+    \DoublyLinkedNode{"B"}
+    \alt<-3>{
+      \DoublyLinkedNode{"C"}
+    }{
+      \onslide<-6>{
+        \DoublyLinkedNode[middle][false]{"C"}
+      }
+    }
+    \onslide<2->{
+      \TailPtr{pToDel}
+    }
+    \alt<-5>{
+      \DoublyLinkedNode[middle][connect]{"D"}
+    }{
+      \alt<-6>{
+      \DoublyLinkedNode[false][connect]{"D"}
+      }{
+        \DoublyLinkedNode[false][false]{"D"}
+      }
+    }
+    \onslide<4->{
+      \draw[link] ({nextPtr"B"}) to[bend left] (ele);%
+    }
+
+    \onslide<6->{
+      \draw[link] ({prevPtr"D"}) to[bend left] ({el"B"});%
+    }
+    \DoublyLinkedNode{"Z"}%
+    \TailPtr{mpTail}%
+    \onslide<7>{}
+  \end{tikzpicture}
+%\end{center}
+\end{frame}
+
 \section{Iterators}
 \begin{frame}{Iterators for Container}
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item
-  Iterators are pointer-like entities that are used to access individual elements in a container.
+  \emph{Iterators} are pointer-like entities that are used to\\ access individual elements in a container.
 \item
   Often they are used to move sequentially from element to element, a process called \textit{iterating} through a container.
 \end{itemize}
 \end{frame}
-
 
 \begin{frame}[fragile]{Iterators for an \texttt{\bfseries Array} Container}
   \vspace{1em}
@@ -452,7 +340,7 @@ test-runner
   \emph{Convenience in Programming}:
   \begin{itemize}
   \item
-    Provide common usage for any container (the internal structure of a container does not matter).
+    Provide common usage for any container (the internal\\ structure of a container does not matter).
   \item
     Provide read and/or write access to each element's values.
   \end{itemize}

@@ -2,8 +2,32 @@ Debugging in C++ with GDB
 =========================
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/LPQ79whuVFI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/P5ThqxwWiVU?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
+
+## Introduction
+
+### Common Types of Bugs
+
+-  **Syntax Errors**: Mistakes in the code that prevent it from compiling.
+-  **Logical (Semantic) Errors**: The program runs but produces incorrect results.
+
+### What is Debugging?
+
+-  The process of finding and fixing errors (bugs) in a program.
+-  Can involve various techniques, including print statements, code reviews, and using debugging tools.
+
+### Why Debug with Debuggers?
+
+-  Even the best programmers make mistakes.
+-  Debugging is an essential skill for every programmer.
+-  Learning to use a debugger effectively can save you hours of frustration.
+
+### Debugging Approaches
+
+-  Print statements (`std::cout`).
+-  Code reviews and pair programming.
+-  Debugging tools like GDB.
 
 ## Debugging with GDB
 
@@ -14,7 +38,7 @@ Debugging in C++ with GDB
 
 - A debugging tool for C++ (and other languages).
 
-![Logo for GDB](/images/debugging/gdb-logo.svg "Logo for GDB")
+![Logo for GDB, designed by Jamie Guinan, who wrote, “For a fish, the archer fish is known to shoot down bugs from low hanging plants by spitting water at them.”](/images/debugging/gdb-logo.svg "Logo for GDB, designed by Jamie Guinan, who wrote, “For a fish, the archer fish is known to shoot down bugs from low hanging plants by spitting water at them.”")
 
 - Lets you step through the code one instruction at a time to see what
   is happening.
