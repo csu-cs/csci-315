@@ -3,8 +3,16 @@ Binary Search and Selection, Bubble, and Insertion Sort
 
 Chapter 18
 
+Search Algorithms
+
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/jcwrN3CvKUA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/V-sT-Ynnoyw?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
+Sorting Algorithms
+
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/KfYfuiDj9Iw?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -142,7 +150,7 @@ unsigned int sequentialSearchRecursive(const Type array[],
 
 ## Binary Search (for Sorted Lists)
 
-- Binary search can be applied to ***sorted*** arrays or lists.
+- Binary search can be applied to ***sorted*** arrays.
 
 - Uses the “divide and conquer” technique.
 
@@ -287,8 +295,8 @@ based.
 
 ## Selection Sort
 
-- The ***Selection Sort Algorithm***: rearrange the list by selecting an
-  element and moving it to its proper position.
+- The ***Selection Sort Algorithm***: repeatedly select the smallest 
+  element from an unsorted portion of a list and moves it to the front..
 
 - Steps for a selection sort:
 
@@ -341,8 +349,7 @@ Example Bubble Sort:
 
   - The outer loop executes $n - 1$ times.
 
-  - For each iteration of the outer loop, the inner loop executes a
-    certain number of times.
+  - For each iteration of the outer loop, the inner loop executes one fewer times.
 
 - The total number of comparisons is:
   $$(n - 1) + (n - 2) + \cdots + 2 + 1 = \frac{n(n - 1)}{2} = \frac{1}{2}n^2 - \frac{1}{2}n = O(n^2)$$
@@ -354,7 +361,7 @@ Example Bubble Sort:
 ## Insertion Sort
 
 
-The ***insertion sort algorithm*** sorts the list by moving each element
+The ***Insertion Sort Algorithm*** sorts the list by moving each element
 to its proper place in the sorted portion of the list.
 
 Example Insertion Sort:  

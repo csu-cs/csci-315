@@ -1,0 +1,373 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{arrays}
+\usepackage{linked-lists}
+\usepackage{booktabs} % For tables
+
+\title{\Huge{} Searching\\ Algorithms}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 18}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{February 13, 2025}
+\subject{Data-Strucutre Analysis}
+\keywords{seach, sort, algorithm, performance analysis}
+
+\setlength{\parskip}{0.5em}
+
+% \graphicspath{{../imgs/performance}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+\section{Introduction}
+
+\begin{frame}{Objectives}
+After the next two lectures and labs, you will be able to:
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item
+    Implement the \emph{sequential} and \emph{binary search}\\ algorithms to search for an item in an array or list.
+  \item
+    Use the \textit{asymptotic} notation, Big-\(O\), to analyze\\ these algorithms' performance.
+  \item
+    State lower bound on comparison-based search algorithms.
+  \item
+    Implement various sorting algorithms.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{With a Search Algorithm, you can:}
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item
+    \emph{Location}: Determine whether a particular item\\ is in an array or list.
+  \item
+    \emph{Placement}: If the data is specially organized (e.g., sorted), find the location in the list where a new item can be inserted.
+  \item
+    \emph{Removal}: Find the location of an item to be deleted.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Search Algorithm Terminology}
+\begin{itemize}
+  \item
+    An item's \emph{key} --- a special member that \textit{uniquely\\ identifies} the item in the data set.
+  \item
+    The key that we are searching for is called the \emph{target} or \emph{search item}.
+  \item
+    A \emph{key comparison} --- comparing the key of the search item with the key of an item in the list.
+    \begin{itemize}
+      \item
+        We can count the number of key comparisons as a measure of performance.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Sequential Search}
+
+\begin{frame}{Sequential Search (a.k.a. Linear Search)}
+\begin{itemize}
+  \item
+    Same for both array-based and linked lists.
+  \item
+    Starts at the first element and examines each element until a match is found.
+  \item
+    Can be implemented iteratively (using a loop) or recursively.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Key Comparisons of a Sequential Search}
+\begin{itemize}[<+->]
+  \item
+    Remember, the speed of a computer does not\\ affect the number of key comparisons required.
+  \item
+    Statements before and after the loop are executed only once, \(O(1)\).
+  \item
+    Statements in the while loop repeated some number from 1 to \(n\) times (where \(n\) is the number of keys).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Key Comparisons of a Sequential Search}
+\begin{itemize}[<+->]
+  \item
+    If the search key is not in the list, there will be \(n\) comparisons.
+  \item
+    In the best case, the first key matches the search\\ item with just one comparison.
+  \item
+    In the worst case, the target is not in the list, so there will be \(n\) comparisons.
+  \item
+    Average number of comparisons:
+    \begin{equation*}
+      \frac{1 + 2 + \cdots + n}{n} = \frac{1}{n} \cdot \frac{n (n + 1)}{2} = \frac{n + 1}{2} = \frac{1}{2}n + \frac{1}{2}
+    \end{equation*}
+\end{itemize}
+\end{frame}
+
+\section{Binary Search}
+
+\begin{frame}{Binary Search (for Sorted Lists)}
+\begin{itemize}[<+->]
+  \item
+    Binary search can be applied to \emph{sorted} arrays.
+  \item
+    Uses the ``divide and conquer'' technique.
+  \item
+    Steps
+    \begin{enumerate}
+      \item
+        First, compare the target to the middle element.
+      \item
+        If the search item is less than the middle element, restrict the search to the lower half of the list.
+      \item
+        Otherwise, restrict the search to the upper half of the list.
+      \item
+        Repeat until found.
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Binary Search}
+\center
+Find the location of \texttt{75} in this sorted array.
+
+\begin{tikzpicture}
+  \ArrayLabel{list}
+  \alt<-3>{
+    \ArrayList{4, 8, 19, 25, 34}
+    \alt<-2>{\ArrayNode{39}}{\ArrayNode[MyPurple]{39}}
+  }{
+    \ArrayList[MyGreen]{4, 8, 19, 25, 34, 39}
+  }
+
+
+  \onslide<3-4>{\ArrayElLabel[val]{mid}}
+
+  \alt<-4>{
+    \ArrayList{45, 48, 66, 75, 89, 95}
+  }{
+    \alt<-5>{
+      \ArrayList{45, 48}
+      \ArrayNode[MyPurple]{66}
+    }{
+      \ArrayList[MyGreen]{45, 48, 66}
+    }
+
+    \onslide<5-6>{\ArrayElLabel[el66]{mid}}
+    \alt<-8>{
+      \ArrayNode{75}
+    }{
+      \ArrayNode[MyPurple]{75}
+    }
+
+    \alt<-6>{
+      \ArrayNode{89}
+      \ArrayNode{95}
+    }{
+      \alt<-7>{
+        \ArrayNode[MyPurple]{89}
+        \ArrayNode{95}
+      }{
+        \ArrayList[MyGreen]{89, 95}
+      }
+      \alt<-8>{
+        \ArrayElLabel[el89]{mid}
+      }{
+        \ArrayElLabel[el75]{mid}
+      }
+    }
+
+    %\ArrayNode{95}
+  }
+  \onslide<2-3>{\ArrayGroup{el4}{el95}{Search Space}}
+  \onslide<4-5>{\ArrayGroup{el45}{el95}{Search Space}}
+  \onslide<6-7>{\ArrayGroup{el75}{el95}{Search Space}}
+  \onslide<8->{\ArrayGroup{el75}{el75}{Search Space}}
+  \onslide<9>{}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{The Performance of the Binary Search}
+\begin{itemize}[<+->]
+  \item
+    Every iteration cuts the size of the search list in half.
+  \item
+    If list \(L\) has \(1024 = 2^{10}\) items, at most \(11\) iterations\\ are needed to find \(x\).
+  \item
+    Every iteration makes two key comparisons.
+    \begin{itemize}
+      \item
+        For \(L\), binary search has at most \(22\) key comparisons.
+      \item
+        Max number of comparisons = \(2\log_2n+2\).
+      \item
+        The sequential search required \(512\) key comparisons (average) to find if \(x\) is in \(L\).
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Big-O Notation}
+
+\begin{frame}{Asymptotic Notation: Big-O Notation}
+\begin{itemize}[<+->]\setlength\itemsep{0.5em}
+  \item
+    After an algorithm is designed, it should be\\ analyzed.
+  \item
+    There are often various ways to design a particular algorithm.
+  \item
+    Certain algorithms take very little computer time to execute.
+  \item
+    Others take a considerable amount of time.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Asymptotic Notation: Big-O Notation}
+\begin{table}[]
+{
+\rmfamily
+\begin{tabular}{
+>{}r r r r r }
+\toprule
+\multicolumn{1}{c}{\(n\)} & \multicolumn{1}{c}{\(\log_2{n}\)} & \multicolumn{1}{c}{\(n \log_2{n}\)} & \multicolumn{1}{c}{\(n^2\)} & \multicolumn{1}{c}{\(2^n\)} \\
+\midrule
+1               & 0     &   0                   & 1                & 2             \\
+2               & 1     &   2                   & 4                & 4             \\
+4               & 2     &   8                   & 16               & 16            \\
+8               & 3     &  24                   & 64               & 256           \\
+16              & 4     &  64                   & 256              & 65,536        \\
+32              & 5     & 160                   & 1,024            & 4,294,967,296 \\
+64              & 6     & 384                   & 4,096            & 1.84467e+19   \\
+\bottomrule%
+\end{tabular}
+}
+\end{table}
+\end{frame}
+
+\begin{frame}{Asymptotic Notation: Big-O Notation}
+\center\vspace{-0.5em}%
+\begin{table}[]
+\caption{Time for \(f(n)\) instructions if executing 1-billion instructions per second.}\vspace{-0.75em}
+{\small%
+\begin{tabular}{rlllll}
+  \toprule%
+\(n\) & \(n\) & \(\log_2{n}\) & \(n \log_2{n}\) & \(n^2\) & \(2^n\) \\
+\midrule
+\(10\)         & \(0.01\)\textmu{}s        & \(0.003\)\textmu{}s           & \(0.033\)\textmu{}s             & \(0.1\)\textmu{}s          & \(1\)\textmu{}s            \\
+\(20\)         & \(0.02\)\textmu{}s        & \(0.004\)\textmu{}s           & \(0.086\)\textmu{}s             & \(0.4\)\textmu{}s          & \(1\)ms                \\
+\(30\)         & \(0.03\)\textmu{}s        & \(0.005\)\textmu{}s           & \(0.147\)\textmu{}s             & \(0.9\)\textmu{}s          & \(1\)s                 \\
+\(40\)         & \(0.04\)\textmu{}s        & \(0.005\)\textmu{}s           & \(0.213\)\textmu{}s             & \(1.6\)\textmu{}s          & \(18.3\) min           \\
+\(50\)         & \(0.05\)\textmu{}s        & \(0.006\)\textmu{}s           & \(0.282\)\textmu{}s             & \(2.5\)\textmu{}s          & \(13\) days            \\
+\(100\)        & \(0.1\)\textmu{}s         & \(0.007\)\textmu{}s           & \(0.664\)\textmu{}s             & \(10\)\textmu{}s           & \(4\times10^{13}\) years       \\
+\(1000\)       & \(1\)\textmu{}s           & \(0.01\)\textmu{}s            & \(9.966\)\textmu{}s             & \(1\)ms                &                    \\
+\(10000\)      & \(10\)\textmu{}s          & \(0.013\)\textmu{}s           & \(130\)\textmu{}s               & \(100\)ms              &                    \\
+\(100000\)     & \(0.1\)ms             & \(0.017\)\textmu{}s           & \(1.67\)ms                  & \(10\)s                &                    \\
+\(1000000\)    & \(1\)ms               & \(0.020\)\textmu{}s           & \(19.93\)ms                 & \(16.7\)m              &                    \\
+\(10000000\)   & \(0.01\)s             & \(0.023\)\textmu{}s           & \(0.23\)s                   & \(1.16\) days          &                    \\
+\(100000000\)  & \(0.1\)s              & \(0.027\)\textmu{}s           & \(2.66\)s                   & \(115.7\) days\\
+\bottomrule%
+\end{tabular}}
+\end{table}\vspace{-0.5em}
+{\footnotesize *\textmu{}s is a microsecond or 10e-6 seconds.}
+\end{frame}
+
+\begin{frame}{Asymptotic Notation: Big-O Notation}
+\begin{itemize}
+  \item
+    Let \(f\) be a function of \(n\).
+  \item
+    \emph{Asymptotic}: the study of the function \(f\) as \(n\) \\
+    becomes larger and larger without bound.
+  \item
+    Let \(f\) and \(g\) be real-valued, non-negative functions.
+  \item
+    \(f(n)\) is \emph{Big-O} of \(g(n)\), written \(f(n) = O(g(n))\) if there are constants \(c\) and \(n_0\) such that
+     \begin{equation*}
+      f(n) \le cg(n) \textsf{ for all } n \ge n_0
+    \end{equation*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Growth Rate}
+\begin{table}[]
+{\rmfamily%
+\begin{tabular}{rrr}
+\toprule{}
+  \(n\) & \(g(n) = n^2\) & \(f(n) = n^2 + 4n + 20\)\\
+\midrule{}
+     10  &            100 &            160\\
+     50  &          2,500 &          2,720\\
+    100  &         10,000 &         10,420\\
+  1,000  &      1,000,000 &     1,0004,020\\
+ 10,000  &    100,000,000 &    100,040,020\\
+100,000  & 10,000,000,000 & 10,000,400,020\\
+\bottomrule{}
+\end{tabular}%
+}%
+\end{table}
+\end{frame}
+
+\begin{frame}{Growth Rate Functions}
+\small
+\begin{tabularx}{1\textwidth}{l X}
+  \toprule{}
+  \textbf{Function \(g(n)\)} & \textbf{Growth rate of \(f(n)\)}\\
+  \midrule%
+  \(g(n) = 1\)        & \emph{Constant} (is independent of the problem's size).\\
+  \(g(n) = \log_2n\)  & \emph{Logarithmic} (increases increases slowly
+                  as the problem size increases).\\
+  \(g(n) = n\)        & \emph{Linear} (increases directly with the size
+                  of the problem).\\
+  \(g(n) = n \log_2n\) & \(n\log\) (increases more rapidly than a linear algorithm).\\
+  \(g(n) = n^2\)      & \emph{Quadratic} (increases rapidly with the
+                  size of the problem).\\
+  \(g(n) = n^3\)      & \emph{Cubic} (increases more rapidly with the
+                  size of the problem than the time requirement for a quadratic algorithm).\\
+  \(g(n) = 2^n\)     & \emph{Exponential} (too rapid to be practical, as the size of the problem increases).\\
+  \bottomrule{}
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Comparing Sequential and Binary Search}
+
+\begin{table}[]
+\small
+\begin{tabular}{r l l}
+\toprule%\\[0.25ex]
+\textbf{Algorithm} & \textbf{Successful Search} & \textbf{Unsuccessful Search}\\%[1.5ex]
+%\hline{}\\[0.25ex]
+\midrule
+\textbf{Sequential Search} & \(\frac{1}{2}n + \frac{1}{2} = O(n)\) & \(n = O(n)\)\\[1.5ex]
+\textbf{Binary Search} & \(2\log_2n - 3 = O(\log_2n)\) & \(2\log_2n = O(log_2{n})\)\\%[1.5ex]
+\bottomrule
+\end{tabular}
+\caption{The number of comparisons for a list of length \(n\).}
+\end{table}
+\end{frame}
+
+\begin{frame}{Lower Bound on Comparison-Based Search}
+\small
+\emph{Comparison-based search algorithms}: Search a list by comparing \\the target element with list elements.
+\pause{}
+
+\emph{Theorem}: Let \(L\) be a list of size \(n > 1\). Suppose that the elements of \(L\) are sorted. If \(SRH(n)\) denotes the minimum number of comparisons needed, in the worst case, by using a comparison-based algorithm to recognize whether an element \(x\) is in \(L\), then \(SRH(n) \ge \log_2(n + 1)\).
+\pause{}
+
+\emph{Corollary}: The binary search algorithm is an optimal worst-case algorithm for solving search problems by the comparison method.
+From these results, it follows that if we want to design a search algorithm that is of an order less than \(\log_2{n}\), then it cannot be comparison based.
+\end{frame}
+
+\begin{frame}{Sorting Algorithms}
+
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item
+    To compare the performance of commonly used\\
+    sorting algorithms, one must provide some\\ analysis of these algorithms.
+  \item
+    The following sorting algorithms can be applied to either array-based lists or linked lists.
+\end{itemize}
+\end{frame}
+
+\end{document}

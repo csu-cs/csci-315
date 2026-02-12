@@ -1,0 +1,681 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{arrays}
+\usepackage{linked-lists}
+\usepackage{booktabs} % For tables
+
+\title{\Huge{} Quadratic Sorting Algorithms}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 18}
+\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{February 13, 2025}
+\subject{Data-Strucutre Analysis}
+\keywords{seach, sort, algorithm, performance analysis}
+
+\setlength{\parskip}{0.5em}
+
+% \graphicspath{{../imgs/performance}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+\section{Introduction}
+
+\begin{frame}{Sorting Algorithms}
+
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item
+    To compare the performance of commonly used\\
+    sorting algorithms, one must provide some\\ analysis of these algorithms.
+  \item
+    The following sorting algorithms can be applied to either array-based lists or linked lists.
+\end{itemize}
+\end{frame}
+
+\section{Selection Sort}
+
+
+\begin{frame}{Selection Sort}
+
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item<1->
+    The \emph{Selection Sort Algorithm}: repeatedly select\\ the smallest element from an unsorted portion\\ of a list and moves it to the front.
+  \item<2->
+    Steps for a selection sort:
+    \begin{enumerate}
+      \item
+        Find the smallest element in the unsorted portion of the list
+      \item
+        Move it to the top of the unsorted portion by swapping it with the currently-first element.
+      \item
+        Start again with the rest of the list.
+    \end{enumerate}
+  \item<3->
+    Can also be applied to linked lists.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Selection Sort}
+\center
+\begin{tikzpicture}[node of array/.append style={minimum width=26mm, inner sep=1pt}]
+  \ArrayLabel{}
+
+  % Index 0
+  \alt<-3>{
+    \ArrayNodeVertical{Sophia}
+  }{
+    \alt<-4>{
+      \ArrayNodeVertical[MyPurple]{Aiden}
+    }{
+      \ArrayNodeVertical[MyGreen]{Aiden}
+    }
+  }
+
+  % Index 1
+  \alt<-7>{
+    \ArrayNodeVertical{Jackson}
+  }{
+    \alt<-8>{
+      \ArrayNodeVertical[MyPurple]{Ava}
+    }{
+      \ArrayNodeVertical[MyGreen]{Ava}
+    }
+  }
+
+  % Index 2
+  \alt<-11>{
+    \ArrayNodeVertical{Olivia}
+  }{
+    \alt<-12>{
+      \ArrayNodeVertical[MyPurple]{Emma}
+    }{
+      \ArrayNodeVertical[MyGreen]{Emma}
+    }
+  }
+  \node[block] (elAt2) [fit=(val)]{};
+
+  % Index 3
+  \alt<-15>{
+    \ArrayNodeVertical{Liam}
+  }{
+    \alt<-16>{
+      \ArrayNodeVertical[MyPurple]{Emma}
+    }{
+      \ArrayNodeVertical[MyGreen]{Emma}
+    }
+  }
+
+
+  % Index 4
+  \alt<-9>{
+    \ArrayNodeVertical{Emma}
+  }{
+    \alt<-11>{
+      \ArrayNodeVertical[MyPurple]{Emma}
+    }{
+      \alt<-19>{
+        \ArrayNodeVertical{Olivia}
+      }{
+        \alt<-20>{
+          \ArrayNodeVertical[MyPurple]{Jackson}
+        }{
+          \ArrayNodeVertical[MyGreen]{Jackson}
+        }
+      }
+    }
+  }
+  \onslide<10-11>{\ArrayElLabelVerticle[elEmma]{smallest}}
+  \onslide<11>{\ArraySwapVerticle[50]{elOlivia}{elEmma}}
+  \onslide<12>{\ArraySwapVerticle[50]{elEmma}{elOlivia}}
+
+  % Index 5
+  \alt<-13>{
+    \ArrayNodeVertical{Emma}
+  }{
+    \alt<-15>{
+      \ArrayNodeVertical[MyPurple]{Emma}
+    }{
+      \alt<-22>
+      {
+        \ArrayNodeVertical{Liam}
+      }{
+        \ArrayNodeVertical[MyGreen]{Liam}
+      }
+      
+    }
+  }
+
+  % Index 6
+  \alt<-5>{
+    \ArrayNodeVertical{Ava}
+  }{
+    \alt<-7>{
+      \ArrayNodeVertical[MyPurple]{Ava}
+    }{
+      \alt<-17>{
+        \ArrayNodeVertical{Jackson}
+      }{
+        \alt<-19>{
+          \ArrayNodeVertical[MyPurple]{Jackson}
+        }{
+          \alt<-24>{
+            \ArrayNodeVertical{Olivia}
+          }{
+            \ArrayNodeVertical[MyGreen]{Olivia}
+          }
+        }
+      }
+    }
+  }
+
+  % Index 7
+  \alt<1>{
+    \ArrayNodeVertical{Aiden}
+  }{
+    \alt<-3>{
+      \ArrayNodeVertical[MyPurple]{Aiden}
+    }{
+      \alt<-24>{
+        \ArrayNodeVertical{Sophia}
+      }{
+        \ArrayNodeVertical[MyGreen]{Sophia}
+      }
+    }
+  }
+
+  \alt<-3>{
+    \ArrayGroupVerticle{elSophia}{val}{Unsorted}
+  }{
+    \alt<-4>{
+      \ArrayGroupVerticle{elAiden}{val}{Unsorted}
+    }{
+      \alt<-7>{
+        \ArrayGroupVerticle{elJackson}{val}{Unsorted}
+      }{
+        \alt<-8>{
+          \ArrayGroupVerticle{elAva}{val}{Unsorted}
+        }{
+          \alt<-11>{
+            \ArrayGroupVerticle{elOlivia}{val}{Unsorted}
+          }{
+            \alt<-12>{
+              \ArrayGroupVerticle{elAt2}{val}{Unsorted}
+            }{
+              \alt<-15>{
+                \ArrayGroupVerticle{elLiam}{val}{Unsorted}
+              }{
+                \alt<-16>{
+                  \ArrayGroupVerticle{elEmma}{val}{Unsorted}
+                }{
+                  \alt<-19>{
+                    \ArrayGroupVerticle{elOlivia}{val}{Unsorted}
+                  }{
+                    \alt<-20>{
+                      \ArrayGroupVerticle{elJackson}{val}{Unsorted}
+                    }{
+                      \alt<-22>{
+                        \ArrayGroupVerticle{elLiam}{val}{Unsorted}
+                      }{
+                        \uncover<-24>{
+                          \ArrayGroupVerticle{elOlivia}{val}{Unsorted}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  \onslide<2-3>{\ArrayElLabelVerticle[val]{smallest}}
+  \onslide<3>{\ArraySwapVerticle[45]{elSophia}{val}}
+  \onslide<4>{\ArraySwapVerticle[45]{elAiden}{val}}
+
+  \onslide<6-7>{\ArrayElLabelVerticle[elAva]{smallest}}
+  \onslide<7>{\ArraySwapVerticle[45]{elJackson}{elAva}}
+  \onslide<8>{\ArraySwapVerticle[45]{elAva}{elJackson}}
+
+  \onslide<14-15>{\ArrayElLabelVerticle[elEmma]{smallest}}
+  \onslide<15>{\ArraySwapVerticle[45]{elLiam}{elEmma}}
+  \onslide<16>{\ArraySwapVerticle[45]{elEmma}{elLiam}}
+
+  \onslide<18-19>{\ArrayElLabelVerticle[elJackson]{smallest}}
+  \onslide<19>{\ArraySwapVerticle[45]{elOlivia}{elJackson}}
+  \onslide<20>{\ArraySwapVerticle[45]{elJackson}{elOlivia}}
+
+  \onslide<22>{\ArrayElLabelVerticle[elLiam]{smallest}}
+  \onslide<24>{\ArrayElLabelVerticle[elOlivia]{smallest}}
+  \onslide<25>{}
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}{Analysis: Selection Sort}
+\begin{itemize}
+  \item
+    \texttt{swap}:\\
+    Does three assignments; executed \(n - 1\) times.
+    \begin{equation*}
+      3(n - 1) = 3n - 3 = O(n)
+    \end{equation*}
+  \item<2->
+    \texttt{minIndex}:
+    \begin{itemize}
+      \item
+        For a list of length \(n\), \(n - 1\) key comparisons.
+      \item
+        Executed \(n - 1\) times (by \texttt{selectionSort})
+      \item
+        The number of key comparisons:
+        \begin{equation*}
+          (n-1)+(n-2)+\cdots+2+1=\frac{n(n-1)}{2}=\frac{1}{2} n^{2}-\frac{1}{2}n=O(n^{2})
+        \end{equation*}
+        \begin{equation*}
+          O(n^2) + O(n) = O(n^2)
+        \end{equation*}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Bubble Sort}
+
+\begin{frame}{Bubble Sort}
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item
+    Suppose \lstinline{list[0]...list[n-1]} is a list of \(n\) elements, indexed \(0\) to \(n-1\).
+
+  \item<2->
+    \emph{Bubble Sort Algorithm}:
+    \begin{itemize}\setlength\itemsep{0.5em}
+      \item
+        In a series of \(n-1\) iterations, compare successive elements, \lstinline{list[index]} and \lstinline{list[index + 1]}.
+      \item
+        If \lstinline{list[index]} is greater than \lstinline{list[index + 1]}, then swap them.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bubble Sort}
+\hspace{2cm}
+\begin{tikzpicture}[node of array/.append style={minimum width=22mm, inner sep=1pt}]
+  \ArrayLabel{}
+
+  % Index 0
+  \alt<-2>{%
+    \ArrayNodeVertical{Emma}%
+  }{%
+    \alt<-15>{%
+      \ArrayNodeVertical{Bella}%
+    }{%
+      \alt<-19>{%
+        \ArrayNodeVertical{Aiden}%
+      }{%
+        \ArrayNodeVertical[MyGreen]{Aiden}%
+      }%
+    }%
+  }%
+
+  % Index 1
+  \alt<-2>{%
+    \ArrayNodeVertical{Bella}%
+  }{%
+    \alt<-11>{%
+      \ArrayNodeVertical{Emma}%
+    }{%
+      \alt<-15>{%
+        \ArrayNodeVertical{Aiden}%
+      }{%
+        \alt<-19>{%
+          \ArrayNodeVertical{Bella}%
+        }{%
+          \ArrayNodeVertical[MyGreen]{Bella}%
+        }%
+      }%
+    }%
+  }%
+  
+  % Index 2
+  \alt<-5>{%
+    \ArrayNodeVertical{Liam}%
+  }{%
+    \alt<-11>{%
+      \ArrayNodeVertical{Aiden}%
+    }{%
+      \alt<-17>{%
+        \ArrayNodeVertical{Emma}%
+      }{%
+        \ArrayNodeVertical[MyGreen]{Emma}%
+      }%
+    }%
+  }%
+
+  % Index 3
+  \alt<-5>{%
+    \ArrayNodeVertical{Aiden}%
+  }{%
+    \alt<-7>{%
+      \ArrayNodeVertical{Liam}%
+    }{%
+      \alt<-13>{%
+        \ArrayNodeVertical{Jackson}%
+      }{%
+        \ArrayNodeVertical[MyGreen]{Jackson}%
+      }%
+    }%
+  }%
+  
+
+  % Index 4
+  \alt<-7>{%
+    \ArrayNodeVertical{Jackson}%
+  }{%
+    \alt<-8>{%
+      \ArrayNodeVertical{Liam}%
+    }{%
+      \ArrayNodeVertical[MyGreen]{Liam}%
+    }%
+  }%
+  
+
+  \onslide<2>{\ArraySwapVerticle<compare and swap>{elEmma}{elBella}}
+  \onslide<3>{\ArraySwapVerticle<compare and swap>{elBella}{elEmma}}
+  \onslide<4>{\ArraySwapVerticle<compare>{elEmma}{elLiam}}
+  \onslide<5>{\ArraySwapVerticle<compare and swap>{elLiam}{elAiden}}
+  \onslide<6>{\ArraySwapVerticle<compare and swap>{elAiden}{elLiam}}
+  \onslide<7>{\ArraySwapVerticle<compare and swap>{elLiam}{elJackson}}
+  \onslide<8>{\ArraySwapVerticle<compare and swap>{elJackson}{elLiam}}
+
+  \onslide<10>{\ArraySwapVerticle<compare>{elBella}{elEmma}}
+  \onslide<11>{\ArraySwapVerticle<compare and swap>{elEmma}{elAiden}}
+  \onslide<12>{\ArraySwapVerticle<compare and swap>{elAiden}{elEmma}}
+  \onslide<13>{\ArraySwapVerticle<compare>{elEmma}{elJackson}}
+
+  \onslide<15>{\ArraySwapVerticle<compare and swap>{elBella}{elAiden}}
+  \onslide<16>{\ArraySwapVerticle<compare and swap>{elAiden}{elBella}}
+  \onslide<17>{\ArraySwapVerticle<compare>{elBella}{elEmma}}
+
+  \onslide<19>{\ArraySwapVerticle<compare>{elAiden}{elBella}}
+
+  \onslide<20>{}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Bubble Sort}
+  \begin{itemize}
+    \item<1->
+      The Bubble-Sort algorithm contains nested loops.
+      \begin{itemize}
+          \item
+            The outer loop executes \(n - 1\) times.
+          \item
+            For each iteration of the outer loop, the inner loop\\ executes one fewer times.
+        \end{itemize}
+    \item<2->
+      The total number of comparisons is:\\[-1.75em]
+      \begin{equation*}
+        (n - 1) + (n - 2) + \cdots + 2 + 1 = \frac{n(n - 1)}{2} = \frac{1}{2}n^2 - \frac{1}{2}n = O(n^2)
+      \end{equation*} 
+    \item<3->
+      The number of assignments (worst case):\\[-0.75em]
+      \begin{equation*}
+        3\frac{n(n - 1)}{2}= \frac{3}{2}n^2 - \frac{3}{2}n = O(n^2)
+      \end{equation*}
+      because there are 3 assignments per swap operator.
+    \end{itemize}
+\end{frame}
+
+\section{Insertion Sort}
+
+\begin{frame}{Insertion Sort}
+The \emph{Insertion Sort Algorithm} moves each element to\\ its proper place in the sorted portion of the list.
+
+\centerline{%
+\begin{tikzpicture}[node of array/.append style={minimum width=18mm, inner sep=1pt}]
+  \ArrayLabel{}
+  \alt<1>{
+    \ArrayList{10, 18, 25, 30, 23, 17, 45, 34}
+  }{
+    \alt<-2>{
+      \ArrayNode[MyGreen]{10}
+      \ArrayList{18, 25, 30, 23, 17, 45, 34}
+    }{
+      \alt<-3>{
+        \ArrayList[MyGreen]{10, 18}
+        \ArrayList{25, 30, 23, 17, 45, 34}
+      }{
+        \alt<-4>{
+          \ArrayList[MyGreen]{10, 18, 25}
+          \ArrayList{30, 23, 17, 45, 34}
+        }{
+          \ArrayList[MyGreen]{10, 18}
+        }
+      }
+    }
+  }
+  \only<5-14>{
+    \ArrayNode[MyGreen]{25}
+  }
+  \only<15->{
+    \ArrayNode[MyGreen]{23}
+  }
+
+  \only<5->{
+      \alt<-9>{
+        \ArrayNode[MyGreen]{30}
+        \only<5-9>{\ArrayGroup{el10}{el30}{Sorted}}
+        \ArrayNode{23}
+        \only<9>{\draw[link, -stealth] (el30) to[bend right=70] node[below] {copy} (el23);}
+      }{
+        \alt<-11>{
+          \ArrayNode[MyGreen]{30}
+          \onslide<10>{\draw[link, -stealth] (el30) to[bend right=70] node[below] {copy} (el23);}
+          \onslide<11->{\draw[link, -stealth] (el25) to[bend right=70] node[below] {copy} (el30);}
+          \onslide<5->{\ArrayGroup{el10}{el30}{Sorted}}
+        }{
+          \node[block] (first25) [fit=(val)]{};
+          \ArrayNode[MyGreen]{25}
+          \onslide<11-12>{\draw[link, -stealth] (first25) to[bend right=70] node[below] {copy} (el25);}
+          \onslide<5-16>{\ArrayGroup{el10}{el25}{Sorted}}
+        }
+        \alt<-16>{
+          \ArrayNode{30}
+        }{
+          \ArrayNode[MyGreen]{30}
+        }
+      }
+      \ArrayList{17, 45, 34}
+    }
+
+  \onslide<21-22>{
+    \draw[link, -stealth] (el30) to[bend right=70] node[below] {copy 1} (el17);
+    \draw[link, -stealth] (el25) to[bend right=70] node[below] {copy 2} (el30);
+    \draw[link, -stealth] (el23) to[bend right=70] node[below] {copy 3} (el25);
+    \draw[link, -stealth] (el18) to[bend right=70] node[below] {copy 4} (el23);
+  }
+
+  \onslide<7->{
+    \node[, name=prev] at (0.75, -2) {temp};
+    \alt<7>{
+      \node[node of array, anchor=west, name=val] at ([xshift=-1pt] prev.east) {};
+    }{
+      \alt<-19>{
+        \node[node of array, anchor=west, name=val] at ([xshift=-1pt] prev.east) {23};
+      }{
+        \node[node of array, anchor=west, name=val] at ([xshift=-1pt] prev.east) {17};
+      }
+    }
+  }
+
+  \onslide<2>{\ArrayGroup{el10}{el10}{Sorted}}
+  \onslide<3>{\ArrayGroup{el10}{el18}{Sorted}}
+  \onslide<4>{\ArrayGroup{el10}{el25}{Sorted}}
+  \onslide<17->{\ArrayGroup{el10}{el30}{Sorted}}
+  \onslide<6>{\draw[link, <-, dotted] ([xshift=-2mm] el25.south east) to[bend right] node[below] {move} ([xshift=2mm] el23.south west);}
+  \onslide<8>{\draw[link, <-] (val) to[bend right] node[above] {copy} (el23);}
+  \only<14>{\draw[link, -stealth] (val) to[bend right] node[right] {copy} (first25);}
+  \only<15>{\draw[link, -stealth] (val) to[bend right] node[right] {copy} (el23);}
+
+  \onslide<18>{\draw[link, -stealth, dotted] (el17) to[bend left=50] node[below] {move} (el18);}
+  \onslide<19-20>{\draw[link, <-] (val) to[bend right] node[above] {copy} (el17);}
+  \onslide<22>{\draw[link, -stealth] (val) to[bend left] node[left] {copy} (el18);}
+  
+  \onslide<22>{}
+\end{tikzpicture}%
+}
+
+\end{frame}
+
+\begin{frame}{Insertion Sort Implementation for Arrays}
+  \centering\Large
+  Let's implement the Insertion Sort.
+\end{frame}
+
+% \begin{frame}[fragile]{Insertion Sort Implementation for Arrays}
+% \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+% template <typename Type>
+% void insertionSort(Type array[], unsigned int size)
+% {
+% 	for (auto firstUnsorted = 1u; firstUnsorted < size; ++firstUnsorted) {
+% 		if (array[firstUnsorted] < array[firstUnsorted - 1]) {
+% 			const auto TEMP = array[firstUnsorted];
+% 			auto copyIndex = firstUnsorted;
+
+% 			do {
+% 				array[copyIndex] = array[copyIndex - 1];
+% 				--copyIndex;
+% 			} while(copyIndex > 0 && TEMP < array[copyIndex - 1]);
+
+% 			array[copyIndex] = TEMP;
+% 		}
+% 	}
+% }
+% \end{lstlisting}
+% \end{frame}
+
+\begin{frame}{Insertion Sort}
+  \begin{itemize}
+    \item
+      The for-loop executes \(n - 1\) times.
+    \item
+      Best case (list is already sorted):\\
+      Key comparisons: \(n - 1 = O(n)\)
+    \item 
+      Worst case: for each iteration, the if statement evaluates to true.\\
+      Key comparisons: \(1 + 2 + \cdots + (n - 1) = \frac{n(n - 1)}{2} = O(n^2)\)
+    \item 
+      Average number of key comparisons and of item assignments:
+      \begin{equation*}
+        \frac{1}{4} n^2 + O(n) = O(n^2)
+      \end{equation*}
+    \end{itemize}
+\end{frame}
+
+
+% \section{Linked-List-Based Insertion Sort}
+
+\begin{frame}{Insertion Sort on Linked Lists}
+  % Sentinel + Nearly-Sorted Fast Path
+\begin{tikzpicture}[
+  label of pointer/.append style={rotate=20},
+  node of list/.append style={inner sep=2pt, minimum width=6.8mm}
+]
+
+% --- Sentinel + List ---
+% \LinkPtr[][above]{pDummy}
+\coordinate (ptr) at (0,0);%
+\onslide<2->{
+  \LinkedNode[dumPtr][false]{?}
+  \node[label of pointer, above = of ele, rotate=-20] (dummy) {dummy};
+}
+
+\alt<1>{\LinkedNode[6ptr][false]{6}}{\LinkedNode[6ptr]{6}}
+
+\begin{scope}[label of pointer/.append style={rotate=-20}]
+  \TailPtr<22mm>{pHead}
+\end{scope}
+
+\alt<-9>{\LinkedNode[65ptr]{65}}{\LinkedNode[65ptr][false]{65}}
+
+\alt<-5>{\LinkedNode{7}}{
+  \LinkedNode[ptr][false]{7}
+  \onslide<9->{\draw[link] (ptr) to[bend right=50] (el65);}
+}
+
+\only<10->{\draw[link] (6ptr) to[bend left=50] (ele);}
+
+\alt<-8>{\LinkedNode{85}}{\LinkedNode[85ptr][false]{85}}
+
+
+\onslide<6->{\draw[link] (65ptr) to[bend left=50] (ele);}
+
+\LinkedNode{12}
+\LinkedNode{24}
+
+% -------------------------------------------------
+\only<3->{
+  \alt<3>{\TailPtr[el65][el65]{pCurr}}{
+    \alt<-10>{
+      \TailPtr[el7][el7]{pCurr}
+    }{
+      \TailPtr[el85][el85]{pCurr}
+    }
+  }
+  \alt<-4>{\TailPtr[el6][el6]{pLast}}{\TailPtr[el65][el65]{pLast}}
+  
+}
+
+
+\onslide<7>{
+  \TailPtr[el?][el?]{pScan}
+}
+\only<8-11>{
+  \TailPtr[el6][el6]{pScan}
+}
+
+\onslide<12>{}
+\end{tikzpicture}
+\end{frame}
+
+\section{Lower Bound}
+
+\begin{frame}{Sorting Algorithm Comparison}
+\center{}
+{\small Average Case Behavior of the Bubble Sort, Selection Sort, and Insertion Sort Algorithms for a List of Length \(n\).}
+
+{\small%
+\begin{tabularx}{\textwidth}{Xcc}
+\toprule{}
+  \textbf{Algorithm} & \textbf{Comparisons} & \textbf{Swaps}\\
+\midrule{}
+Bubble Sort & \(\frac{n(n-1)}{2} = O(n^2)\) & \(\frac{n(n-1)}{4} = O(n^2)\) \\[1.3ex]
+Selection Sort & \(\frac{n(n-1)}{2} = O(n^2)\) & \(3(n - 1) = O(n)\) \\[1.3ex]
+Insertion Sort (Array Based) & \(\frac{1}{4}n^2 + O(n) = O(n^2)\) & \(\frac{1}{4}n^2 + O(n) = O(n^2)\) \\[1.3ex]
+Insertion Sort (Linked-List Based) & \(\frac{1}{4}n^2 + O(n) = O(n^2)\) & \(n - 1 = O(n)\) \\
+\bottomrule{}
+\end{tabularx}%
+}
+\end{frame}
+
+\begin{frame}{\large{Lower Bound on Comparison-Based Sort Algorithms}}
+\center\Large
+Can we do better than \(O(n^2)\) for sorting?\vspace{1em}
+
+What is the best we can do?
+\end{frame}
+
+\section*{Lab 10}
+\begin{frame}{\large{Lab 10: Selection Sort, Bubble Sort, and Binary Search}}
+\centering\Large
+  Let's take a look at Lab 10.
+\end{frame}
+\end{document}
