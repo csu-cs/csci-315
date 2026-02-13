@@ -103,7 +103,7 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 |  4A  | [Empirical Analysis](/lectures/07-empirical-analysis) and [Analytical Analysis](/lectures/07-analytical-analysis) | Lab 07                |
 |  4B  | [Linked Lists](/lectures/08-linked-lists) | Lab 08                |
 |  5A  | [Debugging](/lectures/09-debugging) and [Doubly-Linked Lists, & the STL](/lectures/09-doubly-linked-lists) | Project 1 & Lab 09    |
-|  5B  | [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort) | Lab 10                |
+|  5B  | [Search](/lectures/10-search) and [Quadratic Sorting](/lectures/10-quadratic-sort) | Lab 10                |
 |  6A  | [Quick Sort](/lectures/11-quick-sort) and [Merge Sort](/lectures/11-merge-sort) | Lab 11                |
 |  6B  | [Stacks](/lectures/12-stacks), [Queues](/lectures/12-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |
 |  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) | Project 2 & Lab 13    |

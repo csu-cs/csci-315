@@ -25,9 +25,10 @@
 - [Doubly-Linked Lists](/lectures/09-doubly-linked-lists)
 
 ## Searching and Sorting
-- [Search & Quadratic Sorting](/lectures/10-search-quadratic-sort)
-- [Quick Sorting](/lectures/11-quick-sort)
-- [Merge Sorting](/lectures/11-merge-sort)
+- [Search](/lectures/10-search)
+- [Selection, Bubble, and Insertion Sort](/lectures/10-quadratic-sort)
+- [Quick Sort Algorithm](/lectures/11-quick-sort)
+- [Merge Sort Algorithm](/lectures/11-merge-sort)
 
 ## More Data Structures
 - [Stacks](/lectures/12-stacks)
