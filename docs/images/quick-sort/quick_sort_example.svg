@@ -83,7 +83,7 @@ html.dark .themed-braces {
 <path d='M326.8594 110.6133H355.2074V87.9336H326.8594Z' fill='#5eb6cd'/>
 <text class='f1' x='-45.831641' y='99.273765' transform='matrix(1 0 0 1 379.6926 4.4512)'>45</text>
 <path d='M-40.45312 66.5977C-39.25781 64.2031-36.46875 62.6094-32.4805 62.6094H148.8084C152.7934 62.6094 155.5864 61.0156 156.7814 58.625C157.9764 61.0156 160.7654 62.6094 164.7504 62.6094H346.0434C350.0274 62.6094 352.8164 64.2031 354.0114 66.5977' class='themed-stroke' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
-<text class='f1' x='-45.831641' y='99.273765' transform='matrix(1 0 0 1 155.9856 -42.4239)'>Unsorted<tspan x='18.72624'>List</tspan></text>
+<text class='f1 themed-fill' x='-45.831641' y='99.273765' transform='matrix(1 0 0 1 155.9856 -42.4239)'>Unsorted List</text>
 <text class='f1 themed-fill' x='-45.831641' y='99.273765' transform='matrix(1 0 0 1 40.10976 33.1132)'>index</text>
 <path d='M10.2266 122.75L7.2539 115.2969' class='themed-stroke' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
 <path class='themed-fill' d='M6.074218 112.335454L5.593745 118.015145L7.253906 115.296394L10.332033 116.128425'/>
