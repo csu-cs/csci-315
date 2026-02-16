@@ -10,6 +10,7 @@ Chapter 18
 <script setup>
 import mergeSort1Diagram from '/images/merge-sort/merge_sort_example1.svg'
 import listDivideDiagram from '/images/merge-sort/list_divide.svg'
+import listMergeDiagram from '/images/merge-sort/list_merge_example.svg'
 </script>
 
 ## Introduction
@@ -69,7 +70,11 @@ Sorted sub-lists are merged into one sorted list.
 
 - Adjust pointers of nodes with the smaller datum.
 
-*See the lecture video above for merging two sorted link list into one.*
+<ProgressiveDiagram :src="listMergeDiagram">
+
+Merging two sorted link list into one (see lecture video for explanation).
+
+</ProgressiveDiagram>
 
 ## Analysis: Merge Sort
 
