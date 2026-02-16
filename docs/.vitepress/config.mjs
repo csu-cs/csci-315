@@ -3,7 +3,7 @@ import imageFigures from 'markdown-it-image-figures';
 import tableCaptions from 'markdown-it-table-captions';
 import markdownItAttrs from 'markdown-it-attrs';
 
-const customElements = ['mjx-container'];
+const customElements = new Set(['mjx-container']);
 
 
 export default {
@@ -80,7 +80,7 @@ export default {
 	vue: {
 		template: {
 			compilerOptions: {
-				isCustomElement: (tag) => customElements.includes(tag),
+				isCustomElement: (tag) => customElements.has(tag),
 			},
 		},
 	},
