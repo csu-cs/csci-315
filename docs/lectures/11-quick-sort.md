@@ -113,9 +113,11 @@ Choose an element to split the list ***pivot element***.
 
 ![After First Quick-Sort Partition](/images/quick-sort/first_partition-dark.svg "After First Quick-Sort Partition"){.dark-only}
 
-See quick-sort example animation below, which goes through one iteration.
+Step through the animated example below. For more explanation, see the lecture video walkthrough of this example (and textbook).
 
-<ProgressiveDiagram :src="quickSortDiagram" />
+<ProgressiveDiagram :src="quickSortDiagram">
+Example iteration of the Quick-Sort algorithm.
+</ProgressiveDiagram>
 
 ## Analysis of Quick Sort
 

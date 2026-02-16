@@ -165,7 +165,7 @@ watch(step, updateVisibility)
 </script>
 
 <template>
-  <div class="diagram">
+  <figure class="diagram">
     <div ref="svgContainer"></div>
 
     <div class="controls">
@@ -187,7 +187,10 @@ watch(step, updateVisibility)
         @click="step = n"
       ></span>
     </div>
-  </div>
+    <figcaption>
+      <slot />
+    </figcaption>
+  </figure>
 </template>
 
 <style scoped>
@@ -240,7 +243,7 @@ button:disabled {
 }
 /* Step dots: shrink width if too many, always fit container */
 .step-dots {
-  margin-top: 0.5rem;
+  margin: 0.25rem 0;
   display: flex;
   justify-content: center;
   gap: var(--dot-gap, 0.5rem);
@@ -260,6 +263,15 @@ button:disabled {
 .dot.active {
   background: var(--vp-c-brand);
 }
+
+figcaption :deep(p) {
+  margin: 0;
+}
+
+figcaption :deep(p):first-child {
+  display: inline;
+}
+
 
 /* Responsive: shrink dots further on small screens */
 @media (max-width: 600px) {

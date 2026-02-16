@@ -57,9 +57,9 @@ figure figcaption {
 
 figure figcaption:before {
 	color: var(--vp-c-brand);
-	content: 'Fig. ' counter(figures) ' ';
+	content: 'Fig. ' counter(figures);
+	margin-right: 0.5rem;
 }
-
 
 html.dark .light-only {
   display: none !important;

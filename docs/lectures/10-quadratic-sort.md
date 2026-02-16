@@ -37,9 +37,9 @@ import insertionSortDiagram from '/images/search-quadratic-sort/insertion_sort_e
 
 - Can also be applied to linked lists.
 
-Example Selection Sort:
-
-<ProgressiveDiagram :src="selectionSortDiagram" />
+<ProgressiveDiagram :src="selectionSortDiagram">
+Example Selection Sort
+</ProgressiveDiagram>
 
 ### Analysis: Selection Sort
 
@@ -67,9 +67,9 @@ Example Selection Sort:
 
 - If `list[index]` is greater than `list[index + 1]`, then swap them.
 
-Example Bubble Sort:
-
-<ProgressiveDiagram :src="bubbleSortDiagram" />
+<ProgressiveDiagram :src="bubbleSortDiagram">
+Example Bubble Sort
+</ProgressiveDiagram>
 
 ### Performance Analysis
 
@@ -92,10 +92,12 @@ Example Bubble Sort:
 The ***Insertion Sort Algorithm*** sorts the list by moving each element
 to its proper place in the sorted portion of the list.
 
+<ProgressiveDiagram :src="insertionSortDiagram">
+
 Example Insertion Sort:  
 (This diagram shows just the first few steps.)
 
-<ProgressiveDiagram :src="insertionSortDiagram" />
+</ProgressiveDiagram>
 
 ### Implementation for Arrays
 

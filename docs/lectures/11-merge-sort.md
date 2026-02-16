@@ -43,9 +43,9 @@ import listDivideDiagram from '/images/merge-sort/list_divide.svg'
 
   4.  Merge the first sub-list and the second sub-list.
 
+<ProgressiveDiagram :src="mergeSort1Diagram">
 Example of how values will divided repeatedly into smaller lists and then merged back together in sorted order.
-
-<ProgressiveDiagram :src="mergeSort1Diagram" />
+</ProgressiveDiagram>
 
 
 ### Merging Two Sorted Arrays
@@ -54,7 +54,12 @@ Example of how values will divided repeatedly into smaller lists and then merged
 
 ### Find Middle and Dividing a Linked List
 
-<ProgressiveDiagram :src="listDivideDiagram" />
+<ProgressiveDiagram :src="listDivideDiagram">
+
+To find the middle and subdivide a linked list, use two iterators. Let `pMid` move once for every two moves of `pCurr`.
+
+</ProgressiveDiagram>
+
 
 ### Merging Two Linked Lists
 

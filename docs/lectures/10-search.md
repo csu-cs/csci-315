@@ -154,9 +154,11 @@ unsigned int sequentialSearchRecursive(const Type array[],
 
   4.  Repeat until found.
 
+<ProgressiveDiagram :src="binarySearchDiagram">
+
 Find the location of `75` in this sorted array.
 
-<ProgressiveDiagram :src="binarySearchDiagram" />
+</ProgressiveDiagram>
 
 ### The Performance of the Binary Search on Arrays
 
