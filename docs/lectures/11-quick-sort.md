@@ -7,6 +7,10 @@ Chapter 18
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/SdXttsJgJm0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
+<script setup>
+import quickSortDiagram from '/images/quick-sort/quick_sort_example.svg'
+</script>
+
 ## Best Possible Performance
 
 ### Lower Bound on Comparison-Based Sorting
@@ -109,7 +113,9 @@ Choose an element to split the list ***pivot element***.
 
 ![After First Quick-Sort Partition](/images/quick-sort/first_partition-dark.svg "After First Quick-Sort Partition"){.dark-only}
 
-*See the lecture video above for the full selection-sort example.*
+See quick-sort example animation below, which goes through one iteration.
+
+<ProgressiveDiagram :src="quickSortDiagram" />
 
 ## Analysis of Quick Sort
 
