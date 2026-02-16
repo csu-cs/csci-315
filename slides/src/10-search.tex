@@ -131,7 +131,7 @@ After the next two lectures and labs, you will be able to:
 
 
 \begin{frame}{Binary Search}
-\center
+\center%
 Find the location of \texttt{75} in this sorted array.
 
 \begin{tikzpicture}
@@ -295,7 +295,7 @@ Find the location of \texttt{75} in this sorted array.
 {\rmfamily%
 \begin{tabular}{rrr}
 \toprule{}
-  \(n\) & \(g(n) = n^2\) & \(f(n) = n^2 + 4n + 20\)\\
+  \(n\) & \(g(n) = n^2\) & \(f(n) = n^2 + 4n + 20\) \\
 \midrule{}
      10  &            100 &            160\\
      50  &          2,500 &          2,720\\
@@ -313,14 +313,14 @@ Find the location of \texttt{75} in this sorted array.
 \small
 \begin{tabularx}{1\textwidth}{l X}
   \toprule{}
-  \textbf{Function \(g(n)\)} & \textbf{Growth rate of \(f(n)\)}\\
+  \textbf{Function \(\boldsymbol{g(n)}\)} & \textbf{Growth rate of \(\boldsymbol{f(n)}\)}\\
   \midrule%
   \(g(n) = 1\)        & \emph{Constant} (is independent of the problem's size).\\
   \(g(n) = \log_2n\)  & \emph{Logarithmic} (increases increases slowly
                   as the problem size increases).\\
   \(g(n) = n\)        & \emph{Linear} (increases directly with the size
                   of the problem).\\
-  \(g(n) = n \log_2n\) & \(n\log\) (increases more rapidly than a linear algorithm).\\
+  \(g(n) = n \log_2n\) & \(\boldsymbol{n\log{n}}\) (increases more rapidly than a linear algorithm).\\
   \(g(n) = n^2\)      & \emph{Quadratic} (increases rapidly with the
                   size of the problem).\\
   \(g(n) = n^3\)      & \emph{Cubic} (increases more rapidly with the
