@@ -4,7 +4,7 @@ Merge Sort
 Chapter 18
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/zyS-SQYKA_g?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/pHzrV4LkpG4?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -148,6 +148,10 @@ Merging two sorted link list into one (see lecture video for explanation).
   - *Merge Sort*: the number of key comparisons is $O(n\log_2n)$ on
     average and in the worst case.
 
-## Lab 11: Insertion, Quick, and Merge Sort
+## Lab 11 and Midterm Exam Preparation
 
-Let’s take a look at Lab 11.
+After studying this material, complete Lab 11.
+
+Also, review the [Midterm Study Guide](/guides/midterm-study-guide) and
+complete the practice problem so you know you understand how to prepare.
+Ask your instructor any questions you may have well before the exam.

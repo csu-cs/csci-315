@@ -4,7 +4,7 @@ Quick Sort
 Chapter 18
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/SdXttsJgJm0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/xGV5Z70IYeA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -79,7 +79,7 @@ discussed, there are algorithms that, on average, are $O(n\log_2n)$.
 
 ## Introduction
 
-***Quick sort***: uses the divide-and-conquer technique.
+***Quick Sort***: uses the *divide-and-conquer* technique.
 
 - The list is *partitioned* into two sub-lists.
 
@@ -150,14 +150,14 @@ behaves like a ***Selection Sort***.
 
 - Use a different algorithm for small sub-lists.
 
-  - Insertion sort is best for lists of 10 or fewer elements.
+  - *Insertion Sort* is best for lists of 10 or fewer elements.
 
   - The overhead of the recursive calls is greater than the cost of the
     insertion sort.
 
 - Use fancy partitioning techniques.
 
-  - Hoare's partitioning: Traverse the list from both sizes, swapping
+  - *Hoare's partitioning*: Traverse the list from both sides, swapping
     smaller elements to the left and larger elements to the right.
 
-  - Dual-Pivot partitioning: Partitions the list into three sub-lists.
+  - *Dual-Pivot partitioning*: Partitions the list into three sub-lists.

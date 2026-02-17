@@ -5,7 +5,7 @@
 \usepackage{booktabs}
 
 \title{\Huge{} Quick Sort}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 18}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 18}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -58,17 +58,18 @@ What is the best we can do?
 
 \begin{frame}{Comparison Tree}
 \large
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item
   \emph{Comparison tree}: graph used to trace the execution of a comparison-based algorithm.
   \begin{itemize}
   \item
-    Let $L$ be a list of $n$ distinct elements, where \(n > 0\) \\
-    For any $j$ and $k$, where \( 0 \le j < n \),  \( 0 \le k < n \),\\
+    Let \(L\) be a list of \(n\) distinct elements, where \(n > 0\) \\
+    For any \(j\) and \(k\), where \( 0 \le j < n \),  \( 0 \le k < n \),\\
     either \(L_{j} \le L_{k}\)  or  \(L_{j} > L_{k}\).
   \end{itemize}
 \item
-  \emph{Binary tree}: each comparison has two outcomes.
+  The comparison tree is a type of \emph{Binary Tree} because each comparison
+  has two possible outcomes.
 \end{itemize}
 \end{frame}
 
@@ -81,9 +82,9 @@ What is the best we can do?
   \emph{Node}: represents a comparison
   \begin{itemize}
   \item
-    Labeled as $j:k$ (comparison of $L_{j}$ with $L_{k}$)
+    Labeled as \(j:k\) (comparison of \(L_{j}\) with \(L_{k}\))
   \item
-    If $L_{j} < L_{k}$, follow the left branch; otherwise, follow the right branch.
+    If \(L_{j} < L_{k}\), follow the left branch; otherwise, follow the right branch.
   \end{itemize}
 \item
   \emph{Leaf}: represents the final ordering of the nodes
@@ -103,7 +104,7 @@ What is the best we can do?
     color=CSUblue,
     fill=white,
     fit=tight,
-    edge=->,
+    edge=-stealth,
     edge=very thick
   }
     [A
@@ -135,60 +136,64 @@ for tree = {
   l sep=2.6cm,
   s sep+=3mm,
   inner sep=3pt,
-  edge=->,
+  edge=-stealth,
   edge=very thick,
   grow=east,
   for leaves={rectangle, fill=CSUgold, inner sep=4pt},
   font=\small
 }
-[{$L_0:L_1$} ,name=root,
-    [{$L_1:L_2$}, edge label = {node [midway,below,sloped] {$L_0 \le L_1$} }
-      [{$\mathbf{1, 2, 3}$}, edge label = {node [midway,below,sloped] {$L_1 \le L_2$} }]
-      [{$L_0:L_2$}, edge label = {node [midway,above,sloped] {$L_1 > L_2$} }
-        [{$\mathbf{1, 3, 2}$}, edge label = {node [midway,below,sloped] {$L_0 \le L_2$} }]
-        [{$\mathbf{3, 1, 2}$}, edge label = {node [midway,above,sloped] {$L_0 > L_2$} }]
+[{\(L_0:L_1\)}, name=root,
+    [{\(L_1:L_2\)}, edge label = {node [midway,below,sloped] {\(L_0 \le L_1\)} }
+      [{\(\mathbf{0, 1, 2}\)}, edge label = {node [midway,below,sloped] {\(L_1 \le L_2\)} }]
+      [{\(L_0:L_2\)}, edge label = {node [midway,above,sloped] {\(L_1 > L_2\)} }
+        [{\(\mathbf{0, 2, 1}\)}, edge label = {node [midway,below,sloped] {\(L_0 \le L_2\)} }]
+        [{\(\mathbf{2, 0, 1}\)}, edge label = {node [midway,above,sloped] {\(L_0 > L_2\)} }]
       ]
     ]
-    [{$L_1:L_2$}, edge label = {node [midway,above,sloped] {$L_0 > L_1$} }
-      [{$L_0:L_2$}, edge label = {node [midway,below,sloped] {$L_1 \le L_2$} }
-        [{$\mathbf{2, 1, 3}$}, edge label = {node [midway,below,sloped] {$L_0 \le L_2$} }]
-        [{$\mathbf{2, 3, 1}$}, edge label = {node [midway,above,sloped] {$L_0 > L_2$} }]
+    [{\(L_1:L_2\)}, edge label = {node [midway,above,sloped] {\(L_0 > L_1\)} }
+      [{\(L_0:L_2\)}, edge label = {node [midway,below,sloped] {\(L_1 \le L_2\)} }
+        [{\(\mathbf{1, 0, 2}\)}, edge label = {node [midway,below,sloped] {\(L_0 \le L_2\)} }]
+        [{\(\mathbf{1, 2, 0}\)}, edge label = {node [midway,above,sloped] {\(L_0 > L_2\)} }]
       ]
-      [{$\mathbf{3, 2, 1}$}, edge label = {node [midway,above,sloped] {$L_1 > L_2$} }]
+      [{\(\mathbf{2, 1, 0}\)}, edge label = {node [midway,above,sloped] {\(L_1 > L_2\)} }]
     ]
 ]
 \end{forest}
 \end{frame}
 
 \begin{frame}{Comparison Tree}
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item<+->
-  A unique permutation of the elements of $L$ is associated with each root-to-leaf path, because the sort algorithm only compares and moves the data.
+  A unique permutation of the elements of \(L\) is\\
+  associated with each root-to-leaf path, because\\ the sort algorithm only compares and moves the data.
 \item<+->
-  For a list of $n$ elements, $n > 0$, there are $n!$ different permutations.
+  For a list of \(n\) elements, \(n > 0\), there are \(n!\) different permutations.
   \begin{itemize}
   \item
-    Any of these might be the correct ordering of $L$.
+    Any of these might be the correct ordering of \(L\).
   \end{itemize}
 \item<+->
-  Thus, the tree must have \emph{at least} $n!$ leaves.
+  Thus, the tree must have \emph{at least} \(n!\) leaves.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Lower Bound on Comparison-Based Sorting}
 \large
-Theorem: Any algorithm that sorts a $n$ elements\\ (by comparison of only the keys) makes \emph{at least} $O(n\log_2n)$ key comparisons in its worst case.\vspace{1em}
+Theorem: Any algorithm that sorts a \(n\) \\
+elements (by comparison of only the keys) \\
+makes \emph{at least} \(O(n\log_2n)\) key comparisons\\
+in its worst case.
 
 \pause{}
-We won't prove this theorem, but unlike the previous algorithms discussed, there are algorithms that, on average, are $O(n\log_2n)$.
+We won't prove this theorem, but unlike the previous algorithms discussed, there are algorithms that, on average, are \(O(n\log_2n)\).
 \end{frame}
 
 \section{Quick Sort}
 
 \begin{frame}{Introduction to Quick Sort}
-\emph{Quick sort}: uses the divide-and-conquer technique.
+\emph{Quick Sort}: uses the \textit{divide-and-conquer} technique.
 
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item
   The list is \textit{partitioned} into two sub-lists.
 \item
@@ -203,11 +208,11 @@ We won't prove this theorem, but unlike the previous algorithms discussed, there
 
 \begin{frame}{Pivot Element}
 Choose an element to split the list \emph{pivot element}.
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item
-  Move elements less than the pivot value to the lower sub-list.
+  Move elements less than the pivot value to the\\ \textit{lower} sub-list.
 \item
-  Move elements greater than the pivot value to the upper sub-list.
+  Move elements greater than the pivot value to the \textit{upper} sub-list.
 \item
   The pivot can be chosen in several ways.\\
   Ideally, the pivot will divide the list into two sub-lists of near-equal size.
@@ -944,12 +949,12 @@ Choose an element to split the list \emph{pivot element}.
 \toprule
 \textbf{Algorithm}        & \textbf{Comparisons} & \textbf{Swaps} \\
 \midrule
-  Bubble Sort    & $O(n^2)$ & $O(n^2)$ \\
-  Selection Sort & $O(n^2)$ & $O(n)$ \\
-  Array-Based Insertion Sort & $O(n^2)$ & $O(n^2)$ \\
-  Linked-List Insertion Sort & $O(n^2)$ & $O(n)$ \\
-  Quick Sort: Average Case& \onslide<2->{$O(n \log_2{n})$} &  \onslide<2->{$O(n \log_2{n})$} \\
-  Quick Sort: Worst Case &  \onslide<3->{$O(n^2)$} &  \onslide<3->{$O(n^2)$} \\
+  Bubble Sort    & \(O(n^2)\) & \(O(n^2)\) \\
+  Selection Sort & \(O(n^2)\) & \(O(n)\) \\
+  Array-Based Insertion Sort & \(O(n^2)\) & \(O(n^2)\) \\
+  Linked-List Insertion Sort & \(O(n^2)\) & \(O(n)\) \\
+  Quick Sort: Average Case& \onslide<2->{\(O(n \log_2{n})\)} &  \onslide<2->{\(O(n \log_2{n})\)} \\
+  Quick Sort: Worst Case &  \onslide<3->{\(O(n^2)\)} &  \onslide<3->{\(O(n^2)\)} \\
 \bottomrule
 \end{tabular}
 
@@ -957,8 +962,8 @@ Choose an element to split the list \emph{pivot element}.
   \toprule
   \textbf{Quick Sort}        & \textbf{Comparisons } & \textbf{Swaps} \\
   \midrule
-    Average Case & \onslide<2->{$(1.39) n \log_2{n}$} & \onslide<2->{$(0.69) n \log_2{n}$} \\
-    Worst Case   &  \onslide<3->{$\frac{n^2 - n}{2}$} & \onslide<3->{$\frac{n^2 - 3n}{2}$} \\
+    Average Case & \onslide<2->{\((1.39) n \log_2{n}\)} & \onslide<2->{\((0.69) n \log_2{n}\)} \\
+    Worst Case   &  \onslide<3->{\(\frac{n^2 - n}{2}\)} & \onslide<3->{\(\frac{n^2 - 3n}{2}\)} \\
   \bottomrule
 \end{tabular}
 
@@ -989,25 +994,25 @@ Choose an element to split the list \emph{pivot element}.
 \end{frame}
 
 \begin{frame}{Quick Sort Optimizations}
-\begin{itemize}
-  \item Choose a better pivot.
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item<+-> Choose a better pivot.
   \begin{itemize}
     \item Median of three: first, middle, last elements.
     \item Randomly select a pivot.
   \end{itemize}
-  \item Use a different algorithm for small sub-lists.
+  \item<+-> Use a different algorithm for small sub-lists.
   \begin{itemize}
     \item
-      Insertion sort is best for lists of 10 or fewer elements.
+      \textit{Insertion Sort} is best for lists of 10 or fewer elements.
     \item
       The overhead of the recursive calls is greater than the cost of the insertion sort.
   \end{itemize}
-  \item Use fancy partitioning techniques.
+  \item<+-> Use fancy partitioning techniques.
   \begin{itemize}
     \item
-      Hoare's partitioning: Traverse the list from both sizes, swapping smaller elements to the left and larger elements to the right.
+      \textit{Hoare's partitioning}: Traverse the list from both sides, swapping smaller elements to the left and larger elements to the right.
     \item
-      Dual-Pivot partitioning: Partitions the list into three sub-lists.
+      \textit{Dual-Pivot partitioning}: Partitions the list into three sub-lists.
   \end{itemize}
 \end{itemize}
 \end{frame}

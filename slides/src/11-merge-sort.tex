@@ -5,7 +5,7 @@
 \usepackage{booktabs}
 
 \title{\Huge{} Merge Sort}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 18}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 18}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -58,8 +58,8 @@
 % Adapted from the B-Tree slides for Merge Sort diagram
 \NewDocumentCommand{\BTreeNode}{ m }{%
 	\begingroup
-	\foreach\element [count=\i from 1] in {#1} {%
-		\ifnum\i>1%After the first element
+	\foreach\element[count=\i from 1] in {#1} {%
+		\ifnum\i>1% After the first element
       {\color{white}\rule[-0.4em]{1.25pt}{1.5em}}%
 		\fi%
       \makebox[1.45em][c]{\vspace{1.25em}\element\vspace{1.25em}}%
@@ -92,12 +92,12 @@
 
 \section{Merge Sort}
 \begin{frame}{Merge Sort}
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item
   \emph{Quick Sort}:\\
-    $O(n\log_2n)$ average case; $O(n^2)$ worst case
+    \(O(n\log_2n)\) average case; \(O(n^2)\) worst case
 \item
-  \emph{Merge Sort}: always $O(n\log_2n)$
+  \emph{Merge Sort}: always \(O(n\log_2n)\)
 
 \item
   Unlike Quick Sort, it divides the list into two sub-lists of nearly equal size.
@@ -185,7 +185,7 @@
 
 \begin{frame}{Merge Sort Algorithm}
   \large
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item
   Uses recursion.
 \item
@@ -471,13 +471,13 @@ Sorted sub-lists are merged into one sorted list.
 \begin{frame}{Analysis: Merge Sort}
 \begin{itemize}
 \item
-  Suppose that $L$ is a list of $n$ elements, with $n > 0$.
+  Suppose that \(L\) is a list of \(n\) elements, with \(n > 0\).
 \item
-  Suppose that $n$ is a power of $2$; that is, $n = 2^m$ for \\some integer $m > 0$, so that we can divide the list \\into two sub-lists, each of size:\\
+  Suppose that \(n\) is a power of \(2\); that is, \(n = 2^m\) for \\some integer \(m > 0\), so that we can divide the list \\into two sub-lists, each of size:\\
   \begin{equation*}
     \frac{n}{2}=\frac{2^m}{2}=2^{m-1}
   \end{equation*}
-  $m$ will be the number of recursion levels.
+  \(m\) will be the number of recursion levels.
 \end{itemize}
 \end{frame}
 
@@ -531,7 +531,7 @@ Sorted sub-lists are merged into one sorted list.
 \end{frame}
 
 \begin{frame}{Analysis: Merge Sort}
-\begin{itemize}[<+->]
+\begin{itemize}[<+->]\setlength\itemsep{0.5em}
 \item
   To merge two sorted lists of size \(s\) and \(t\), the \\maximum number of comparisons is \(s + t - 1\).
 \item
@@ -576,13 +576,13 @@ Sorted sub-lists are merged into one sorted list.
 \begin{frame}{Summary}
 \begin{itemize}[<+->]
 \item
-  By \emph{asymptotic}, we mean the rate of growth of function $f(n)$ as $n$ grows towards infinity.
+  By \emph{asymptotic}, we mean the rate of growth of function \(f(n)\) as \(n\) grows towards infinity.
 \item
-  On average, a sequential search searches half the list and makes $O(n)$ comparisons, which is inefficient.
+  On average, a sequential search searches half the list and makes \(O(n)\) comparisons, which is inefficient.
 \item
   The binary-search algorithm is the optimal worst-case algorithm for solving search problems by using the \textit{comparison method}.
 \item
-  A binary search requires the list to be sorted but takes only $2\log_2n - 3$ or O$(\log_2n)$ key comparisons.
+  A binary search requires the list to be sorted but takes only \(2\log_2n - 3\) or O\((\log_2n)\) key comparisons.
 \end{itemize}
 \end{frame}
 
@@ -590,18 +590,18 @@ Sorted sub-lists are merged into one sorted list.
 \begin{frame}{Summary}
 \begin{itemize}[<+->]
 \item
-  Bubble Sort: $O(n^2)$ key comparisons and item assignments.
+  Bubble Sort: \(O(n^2)\) key comparisons and item assignments.
 \item
-  Selection Sort: $O(n^2)$ key comparisons and $O(n)$ item assignments.
+  Selection Sort: \(O(n^2)\) key comparisons and \(O(n)\) item assignments.
 \item
-  Insertion Sort: $O(n^2)$ key comparisons and item assignments.
+  Insertion Sort: \(O(n^2)\) key comparisons and item assignments.
 \item
   Both the Quick Sort and Merge Sort algorithms partition a list to sort it.
   \begin{itemize}
     \item
-      Quick Sort: average number of key comparisons is $O(n\log_2n)$; worst case number of key comparisons is $O(n^2)$
+      Quick Sort: average number of key comparisons is \(O(n\log_2n)\); worst case number of key comparisons is \(O(n^2)\)
     \item
-      Merge Sort: the number of key comparisons is $O(n\log_2n)$ on average and in the worst case.
+      Merge Sort: the number of key comparisons is \(O(n\log_2n)\) on average and in the worst case.
   \end{itemize}
 \end{itemize}
 \end{frame}
