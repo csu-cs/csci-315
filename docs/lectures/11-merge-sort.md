@@ -9,6 +9,7 @@ Chapter 18
 
 <script setup>
 import mergeSort1Diagram from '/images/merge-sort/merge_sort_example1.svg'
+import arrayMergeDiagram from '/images/merge-sort/array_merge_example.svg'
 import listDivideDiagram from '/images/merge-sort/list_divide.svg'
 import listMergeDiagram from '/images/merge-sort/list_merge_example.svg'
 </script>
@@ -30,7 +31,7 @@ import listMergeDiagram from '/images/merge-sort/list_merge_example.svg'
 
   - Combines the sub-lists into one sorted list.
 
-## Merge Sort Algorithm
+### Algorithm
 
 - Uses recursion.
 
@@ -49,11 +50,13 @@ Example of how values will divided repeatedly into smaller lists and then merged
 </ProgressiveDiagram>
 
 
-### Merging Two Sorted Arrays
+## Merging Two Sorted Arrays
 
-*See the lecture video above for the example of merging two arrays.*
+<ProgressiveDiagram :src="arrayMergeDiagram">
+Merging two arrays into a new array (see lecture video for explanation).
+</ProgressiveDiagram>
 
-### Find Middle and Dividing a Linked List
+## Find Middle and Dividing a Linked List
 
 <ProgressiveDiagram :src="listDivideDiagram">
 
@@ -62,7 +65,7 @@ To find the middle and subdivide a linked list, use two iterators. Let `pMid` mo
 </ProgressiveDiagram>
 
 
-### Merging Two Linked Lists
+## Merging Two Sorted Linked Lists
 
 Sorted sub-lists are merged into one sorted list.
 
@@ -113,8 +116,7 @@ Merging two sorted link list into one (see lecture video for explanation).
   $$n\log_2n - 1.25n = O\left(n\log_2n\right)$$
 
 
-
-## Summary
+## Summary of Sorting Algorithms
 
 -  [Check out this Sorting Algorithms
    Animation.](https://www.toptal.com/developers/sorting-algorithms)
@@ -131,19 +133,19 @@ Merging two sorted link list into one (see lecture video for explanation).
 - A binary search requires the list to be sorted but takes only
   $2\log_2n - 3$ or O$(\log_2n)$ key comparisons.
 
-- Bubble Sort: $O(n^2)$ key comparisons and item assignments.
+- *Bubble Sort*: $O(n^2)$ key comparisons and item assignments.
 
-- Selection Sort: $O(n^2)$ key comparisons and $O(n)$ item assignments.
+- *Selection Sort*: $O(n^2)$ key comparisons and $O(n)$ item assignments.
 
-- Insertion Sort: $O(n^2)$ key comparisons and item assignments.
+- *Insertion Sort*: $O(n^2)$ key comparisons and item assignments.
 
-- Both the Quick Sort and Merge Sort algorithms partition a list to sort
+- Both the *Quick Sort* and *Merge Sort* algorithms partition a list to sort
   it.
 
-  - Quick Sort: average number of key comparisons is $O(n\log_2n)$;
+  - *Quick Sort*: average number of key comparisons is $O(n\log_2n)$;
     worst case number of key comparisons is $O(n^2)$
 
-  - Merge Sort: the number of key comparisons is $O(n\log_2n)$ on
+  - *Merge Sort*: the number of key comparisons is $O(n\log_2n)$ on
     average and in the worst case.
 
 ## Lab 11: Insertion, Quick, and Merge Sort
