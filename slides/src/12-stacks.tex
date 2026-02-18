@@ -66,7 +66,7 @@
 \setlength{\parskip}{0.5em}
 
 \title{\Huge{} Stacks}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 17}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 17}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -156,23 +156,35 @@ In this lecture, you will:
 \begin{frame}{Stack Example}
 \begin{columns}[b]
   \column{0.66\textwidth}
-    \onslide<1>{\begin{tikzpicture}
-      \Stack[A]{1}
-    \end{tikzpicture}}\hspace{5mm}
-    \onslide<-2>{\begin{tikzpicture}
-      \Stack[B]{1}
-    \end{tikzpicture}}
+    \onslide<1>{%
+      \begin{tikzpicture}
+        \Stack[A]{1}
+      \end{tikzpicture}%
+    }
+    \hspace{5mm}
+    \onslide<-2>{%
+      \begin{tikzpicture}
+        \Stack[B]{1}
+      \end{tikzpicture}%
+    }
 
-    \onslide<-3>{\hspace{1cm}\begin{tikzpicture}
-      \Stack[C]{1}
-    \end{tikzpicture}}\hspace{5mm}
-    \onslide<-5>{\begin{tikzpicture}
-      \Stack[D]{1}
-    \end{tikzpicture}}
+    \onslide<-3>{%
+      \hspace{1cm}\begin{tikzpicture}
+        \Stack[C]{1}
+      \end{tikzpicture}%
+    }%
+    \hspace{5mm}
+    \onslide<-5>{%
+      \begin{tikzpicture}
+        \Stack[D]{1}
+      \end{tikzpicture}%
+    }
 
-    \onslide<-6>{\begin{tikzpicture}
-      \Stack[E]{1}
-    \end{tikzpicture}}
+    \onslide<-6>{%
+      \begin{tikzpicture}
+        \Stack[E]{1}
+      \end{tikzpicture}%
+    }
 
   \column{0.33\textwidth}
     \centering
@@ -629,7 +641,7 @@ In this lecture, you will:
 \item
   Operator is written between the operands.
 \item
-  Example: $a + b$.
+  Example: \(a + b\).
 \item
   Evaluates from left to right.
 \item
@@ -647,7 +659,7 @@ In this lecture, you will:
 \item
   Parentheses can be omitted.
 \item
-  Example: $a + b$ becomes $+\ a\ b$.
+  Example: \(a + b\) becomes \(+\ a\ b\).
 \end{itemize}
 \end{frame}
 
@@ -660,11 +672,11 @@ In this lecture, you will:
 \item
   Advantage: operators appear in the order required for computation.
 \item
-  Example: $a + b$ becomes $a\ b\ +$.
+  Example: \(a + b\) becomes \(a\ b\ + \).
 \item
-  Example: $a + b \cdot c$ becomes $a\ b\ c\ \cdot\ +$
+  Example: \(a + b \cdot c\) becomes \(a\ b\ c\ \cdot\ + \)
 \item
-  Example: $(a + b) \cdot c$ becomes $a\ b + c\ \cdot$
+  Example: \((a + b) \cdot c\) becomes \(a\ b + c\ \cdot \)
 \end{itemize}
 \end{frame}
 
@@ -672,17 +684,18 @@ In this lecture, you will:
 \center{%
 \begin{tabular}{l l}
 \toprule
-  \textbf{Infix Expression} & \textbf{Equivalent Postfix Express}\\
+  \textbf{Infix Expression} & \textbf{Equivalent Postfix Express} \\
 \midrule
-  $a + b$ & $a\ b\ +$\\
-  $a + b \cdot c$ & $a\ b\ c \cdot +$\\
-  $a \cdot b + c$ & $a\ b \cdot c\ +$\\
-  $(a + b) \cdot c$ & $a\ b + c\ \cdot$\\
-  $(a - b) \cdot (c + d)$ & $a\ b - c\ d\ +\ \cdot$\\
-  $(a + b) \cdot (c - d / e)$ & $a\ b + c\ d\ e\ /\ -\ \cdot$\\
-  $(a + b) \cdot (c - d / e) + f$ & $a\ b + c\ d\ e\ /\ -\ \cdot\ f\ +$\\
+  \(a + b\) & \(a\ b\ + \) \\
+  \(a + b \cdot c\) & \(a\ b\ c \cdot + \) \\
+  \(a \cdot b + c\) & \(a\ b \cdot c\ + \) \\
+  \((a + b) \cdot c\) & \(a\ b + c\ \cdot \) \\
+  \((a - b) \cdot (c + d)\) & \(a\ b - c\ d\ +\ \cdot \) \\
+  \((a + b) \cdot (c - d / e)\) & \(a\ b + c\ d\ e\ /\ -\ \cdot \) \\
+  \((a + b) \cdot (c - d / e) + f\) & \(a\ b + c\ d\ e\ /\ -\ \cdot\ f\ + \) \\
 \bottomrule
-\end{tabular}}
+\end{tabular}%
+}
 \end{frame}
 
 \begin{frame}{Postfix Expressions Calculator}
@@ -700,7 +713,7 @@ Evaluation algorithm:\vspace{-0.5em}
 \end{frame}
 
 \begin{frame}{Postfix Expressions Calculator}
-Expression: $6\ 3 + 2\ *\ =$
+Expression: \(6\ 3 + 2\ *\ =\)
 
 
 \begin{columns}
@@ -778,7 +791,7 @@ Expression: $6\ 3 + 2\ *\ =$
 Symbols can be numbers or anything else:
 \begin{itemize}
   \item
-    $+$, $-$, $*$, and $/$ are operators, require two operands.
+    \(+\), \(-\), \(*\), and \(/\) are operators, require two operands.
   \begin{itemize}
     \item
       Pop stack twice and evaluate the expression.
@@ -786,7 +799,7 @@ Symbols can be numbers or anything else:
       If the stack has less than two elements, then error.
   \end{itemize}
   \item
-    If the symbol is $=$, the expression ends.
+    If the symbol is \(=\), the expression ends.
     \begin{itemize}
       \item
         Pop and print the answer from the stack.
@@ -830,7 +843,7 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 %         An equal sign (end of expression)
 %     \end{itemize}
 %   \item
-%     Assume the expressions contain only $+$, $-$, $*$, and $/$ operators.
+%     Assume the expressions contain only \(+\), \(-\), \(*\), and \(/\) operators.
 % \end{itemize}
 % \end{frame}
 
@@ -929,7 +942,7 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
   \emph{Stack}: items are added/deleted from one end.
   \begin{itemize}
   \item
-    Last In, First Out (LIFO) data structure
+    Last-In, First-Out (LIFO) data structure
   \item
     Operations: push, pop, initialize, destroy, check for empty/full stack
   \item

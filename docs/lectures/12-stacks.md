@@ -155,6 +155,16 @@ operators)
 
 ### Postfix Notation Examples
 
+| **Infix Expression**            | **Equivalent Postfix Express**       |
+|---------------------------------|--------------------------------------|
+| $a + b$                         | $a\ b\ +$                            |
+| $a + b \cdot c$                 | $a\ b\ c \cdot +$                    |
+| $a \cdot b + c$                 | $a\ b \cdot c\ +$                    |
+| $(a + b) \cdot c$               | $a\ b + c\ \cdot$                    |
+| $(a - b) \cdot (c + d)$         | $a\ b - c\ d\ +\ \cdot$              |
+| $(a + b) \cdot (c - d / e)$     | $a\ b + c\ d\ e\ /\ -\ \cdot$        |
+| $(a + b) \cdot (c - d / e) + f$ | $a\ b + c\ d\ e\ /\ -\ \cdot\ f\ +$  |
+
 ### Postfix Expressions Calculator
 
 Postfix notation has important applications in computer science.
@@ -168,8 +178,6 @@ Evaluation algorithm:
 
 - When an operator is found, back up to get operands, perform the
   operation, and continue.
-
-### Postfix Expressions Calculator
 
 Expression: $6\ 3 + 2\ *\ =$
 
@@ -194,7 +202,7 @@ Symbols can be numbers or anything else:
 
 Start to the function:
 
-```C++
+```cpp
 bool evaluatePostfixExpression(ifstream &input, double& result)
 {
   Stack<double> stack;
@@ -207,9 +215,7 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 }
 ```
 
-## SLList in Reverse
-
-### Iterating Over a Linked List in Reverse
+## Iterating Over a Linked List in Reverse
 
 - To print a list backward non-recursively, first get to the last node
   of the list.
@@ -222,15 +228,13 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 - Since the number of nodes is usually not known, use the linked
   implementation of a stack.
 
-### Iterating Over a Linked List in Reverse
-
 *See the lecture video above for the full example.*
 
 ## Summary
 
 - ***Stack***: items are added/deleted from one end.
 
-  - Last In, First Out (LIFO) data structure
+  - Last-In, First-Out (LIFO) data structure
 
   - Operations: push, pop, initialize, destroy, check for empty/full
 	stack

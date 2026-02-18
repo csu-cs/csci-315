@@ -143,16 +143,28 @@ function sidebarNotes() {
 			]
 		},
 		{
-			text: 'More Data Structures',
+			text: 'Stacks and Queues',
 			collapsed: true,
 			items: [
 				{ text: "Stacks", link: "/lectures/12-stacks" },
 				{ text: "Queues", link: "/lectures/12-queues" },
 				{ text: "Depth-First and Breadth-First Search", link: "/lectures/13-2D-search" },
+			]
+		},
+		{
+			text: 'Binary Trees',
+			collapsed: true,
+			items: [
 				{ text: "Binary Search Trees (Part 1)", link: "/lectures/14-binary-trees-1" },
 				{ text: "Binary Search Trees: Deletion", link: "/lectures/15-binary-trees-delete" },
 				{ text: "Binary Search Trees: Generic Traversal", link: "/lectures/15-binary-trees-traversal" },
 				{ text: "Heaps & Heapsort", link: "/lectures/16-heaps-heapsort" },
+			]
+		},
+		{
+			text: 'More Data Structures',
+			collapsed: true,
+			items: [
 				{ text: "Standard Template Library", link: "/lectures/17-standard-template-library" },
 				{ text: "Hash Tables via Chaining", link: "/lectures/18-hash-tables-chaining" },
 				{ text: "Hash Tables via Open-Addressing", link: "/lectures/19-hash-tables-open-addressing" },
