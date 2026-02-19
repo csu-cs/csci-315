@@ -4,7 +4,7 @@ Stacks
 Chapter 17
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/fqhKuU6-PXk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/-96stZJbRhI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Objectives
@@ -21,6 +21,10 @@ In this lecture, you will:
 
 - Learn how to use a stack to solve problems like removing recursion.
 
+- Understand common stack operations and their complexity.
+
+- Learn typical error conditions and how to handle them.
+
 ## Introduction
 
 **Stack**: a data structure in which elements are added and removed from one
@@ -32,9 +36,15 @@ end only.
 
 - Operations:
 
-  - Push: to add an element onto the stack
+  - *Push*: to add an element onto the stack
 
-  - Pop: to remove an element from the stack
+  - *Pop*: to remove an element from the stack
+
+  - *Peek* or *Top*: inspect the top element without removing it
+
+  - *isEmpty*: test whether the stack contains no elements
+
+  - *isFull*: (for fixed-capacity stacks) test whether the stack is at capacity
 
 | Coins  | Trays  | Boxes  | Books  |
 |---|---|---|---|
@@ -75,12 +85,24 @@ end only.
 - The `size` attribute will hold the number of elements currently in the
   array.
 
-- Therefore, we will use `size - 1` as the top of the stack.
+- The top index is typically `size - 1` when `size` counts elements.
 
 - The `capacity` attribute will hold the maximum number of elements of
   the array before it needs to be resized.
 
 *See the lecture video above for the full example.*
+
+Resizing considerations
+
+- If the array is fixed-size, pushing when `size == capacity` causes overflow.
+- A common dynamic strategy is to allocate a new array with larger capacity
+  (for example double the previous capacity) and copy elements. This gives
+  *amortized* $O(1)$ time for `push`.
+  - *Amortized time* differs from probabilistic average time. 
+  - It is the average cost per operation over *a sequence* of operations.
+- Shrinking on `pop` is possible but should be done carefully to avoid
+  frequent reallocations.
+
 
 ### Empty Array-Based Stack
 
@@ -100,6 +122,13 @@ end only.
 - In a linked representation, `mpHead` is a pointer to the memory
   address of the top element in the stack.  
   (`mpHead` may be named `mpStackTop`.)
+
+Linked-list considerations
+
+- `push` and `pop` are $O(1)$ operations because they only change a set number of pointers.
+
+- Linked stacks do not require contiguous memory but have per-node overhead
+  (pointer and allocation cost).
 
 *See the lecture video above for the full example.*
 
@@ -149,6 +178,13 @@ operators)
 
 - Advantage: operators appear in the order required for computation.
 
+Advantages and tradeoffs
+
+- No need for parentheses when operator precedence is encoded in the order.
+
+- Easy to evaluate using a stack because operands are available when an
+  operator is encountered.
+
 - Example: $a + b \cdot c$ becomes $a\ b\ c\ \cdot\ +$
 
 - Example: $(a + b) \cdot c$ becomes $a\ b + c\ \cdot$
@@ -183,6 +219,19 @@ Expression: $6\ 3 + 2\ *\ =$
 
 *See the lecture video above for the full example.*
 
+Postfix Processing Algorithm (for binary operators):
+
+1. Initialize an empty stack.
+2. For each token in the postfix expression:
+   - If the token is an operand, push it onto the stack.
+   - If the token is a binary operator, pop the top two operands (right then left),
+     apply the operator, and push the result.
+   - If a pop is attempted when the stack has fewer than the required operands,
+     signal an error (underflow / malformed expression).
+3. When the input ends, the stack should contain exactly one element: the result.
+   If there are more elements, the expression was malformed.
+
+
 Symbols can be numbers or anything else:
 
 - $+$, $-$, $*$, and $/$ are operators, require two operands.
@@ -215,6 +264,12 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 }
 ```
 
+Notes on error handling
+
+- Decide whether the API throws exceptions on underflow/overflow or returns
+  error codes. Be consistent across the codebase.
+- For numeric evaluation, consider handling divide-by-zero and invalid tokens.
+
 ## Iterating Over a Linked List in Reverse
 
 - To print a list backward non-recursively, first get to the last node
@@ -228,20 +283,32 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 - Since the number of nodes is usually not known, use the linked
   implementation of a stack.
 
+### Alternative approaches
+
+- Use recursion to visit nodes in reverse; this uses the call stack and may
+  risk stack overflow on very deep lists.
+
+- If frequent reverse iteration is required, consider a [doubly-linked list](09-doubly-linked-lists).
+
 *See the lecture video above for the full example.*
 
 ## Summary
 
-- ***Stack***: items are added/deleted from one end.
+***Stack*** items are added/deleted from one end.
 
-  - Last-In, First-Out (LIFO) data structure
+- Last-In, First-Out (LIFO) data structure
 
-  - Operations: push, pop, initialize, destroy, check for empty/full
-	stack
+- Operations: `push`, `pop`, `peek`/`top`, `isEmpty`, `isFull` (for fixed size)
 
-  - Can be implemented as an array or linked list.
+- Can be implemented as an array or linked list.
 
-  - Middle elements should not be accessed directly.
+- Middle elements should not be accessed directly.
 
-- ***Postfix notation***: operators are written after the operands (no
-  parentheses needed).
+- ***Time complexity***: `push`, `pop`, and `peek` are $O(1)$ time (if not resizing an array).
+
+- ***Space and performance***: array stacks use contiguous memory and have
+  lower per-element overhead; linked stacks use extra memory per node but
+  grow without large reallocations.
+
+- ***Postfix notation***: operators are written after the operands(no parentheses needed); this
+  form is convenient for stack-based evaluation and for compiler internals.

@@ -4,7 +4,7 @@ Queues and Midterm Expectations
 Chapter 17
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/bDu25jrpqJA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/3Z0SbYYKkEg?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Objectives
@@ -19,6 +19,8 @@ In this lecture, you will:
 
 - Learn how to implement a queue as a linked list.
 
+- Understand common queue operations and their expected time complexity.
+
 - Discover how to use queues to solve simulation problems.
 
 ## Introduction
@@ -29,7 +31,7 @@ removed from the other end (the *front*).
 
 - First In, First Out (FIFO) data structure
 
-- Operations: enqueue, dequeue, front, initialize, destroy, check for
+- Operations: enqueue, dequeue, front/peek, initialize, destroy, check for
   empty/full queue
 
 - Can be implemented as an array or linked list.
@@ -53,6 +55,16 @@ Need *at least* four (member) variables:
 3.  `rearIndex` to track the last element
 
 4.  `capacity` to specify the maximum size of the queue.
+
+Initialization and indexing notes
+
+- A common convention is to have `frontIndex` point to the index of the
+  current front element, and `rearIndex` point to the index of the last
+  element. Another convention is to let `rearIndex` point to the next free
+  slot. Be consistent in your implementation and document the choice.
+- To advance an index in a circular buffer use: `next = (index + 1) % capacity`.
+- To compute the current number of elements when using `frontIndex` and
+  `rearIndex` with `rearIndex` pointing to the next free slot: `(rearIndex - frontIndex + capacity) % capacity`.
 
 ### Enqueue Array-Based Implementation
 
@@ -103,6 +115,31 @@ around to the beginning).
 ![Circular Array Representation](/images/queues/circular_array-dark.svg "Circular Array Representation"){.dark-only}
 
 Example: Enqueue Z
+
+Enqueue pattern (circular buffer, `rearIndex` is the last element):
+
+```cpp
+if (isFull()) {
+  // handle overflow: return error or resize
+}
+
+mRearIndex = (mRearIndex + 1) % mCapacity; // Incomplete 
+mpList[mRearIndex] = value;
+++mSize; // if using size tracking
+```
+
+
+Dequeue pattern (circular buffer):
+
+```cpp
+if (isEmpty()) {
+  // handle underflow: return error or throw
+}
+Type value = mpList[mFrontIndex];
+mFrontIndex = (mFrontIndex + 1) % mCapacity;
+--mSize; // if using size tracking
+return value;
+```
 
 ### Circular Array: Full or Empty?
 
@@ -171,6 +208,16 @@ Using a reserved slot in the array.
 
 *See the lecture video above for the full example.*
 
+Resizing considerations
+
+- For dynamic queues, when this size matches the capacity, you can allocate a larger array
+  (for example double the capacity), copy elements in order starting from
+  `frontIndex`, and reset `frontIndex` and `rearIndex` appropriately. This
+  gives *amortized* $O(1)$ time per enqueue.
+
+- If you shrink capacity on dequeues, do so conservatively to avoid
+  frequent reallocations.
+
 ## Linked-List Based Queue Implementation
 
 - Array implementation has issues:
@@ -196,6 +243,14 @@ tail pointers.
 
 - The queue is empty if the head is null.
 
+Linked-list considerations
+
+- Use both head and tail pointers to make `enqueue` $O(1)$ by adding at the tail
+  and `dequeue` $O(1)$ by removing at the head.
+- Each node allocation has overhead and may be slower than contiguous
+  array operations because of allocation and pointer chasing.
+- Linked queues avoid allocating unused space.
+
 ### Enqueue (Push)
 
 *See the lecture video above for the full example.*
@@ -217,6 +272,17 @@ another system.
   structure.
 
 - Example: queues of objects are waiting to be served.
+
+Simulation and modeling notes
+
+- There are two common approaches: *time-driven* simulations and *event-driven*
+  simulations. Event-driven simulations process events (arrivals, departures)
+  in chronological order and are usually more efficient when events are sparse.
+- Performance metrics to collect include average wait time, maximum queue
+  length, throughput, and server utilization.
+- For realistic arrival patterns consider modeling with [Poisson processes](https://en.wikipedia.org/wiki/Poisson_point_process)
+  or empirical distributions.
+- If priorities matter, use a [priority queue](20-priority-queues) (more on that later) rather than a simple FIFO queue.
 
 ### Designing a Queuing System
 
@@ -304,6 +370,12 @@ time:
 	the customer from the front of the queue and send the customer to
 	the free server.
 
+Practical concerns
+
+- When simulating many customers, watch for memory growth in the waiting
+  queue and consider sampling metrics periodically rather than storing all data.
+- Use deterministic seeds for random number generation when you need reproducible results.
+
 ## Summary
 
 - ***Postfix notation***: operators are written after the operands (no
@@ -322,6 +394,14 @@ time:
   - Middle elements should not be accessed directly.
 
   - Is a restricted version of an array or linked list.
+
+  - ***Time complexity***: `enqueue` and `dequeue` are $O(1)$ time in both
+    array-based circular buffers and linked-list queues (amortized $O(1)$ if
+    array resizes are used).
+
+  - Choose array-based queues for lower per-element overhead and better
+    data locality. Choose linked lists when you need unbounded growth and
+    want to avoid large reallocations.
 
 ## Lab 12: Stacks and Queues
 

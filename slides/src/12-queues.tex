@@ -26,7 +26,7 @@
     text=black,
   },
   stack top/.style={%
-    rectangle, draw, minimum size=12mm - 1pt,
+    rectangle, draw, minimum size=12mm-1pt,
     yslant=0.5,xslant=-1, anchor=south west,
     very thick,
     xshift=-1pt,
@@ -79,12 +79,12 @@
     \pgfmathsetmacro{\AngleSep}{360/(\NumberOfElements+1)}
     \pgfmathsetlength{\MidRadius}{(#1+#2)/2}
     \fill[CSUcyan,even odd rule] (0,0) circle (#1) (0,0) circle (#2);
-    \draw [very thick] circle (#2);
-    \draw [very thick] circle (#1);
-    \foreach [count = \Count] \Angle in {0,\AngleSep,..., 360} {%
-        \draw [very thick] (\Angle:#2) -- (\Angle:#1);
+    \draw[very thick] circle (#2);
+    \draw[very thick] circle (#1);
+    \foreach[count = \Count] \Angle in {0,\AngleSep,..., 360} {%
+        \draw[very thick] (\Angle:#2) -- (\Angle:#1);
         \pgfmathsetmacro{\MidPoint}{\Angle+\AngleSep/2}
-        \node [text=black] at (\MidPoint:\MidRadius) {\GetListMember{#3}{\Count}};
+        \node[text=black] at (\MidPoint:\MidRadius) {\GetListMember{#3}{\Count}};
     }%
 }%
 
@@ -93,7 +93,7 @@
 \setlength{\parskip}{0.5em}
 
 \title{\Huge{} Queues}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 17}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 17}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -134,9 +134,9 @@ In this lecture, you will:
 
   \begin{itemize}
     \item
-      First In, First Out (FIFO) data structure
+      First-In, First-Out (FIFO) data structure
     \item
-      Operations: enqueue, dequeue, front, initialize, destroy, check for empty/full queue
+      Operations: enqueue, dequeue, front/peek, initialize, destroy, check for empty/full queue
     \item
       Can be implemented as an array or linked list.
     \item
@@ -187,11 +187,11 @@ In this lecture, you will:
     \item
       Array to store queue elements
     \item
-      \texttt{frontIndex} to track the first element.
+      \lstinline{mFrontIndex} to track the first element.
     \item
-      \texttt{rearIndex} to track the last element
+      \lstinline{mRearIndex} to track the last element
     \item
-      \texttt{capacity} to specify the maximum size of the queue.
+      \lstinline{mCapacity} to specify the maximum size of the queue.
   \end{enumerate}
 \end{frame}
 
@@ -304,7 +304,7 @@ Example: Dequeue one value.
 \end{frame}
 
 \begin{frame}[b]{Problem: Unusable Space}
-  As we add and remove elements, \lstinline{mRearIndex} and \lstinline{mFrontIndex} only increase, leaving unusable space at the beginning of the array.
+  As we add and remove elements, \lstinline{mRearIndex} and \lstinline{mFrontIndex} only increase, leaving unusable space\\ at the beginning of the array.
 
   Example state after a sequence of 10 enqueues and 8 dequeues.
 
@@ -390,7 +390,7 @@ Example: Dequeue one value.
 \begin{frame}{Solution: Circular Array}
   \emph{Better Solution}: Assume that the array is circular (it wraps around to the beginning).
 
-  \center
+  \center%
   \begin{tikzpicture}
     \CircularSequence{2.5cm}{1.75cm}{2, 1, 0, 9, 8, 7, 6, 5, 4, 3}
   \end{tikzpicture}
@@ -399,7 +399,7 @@ Example: Dequeue one value.
 \begin{frame}[b]{Solution: Circular Array}
   Example: Enqueue Z
 
-  \center
+  \center%
   \begin{tikzpicture}[stack instruction/.append style={fit={(queueMembers.east) (queueMembers.west)}, yshift=5em}, horizontal span of array/.append style={fill=MyPurple}]
     % Dynamic Array
     \ArrayLabel[1.5][0]{}
@@ -443,7 +443,7 @@ Example: Dequeue one value.
   Problem: Differentiating between empty queues and full queues.\\
   Example: Dequeue the only remaining value.
 
-  \center
+  \center%
   \begin{tikzpicture}[stack instruction/.append style={fit={(queueMembers.east) (queueMembers.west)}, yshift=5em}, horizontal span of array/.append style={fill=MyPurple}]
     % Dynamic Array
     \ArrayLabel[1.5][0]{}
@@ -492,7 +492,7 @@ Example: Dequeue one value.
   Problem: Differentiating between empty queues and full queues.\\
   Example: Enqueue into the last available space.
 
-  \center
+  \center%
   \begin{tikzpicture}[stack instruction/.append style={fit={(queueMembers.east) (queueMembers.west)}, yshift=5em}]
     % Dynamic Array
     \ArrayLabel[1.5][0]{}
@@ -539,7 +539,7 @@ Example: Dequeue one value.
 
 \begin{frame}{Circular Array: Full or Empty?}
   \begin{itemize}
-    \item Problem: In the previous two examples, notice that the state of \lstinline{frontIndex} and \lstinline{rearIndex} is the same for full and empty queues.
+    \item Problem: In the previous two examples, notice that the state of \lstinline{mFrontIndex} and \lstinline{mRearIndex} is the same for full and empty queues.
     \item How can we tell the difference?
   \end{itemize}
 \end{frame}
@@ -602,7 +602,7 @@ QueueArray<Type>::QueueArray(const int capacity)
 
   Using a reserved slot in the array.
 
-  \center
+  \center%
   \begin{tikzpicture}[stack instruction/.append style={fit={(queueMembers.east) (queueMembers.west)}, yshift=5em}, label of array el/.append style={font=\sffamily}]
     % Dynamic Array
     \ArrayLabel[1.5][0]{}
@@ -650,7 +650,7 @@ QueueArray<Type>::QueueArray(const int capacity)
     \item
       Array size is fixed: only a finite number of queue elements can be stored in it.
     \item
-      Requires array to be treated in a specific way, together with \lstinline{frontIndex} and \lstinline{rearIndex}.
+      Requires array to be treated in a specific way, together with \lstinline{mFrontIndex} and \lstinline{mRearIndex}.
     \end{itemize}
   \item
     Linked implementation of a queue simplifies many issues.\\
@@ -694,7 +694,7 @@ QueueArray<Type>::QueueArray(const int capacity)
       \TailPtr{mpTail}
     }{
       \TailPtr[null]{mpTail}
-      \draw[link] (tPtr) to[bend right=26] (newTail);
+      \draw[link] (tPtr) to[bend right=40] (newTail);
     }
 
     \onslide<3->{
@@ -749,10 +749,12 @@ QueueArray<Type>::QueueArray(const int capacity)
   \end{tikzpicture}
 \end{frame}
 
+\section{Using \texttt{std::list}}
+
 \section{Simulation}
 
 \begin{frame}{Application of Queues: Simulation}
-  \emph{Simulation}: a technique in which one system models the behavior of another system.
+  \emph{Simulation}: a technique in which one system models\\ the behavior of another system.
 
   \begin{itemize}
   \item
@@ -809,9 +811,9 @@ QueueArray<Type>::QueueArray(const int capacity)
 \end{frame}
 
 \begin{frame}{Designing a Queuing System}
-  If it takes too long to serve a customer and customers arrive frequently, then more servers are needed.
+  If it takes too long to serve a customer and customers\\ arrive frequently, then more servers are needed.
 
-  \begin{itemize}
+  \begin{itemize}\setlength\itemsep{0.5em}
     \item 
       The system can be modeled as a time-driven simulation.
     \item 
@@ -826,7 +828,7 @@ QueueArray<Type>::QueueArray(const int capacity)
 \end{frame}
 
 \begin{frame}{UML class diagram for the \texttt{Customer} class}
-  \center
+  \center%
   \renewcommand{\umlfillcolor}{CSUblue!80!black}
   \renewcommand{\umldrawcolor}{white}
   \renewcommand{\umltextcolor}{white}
@@ -848,7 +850,7 @@ QueueArray<Type>::QueueArray(const int capacity)
 \end{frame}
 
 \begin{frame}{UML class diagram for the \texttt{Server} class}
-  \center
+  \center%
   \renewcommand{\umlfillcolor}{CSUblue!80!black}
   \renewcommand{\umldrawcolor}{white}
   \renewcommand{\umltextcolor}{white}
@@ -878,7 +880,7 @@ QueueArray<Type>::QueueArray(const int capacity)
   ServerList: a set of servers.\\
   At any given time, a server is either free or busy.
 
-  \center
+  \center%
   \renewcommand{\umlfillcolor}{CSUblue!80!black}
   \renewcommand{\umldrawcolor}{white}
   \renewcommand{\umltextcolor}{white}
@@ -899,7 +901,7 @@ QueueArray<Type>::QueueArray(const int capacity)
 \begin{frame}{Waiting Customers Queue}
   \begin{itemize}
     \item 
-      When a customer arrives, he/she goes to the end of the queue.
+      When a customer arrives, he/she goes to the end\\ of the queue.
     \item 
       When a server becomes available, the customer at the front of the queue leaves to conduct the transaction.
     \item 
@@ -910,7 +912,7 @@ QueueArray<Type>::QueueArray(const int capacity)
 \end{frame}
 
 \begin{frame}{Algorithm for the main loop}
-  For each time unit (of the clock) from 1 to the end of the simulated time:
+  For each time unit (of the clock) from 1 to the end\\ of the simulated time:
   \begin{enumerate}
     \item 
       Updated the server list to decrement the transaction time of each busy server by one time unit.
@@ -928,29 +930,10 @@ QueueArray<Type>::QueueArray(const int capacity)
 \begin{frame}{Summary}
 \begin{itemize}
 \item
-  \emph{Stack}: items are added/deleted from one end.
-  \begin{itemize}
-  \item
-    Last In, First Out (LIFO) data structure
-  \item
-    Operations: push, pop, initialize, destroy, check for empty/full stack
-  \item
-    Can be implemented as an array or linked list.
-  \item
-    Middle elements should not be accessed directly.
-  \end{itemize}
-\item
-  \emph{Postfix notation}: operators are written after the operands (no parentheses needed).
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Summary}
-\begin{itemize}
-\item
   \emph{Queue}: items are added at one end and removed from the other end (FIFO).
   \begin{itemize}
   \item
-    First In, First Out (FIFO) data structure
+    First-In, First-Out (FIFO) data structure
   \item
     Operations: add, remove, initialize, destroy, check if the queue is empty/full
   \item

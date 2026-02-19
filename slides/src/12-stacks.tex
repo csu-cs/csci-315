@@ -92,11 +92,15 @@ In this lecture, you will:
 \item
   Examine various stack operations.
 \item
-  Learn how to implement a stack as an array.
+  Implement a stack as an array.
 \item
   Learn how to implement a stack as a linked list.
 \item
-  Learn how to use a stack to solve problems like removing recursion.
+  Use a stack to solve problems like removing recursion.
+\item
+  Understand common stack operations and their complexity.
+\item
+  Learn typical error conditions and how to handle them.
 \end{itemize}
 \end{frame}
 
@@ -112,9 +116,15 @@ In this lecture, you will:
   Operations:
   \begin{itemize}
   \item
-    Push: to add an element onto the stack
+    \emph{Push}: to add an element onto the stack
   \item
-    Pop: to remove an element from the stack
+    \emph{Pop}: to remove an element from the stack
+  \item 
+    \emph{Peek} or \emph{Top}: inspect the top element without removing it
+  \item
+    \emph{isEmpty}: test whether the stack contains no elements
+  \item
+    \emph{isFull}: (for fixed-capacity stacks) test whether the stack is at capacity
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -320,7 +330,7 @@ In this lecture, you will:
 \item
   The \texttt{size} attribute will hold the number of elements currently in the array.
 \item
-  Therefore, we will use \texttt{size - 1} as the top of the stack.
+  The top index is typically \texttt{size - 1} when \texttt{size} counts elements.
 \item
   The \texttt{capacity} attribute will hold the maximum number of elements of the array before it needs to be resized.
 \end{itemize}
@@ -512,21 +522,35 @@ In this lecture, you will:
   \end{tikzpicture}
 \end{frame}
 
+\begin{frame}{Array-Based Stack Implementation}
+  Resizing considerations
+\begin{itemize}
+\item
+  If the array is fixed-size, pushing when \\\lstinline{size == capacity} causes overflow.
+\item
+  A common dynamic strategy is to allocate a new array with larger capacity
+  (e.g., double the previous capacity) and copy elements. This gives
+  \textit{amortized} \(O(1)\) time for \lstinline{push}.
+\item
+  Shrinking on pop is possible but should be done carefully to avoid
+  frequent reallocations.
+\end{itemize}
+\end{frame}
 
 \section{Linked Stack}
 
 
 \begin{frame}{Linked Implementation of a Stack}
-\begin{itemize}[<+->]
+\begin{itemize}[<+->]\setlength\itemsep{0.5em}
 \item
   Array only allows a fixed number of elements.
 \item
-  Must handle if pushed elements exceed the array size.
+  Must handle if pushed elements exceed the\\ array size.
 \item
   Linked lists can dynamically organize data.
 \item
-  In a linked representation, \texttt{mpHead} is a pointer to the memory address of the top element in the stack.\\
-  (\texttt{mpHead} may be named \texttt{mpStackTop})
+  In a linked representation, \lstinline{mpHead} is a pointer to the memory address of the top element in the stack.\\
+  (\lstinline{mpHead} may be named \lstinline{mpStackTop}.)
 \end{itemize}
 \end{frame}
 
@@ -633,6 +657,17 @@ In this lecture, you will:
   \end{tikzpicture}
 \end{frame}
 
+
+\begin{frame}{Linked Stack Performance}
+\begin{itemize}[<+->]
+\item
+  \lstinline{push} and \lstinline{pop} are \(O(1)\) operations because they only change a set number of pointers.
+\item
+  Linked stacks do not require contiguous memory but have per-node overhead
+  (pointer and allocation cost).
+\end{itemize}
+\end{frame}
+
 \section{Postfix Notation}
 
 \begin{frame}{Infix Notation}
@@ -698,10 +733,24 @@ In this lecture, you will:
 }
 \end{frame}
 
-\begin{frame}{Postfix Expressions Calculator}
-Postfix notation has important applications in computer science.
+\begin{frame}{Postfix Notation Example}
+\center{%
+\begin{align*}
+    & (1 + 7) \cdot (6 - 12 / 3)\\
+    \\
+    & 1\ \ 7 + 6\ \ 12\ \ 3\ /\ -\ \cdot \\
+  =\ & 8\ \ 6\ \ 12\ \ 3\ /\ -\ \cdot \\
+  =\ & 8\ \ 6\ \ 4\ -\ \cdot \\
+  =\ & 8\ \ 2\ \cdot \\
+  =\ & 16
+\end{align*}
+}
+\end{frame}
 
-Many compilers first translate arithmetic expressions into postfix notation and then translate this expression into machine code.
+\begin{frame}{Postfix Expressions Calculator}
+Postfix notation has important applications in\\ computer science.
+
+Many compilers first translate arithmetic expressions\\ into postfix notation and then translate this expression\\ into machine code.
 
 Evaluation algorithm:\vspace{-0.5em}
 \begin{itemize}
@@ -827,6 +876,16 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}{Postfix Expressions Calculator}
+Notes on error handling
+\begin{itemize}
+  \item
+    Decide whether the API throws exceptions on underflow/overflow or returns
+  error codes. Be consistent across the codebase.
+  \item
+    For numeric evaluation, consider handling divide-by-zero and invalid tokens.
+\end{itemize}
+\end{frame}
 
 % \begin{frame}{Postfix Expressions Calculator}
 % Assume postfix expressions are in this form:\\
@@ -866,7 +925,7 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 \begin{frame}{Iterating Over a Linked List in Reverse}
 \begin{itemize}
   \item
-    To print a list backward non-recursively, first get to the last node of the list.
+    To print a list backward non-recursively, first get\\ to the last node of the list.
     \begin{itemize}
       \item
         Problem: Links go in only one direction.
@@ -937,21 +996,32 @@ bool evaluatePostfixExpression(ifstream &input, double& result)
 \section{Review}
 
 \begin{frame}{Summary}
+\emph{Stack}: items are added/deleted from one end.
 \begin{itemize}
-\item
-  \emph{Stack}: items are added/deleted from one end.
-  \begin{itemize}
   \item
     Last-In, First-Out (LIFO) data structure
   \item
-    Operations: push, pop, initialize, destroy, check for empty/full stack
+    Operations: push, pop, peek/pop, initialize, destroy, \lstinline{isEmpty}, \lstinline{isFull} (for fixed size)
   \item
     Can be implemented as an array or linked list.
   \item
     Middle elements should not be accessed directly.
-  \end{itemize}
-\item
-  \emph{Postfix notation}: operators are written after the operands (no parentheses needed).
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Space and Performance}
+\begin{itemize}
+  \item 
+    \lstinline{push}, \lstinline{pop}, and \lstinline{peek} are \(O(1)\) time\\ (if not resizing an array).
+  \item 
+    \textit{Array stacks} use contiguous memory and\\ have
+  lower per-element overhead.\\
+  \textit{Linked stacks} use extra memory per node but
+  grow without large reallocations.
+  \item 
+    \emph{Postfix notation}: operators are written after the operands; this
+  form is convenient for stack-based evaluation and for compiler internals.
 \end{itemize}
 \end{frame}
 
