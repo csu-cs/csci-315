@@ -62,7 +62,9 @@ Initialization and indexing notes
   current front element, and `rearIndex` point to the index of the last
   element. Another convention is to let `rearIndex` point to the next free
   slot. Be consistent in your implementation and document the choice.
+
 - To advance an index in a circular buffer use: `next = (index + 1) % capacity`.
+
 - To compute the current number of elements when using `frontIndex` and
   `rearIndex` with `rearIndex` pointing to the next free slot: `(rearIndex - frontIndex + capacity) % capacity`.
 
