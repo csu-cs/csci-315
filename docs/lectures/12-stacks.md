@@ -7,6 +7,11 @@ Chapter 17
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/-96stZJbRhI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
+<script setup>
+import arrayStackDiagram from '/images/stacks/array_stack_example.svg'
+</script>
+
+
 ## Objectives
 
 In this lecture, you will:
@@ -90,7 +95,9 @@ end only.
 - The `capacity` attribute will hold the maximum number of elements of
   the array before it needs to be resized.
 
-*See the lecture video above for the full example.*
+<ProgressiveDiagram :src="arrayStackDiagram">
+Example of layout and operations of an array-based stack.
+</ProgressiveDiagram>
 
 Resizing considerations
 
