@@ -4,7 +4,7 @@
 \usepackage{booktabs}
 
 \title{\Huge{} Depth-First \& Breadth-First\\Search of 2D Grids}
-\subtitle{CSCI 315: Data Structure Analysis}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -36,6 +36,24 @@
     \end{itemize}
 
     Application links to Project 2 and upcoming Binary Search Trees and Graphs.
+\end{frame}
+
+\begin{frame}{Algorithm}
+
+\begin{enumerate}
+
+\item Base cases:
+\begin{itemize}
+  \item Out of bounds \textrightarrow{} stop
+  \item Hit a wall \textrightarrow{} stop
+  \item Already visited \textrightarrow{} stop
+  \item Reached end \textrightarrow{} success 
+\end{itemize}
+
+\item Mark current cell as visited. 
+\item Recursively explore neighbors (e.g., up, right, down, left). 
+\item If no direction leads to the goal \textrightarrow{} backtrack.
+\end{enumerate}
 \end{frame}
 
 \begin{frame}{DFS vs BFS Comparison }

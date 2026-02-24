@@ -22,10 +22,16 @@ After completing this lecture and the related lab, students will be able to:
 
 7. Relate maze traversal techniques to broader search problems, including graph traversal and web crawling.
 
-## Lecture Video
+## Maze Solving Lecture Video
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/ekTfwviCYhA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/rwHMSmn6HTI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
+## Project 2 Overview Video
+
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/nei9AOExrOw?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## 🧩 Overview
@@ -41,10 +47,11 @@ After completing this lecture and the related lab, students will be able to:
 ## 🧱 Representing the Maze
 
 - Maze stored as a **1D array** (for heap allocation) visualized in 2D.
-- Defined Constant (`enum`) values:
+- Defined constant values:
   - `O` = Open path
   - `W` = Wall
-  - `V` = Visited
+  - `V` = Visited (or use a separate 1D array to track visited to keep the maze values constant).
+
 - Each position tracked using a `Point` struct:
   ```cpp
   struct Point {
@@ -53,6 +60,7 @@ After completing this lecture and the related lab, students will be able to:
     int distance; // optional for BFS 
   }; 
   ```
+
 - Helper functions:
   - Convert between 2D coordinates and 1D index.
   - Overloaded `==` operator for comparing points.
@@ -112,12 +120,12 @@ After completing this lecture and the related lab, students will be able to:
 
 ## ⚖️ DFS vs BFS Comparison 
 
-| Feature              | DFS | BFS | 
-|---------------------:|-----|-----| 
+| Feature              | DFS      | BFS | 
+|---------------------:|----------|-----| 
 | Data Structure       | Stack (or recursion) | Queue | 
-| Search Style         | Deep | Broad | 
-| Finds Shortest Path? | ❌ No | ✅ Yes | 
-| Overall Memory Usage         | Lower | Higher | 
+| Search Style         | Deep     | Broad | 
+| Finds Shortest Path? | ❌ No   | ✅ Yes | 
+| Overall Memory Usage | Lower    | Higher | 
 | Implementation       | Often recursive | Iterative | 
 | Backtracking         | Implicit | Not needed |
 
