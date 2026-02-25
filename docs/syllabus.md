@@ -106,7 +106,7 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 |  5B  | [Search](/lectures/10-search) and [Quadratic Sorting](/lectures/10-quadratic-sort) | Lab 10                |
 |  6A  | [Quick Sort](/lectures/11-quick-sort) and [Merge Sort](/lectures/11-merge-sort) | Lab 11                |
 |  6B  | [Stacks](/lectures/12-stacks), [Queues](/lectures/12-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |
-|  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) | Project 2 & Lab 13    |
+|  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) and [Project 2](/lectures/13-project2) | [Project 2](/lectures/13-project2) & Lab 13    |
 |  7B  | Midterm Exam                                |                       |
 |  8A  | [Binary Search Trees: Insertion, Search, \& Traversal](/lectures/14-binary-trees-1) | Lab 14                |
 |  8B  | [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete) & [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |

@@ -149,6 +149,7 @@ function sidebarNotes() {
 				{ text: "Stacks", link: "/lectures/12-stacks" },
 				{ text: "Queues", link: "/lectures/12-queues" },
 				{ text: "Depth-First and Breadth-First Search", link: "/lectures/13-2D-search" },
+				{ text: "Project 2", link: "/lectures/13-project2" },
 			]
 		},
 		{

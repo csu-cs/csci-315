@@ -40,6 +40,7 @@
 - [Stacks](/lectures/12-stacks)
 - [Queues](/lectures/12-queues)
 - [Depth-First and Breadth-First Search](/lectures/13-2D-search)
+- [Project 2](/lectures/13-project2)
 
 ## Binary Trees
 
