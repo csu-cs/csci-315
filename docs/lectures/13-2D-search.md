@@ -28,12 +28,6 @@ After completing this lecture and the related lab, students will be able to:
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/rwHMSmn6HTI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
-## Project 2 Overview Video
-
-<div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/nei9AOExrOw?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
-</div>
-
 ## 🧩 Overview
 
 - Goal: Write programs to **solve 2D mazes** using **Depth-First Search (DFS)** and **Breadth-First Search (BFS)**.
@@ -42,7 +36,7 @@ After completing this lecture and the related lab, students will be able to:
   - Stacks and Queues
   - Searching algorithms
   - Structs, pointers, and heap memory
-- Application links to **Project 2** and upcoming **Binary Search Trees**. 
+- Application links to **[Project 2](13-project2)** and upcoming **Binary Search Trees**. 
 
 ## 🧱 Representing the Maze
 
@@ -163,6 +157,6 @@ Depth-First Search (DFS) generally uses less memory than Breadth-First Search (B
 
 ## Lab, Project, and Exam
 
-Take a look at Lab 13 and Project 2.
+Take a look at Lab 13 and [Project 2](13-project2).
 
 [Study for the Midterm Exam.](/guides/midterm-study-guide) 
