@@ -44,7 +44,8 @@
 
 ## Binary Trees
 
-- [Binary Search Trees (Part 1)](/lectures/14-binary-trees-1)
+- [Binary Search Trees: Insertion](/lectures/14-binary-trees-1)
+- [Binary Search Trees: Intro to Traversal](/lectures/14-binary-trees-traversal)
 - [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete)
 - [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal)
 - [Heaps & Heapsort](/lectures/16-heaps-heapsort)

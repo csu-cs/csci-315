@@ -1,0 +1,200 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+%\documentclass[14pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{binary-trees}
+\usepackage{booktabs}
+
+\title{\Huge{} Binary Search Trees\\Intro to Traversal}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 19}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{March 4, 2025}
+\subject{Software Programming}
+%\keywords{}
+\graphicspath{{../imgs/binary-tree}}
+
+\setlength{\parskip}{0.5em}
+
+% Don't show circle around leaves (for null pointers)
+\forestset{
+  default preamble={%
+    for leaves={%
+      justText}
+  },
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section*{Traversal}
+
+\begin{frame}{Binary Search Tree Traversal}
+  What and why:
+  \begin{itemize}
+    \item Visit every node in a BST exactly once.
+    \item Common orders: in-order, pre-order, post-order (depth-first); level-order (breadth-first).
+    \item Uses: produce sorted output, copy or delete a tree, compute aggregates (size, sum, height).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Traversing the Entire Tree}
+  \emph{Traversing} a tree means ``\emph{visiting}'' each node exactly once.
+  
+  We may {visit} each the nodes in a tree to determine \\
+  its size, display it, update it, delete it, sum the values, etc.
+\end{frame}
+
+
+\begin{frame}{Traversing the Entire Tree}
+  \emph{Traversing} a tree means ``\emph{visiting}'' each node exactly once.
+  
+  We may {visit} each the nodes in a tree to determine \\
+  its size, display it, update it, delete it, sum the values, etc.
+\end{frame}
+\begin{frame}{We can visit the notes in various orders.}
+\begin{columns}
+\onslide<2->{%
+  \column{0.3\textwidth}
+  In-order
+  \begin{enumerate}
+  \item
+    Traverse the left subtree.
+  \item
+    \textbf{\color{CSUcyan}Visit the node.}
+  \item
+    Traverse the right subtree.
+  \end{enumerate}%
+}
+\onslide<3->{%
+  \column{0.3\textwidth}
+  Pre-order
+  \begin{enumerate}
+  \item
+    \textbf{\color{CSUcyan}Visit the node.}
+  \item
+    Traverse the left subtree.
+  \item
+    Traverse the right subtree.
+  \end{enumerate}%
+}
+\onslide<4->{%
+\column{0.3\textwidth}
+  Post-order
+  \begin{enumerate}
+  \item
+    Traverse the left subtree.
+  \item
+    Traverse the right subtree.
+  \item
+    \textbf{\color{CSUcyan}Visit the node.}
+  \end{enumerate}%
+}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Example of Binary Tree Traversal}
+\begin{columns}
+
+  \column{0.5\textwidth}
+    \begin{itemize}
+    \item
+      \onslide<2->{%
+        Input (one example):\\
+        \texttt{\bfseries E C F A D H B G}%
+      }
+    \item
+      In-order sequence:\\
+      \onslide<4->{%
+        \texttt{\bfseries A B C D E F G H}%
+      }
+    \item
+      Pre-order sequence:\\
+      \onslide<5->{%
+        \texttt{\bfseries E C A B D F H G}\\
+        (Use to copy and preserve a tree's structure.)%
+      }
+    \item
+      Post-order sequence:\\
+      \onslide<6->{%
+      \texttt{\bfseries B A D C G H F E}\\
+        (Use to delete a subtree.)%
+      }
+    \end{itemize}
+  \column{0.5\textwidth}
+    \centering
+    \onslide<3->{
+      \begin{forest}
+      [E, for tree={fit=tight}
+        [C
+          [A,
+            [\NullNode]
+            [B
+              [\NullNode]
+              [\NullNode]
+            ]
+          ]
+          [D
+            [\NullNode]
+            [\NullNode]
+          ]
+        ]
+        [F
+          [\NullNode]
+          [H
+            [G
+              [\NullNode]
+              [\NullNode]
+            ]
+            [\NullNode]
+          ]
+        ]
+      ]
+      \end{forest}%
+    }
+\end{columns}
+\end{frame}
+
+\begin{frame}{Depth- and Breadth-First Traversals}
+  The in-order, pre-order, and post-order traversals we implemented are 
+  \alt<1>{\uline{\invisible{depth}}}{\uline{depth}}-first traversals.
+
+  \onslide<3->{We could also use a queue to implement a level-based (\emph{breadth-first}) traversal.}
+\end{frame}
+
+\section{Other Operations}
+\begin{frame}{Typical Operations on Binary Tree}
+\setbeamercovered{transparent}
+\begin{itemize}[<+->]
+\item
+  Determine whether the binary tree is empty.
+\item
+  Insert an item in the binary tree.
+\item
+  Delete an item from the binary tree.
+\item
+  Search the binary tree for a particular item.
+\item
+  Find the height of the binary tree.
+\item
+  Find the number of nodes in the binary tree.
+\item
+  Find the number of leaves in the binary tree.
+\item
+  Traverse the binary tree.
+\item
+  Copy the binary tree.
+\end{itemize}
+\end{frame}
+
+\section*{Lab 14}
+\begin{frame}{Lab 14: Binary Trees (Part 1)}
+\centering\Large
+Let's take a look at the lab based on today's lecture.
+\end{frame}
+\end{document}

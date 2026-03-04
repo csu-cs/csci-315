@@ -1,5 +1,5 @@
-Binary Search Trees (Part 1)
-============================
+Binary Search Trees: Insertion, Search, and Traversal
+=====================================================
 
 Chapter 19
 
@@ -22,7 +22,7 @@ In this lecture, we will:
 ## Lecture Video
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/KY1RZtyg4S0?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/clqrPU9lnAY?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -48,7 +48,7 @@ Binary search works well on arrays. However,
 
 ***Linked Lists***, while great for insertion and deletion at the  
 ends, pose challenges for binary search due to the lack  
-of contiguous memory. However,
+of contiguous memory.
 
 - Must start iterating from the first/last node (i.e., sequential
   search).
@@ -75,11 +75,11 @@ Binary Search Trees:
 
 ## Binary Trees
 
-A ***binary tree*** is empty or has these properties:
+A ***binary tree*** is empty or has:
 
-- Has a root node.
+- One *root* (topmost) node.
 
-- Has a left subtree and right subtree, which are binary trees.
+- Left subtree and right subtree, which are binary trees.
 
 ![Binary Tree](/images/bst/binary-tree-1.svg "A Binary Tree"){.light-only}
 
@@ -96,7 +96,7 @@ Example Trees:
 ![More 3-node binary trees](/images/bst/binary-tree-3-node-dark.svg "More 3-node binary trees"){.dark-only}
 
 
-- A node (called a vertex in graph theory):
+- A node (called a **vertex** in graph theory):
 
   - Has at most two children.
 
@@ -118,11 +118,11 @@ Example Trees:
 
 - There is a unique ***path*** from the root to every node.
 
-- The ***Path Length*** is the number of branches on that path.
+- The ***path length*** is the number of branches on that path.
 
 - ***Edge***: The connection from a parent to a child.
 
-- Node ***Level***: number of branches from the root to the node.
+- ***level*** of a node: number of branches from the root to the node.
 
   - The root node is at level 0.
 
@@ -150,7 +150,7 @@ properties:
 
 ### Applications
 
-Used when data is frequently added/removed and a quick lookup is needed
+Used when data is frequently added/removed and a quick search is needed
 (e.g., maps, sets).  
 Quick Operations:
 
@@ -158,7 +158,7 @@ Quick Operations:
 
 - Removal
 
-- Lookup existing values
+- Search (a.k.a., find, lookup) existing values
 
 Example domains:
 
@@ -177,24 +177,26 @@ If the node…
 2.  contains the key,  
     return `true`.
 
-3.  contains a value is greater,  
+3.  contains a key is greater,  
     search the left subtree.
 
-4.  contains a value is less,  
+4.  contains a key is less,  
     search the right subtree.
 
 ## Inserting Values into a Binary Search Tree
 
-For example, let’s insert these values:  
+<ProgressiveDiagram :src="insertDiagram">
+
+Binary Search tree with the keys inserted in this order:  
 59, 70, 50, 58, 30, 44, 98, 77
 
-<ProgressiveDiagram :src="insertDiagram" />
+</ProgressiveDiagram>
 
 The helper function for the recursive insert needs a reference to a
 `Node` pointer.
 
 [Click here to visualize
-why.](https://pythontutor.com/render.html#code=class%20BinarySearchTree%0A%7B%0Apublic%3A%0A%20%20%20%20BinarySearchTree%28%29%20%3A%20mpRoot%7Bnullptr%7D%20%7B%7D%3B%0A%0A%20%20%20%20void%20insert%28const%20int%20val%29%3B%0A%0A%20%20%20%20~BinarySearchTree%28%29%3B%0A%0Aprivate%3A%0A%20%20%20%20struct%20Node%20%7B%0A%20%20%20%20%20%20%20%20Node%28const%20int%26%20val%29%0A%20%20%20%20%20%20%20%20%20%20%3A%20value%7Bval%7D,%20pLeft%7Bnullptr%7D,%20pRight%7Bnullptr%7D%0A%20%20%20%20%20%20%20%20%7B%7D%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20~Node%28%29%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20delete%20pLeft%3B%0A%20%20%20%20%20%20%20%20%20%20delete%20pRight%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20int%20value%3B%0A%20%20%20%20%20%20%20%20Node%20*pLeft%3B%0A%20%20%20%20%20%20%20%20Node%20*pRight%3B%0A%20%20%20%20%7D%3B%0A%0A%20%20%20%20//%20Bug%3A%20need%20a%20reference%20to%20the%20node%20pointer%0A%20%20%20%20static%20void%20insert%28const%20int%20val,%20Node*%20pRoot%29%3B%0A%20%20%20%20%0A%20%20%20%20Node%20*mpRoot%3B%0A%7D%3B%0A%0A%0Aint%20main%28%29%0A%7B%0A%20%20%20%20BinarySearchTree%20tree%3B%0A%20%20%20%20tree.insert%2859%29%3B%0A%20%20%20%20tree.insert%2870%29%3B%0A%20%20%20%20tree.insert%2850%29%3B%0A%20%20%0A%20%20%20%20return%200%3B%0A%7D%0A%0Avoid%20BinarySearchTree%3A%3Ainsert%28const%20int%20val%29%0A%7B%0A%20%20%20%20insert%28val,%20mpRoot%29%3B%0A%7D%0A%0Avoid%20BinarySearchTree%3A%3Ainsert%28const%20int%20val,%20Node*%20pRoot%29%20%7B%0A%20%20%20%20if%20%28pRoot%20%3D%3D%20nullptr%29%20%7B%0A%20%20%20%20%20%20%20%20pRoot%20%3D%20new%20Node%28val%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20if%20%28val%20%3C%20pRoot-%3Evalue%29%20%7B%0A%20%20%20%20%20%20%20%20insert%28val,%20pRoot-%3EpLeft%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20%20%20insert%28val,%20pRoot-%3EpRight%29%3B%0A%20%20%20%20%7D%0A%7D%0A%0ABinarySearchTree%3A%3A~BinarySearchTree%28%29%20%7B%0A%20%20%20%20delete%20mpRoot%3B%0A%7D&cppShowMemAddrs=true&cumulative=false&curInstr=4&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false)
+why.](https://pythontutor.com/visualize.html#code=class%20BinarySearchTree%0A%7B%0Apublic%3A%0A%20%20%20%20BinarySearchTree%28%29%20%3A%20mpRoot%7Bnullptr%7D%20%7B%7D%3B%0A%0A%20%20%20%20void%20insert%28const%20int%20val%29%3B%0A%0A%20%20%20%20~BinarySearchTree%28%29%3B%0A%0Aprivate%3A%0A%20%20%20%20struct%20Node%20%7B%0A%20%20%20%20%20%20%20%20Node%28const%20int%26%20val%29%0A%20%20%20%20%20%20%20%20%20%20%3A%20key%7Bval%7D,%20pLeft%7Bnullptr%7D,%20pRight%7Bnullptr%7D%0A%20%20%20%20%20%20%20%20%7B%7D%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20~Node%28%29%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20delete%20pLeft%3B%0A%20%20%20%20%20%20%20%20%20%20delete%20pRight%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20int%20key%3B%0A%20%20%20%20%20%20%20%20Node%20*pLeft%3B%0A%20%20%20%20%20%20%20%20Node%20*pRight%3B%0A%20%20%20%20%7D%3B%0A%0A%20%20%20%20//%20Bug%3A%20need%20a%20reference%20to%20the%20node%20pointer%0A%20%20%20%20static%20void%20insert%28const%20int%20key,%20Node*%20pRoot%29%3B%0A%20%20%20%20%0A%20%20%20%20Node%20*mpRoot%3B%0A%7D%3B%0A%0A%0Aint%20main%28%29%0A%7B%0A%20%20%20%20BinarySearchTree%20tree%3B%0A%20%20%20%20tree.insert%2859%29%3B%0A%20%20%20%20tree.insert%2870%29%3B%0A%20%20%20%20tree.insert%2850%29%3B%0A%20%20%0A%20%20%20%20return%200%3B%0A%7D%0A%0Avoid%20BinarySearchTree%3A%3Ainsert%28const%20int%20key%29%0A%7B%0A%20%20%20%20insert%28key,%20mpRoot%29%3B%0A%7D%0A%0Avoid%20BinarySearchTree%3A%3Ainsert%28const%20int%20key,%20Node*%20pRoot%29%20%7B%0A%20%20%20%20if%20%28pRoot%20%3D%3D%20nullptr%29%20%7B%0A%20%20%20%20%20%20%20%20pRoot%20%3D%20new%20Node%7Bkey%7D%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20if%20%28key%20%3C%20pRoot-%3Ekey%29%20%7B%0A%20%20%20%20%20%20%20%20insert%28key,%20pRoot-%3EpLeft%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20%20%20insert%28key,%20pRoot-%3EpRight%29%3B%0A%20%20%20%20%7D%0A%7D%0A%0ABinarySearchTree%3A%3A~BinarySearchTree%28%29%20%7B%0A%20%20%20%20delete%20mpRoot%3B%0A%7D&cppShowMemAddrs=true&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false)
 
 How do we handle duplicate keys?
 
@@ -243,72 +245,3 @@ search tree?
 
 \* A binary-search tree is already sorted. To convert it to a sorted list, a 
 inorder traversal will take $O(n)$.
-
-## Traversing the Entire Tree
-
-***Traversing*** a tree means “***visiting***” each node exactly once.
-  
-We may visit each the nodes in a tree to determine its size, display it, 
-update it, delete it, sum the values, etc.
-
-We can visit the notes in various orders.
-
-- In-order
-  1. Traverse the left subtree.
-  2. *Visit the node.*
-  3. Traverse the right subtree.
-- Pre-order
-  1. *Visit the node.*
-  2. Traverse the left subtree.
-  3. Traverse the right subtree.
-- Post-order
-  1. Traverse the left subtree.
-  2. Traverse the right subtree.
-  3. *Visit the node.*
-
-### Example of Binary Tree Traversal
-
-- Input (one example): `E C F A D H B G`
-
-![Binary tree created from example input](/images/bst/binary-search-tree-traversal.svg "Binary tree created from example input"){.light-only}
-
-![Binary tree created from example input](/images/bst/binary-search-tree-traversal-dark.svg "Binary tree created from example input"){.dark-only}
-
-- In-order sequence:   `A B C D E F G H`
-
-- Pre-order sequence:  `E C A B D F H G`
-  - (Useful for copying a tree and preserving the structure.)
-
-- Post-order sequence:  `B A D C G H F E`
-  - (Useful for deleting a subtree.)
-
-
-### Depth- and Breadth-First Traversals
-
-The in-order, pre-order, and post-order traversals we implemented are *depth*-first traversals.
-
-We could also implement these traversal with a *queue* to make them *breadth*-first.
-
-## Typical Operations on Binary Tree
-
-- Determine whether the binary tree is empty.
-
-- Insert an item in the binary tree.
-
-- Delete an item from the binary tree.
-
-- Search the binary tree for a particular item.
-
-- Find the height of the binary tree.
-
-- Find the number of nodes in the binary tree.
-
-- Find the number of leaves in the binary tree.
-
-- Traverse the binary tree.
-
-- Copy the binary tree.
-
-## Lab 14: Binary Trees (Part 1)
-
-Let’s take a look at the lab based on today’s lecture.

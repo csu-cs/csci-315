@@ -156,9 +156,10 @@ function sidebarNotes() {
 			text: 'Binary Trees',
 			collapsed: true,
 			items: [
-				{ text: "Binary Search Trees (Part 1)", link: "/lectures/14-binary-trees-1" },
-				{ text: "Binary Search Trees: Deletion", link: "/lectures/15-binary-trees-delete" },
-				{ text: "Binary Search Trees: Generic Traversal", link: "/lectures/15-binary-trees-traversal" },
+				{ text: "BST: Insertion", link: "/lectures/14-binary-trees-1" },
+				{ text: "BST: Intro to Traversal", link: "/lectures/14-binary-trees-traversal" },
+				{ text: "BST: Deletion", link: "/lectures/15-binary-trees-delete" },
+				{ text: "BST: Generic Traversal", link: "/lectures/15-binary-trees-traversal" },
 				{ text: "Heaps & Heapsort", link: "/lectures/16-heaps-heapsort" },
 			]
 		},
