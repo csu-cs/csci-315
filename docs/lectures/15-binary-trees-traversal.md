@@ -4,7 +4,7 @@ Binary Search Trees: Generic Traversal and Function Objects
 Chapter 19
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/aHKbBIGFe_E?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/x8dwwp_2Ebg?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 - In a traversal algorithm, “visiting” may mean different things.
@@ -104,30 +104,30 @@ std::cout << funObj.sum << '\n'; // 30
 
 ```C++
 template<typename Type>
-template<typename Func>
-void BinarySearchTree<Type>::preorderTraversal( Node* pCurr, Func& functor)
+template<typename Callable>
+void BinarySearchTree<Type>::preorderTraversal(Node* pCurr, Callable& callable)
 {
   if (pCurr != nullptr)
   {
-    functor(pCurr->value); // visit the node
-    preorderTraversal(pCurr->pLeft, functor);
-    preorderTraversal(pCurr->pRight, functor);
+    callable(pCurr->value); // visit the node
+    preorderTraversal(pCurr->pLeft, callable);
+    preorderTraversal(pCurr->pRight, callable);
   }
 }
 ```
 
 ```C++
 template<typename Type>
-template<typename Func>
-void BinarySearchTree<Type>::preorderTraversal( Func& functor)
+template<typename Callable>
+void BinarySearchTree<Type>::preorderTraversal(Callable& callable)
 {
-  preorderTraversal(mpRoot, functor);
+  preorderTraversal(mpRoot, callable);
 }
 ```
 
 ```C++
 BinarySearchTree<int> tree{VALUES, SIZE};
-SumValues<int> sumObj; // Instantiate functor
+SumValues<int> sumObj; // Instantiate function object
 
 tree.preorderTraversal(sumObj);
 
@@ -150,14 +150,13 @@ std::cout << "Sum: " << sumObj.sum << '\n';
 
 Examples:
 
-- 2–3
-- AA
-- AVL
-- Red Black
-- Scapegoat
-- Splay
-- Treap
-- etc.
+-   2--3 — nodes hold 2 or 3 keys; splits and merges balance.
+-   AVL — strictly height-balanced using rotations when child subtree heights differ by more than 1.
+-   Red Black — guarantees $O(\log_2{n})$ height with fewer rotations on updates.
+-   AA — red-black tree with simpler level rules and rotations.
+-   Scapegoat — rebuilds unbalanced subtrees when size/height invariants are violated.
+-   Splay — moves accessed nodes to the root via rotations.
+-   Treap — BST order with random heap priorities.
 
 ### Example of Balancing using Rotation
 

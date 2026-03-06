@@ -4,7 +4,7 @@ Binary Search Trees: Deletion
 Chapter 19
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/-0koufxaOPk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/KRhdXLh6h1I?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -101,7 +101,11 @@ The four cases of delete depend on the node to be deleted:
 
 4.  Has nonempty left and right subtrees (e.g., 50) 
 
-<ProgressiveDiagram :src="deleteCasesDiagram" />
+<ProgressiveDiagram :src="deleteCasesDiagram">
+
+Example tree showing deletion with each of the 4 cases.
+
+</ProgressiveDiagram>
 
 *See the lecture video for examples of each case.*
 
