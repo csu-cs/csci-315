@@ -150,13 +150,13 @@ std::cout << "Sum: " << sumObj.sum << '\n';
 
 Examples:
 
--   2--3 — nodes hold 2 or 3 keys; splits and merges balance.
--   AVL — strictly height-balanced using rotations when child subtree heights differ by more than 1.
--   Red Black — guarantees $O(\log_2{n})$ height with fewer rotations on updates.
--   AA — red-black tree with simpler level rules and rotations.
--   Scapegoat — rebuilds unbalanced subtrees when size/height invariants are violated.
--   Splay — moves accessed nodes to the root via rotations.
--   Treap — BST order with random heap priorities.
+-   *2-3* — nodes hold 2 or 3 keys; splits and merges balance.
+-   *AVL* — strictly height-balanced using rotations when child subtree heights differ by more than 1.
+-   *Red Black* — guarantees $O(\log_2{n})$ height with fewer rotations on updates.
+-   *AA* — red-black tree with simpler level rules and rotations.
+-   *Scapegoat* — rebuilds unbalanced subtrees when size/height invariants are violated.
+-   *Splay* — moves accessed nodes to the root via rotations.
+-   *Treap* — BST order with random heap priorities.
 
 ### Example of Balancing using Rotation
 

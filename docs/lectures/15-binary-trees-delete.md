@@ -93,13 +93,13 @@ inorder traversal will take $O(n)$.
 
 The four cases of delete depend on the node to be deleted:
 
-1.  Is a leaf (e.g., 77)
+1.  Is a leaf (e.g., `77`)
 
-2.  Has an empty left subtree (e.g., 53)
+2.  Has an empty left subtree (e.g., `53`)
 
-3.  Has an empty right subtree (e.g., 80)
+3.  Has an empty right subtree (e.g., `80`)
 
-4.  Has nonempty left and right subtrees (e.g., 50) 
+4.  Has nonempty left and right subtrees (e.g., `50`) 
 
 <ProgressiveDiagram :src="deleteCasesDiagram">
 
