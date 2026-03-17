@@ -5,7 +5,7 @@
 \usepackage{arrays}
 
 \title{\Huge{} Binary Heaps \& Heapsort}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 10 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 10 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -27,29 +27,113 @@ array index/.style = {
   \titlepage{}
 \end{frame}
 
-\section*{Intro}
+\section*{Why Heapsort?}
 
-\begin{frame}{Why study Heapsort?}
-\begin{itemize}[<+->]
-\item
-  Heapsort is a well-known, traditional sorting\\
-  algorithm you are expected to know.
-\item
-  Heapsort is \emph{always} $O(n \log n)$.
-\item
-  Learn about binary \textit{search} trees to:
+\begin{frame}{Why Binary Heaps?}
+
+The \emph{binary heap} is a fundamental structure used\\ in many algorithms.
+
+\begin{itemize}
+
+  \item  A heap supports very efficient operations:
+
   \begin{itemize}
-  \item
-    Quicksort is usually $O(n \log n)$ but $O(n^2)$ in the worst case.
-  \item
-    Quicksort is sometimes faster, but Heapsort is better in time-critical applications.
-  \item
-    Merge Sort is also $O(n \log n)$, but requires additional memory to sort an array.
+    \item Insert: \(O(\log_2{n})\)
+
+    \item Extract max/min: \(O(\log_2{n})\)
+
+    \item Peek/Poll max/min: \(O(1)\)
   \end{itemize}
-\item
-  Can improve our Priority Queue design (in certain situations).
+
+  This structure underpins algorithms like:
+
+  \begin{itemize}
+    \item Dijkstra's Shortest Path Algorithm
+
+    \item Prim's Minimum-Spanning Tree Algorithm
+
+    \item Priority queues used in schedulers and simulations.\\
+      Will improve our \emph{Priority Queue} design.
+  \end{itemize}
+
+  \item Understanding heapsort means you understand how heaps work internally, not just how to call a library.
 \end{itemize}
 \end{frame}
+
+\begin{frame}{Why Heapsort? --- Guaranteed Performance}
+  \begin{itemize}
+\item Heapsort guarantees \(O(n \log n)\) time complexity.
+\item This bound holds in \textbf{best, average, and worst cases}.
+\item Comparison with other sorting algorithms:
+\begin{itemize}
+\item Quicksort: average \(O(n \log n)\) but worst case \(O(n^2)\)
+\item Merge Sort: \(O(n \log n)\) but requires extra memory for arrays
+\item Heapsort: \(O(n \log n)\) with guaranteed worst-case performance
+\end{itemize}
+\item This makes heapsort useful when \textbf{predictable performance} is required.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Why Heapsort? --- Memory Efficiency}
+\begin{itemize}
+\item Heapsort is an \textbf{in-place sorting algorithm}.
+\item It requires only \(O(1)\) additional memory.
+\item Comparison:
+\begin{itemize}
+\item Heapsort: \(O(1)\) auxiliary space
+\item Merge Sort: \(O(n)\) auxiliary space
+\end{itemize}
+\item This property is useful in:
+\begin{itemize}
+\item Memory-constrained systems
+\item Embedded systems
+\item Large datasets where extra memory is expensive
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Why Heapsort? --- Educational Value}
+\begin{itemize}
+\item Reinforces key computer science concepts:
+\begin{itemize}
+\item Binary trees
+\item Priority queues
+\item Time complexity analysis
+\item Array-based tree representations
+\end{itemize}
+\item Common interview topics include:
+\begin{itemize}
+\item Building a heap
+\item Heapify operations
+\item Finding the $k$ largest or smallest elements
+\end{itemize}
+\item Understanding heapsort demonstrates strong algorithmic foundations.
+\end{itemize}
+\end{frame}
+
+% \begin{frame}{Why Heapsort?}
+% \begin{itemize}[<+->]
+% \item
+%   Heapsort is a well-known, traditional sorting\\
+%   algorithm you are expected to know.
+% \item
+%   Heapsort is \emph{always} $O(n \log n)$.
+% \item
+%   Learn about binary \textit{search} trees to:
+%   \begin{itemize}
+%   \item
+%     Quicksort is usually $O(n \log n)$ but $O(n^2)$ in the worst case.
+%   \item
+%     Quicksort is sometimes faster, but Heapsort is better in time-critical applications.
+%   \item
+%     Merge Sort is also $O(n \log n)$, but requires additional memory to sort an array.
+%   \end{itemize}
+% \item
+%   Can improve our Priority Queue design (in certain situations).
+% \end{itemize}
+% \end{frame}
+
+\section{Heaps}
 
 \begin{frame}{What is a ``heap''?}
 \begin{itemize}[<+->]
@@ -75,7 +159,7 @@ The heap data structure is a binary tree that maintains\\
 two properties, which we will discuss.\\[1em]
 \begin{enumerate}
 \item
-  \emph{Shape Property}: Left Justified and, therefore, Balanced
+  \emph{Shape Property}: \textit{Left justified} and, therefore, \textit{balanced}
 \item
   \emph{Heap Property}: The relationship between elements
 \end{enumerate}
@@ -143,8 +227,8 @@ two properties, which we will discuss.\\[1em]
           []
         ]
         [
-          []
-          []
+          [, phantom]
+          [, phantom]
         ]
       ]
       [
@@ -200,7 +284,7 @@ A binary tree has the \emph{shape properly} if:
 \item<2->
   Balanced
 \item<3->
-  All leaves at depth \(n\) are to the left without any missing.\\
+  All leaves at depth \(n\) are to the left, without any missing.\\
   (All leaves at depth \(n - 1\) are to the right of all the nodes at depth \(n\).)
 \end{itemize}
 \begin{columns}[T]
@@ -303,9 +387,9 @@ A binary tree has the \emph{shape properly} if:
 \onslide<6->{\column{0.18\textwidth}\centering
   \begin{forest}
     for tree={fit=tight, minimum size=1.8em, l sep=1em, inner sep=0}
-    [12,name=root, draw=CSUcyan,fill=white,
-      [8]
-      [14]
+    [8,name=root, draw=CSUcyan,fill=white,
+      [12]
+      [3]
     ]
     \node[anchor=south,align=center,above=0.2em of root] {(c) not heap};
   \end{forest}%
@@ -399,28 +483,30 @@ We will discover:\\[1em]
   \item
     If the deepest level is full, start a new level.
   \end{itemize}
-\item
-  Example:\\
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Order of Insertion}
   \centerline{%
     \begin{forest}
       [, name=root, for tree={fit=tight, l=8mm, inner sep=0.25em},
-        for descendants={visible on=<5->}
-        [, for tree={visible on=<6->}
-          [, for tree={visible on=<8->}
-            [, for tree={visible on=<12->}]
-            [, phantom]
+        for tree={visible on=<2->}
+        [, for tree={visible on=<3->}
+          [, for tree={visible on=<5->}
+            [, for tree={visible on=<9->}]
+            [, for tree={visible on=<10->}]
           ]
-          [, for tree={visible on=<9->}
-            [, phantom]
+          [, for tree={visible on=<6->}
+            [, for tree={visible on=<11->}]
             [, phantom]
           ]
         ]
-        [, for tree={visible on=<7->}
-          [, for tree={visible on=<10->}
+        [, for tree={visible on=<4->}
+          [, for tree={visible on=<7->}
             [, phantom]
             [, phantom]
           ]
-          [, for tree={visible on=<11->}
+          [, for tree={visible on=<8->}
             [, phantom]
             [, phantom]
           ]
@@ -428,13 +514,12 @@ We will discover:\\[1em]
       ]
   \end{forest}%
   }
-\end{itemize}
 \end{frame}
 
 \begin{frame}{Inserting into a Heap}
 \begin{itemize}[<+->]
 \item
-  Problem: Each time we add a node, we may destroy \\the heap property of its parent node.
+  Problem: Each time we add a node, we may\\ destroy the heap property of its parent node.
 \item
   Solution: \emph{Sift up} (a.k.a., bubble up).
 \item
@@ -921,13 +1006,13 @@ While the array isn't empty:\\
 \end{minipage}
 \begin{itemize}
 \item<2->
-  Re-heap the root node (index 0, containing 11).
-\item<12->
-  Again, remove and replace the root node.
+  \alt<-11>{Re-heap the root node (index 0, containing 11).}{
+    Again, remove and replace the root node.
+  }
 \item<15->
   Remember, though, that the ``last'' array index is changed.
 \item<17->
-  Repeat until the last becomes first, and the array is sorted!
+  Repeat until the last becomes the first, and the array is sorted!
 \end{itemize}
 \end{frame}
 
@@ -972,7 +1057,7 @@ The sorting algorithm starts by \emph{heapifying the array}.
 \item<3->
   Removing and replacing the root takes \(O(1)\) time.
 \item<4->
-  Therefore, the total time is \(n\) times however long it takes the reheap method.
+  Therefore, the total time is \(n\) times however long\\ it takes the reheap method.
 \end{itemize}
 \end{frame}
 
@@ -1037,11 +1122,11 @@ The sorting algorithm starts by \emph{heapifying the array}.
 \begin{frame}{Summary of Benefits}
   \begin{itemize}[<+->]
     \item
-    \emph{Heap Sort}: An always $O(n \log{n})$ in-place\\
-    sorting algorithm\\
-    (i.e., \(O(1)\) additional space and with predictable performance).
-  \item
-    \emph{Priority Queue}: Many algorithms require elements with higher (or lower) priority to be processed first.
+      \emph{Heapsort}: An always $O(n \log{n})$ in-place\\
+      sorting algorithm\\
+      (i.e., \(O(1)\) additional space and with predictable performance).
+    \item
+      \emph{Priority Queue}: Many algorithms require elements with higher (or lower) priority to be processed first.
 \end{itemize}
 \end{frame}
 
@@ -1050,6 +1135,29 @@ The sorting algorithm starts by \emph{heapifying the array}.
     \href{https://www.toptal.com/developers/sorting-algorithms}{Sorting Algorithms Animations}
   \end{center}
 \end{frame}
+
+\section{Introsort}
+
+\begin{frame}{Introspective Sort (Introsort)}
+  Combines \emph{Quicksort}, \emph{Insertion Sort}, and \emph{Heapsort},
+
+  Approach:
+
+  \begin{enumerate}
+    \item 
+      Start with \emph{Quicksort} for its fast average-case performance (\(\approx O(n \log_2 n)\)).
+
+    \item 
+      Track the recursion depth.
+
+    \item 
+      If the depth exceeds a threshold (typically \(2 \cdot{} \log_2 n\)), switch to \emph{Heapsort} to avoid quicksort's worst case (\(O(n^2)\)).
+
+    \item 
+      For small subarrays (size 16 to 32), use \emph{Insertion Sort} for efficiency.
+  \end{enumerate}
+\end{frame}
+
 
 \section*{Lab 16}
 \begin{frame}{Lab 16: Binary Heap and Heapsort}

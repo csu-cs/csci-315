@@ -4,7 +4,7 @@ Binary Heaps and Heapsort
 Chapter 10 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/1wbi1UP5OY8?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/cayVKfObKiM?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Intro
@@ -41,7 +41,7 @@ Chapter 10 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 - These two definitions have little in common.
 
-- Heapsort uses the second definition.
+- *Heapsort* uses the second definition.
 
 ### Two Properties of a Binary Heap
 
@@ -335,7 +335,7 @@ While the array isn’t empty:
 - ***Ease of Implementation***: With arrays, the algorithms for
   insertion, deletion, and heapifying are intuitive.
 
-- ***Heap Sort***: An always $O(n \log{n})$ in-place sorting algorithm
+- ***Heapsort***: An always $O(n \log{n})$ in-place sorting algorithm
   (i.e., $O(1)$ additional space and with predictable performance).
 
 - ***Priority Queue***: Many algorithms require elements with higher (or
@@ -345,6 +345,21 @@ While the array isn’t empty:
 
 [Sorting Algorithms
 Animations](https://www.toptal.com/developers/sorting-algorithms)
+
+
+## Introspective Sort (Introsort)
+
+Now that we have a many sorting algorithms, consider that we can combine them to
+achieve better average performance.
+
+***Introsort*** combines *Quicksort*, *Insertion Sort*, and *Heapsort*,
+
+Approach:
+
+  -   Start with *Quicksort* for its fast average-case performance ($\approx O(n \log_2 n)$).
+  -   Track the recursion depth.
+  -   If the depth exceeds a threshold (typically $2 \cdot{} \log_2 n$), switch to *Heapsort* to avoid quicksort's worst case ($O(n^2)$).
+  -   For small subarrays (size 16 to 32), use *Insertion Sort* for efficiency.
 
 ## Lab 16: Binary Heap and Heapsort
 
