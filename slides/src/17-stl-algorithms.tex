@@ -1,0 +1,520 @@
+\documentclass[14pt,aspectratio=1610]{beamer}
+% \documentclass[12pt,aspectratio=1610,handout]{beamer}
+\usepackage{csu-theme}
+\usepackage{arrays}
+\usepackage{linked-lists}
+\usepackage{booktabs}
+\usetikzlibrary{backgrounds}
+
+\title{\Huge{} Standard Template Library\\Algorithms}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 21}
+%\author{Sean T. Hayes, Ph.D.}
+\institute{Charleston Southern University}
+
+%% Comment out date to use default (today)
+% \date{March 20, 2025}
+\subject{Software Programming}
+%\keywords{}
+\graphicspath{{../imgs/stl}}
+
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section*{Algorithms}
+
+\begin{frame}{Algorithms in the STL}
+Many algorithms that work on any STL container are \\
+found in the \lstinline{<algorithm>} library.
+\begin{itemize}
+\item
+  Copy
+\item
+  Partition
+\item
+  Sort
+\item
+  Search
+\item
+  \ldots{}
+\end{itemize}
+
+These algorithms are provided generically to support many container types.
+\end{frame}
+
+
+\begin{frame}{STL Algorithm Classifications}
+
+\begin{itemize}
+\item
+  \emph{Non-modifying algorithms} do not modify the elements of the container
+\item
+  \emph{Modifying algorithms} modify the elements of the container
+\item
+  \emph{Numeric algorithms} perform numeric calculations on elements of a container.
+\item
+  \emph{Heap algorithms} are Heapsort algorithm that sorts contiguous data.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Non-Modifying Sequence Algorithms}
+\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{r X}
+
+\href{https://en.cppreference.com/w/cpp/algorithm/all_any_none_of}{\lstinline{all\_of, any\_of, none\_of}}
+ &    checks if a predicate is true for all, any or none of the elements in a range \\
+\href{https://en.cppreference.com/w/cpp/algorithm/for_each}{\lstinline{for\_each}}
+ &    applies a function to a range of elements \\
+\href{https://en.cppreference.com/w/cpp/algorithm/for_each_n}{\lstinline{for\_each\_n}}
+ &    applies a function object to the first n elements of a sequence  \\
+\href{https://en.cppreference.com/w/cpp/algorithm/count}{\lstinline{count, count\_if}}
+ &    returns the number of elements satisfying specific criteria  \\
+\href{https://en.cppreference.com/w/cpp/algorithm/mismatch}{\lstinline{mismatch}}
+ &    finds the first position where two ranges differ \\
+\href{https://en.cppreference.com/w/cpp/algorithm/find}{\lstinline{find, find\_if, find\_if\_not}}
+ &    finds the first element satisfying specific criteria  \\
+\href{https://en.cppreference.com/w/cpp/algorithm/find_end}{\lstinline{find\_end}}
+ &    finds the last sequence of elements in a certain range \\
+\href{https://en.cppreference.com/w/cpp/algorithm/find_first_of}{\lstinline{find\_first\_of}}
+ &    searches for any one of a set of elements  \\
+\href{https://en.cppreference.com/w/cpp/algorithm/adjacent_find}{\lstinline{adjacent\_find}}
+ &    finds the first two adjacent items that are equal (or satisfy a given predicate)  \\
+\href{https://en.cppreference.com/w/cpp/algorithm/search}{\lstinline{search}}
+ &    searches for a range of elements \\
+\href{https://en.cppreference.com/w/cpp/algorithm/search_n}{\lstinline{search\_n}}
+ &    searches a range for a number of consecutive\\[-0.2em]
+ &    copies of an element \\
+\end{tabularx}
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: The \texttt{for\_each()} Algorithm}
+  \small
+\begin{lstlisting}
+#include <vector>
+#include <algorithm>
+#include <iostream>
+void show(int n) {
+  std::cout << n << ", ";
+}
+
+int main() {
+  // initialize vector with a list of values
+  std::vector<int> v{ 12, 3, 17, 8 };
+
+  // apply function show to each element of vector v
+  std::for_each (v.begin(), v.end(), show);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Example: The \texttt{find()} Algorithm}
+  
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <vector>
+#include <algorithm>
+#include <iostream>
+int main() {
+  std::vector<int> v{ 12, 3, 17, 8, 34, 56, 9 };
+  std::vector<int>::iterator iter;
+  int key;
+
+  std::cout << "Enter value: ";
+  std::cin >> key;
+  iter = std::find(v.begin(), v.end(), key);
+  std::cout << "Element " << key << " is ";
+  if (iter == v.end()) // value was NOT found
+     std::cout << "not";
+  std::cout << " in vector v.\n";
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Example: The \texttt{find\_if()} Algorithm}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <vector>
+#include <algorithm>
+#include <iostream>
+bool inRange(int n) { return (n > 21) && (n < 36); };
+
+int main() {
+  std::vector<int> v{ 12, 3, 17, 8, 34, 56, 9 };
+  std::vector<int>::iterator iter;
+  iter = std::find_if(v.begin(), v.end(), inRange);
+
+  // finds an element in v for which inRange is true
+  if (iter != v.end()) // found the element
+    std::cout << "found " << *iter << '\n';
+  else
+    std::cout << "not found\n";
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Example: The \texttt{count\_if()} Algorithm}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <vector>
+#include <algorithm>
+#include <iostream>
+bool inRange(int n) { return (n > 14) && (n < 36); };
+
+int main() {
+  std::vector<int> v{ 12, 3, 17, 8, 34, 56, 9 };
+  std::vector<int>::iterator iter;
+
+  // counts element in v for which inRange is true
+  const int N = std::count_if(v.begin(),v.end(), inRange);
+  std::cout << "found " << N << " values between 14 and 36.\n";
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Minimum/Maximum Algorithms}
+\small\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{r X}
+\href{https://en.cppreference.com/w/cpp/algorithm/max}{\lstinline{max}} &
+  returns the greater of the given values\\
+\href{https://en.cppreference.com/w/cpp/algorithm/max_element}{\lstinline{max_element}} &
+  returns the largest element in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/min}{\lstinline{min}} &
+  returns the smaller of the given values\\
+\href{https://en.cppreference.com/w/cpp/algorithm/min_element}{\lstinline{min_element}} &
+  returns the smallest element in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/minmax}{\lstinline{minmax}} &
+  returns the smaller and larger of two elements\\
+\href{https://en.cppreference.com/w/cpp/algorithm/minmax_element}{\lstinline{minmax_element}} &
+  returns the smallest and the largest elements in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/clamp}{\lstinline{clamp}} &
+  clamps a value between a pair of boundary values\\
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Set Algorithms (on Sorted Ranges)}
+\small\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{r X}
+\href{https://en.cppreference.com/w/cpp/algorithm/includes}{\lstinline{includes}} &
+  returns true if one sequence is a subsequence of another\\
+\href{https://en.cppreference.com/w/cpp/algorithm/set_difference}{\lstinline{set_difference}} &
+  computes the difference between two sets\\
+\href{https://en.cppreference.com/w/cpp/algorithm/set_intersection}{\lstinline{set_intersection}} &
+  computes the intersection of two sets\\
+\href{https://en.cppreference.com/w/cpp/algorithm/set_symmetric_difference}{\lstinline{set_symmetric_difference}} &
+  computes the symmetric difference between two sets\\
+\href{https://en.cppreference.com/w/cpp/algorithm/set_union}{\lstinline{set_union}} &
+  computes the union of two sets\\
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Modifying Sequence Algorithms}
+\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{r X}
+\href{https://en.cppreference.com/w/cpp/algorithm/copy}{\lstinline{copy, copy_if}} &
+  copies a range of elements to a new location\\
+\href{https://en.cppreference.com/w/cpp/algorithm/copy_n}{\lstinline{copy_n}} &
+  copies a number of elements to a new location\\
+\href{https://en.cppreference.com/w/cpp/algorithm/copy_backward}{\lstinline{copy_backward}} &
+  copies a range of elements in backward order\\
+\href{https://en.cppreference.com/w/cpp/algorithm/move}{\lstinline{move}} &
+  moves a range of elements to a new location\\
+\href{https://en.cppreference.com/w/cpp/algorithm/move_backward}{\lstinline{move_backward}} &
+  moves a range of elements to a new location in backward order\\
+\href{https://en.cppreference.com/w/cpp/algorithm/fill}{\lstinline{fill}} &
+  copy-assigns the given value to every element in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/fill_n}{\lstinline{fill_n}} &
+  copy-assigns the given value to N elements in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/transform}{\lstinline{transform}} &
+  applies a function to a range of elements, storing results in a destination range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/generate}{\lstinline{generate}} &
+  assigns the results of successive function calls to every element in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/generate_n}{\lstinline{generate_n}} &
+  assigns the results of successive function calls to N elements in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/remove}{\lstinline{remove, remove_if}} &
+  removes elements satisfying specific criteria\\
+
+\end{tabularx}
+\end{frame}
+
+\begin{frame}[fragile]{Example: The \texttt{copy()} Algorithm}
+
+The copy algorithm overwrites the existing contents when using regular iterators.
+
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <list>
+#include <algorithm>
+
+int main() {
+  std::list<int> odds{ 1, 3, 5, 7, 9 };
+  std::list<int> result{ 2, 4, 6, 8, 10 };
+
+  // copy contents of odds to result overwriting the elements in result
+  std::copy(odds.begin(), odds.end(), result.begin());
+  // result = { 1, 3, 5, 7, 9 }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Example: The \texttt{copy()} Algorithm}
+\small
+With insert operators, you can modify the behavior of the copy algorithm.\\[0.5em]
+
+\begin{tabular}{l l}
+\href{https://en.cppreference.com/w/cpp/iterator/back_inserter}{\lstinline{back_inserter}} & inserts new elements at the end\\
+\href{https://en.cppreference.com/w/cpp/iterator/front_inserter}{\lstinline{front_inserter}} & inserts new elements at the beginning\\
+\href{https://en.cppreference.com/w/cpp/iterator/inserter}{\lstinline{inserter}} & inserts new elements at a specified location\\
+\end{tabular}\\[1em]
+
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+std::list<int> l1{ 1, 3, 5, 7, 9 };
+std::list<int> l2{ 2, 4, 6, 8, 10 };
+\end{lstlisting}
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::copy(l1.begin(), l1.end(), std::back_inserter(l2));
+// l2 = { 2, 4, 6, 8, 10, 1, 3, 5, 7, 9  }
+\end{lstlisting}
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::copy(l1.begin(), l1.end(), std::front_inserter(l2));
+// l2 = { 9, 7, 5, 3, 1, 2, 4, 6, 8, 10 }
+\end{lstlisting}
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::copy(l1.begin(), l1.end(), std::inserter(l2, l2.begin()));
+// l2 = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10 }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Example: \texttt{copy()} with Output Iterator}
+
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <iostream>
+#include <iterator>
+#include <vector>
+#include <algorithm>
+
+int main() {
+  std::vector<int> vector {10, 20, 30, 40, 50, 60};
+  std::ostream_iterator<int> outIter{std::cout,
+    ", "};
+
+  std::copy(vector.begin(), vector.end(), outIter);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Modifying Sequence Algorithms}
+\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{r X}
+\href{https://en.cppreference.com/w/cpp/algorithm/remove_copy}{\lstinline{remove_copy, remove_copy_if}} &
+  copies a range of elements omitting those that satisfy specific criteria\\
+\href{https://en.cppreference.com/w/cpp/algorithm/replace}{\lstinline{replace, replace_if}} &
+  replaces all values satisfying specific criteria with another value\\
+\href{https://en.cppreference.com/w/cpp/algorithm/replace_copy}{\lstinline{replace_copy, replace_copy_if}} &
+  copies a range, replacing elements satisfying specific criteria with another value\\
+\href{https://en.cppreference.com/w/cpp/algorithm/swap}{\lstinline{swap}} &
+  swaps the values of two objects\\
+\href{https://en.cppreference.com/w/cpp/algorithm/swap_ranges}{\lstinline{swap_ranges}} &
+  swaps two ranges of elements\\
+\href{https://en.cppreference.com/w/cpp/algorithm/iter_swap}{\lstinline{iter_swap}} &
+  swaps the elements pointed to by two iterators\\
+\href{https://en.cppreference.com/w/cpp/algorithm/reverse}{\lstinline{reverse}} &
+  reverses the order of elements in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/reverse_copy}{\lstinline{reverse_copy}} &
+  creates a copy of a range that is reversed\\
+\href{https://en.cppreference.com/w/cpp/algorithm/rotate}{\lstinline{rotate}} &
+  rotates the order of elements in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/rotate_copy}{\lstinline{rotate_copy}} &
+  copies and rotate a range of elements\\
+\end{tabularx}
+\end{frame}
+
+\begin{frame}[fragile]{Example: The \texttt{sort()} and \texttt{merge()} Algorithms}
+
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <list>
+#include <algorithm>
+int main() {
+  std::list<int>  l1 { 6, 4, 9, 1, 7 }
+  std::list<int>  l2 { 4, 2, 1, 3, 8 };
+  l1.sort(); // l1 = {1, 4, 6, 7, 9}
+  l2.sort(); // l2 = {1, 2, 3, 4, 8 }
+  l1.merge(l2);  // merges l2 into l1
+  // l1 = { 1, 1, 2, 3, 4, 4, 6, 7, 8, 9},  l2 = {}
+}
+\end{lstlisting}
+\end{frame}
+
+\section{Numeric Algorithms}
+
+\begin{frame}{Numeric Algorithms in \href{https://en.cppreference.com/w/cpp/header/numeric}{\texttt{<numeric>}}}
+\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{r X}
+\href{https://en.cppreference.com/w/cpp/algorithm/iota}{\lstinline{iota}} &
+  fills a range with successive increments of the starting value\\
+\href{https://en.cppreference.com/w/cpp/algorithm/accumulate}{\lstinline{accumulate}} &
+  sums up a range of elements\\
+\href{https://en.cppreference.com/w/cpp/algorithm/inner_product}{\lstinline{inner_product}} &
+  computes the inner product of two ranges of elements\\
+\href{https://en.cppreference.com/w/cpp/algorithm/adjacent_difference}{\lstinline{adjacent_difference}} &
+  computes the differences between adjacent elements in a range\\
+\href{https://en.cppreference.com/w/cpp/algorithm/partial_sum}{\lstinline{partial_sum}} &
+  computes the partial sum of a range of elements\\
+\href{https://en.cppreference.com/w/cpp/algorithm/reduce}{\lstinline{reduce}} &
+  similar to \texttt{std::accumulate}, except out of order\\
+\href{https://en.cppreference.com/w/cpp/algorithm/exclusive_scan}{\lstinline{exclusive_scan}} &
+  excludes the ith input element from the ith sum\\
+\href{https://en.cppreference.com/w/cpp/algorithm/inclusive_scan}{\lstinline{inclusive_scan}} &
+  includes the ith input element in the ith sum\\
+\href{https://en.cppreference.com/w/cpp/algorithm/transform_reduce}{\lstinline{transform_reduce}} &
+  applies an invocable, then reduces out of order\\
+\href{https://en.cppreference.com/w/cpp/algorithm/transform_exclusive_scan}{\lstinline{transform_exclusive_scan}} &
+  applies an invocable, then calculates exclusive scan\\
+\href{https://en.cppreference.com/w/cpp/algorithm/transform_inclusive_scan}{\lstinline{transform_inclusive_scan}} &
+  applies an invocable, then calculates inclusive scan\\
+\end{tabularx}
+\end{frame}
+
+\begin{frame}{Heap Algorithms}
+
+Built-in heapsort.\\
+(You must not implement the Heap in your lab using these functions, but you may use them for testing.)
+
+\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{r X}
+\href{https://en.cppreference.com/w/cpp/algorithm/is_heap}{\lstinline{is_heap}} &
+  checks if the given range is a max heap\\
+\href{https://en.cppreference.com/w/cpp/algorithm/is_heap_until}{\lstinline{is_heap_until}} &
+  finds the largest subrange that is a max heap\\
+\href{https://en.cppreference.com/w/cpp/algorithm/make_heap}{\lstinline{make_heap}} &
+  creates a max heap out of a range of elements\\
+\href{https://en.cppreference.com/w/cpp/algorithm/push_heap}{\lstinline{push_heap}} &
+  adds an element to a max heap\\
+\href{https://en.cppreference.com/w/cpp/algorithm/pop_heap}{\lstinline{pop_heap}} &
+  removes the largest element from a max heap\\
+\href{https://en.cppreference.com/w/cpp/algorithm/sort_heap}{\lstinline{sort_heap}} &
+  turns a max heap into a range of elements sorted in ascending order\\
+\end{tabularx}
+\end{frame}
+
+\section{Function Objects}
+\begin{frame}{Function Objects}
+\begin{itemize}
+\item
+  Some algorithms like sort, merge, and accumulate can take a function object as an argument.
+\item
+  A function object is an instance of a class that overloads \lstinline{operator()}.
+\item
+  It is also possible to use user-written functions in place of predefined function objects.
+\item
+  In C++, a slang term for \textit{Function Objects} is \emph{functors}, but that term has alternate meaning.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Function Objects Example}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <list>
+#include <functional>
+int main() {
+  std::list<int> lst { 6, 4, 9, 1, 7 };
+  lst.sort(std::greater<int>{}); // uses function object
+  // for sorting in reverse order lst = { 9, 7, 6, 4, 1 }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Function Objects}
+\small
+The accumulate algorithm accumulates values over a range (e.g., the sum).
+
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+#include <list>
+#include <functional>
+#include <numeric>
+int main() {
+  std::list<int> lst { 6, 4, 9, 1, 7 };
+  int sum, fac;
+  sum = std::accumulate(lst.begin(), lst.end(), 0,
+    std::plus<int>{});
+  sum = std::accumulate(lst.begin(), lst.end(), 0);
+    // plus by default
+
+  fac = std::accumulate(lst.begin(), lst.end(), 1,
+    std::times<int>{});
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{User Defined Function Objects}
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+template <typename Type>
+struct SquaredSum  // user-defined function object
+{
+    Type operator()(Type n1, Type n2) { return n1 + n2 * n2; }
+};
+\end{lstlisting}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+#include <complex>
+#include <numeric>
+#include <vector>
+\end{lstlisting}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::vector<std::complex<int>> vc {{2, 3}, {1, 5}, {-2, 4}};
+
+// computes the sum of squares of a vector of complex numbers
+std::complex sum_vc = std::accumulate(vc.begin(), vc.end(),
+          std::complex(0, 0), SquaredSum<std::complex<int>>{});
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{User Defined Function Objects}
+Unlike functions, function objects permit custom parameterization and statefullness.
+
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+std::vector<double> vals1 {2, 3, 1, 5, -2, 4};
+std::vector<double> vals2 {9, 8, -6, -10, -1, 8, 6};
+
+// Square each value in both vectors and calculate the total.
+CalculateAverageOfPowers squared{2}; // Function Object
+squared = std::for_each(vals1.begin(), vals1.end(), squared);
+squared = std::for_each(vals2.begin(), vals2.end(), squared);
+
+std::cout << ' ' << squared.getAverage() << '\n';
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{User Defined Function Objects}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+class CalculateAverageOfPowers
+{
+public:
+  CalculateAverageOfPowers(double power) 
+    : total{0}, count{0}, exponent{power} {}
+
+  void operator() (double x) {
+    total += pow(x, exponent);
+    ++count;
+  }
+
+  auto getAverage() const { return total / count; }
+
+private:
+  double total;
+  int count;
+  double exponent;
+};
+\end{lstlisting}
+\end{frame}
+
+\section*{Lab 17}
+\begin{frame}{Lab 17: The STL and Sorting}
+\centering\Large
+  Let's take a look at Lab 17.
+\end{frame}
+
+\end{document}

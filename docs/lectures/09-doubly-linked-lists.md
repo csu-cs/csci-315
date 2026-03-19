@@ -93,7 +93,7 @@ Step 4:
 Intro. to the Standard Template Library (SLT)
 ---------------------------------------------
 
-[Go here for lecture notes on the STL.](17-standard-template-library)
+[Go here for lecture notes on the STL.](17-stl-containers)
 
 ## Homework
 

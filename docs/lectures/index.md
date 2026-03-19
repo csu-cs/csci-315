@@ -50,9 +50,13 @@
 - [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal)
 - [Heaps & Heapsort](/lectures/16-heaps-heapsort)
 
+## The Standard Template Library
+
+- [Containers and Iterators](/lectures/17-stl-containers)
+- [Algorithms](/lectures/17-stl-algorithms)
+
 ## More Data Structures
 
-- [Standard Template Library](/lectures/17-standard-template-library)
 - [Hash Tables via Chaining](/lectures/18-hash-tables-chaining)
 - [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing)
 - [Priority Queues](/lectures/20-priority-queues)

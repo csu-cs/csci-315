@@ -112,7 +112,7 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 |  8B  | [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete) & [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |
 |  9   | *Spring Break* (No Class)                     |                       |
 | 10A  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
-| 10B  | [Standard Template Library](/lectures/17-standard-template-library) | Lab 17                |
+| 10B  | [STL Containers and Iterators](/lectures/17-stl-containers) and [STL Algorithms](/lectures/17-stl-algorithms) | Lab 17                |
 | 11A  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
 | 11B  | [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | Project 3 & Lab 19    |
 | 12A  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |

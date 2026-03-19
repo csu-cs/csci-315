@@ -6,8 +6,8 @@
 \usepackage{booktabs}
 \usetikzlibrary{backgrounds}
 
-\title{\Huge{} The Standard Template Library (STL)}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 21}
+\title{\Huge{} Standard Template Library\\Containers \& Iterators}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 21}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -29,12 +29,19 @@
 
 \begin{frame}{Introduction to the STL}
 
-\begin{itemize}
-\item
-  The standard C++ is equipped with a \emph{Standard Template Library\\(STL)}.
-\item
+  The C++ standard defines both the
+
+  \begin{itemize}
+  \item
+    core language and
+  \item
+    \emph{Standard Template Library (STL)}.
+  \end{itemize}
+
   The STL includes class templates to process lists, stacks, and queues.
-\item
+\end{frame}
+
+\begin{frame}{Introduction to the STL}
   In this lecture, you will:
   \begin{itemize}
   \item
@@ -44,7 +51,6 @@
   \item
     Become familiar with basic operations on vector objects
   \end{itemize}
-\end{itemize}
 \end{frame}
 
 \begin{frame}{Components of the STL}
@@ -66,14 +72,24 @@ The STL consists of three categories of components:
 }
 \end{frame}
 
-\begin{frame}{Available Containers Types}
+\begin{frame}{Containers Types}
 \begin{itemize}[<+->]
 \item
   \emph{Sequence Containers} implement data structures \\that can be accessed sequentially.
 \item
-  \emph{Ordered Associative Containers} implement sorted data structures that can be quickly searched (\(O(\log n)\) complexity).
+  \emph{Ordered Associative Containers} implement sorted\\ data structures that can be quickly searched\\ (\(O(\log n)\) complexity).
 \item
   \emph{Unordered Associative Containers} implement unsorted (hashed) data structures that can be quickly searched (\(O(1)\) on average, \(O(n)\) worst-case complexity).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Container Adapters and Views}
+
+Container adapters and views support different\\
+features of existing containers, rather than being\\
+containers themselves.
+
+\begin{itemize}[<+->]
 \item
   \emph{Adapters} provide a different interface for sequential containers.
 \item
@@ -81,7 +97,7 @@ The STL consists of three categories of components:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Sequence Containers Types in C++20}
+\begin{frame}{Sequence Containers Types in C++20/23}
 \renewcommand{\arraystretch}{1.1}
 \begin{tabular}{l l l}
 \toprule
@@ -102,7 +118,7 @@ The STL consists of three categories of components:
 \end{frame}
 
 
-\begin{frame}{Associative Containers Types in C++20}
+\begin{frame}{Associative Containers}
   \renewcommand{\arraystretch}{1.1}
   \begin{tabular}{l l l}
   \toprule
@@ -132,26 +148,39 @@ The STL consists of three categories of components:
 \end{frame}
 
 
-\begin{frame}{Adpaters and Views Types in C++20}
+\begin{frame}{Adapters and Views Types in C++23}
   \renewcommand{\arraystretch}{1.1}
-  \begin{tabular}{l l l}
+  \newlength{\colAWidth}
+  \settowidth{\colAWidth}{priority queue}
+  \begin{tabular}{p{\colAWidth} l l}
     \toprule
       \textbf{Adapters} & \textbf{Header File} & \textbf{Iterator Support}\\
     \midrule
       \href{https://en.cppreference.com/w/cpp/container/stack}{stack}
-        & \lstinline{<stack>} & No iterator support\\
+        & \lstinline{<stack>} & \textit{none}\\
       \href{https://en.cppreference.com/w/cpp/container/queue}{queue}
-        & \lstinline{<queue>} & No iterator support\\
+        & \lstinline{<queue>} & \textit{none}\\
       \href{https://en.cppreference.com/w/cpp/container/priority_queue}{priority queue}
-        & \lstinline{<queue>} & No iterator support\\
-    \midrule
+        & \lstinline{<queue>} & \textit{none}\\
+    \bottomrule
+  \end{tabular}
+
+
+  \begin{tabular}{p{\colAWidth} l l}
+    \toprule
       \textbf{Views} & \textbf{Header File} & \textbf{Iterator Support}\\
+    \midrule
         \href{https://en.cppreference.com/w/cpp/container/span}{span}
         & \lstinline{<span>} & Bidirectional\\
-  \bottomrule
+        \href{https://en.cppreference.com/w/cpp/container/mdspan.html}{mdspan}
+        & \lstinline{<mdspan>} & \textit{none}\\
+    \bottomrule
   \end{tabular}
   
-  \end{frame}
+\end{frame}
+
+
+\section{Sequence Containers}
 
 \begin{frame}{Sequence Containers in the STL}
 Sequence container: every object in the container has a specific position.
@@ -169,9 +198,6 @@ Sequence container: every object in the container has a specific position.
   \lstinline{forward\_list} --  usually a singly-linked list
 \end{enumerate}
 \end{frame}
-
-
-\section{\texttt{\bfseries vector}}
 
 \begin{frame}[fragile]{Declaring a \texttt{\bfseries vector}}
 \begin{itemize}
@@ -192,35 +218,28 @@ std::vector<std::string> stringList;
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Constructors for a \texttt{\bfseries vector}}
-  \small
-There are 10 different constructors for \lstinline{vector}; Here are some highlights.
-\begin{itemize}
-\item
-  \lstinline{vector();}\\
-  Default constructor. Constructs an empty container.
-\item
-  \lstinline{vector(size_type count, const T& value = T());}\\
-  Constructs the container with count copies of elements with value value.
-\item
-  \lstinline{template<typename InputIt>}\\
-  \lstinline{vector(InputIt first, InputIt last);}\\
-  Constructs the container with the contents of the range [first, last).
-\item
-  \lstinline{vector(const vector& other);}\\
+\begin{frame}{Constructors for a \texttt{\bfseries vector}}
+  \setbeamercolor{description item}{parent=normal text}
+  %\small
+Subset of constructors for \lstinline{vector}:
+\begin{description}[~~~~]\setlength\itemsep{0.25em}
+\item[\colorbox{codeBackground}{\texttt{{\color{codeVariable} vector}();}}]\hfill\break%
+  Default constructor. Constructs an empty vector.
+\item[\colorbox{codeBackground}{\texttt{{\color{codeVariable}vector}({\color{codeVariable}size\_type count}, {\bfseries\color{codeKeyword}const} {\color{codeVariable}T}\& {\color{codeVariable}value} = {\color{codeVariable}T}());}}]\hfill\break%
+  Constructs the object containing \lstinline{count} copies of value.
+\item[{\parbox[t]{\linewidth}{\colorbox{codeBackground}{\texttt{{\bfseries\color{codeKeyword}template}<{\bfseries\color{codeKeyword}typename} {\color{codeVariable}InputIt}>}}\\\colorbox{codeBackground}{\texttt{{\color{codeVariable}vector}({\color{codeVariable}InputIt first}, {\color{codeVariable}InputIt last});}}}}]\hfill\break%
+  Constructs the container with the contents of the range [\texttt{first}, \texttt{last}).
+\item[\colorbox{codeBackground}{\texttt{{\color{codeVariable}vector}({\bfseries\color{codeKeyword}const} {\color{codeVariable}vector}\& {\color{codeVariable}other});}}]\hfill\break%
   Copy constructor.
-\end{itemize}
+\end{description}
 \end{frame}
 
 \begin{frame}[fragile]{Operations on a \texttt{\bfseries vector}}
   \small
-\begin{itemize}
-\item
-  Basic vector operations
   \begin{itemize}
   \item
     Item insertion\\
-    \lstinline{insert(iterator pos, T& value);} \lstinline{push_back(const T& value);} etc.
+    \lstinline{insert(iterator pos, T& value);}\\\lstinline{push_back(const T& value);} etc.
   \item
     Item deletion\\
     \lstinline{erase(iterator pos);} \lstinline{pop_back();} etc.
@@ -232,7 +251,6 @@ operator[](int index); // Random access reference
 front(); // the first element
 back();  // the last element
 \end{lstlisting}
-  \end{itemize}
 \item
   Vector elements can be processed just as they can in an array.
 \end{itemize}
@@ -364,8 +382,6 @@ int main() {
 }
 \end{lstlisting}
 \end{frame}
-
-\section{Other Sequence Containers}
 
 \begin{frame}[fragile]{The \texttt{\bfseries deque} (Double-Ended Queue) Container}
 \href{https://en.cppreference.com/w/cpp/container/deque}{\lstinline{std::deque}} is another indexed sequence container, which is \\accessed using
@@ -540,7 +556,9 @@ cout << "max of words = " << maxValue(words);
 \end{frame}
 
 \begin{frame}[fragile]{Types of Iterators}
-Every algorithm requires an iterator with a certain capability.
+Every algorithm requires an iterator with a certain\\
+capability.
+\pause{}
 \begin{enumerate}[<+->]
 \item
   \emph{Input iterators} have read access; step forward element-by-element.
@@ -548,13 +566,22 @@ Every algorithm requires an iterator with a certain capability.
   \emph{Output iterators} have write access; step forward element-by-element.
 \item
   \emph{Forward iterators} have the functionality of input and most of the functionality of output iterators.
+
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Types of Iterators}
+\begin{enumerate}[<+->]
+  \setcounter{enumi}{3}
 \item
-  \emph{Bidirectional iterators} are forward iterators that can also go backward.
+  \emph{Bidirectional iterators} are forward iterators that\\ can also go backward.
 \item
   \emph{Random access iterators} are bidirectional iterators that can randomly process the elements of a container.
-\item As of C++20, there are additional iterators based on \href{https://en.cppreference.com/w/cpp/language/constraints}{concepts}, which differ from C++17.
+\item 
+  As of C++20, there are additional iterators based on \href{https://en.cppreference.com/w/cpp/language/constraints}{concepts}.
 \end{enumerate}
 
+\pause{}
 \href{https://en.cppreference.com/w/cpp/iterator}{https://en.cppreference.com/w/cpp/iterator}
 \end{frame}
 
@@ -583,12 +610,12 @@ Random Access &\lstinline$[ ]$ & \lstinline$x = *i$ &  \lstinline$*i = x$ &  \ls
 \end{frame}
 
 \begin{frame}{Benefits of Iterators}
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.5em}
 \item<2->
   \emph{Convenience in Programming}:
   \begin{itemize}
   \item
-    Provide common usage for any container (the internal structure of a container does not matter).
+    Provide common usage for any container (the internal\\ structure of a container does not matter).
   \item
     Provide read and/or write access to each element's values.
   \end{itemize}
@@ -605,10 +632,12 @@ Random Access &\lstinline$[ ]$ & \lstinline$x = *i$ &  \lstinline$*i = x$ &  \ls
 
 \begin{frame}{Ordered Associative Containers}
 
-Store elements in sorted order according to some ordering criteria\\(often using a type of binary tree).\\[1em]
+Store elements in sorted order according to some\\ ordering criteria (often using a type of binary tree).\\[1em]
 
 \begin{tabular}{l l l}
-  \textbf{\large Associative Containers} & \textbf{Header File} & \textbf{Iterator Support}\\
+\toprule%
+  \textbf{Associative Containers} & \textbf{Header File} & \textbf{Iterator Support}\\
+\midrule%
   \href{https://en.cppreference.com/w/cpp/container/map}{map}
     & \lstinline{<map>} & Bidirectional\\
   \href{https://en.cppreference.com/w/cpp/container/multima}{multimap}
@@ -617,6 +646,7 @@ Store elements in sorted order according to some ordering criteria\\(often using
     & \lstinline{<set>} & Bidirectional\\
   \href{https://en.cppreference.com/w/cpp/container/multiset}{multiset}
     & \lstinline{<set>} & Bidirectional\\
+\bottomrule%
 \end{tabular}
 
 \begin{itemize}
@@ -646,7 +676,7 @@ int main() {
     nameSet.find(searchName);
 
   cout << searchName << " is";
-  if (iter == nameSet.end()) // check if found
+  if (iter == nameSet.cend()) // check if found
      std::cout << " NOT";
   std::cout << " in the set!\n";
 }
@@ -700,18 +730,18 @@ int main() {
 
 \begin{frame}{Container Adapters}
 
-Containers to accommodate special situations.\\[1em]
+Adapt a sequential container to accommodate\\ special situations.\\[1em]
 
 \begin{tabular}{l l l}
 \toprule
   \textbf{\large Adapters} & \textbf{Header File} & \textbf{Iterator Support}\\
 \midrule
   \href{https://en.cppreference.com/w/cpp/container/stack}{stack}
-    & \lstinline{<stack>} & No iterator support\\
+    & \lstinline{<stack>} & \textit{none}\\
   \href{https://en.cppreference.com/w/cpp/container/queue}{queue}
-    & \lstinline{<queue>} & No iterator support\\
+    & \lstinline{<queue>} & \textit{none}\\
   \href{https://en.cppreference.com/w/cpp/container/priority_queue}{priority queue}
-    & \lstinline{<queue>} & No iterator support\\
+    & \lstinline{<queue>} & \textit{none}\\
 \bottomrule
 \end{tabular}
 
@@ -794,494 +824,6 @@ Containers to accommodate special situations.\\[1em]
     %   \node[below =3pt of last.south west, anchor=north west, align=left, xshift=-3pt, execute at begin node=\setlength{\baselineskip}{1.4em}] (description) {The iterator corresponds to the \\class \lstinline|std::vector<int>| is of the \\type \lstinline|std::vector<int>::iterator|.};
     % }
   \end{tikzpicture}
-\end{frame}
-
-\section{Algorithms}
-
-\begin{frame}{Algorithms in the STL}
-Many algorithms that work on any STL container are \\
-found in the \lstinline{<algorithm>} library.
-\begin{itemize}
-\item
-  Copy
-\item
-  Partition
-\item
-  Sort
-\item
-  Search
-\item
-  \ldots{}
-\end{itemize}
-
-These algorithms are provided generically to support many container types.
-\end{frame}
-
-
-\begin{frame}{STL Algorithm Classifications}
-
-\begin{itemize}
-\item
-  \emph{Non-modifying algorithms} do not modify the elements of the container
-\item
-  \emph{Modifying algorithms} modify the elements of the container
-\item
-  \emph{Numeric algorithms} perform numeric calculations on elements of a container.
-\item
-  \emph{Heap algorithms} are Heapsort algorithm that sorts contiguous data.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Non-Modifying Sequence Algorithms}
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\textwidth}{r X}
-
-\href{https://en.cppreference.com/w/cpp/algorithm/all_any_none_of}{\lstinline{all\_of, any\_of, none\_of}}
- &    checks if a predicate is true for all, any or none of the elements in a range \\
-\href{https://en.cppreference.com/w/cpp/algorithm/for_each}{\lstinline{for\_each}}
- &    applies a function to a range of elements \\
-\href{https://en.cppreference.com/w/cpp/algorithm/for_each_n}{\lstinline{for\_each\_n}}
- &    applies a function object to the first n elements of a sequence  \\
-\href{https://en.cppreference.com/w/cpp/algorithm/count}{\lstinline{count, count\_if}}
- &    returns the number of elements satisfying specific criteria  \\
-\href{https://en.cppreference.com/w/cpp/algorithm/mismatch}{\lstinline{mismatch}}
- &    finds the first position where two ranges differ \\
-\href{https://en.cppreference.com/w/cpp/algorithm/find}{\lstinline{find, find\_if, find\_if\_not}}
- &    finds the first element satisfying specific criteria  \\
-\href{https://en.cppreference.com/w/cpp/algorithm/find_end}{\lstinline{find\_end}}
- &    finds the last sequence of elements in a certain range \\
-\href{https://en.cppreference.com/w/cpp/algorithm/find_first_of}{\lstinline{find\_first\_of}}
- &    searches for any one of a set of elements  \\
-\href{https://en.cppreference.com/w/cpp/algorithm/adjacent_find}{\lstinline{adjacent\_find}}
- &    finds the first two adjacent items that are equal (or satisfy a given predicate)  \\
-\href{https://en.cppreference.com/w/cpp/algorithm/search}{\lstinline{search}}
- &    searches for a range of elements \\
-\href{https://en.cppreference.com/w/cpp/algorithm/search_n}{\lstinline{search\_n}}
- &    searches a range for a number of consecutive\\[-0.2em]
- &    copies of an element \\
-\end{tabularx}
-\end{frame}
-
-
-\begin{frame}[fragile]{Example: The \texttt{for\_each()} Algorithm}
-  \small
-\begin{lstlisting}
-#include <vector>
-#include <algorithm>
-#include <iostream>
-void show(int n) {
-  std::cout << n << ", ";
-}
-
-int main() {
-  // initialize vector with a list of values
-  std::vector<int> v{ 12, 3, 17, 8 };
-
-  // apply function show to each element of vector v
-  std::for_each (v.begin(), v.end(), show);
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{Example: The \texttt{find()} Algorithm}
-  
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <vector>
-#include <algorithm>
-#include <iostream>
-int main() {
-  std::vector<int> v{ 12, 3, 17, 8, 34, 56, 9 };
-  std::vector<int>::iterator iter;
-  int key;
-
-  std::cout << "Enter value: ";
-  std::cin >> key;
-  iter = std::find(v.begin(), v.end(), key);
-  std::cout << "Element " << key << " is ";
-  if (iter == v.end()) // value was NOT found
-     std::cout << "not";
-  std::cout << " in vector v.\n";
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{Example: The \texttt{find\_if()} Algorithm}
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <vector>
-#include <algorithm>
-#include <iostream>
-bool inRange(int n) { return (n > 21) && (n < 36); };
-
-int main() {
-  std::vector<int> v{ 12, 3, 17, 8, 34, 56, 9 };
-  std::vector<int>::iterator iter;
-  iter = std::find_if(v.begin(), v.end(), inRange);
-
-  // finds an element in v for which inRange is true
-  if (iter != v.end()) // found the element
-    std::cout << "found " << *iter << '\n';
-  else
-    std::cout << "not found\n";
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{Example: The \texttt{count\_if()} Algorithm}
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <vector>
-#include <algorithm>
-#include <iostream>
-bool inRange(int n) { return (n > 14) && (n < 36); };
-
-int main() {
-  std::vector<int> v{ 12, 3, 17, 8, 34, 56, 9 };
-  std::vector<int>::iterator iter;
-
-  // counts element in v for which inRange is true
-  const int N = std::count_if(v.begin(),v.end(), inRange);
-  std::cout << "found " << N << " values between 14 and 36.\n";
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}{Minimum/Maximum Algorithms}
-\small\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{r X}
-\href{https://en.cppreference.com/w/cpp/algorithm/max}{\lstinline{max}} &
-  returns the greater of the given values\\
-\href{https://en.cppreference.com/w/cpp/algorithm/max_element}{\lstinline{max_element}} &
-  returns the largest element in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/min}{\lstinline{min}} &
-  returns the smaller of the given values\\
-\href{https://en.cppreference.com/w/cpp/algorithm/min_element}{\lstinline{min_element}} &
-  returns the smallest element in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/minmax}{\lstinline{minmax}} &
-  returns the smaller and larger of two elements\\
-\href{https://en.cppreference.com/w/cpp/algorithm/minmax_element}{\lstinline{minmax_element}} &
-  returns the smallest and the largest elements in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/clamp}{\lstinline{clamp}} &
-  clamps a value between a pair of boundary values\\
-\end{tabularx}
-\end{frame}
-
-\begin{frame}{Set Algorithms (on Sorted Ranges)}
-\small\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{r X}
-\href{https://en.cppreference.com/w/cpp/algorithm/includes}{\lstinline{includes}} &
-  returns true if one sequence is a subsequence of another\\
-\href{https://en.cppreference.com/w/cpp/algorithm/set_difference}{\lstinline{set_difference}} &
-  computes the difference between two sets\\
-\href{https://en.cppreference.com/w/cpp/algorithm/set_intersection}{\lstinline{set_intersection}} &
-  computes the intersection of two sets\\
-\href{https://en.cppreference.com/w/cpp/algorithm/set_symmetric_difference}{\lstinline{set_symmetric_difference}} &
-  computes the symmetric difference between two sets\\
-\href{https://en.cppreference.com/w/cpp/algorithm/set_union}{\lstinline{set_union}} &
-  computes the union of two sets\\
-\end{tabularx}
-\end{frame}
-
-\begin{frame}{Modifying Sequence Algorithms}
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{r X}
-\href{https://en.cppreference.com/w/cpp/algorithm/copy}{\lstinline{copy, copy_if}} &
-  copies a range of elements to a new location\\
-\href{https://en.cppreference.com/w/cpp/algorithm/copy_n}{\lstinline{copy_n}} &
-  copies a number of elements to a new location\\
-\href{https://en.cppreference.com/w/cpp/algorithm/copy_backward}{\lstinline{copy_backward}} &
-  copies a range of elements in backward order\\
-\href{https://en.cppreference.com/w/cpp/algorithm/move}{\lstinline{move}} &
-  moves a range of elements to a new location\\
-\href{https://en.cppreference.com/w/cpp/algorithm/move_backward}{\lstinline{move_backward}} &
-  moves a range of elements to a new location in backward order\\
-\href{https://en.cppreference.com/w/cpp/algorithm/fill}{\lstinline{fill}} &
-  copy-assigns the given value to every element in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/fill_n}{\lstinline{fill_n}} &
-  copy-assigns the given value to N elements in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/transform}{\lstinline{transform}} &
-  applies a function to a range of elements, storing results in a destination range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/generate}{\lstinline{generate}} &
-  assigns the results of successive function calls to every element in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/generate_n}{\lstinline{generate_n}} &
-  assigns the results of successive function calls to N elements in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/remove}{\lstinline{remove, remove_if}} &
-  removes elements satisfying specific criteria\\
-
-\end{tabularx}
-\end{frame}
-
-\begin{frame}[fragile]{Example: The \texttt{copy()} Algorithm}
-
-The copy algorithm overwrites the existing contents when using regular iterators.
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <list>
-#include <algorithm>
-
-int main() {
-  std::list<int> odds{ 1, 3, 5, 7, 9 };
-  std::list<int> result{ 2, 4, 6, 8, 10 };
-
-  // copy contents of odds to result overwriting the elements in result
-  std::copy(odds.begin(), odds.end(), result.begin());
-  // result = { 1, 3, 5, 7, 9 }
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{Example: The \texttt{copy()} Algorithm}
-\small
-With insert operators, you can modify the behavior of the copy algorithm.\\[0.5em]
-
-\begin{tabular}{l l}
-\href{https://en.cppreference.com/w/cpp/iterator/back_inserter}{\lstinline{back_inserter}} & inserts new elements at the end\\
-\href{https://en.cppreference.com/w/cpp/iterator/front_inserter}{\lstinline{front_inserter}} & inserts new elements at the beginning\\
-\href{https://en.cppreference.com/w/cpp/iterator/inserter}{\lstinline{inserter}} & inserts new elements at a specified location\\
-\end{tabular}\\[1em]
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-std::list<int> l1{ 1, 3, 5, 7, 9 };
-std::list<int> l2{ 2, 4, 6, 8, 10 };
-\end{lstlisting}
-
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-std::copy(l1.begin(), l1.end(), std::back_inserter(l2));
-// l2 = { 2, 4, 6, 8, 10, 1, 3, 5, 7, 9  }
-\end{lstlisting}
-
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-std::copy(l1.begin(), l1.end(), std::front_inserter(l2));
-// l2 = { 9, 7, 5, 3, 1, 2, 4, 6, 8, 10 }
-\end{lstlisting}
-
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-std::copy(l1.begin(), l1.end(), std::inserter(l2, l2.begin()));
-// l2 = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10 }
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{Example: \texttt{copy()} with Output Iterator}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <iostream>
-#include <iterator>
-#include <vector>
-#include <algorithm>
-
-int main() {
-  std::vector<int> vector {10, 20, 30, 40, 50, 60 70};
-  std::ostream_iterator<int> outIter{std::cout, ", "};
-
-  std::copy(vector.begin(), vector.end(), outIter);
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}{Modifying Sequence Algorithms}
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{r X}
-\href{https://en.cppreference.com/w/cpp/algorithm/remove_copy}{\lstinline{remove_copy, remove_copy_if}} &
-  copies a range of elements omitting those that satisfy specific criteria\\
-\href{https://en.cppreference.com/w/cpp/algorithm/replace}{\lstinline{replace, replace_if}} &
-  replaces all values satisfying specific criteria with another value\\
-\href{https://en.cppreference.com/w/cpp/algorithm/replace_copy}{\lstinline{replace_copy, replace_copy_if}} &
-  copies a range, replacing elements satisfying specific criteria with another value\\
-\href{https://en.cppreference.com/w/cpp/algorithm/swap}{\lstinline{swap}} &
-  swaps the values of two objects\\
-\href{https://en.cppreference.com/w/cpp/algorithm/swap_ranges}{\lstinline{swap_ranges}} &
-  swaps two ranges of elements\\
-\href{https://en.cppreference.com/w/cpp/algorithm/iter_swap}{\lstinline{iter_swap}} &
-  swaps the elements pointed to by two iterators\\
-\href{https://en.cppreference.com/w/cpp/algorithm/reverse}{\lstinline{reverse}} &
-  reverses the order of elements in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/reverse_copy}{\lstinline{reverse_copy}} &
-  creates a copy of a range that is reversed\\
-\href{https://en.cppreference.com/w/cpp/algorithm/rotate}{\lstinline{rotate}} &
-  rotates the order of elements in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/rotate_copy}{\lstinline{rotate_copy}} &
-  copies and rotate a range of elements\\
-\end{tabularx}
-\end{frame}
-
-\begin{frame}[fragile]{Example: The \texttt{sort()} and \texttt{merge()} Algorithms}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <list>
-#include <algorithm>
-int main() {
-  std::list<int>  l1 { 6, 4, 9, 1, 7 }
-  std::list<int>  l2 { 4, 2, 1, 3, 8 };
-  l1.sort(); // l1 = {1, 4, 6, 7, 9}
-  l2.sort(); // l2 = {1, 2, 3, 4, 8 }
-  l1.merge(l2);  // merges l2 into l1
-  // l1 = { 1, 1, 2, 3, 4, 4, 6, 7, 8, 9},  l2 = {}
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}{Numeric Algorithms in \href{https://en.cppreference.com/w/cpp/header/numeric}{\texttt{<numeric>}}}
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{r X}
-\href{https://en.cppreference.com/w/cpp/algorithm/iota}{\lstinline{iota}} &
-  fills a range with successive increments of the starting value\\
-\href{https://en.cppreference.com/w/cpp/algorithm/accumulate}{\lstinline{accumulate}} &
-  sums up a range of elements\\
-\href{https://en.cppreference.com/w/cpp/algorithm/inner_product}{\lstinline{inner_product}} &
-  computes the inner product of two ranges of elements\\
-\href{https://en.cppreference.com/w/cpp/algorithm/adjacent_difference}{\lstinline{adjacent_difference}} &
-  computes the differences between adjacent elements in a range\\
-\href{https://en.cppreference.com/w/cpp/algorithm/partial_sum}{\lstinline{partial_sum}} &
-  computes the partial sum of a range of elements\\
-\href{https://en.cppreference.com/w/cpp/algorithm/reduce}{\lstinline{reduce}} &
-  similar to std::accumulate, except out of order\\
-\href{https://en.cppreference.com/w/cpp/algorithm/exclusive_scan}{\lstinline{exclusive_scan}} &
-  excludes the ith input element from the ith sum\\
-\href{https://en.cppreference.com/w/cpp/algorithm/inclusive_scan}{\lstinline{inclusive_scan}} &
-  includes the ith input element in the ith sum\\
-\href{https://en.cppreference.com/w/cpp/algorithm/transform_reduce}{\lstinline{transform_reduce}} &
-  applies an invocable, then reduces out of order\\
-\href{https://en.cppreference.com/w/cpp/algorithm/transform_exclusive_scan}{\lstinline{transform_exclusive_scan}} &
-  applies an invocable, then calculates exclusive scan\\
-\href{https://en.cppreference.com/w/cpp/algorithm/transform_inclusive_scan}{\lstinline{transform_inclusive_scan}} &
-  applies an invocable, then calculates inclusive scan\\
-\end{tabularx}
-\end{frame}
-
-\begin{frame}{Heap Algorithms}
-
-Built-in heapsort.\\
-(You may not implement the Heap in your lab using these functions,\\ but you may use them for testing.)
-
-\footnotesize\renewcommand{\ULdepth}{3pt}\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{r X}
-\href{https://en.cppreference.com/w/cpp/algorithm/is_heap}{\lstinline{is_heap}} &
-  checks if the given range is a max heap\\
-\href{https://en.cppreference.com/w/cpp/algorithm/is_heap_until}{\lstinline{is_heap_until}} &
-  finds the largest subrange that is a max heap\\
-\href{https://en.cppreference.com/w/cpp/algorithm/make_heap}{\lstinline{make_heap}} &
-  creates a max heap out of a range of elements\\
-\href{https://en.cppreference.com/w/cpp/algorithm/push_heap}{\lstinline{push_heap}} &
-  adds an element to a max heap\\
-\href{https://en.cppreference.com/w/cpp/algorithm/pop_heap}{\lstinline{pop_heap}} &
-  removes the largest element from a max heap\\
-\href{https://en.cppreference.com/w/cpp/algorithm/sort_heap}{\lstinline{sort_heap}} &
-  turns a max heap into a range of elements sorted in ascending order\\
-\end{tabularx}
-\end{frame}
-
-\section{Function Objects}
-\begin{frame}[fragile]{Function Objects}
-\small
-\begin{itemize}
-\item
-  Some algorithms like sort, merge, and accumulate can take a function object as an argument.
-\item
-  A function object is an instance of a class that overloads \lstinline{operator()}.
-\item
-  It is also possible to use user-written functions in place of predefined function objects.
-\end{itemize}
-\small
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <list>
-#include <functional>
-int main() {
-  std::list<int> lst { 6, 4, 9, 1, 7 };
-  lst.sort(std::greater<int>{}); // uses function object
-  // for sorting in reverse order lst = { 9, 7, 6, 4, 1 }
-}
-\end{lstlisting}
-In C++, Function Objects are often called \emph{functors}, but that term has alternate means.
-\end{frame}
-
-
-\begin{frame}[fragile]{Function Objects}
-\small
-The accumulate algorithm accumulates values over a range (e.g., the sum).
-
-\begin{lstlisting}[basicstyle=\small\ttfamily]
-#include <list>
-#include <functional>
-#include <numeric>
-int main() {
-  std::list<int> lst { 6, 4, 9, 1, 7 };
-  int sum, fac;
-  sum = std::accumulate(lst.begin(), lst.end(), 0,
-    std::plus<int>{});
-  sum = std::accumulate(lst.begin(), lst.end(), 0);
-    // plus by default
-
-  fac = std::accumulate(lst.begin(), lst.end(), 1,
-    std::times<int>{});
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{User Defined Function Objects}
-
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-template <typename Type>
-struct SquaredSum  // user-defined function object
-{
-    Type operator()(Type n1, Type n2) { return n1 + n2 * n2; }
-};
-\end{lstlisting}
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-#include <complex>
-#include <numeric>
-#include <vector>
-\end{lstlisting}
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-std::vector<std::complex<int>> vc {{2, 3}, {1, 5}, {-2, 4}};
-
-// computes the sum of squares of a vector of complex numbers
-std::complex sum_vc = std::accumulate(vc.begin(), vc.end(),
-          std::complex(0, 0), SquaredSum<std::complex<int>>{});
-\end{lstlisting}
-\end{frame}
-
-
-\begin{frame}[fragile]{User Defined Function Objects}
-Unlike functions, function objects permit custom parameterization and statefullness.
-
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-std::vector<double> vals1 {2, 3, 1, 5, -2, 4};
-std::vector<double> vals2 {9, 8, -6, -10, -1, 8, 6};
-
-// Square each value in both vectors and calculate the total.
-CalculateAverageOfPowers squared{2}; // Function Object
-squared = std::for_each(vals1.begin(), vals1.end(), squared);
-squared = std::for_each(vals2.begin(), vals2.end(), squared);
-
-std::cout << ' ' << squared.getAverage() << '\n';
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{User Defined Function Objects}
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-class CalculateAverageOfPowers
-{
-public:
-  CalculateAverageOfPowers(double power) 
-    : total{0}, count{0}, exponent{power} {}
-
-  void operator() (double x) {
-    total += pow(x, exponent);
-    ++count;
-  }
-
-  auto getAverage() const { return total / count; }
-
-private:
-  double total;
-  int count;
-  double exponent;
-};
-\end{lstlisting}
-\end{frame}
-
-\section*{Lab 17}
-\begin{frame}{Lab 17: The STL and Sorting}
-\centering\Large
-  Let's take a look at Lab 17.
 \end{frame}
 
 \end{document}

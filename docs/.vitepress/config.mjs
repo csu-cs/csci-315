@@ -164,6 +164,14 @@ function sidebarNotes() {
 			]
 		},
 		{
+			text: 'Standard Template Library',
+			collapsed: true,
+			items: [
+				{ text: "Containers & Iterators", link: "/lectures/17-stl-containers" },
+				{ text: "Algorithms", link: "/lectures/17-stl-algorithms" }
+			]
+		},
+		{
 			text: 'More Data Structures',
 			collapsed: true,
 			items: [
