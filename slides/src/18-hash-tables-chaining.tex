@@ -3,6 +3,7 @@
 \usepackage{csu-theme}
 \usepackage{arrays}
 \usepackage{linked-lists}
+\usepackage{booktabs}
 \usetikzlibrary{shapes.misc, backgrounds}
 
 \tikzset{
@@ -31,7 +32,7 @@
 
 
 \title{\Huge Hashing \& Hash Tables \\with Chaining}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 5 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 5 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -71,7 +72,7 @@ and set of values.
   are very fast.
   \begin{itemize}
   \item
-    As close to $O(1)$ as possible.
+    As close to \(O(1)\) as possible.
   \item
     With the minimum number of executed instructions per method.
   \end{itemize}
@@ -97,7 +98,7 @@ Insert, Delete, and Search/Find efficiently.
   \emph{Arrays}:
   \begin{itemize}
   \item
-    accomplished in $O(1)$ time for integer keys of a known range.
+    accomplished in \(O(1)\) time for integer keys of a known range.
   \item
     but are not space efficient (assumes we leave empty space for keys not currently in the map).
   \end{itemize}
@@ -105,7 +106,7 @@ Insert, Delete, and Search/Find efficiently.
   \emph{Binary search trees}:
   \begin{itemize}
   \item
-    can accomplish in $O(\log n)$ time
+    can accomplish in \(O(\log n)\) time
   \item
     are space efficient.
   \end{itemize}
@@ -113,7 +114,7 @@ Insert, Delete, and Search/Find efficiently.
   \emph{Hash Tables}:
   \begin{itemize}
   \item
-    A generalization of an array that under some reasonable assumptions is $O(1)$ for Insert/Delete/Search of a key.
+    A generalization of an array that under some reasonable assumptions is \(O(1)\) for Insert/Delete/Search of a key.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -128,7 +129,7 @@ their social security numbers (SSN).
   \item
     Use an array with range 0 -- 999,999,999
   \item
-    Using the SSN as a key, you have $O(1)$ access to any person.
+    Using the SSN as a key, you have \(O(1)\) access to any person.
   \end{itemize}
 \item<3->
   Unfortunately, there are much fewer active keys (Social Security Numbers) than the array size (1 billion entries).
@@ -161,7 +162,7 @@ their social security numbers (SSN).
   \item
     Hash Tables solve these problems by using a much smaller array and mapping keys with a hash function.
   \item
-    Let universe of keys \(U\) and an array of size $m$. A hash function $h$ is a function from $U$ to \(0\ldots{}m\), that is:\\
+    Let universe of keys \(U\) and an array of size \(m\). A hash function \(h\) is a function from \(U\) to \(0\ldots{}m\), that is:\\
     \(h : U \to 0\ldots{}m\)
   \end{itemize}
   % \begin{figure}
@@ -256,40 +257,42 @@ their social security numbers (SSN).
       \foreach \i in {0,...,6} {
         \ArrayNodeVertical{}
       }
+      
+      \only<2->{
+        \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
+          \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {\(k_{\k}\)};
+          \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {\(v_{\k}\)};
+        }
 
-      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
-        \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {$k_{\k}$};
-        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\k}$};
-      }
-
-      \foreach \i [count=\k from 0] in {7,8} {
-        \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {$k_{\i}$};
-        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\i}$};
+        \foreach \i [count=\k from 0] in {7,8} {
+          \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {\(k_{\i}\)};
+          \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {\(v_{\i}\)};
+        }
       }
 
       % \draw[thick, fill=MyPurple,name=hashFunction]
       %   ([xshift=-3cm]elAt0.north west) rectangle ([xshift=-1.5cm]elAt6.south west);
       \node[draw, thick, fill=MyPurple,
         fit=(elAt0.north west)(elAt6.south west),
-        xshift=-2.5cm,
+        xshift=-3cm,
         minimum width=1.5cm,
         inner sep=0pt,
         outer sep=0pt, 
         name=hashFunction] {};
-      \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function ($h$)};
+      \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function (\(h\))};
 
       % % Curly Braces
       % \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
 
       % Keys in Universe
       \node[circle, minimum size=4.2cm, draw=white, fill=CSUgold, thick, name=universe] at (-8.25,-3.75) {};
-      \node[anchor=south, align=center, inner sep=0] at (universe.north) {Universe of Keys ($U$)};
+      \node[anchor=south, align=center, inner sep=0] at (universe.north) {Universe of Keys (\(U\))};
 
       % Seed the random number generator for reproducibility
       \pgfmathsetseed{57}
 
       % Loop to create 10 small circles
-      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3,7,8} {
+      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3,4,1} {
         % Generate random angle and radius for polar coordinates within the large circle
         \pgfmathsetmacro{\angle}{random(0,360)}
         \pgfmathsetmacro{\radius}{sqrt(random()) * 1.8} % scale radius to stay within the larger circle
@@ -303,8 +306,11 @@ their social security numbers (SSN).
         % Draw the small circle and label it
         \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
         
-        \draw[-stealth, very thick] (\x, \y) to (index\elNum);
-        
+        % Draw line
+        \only<3->{
+          \draw[-stealth, very thick] (\x, \y)[rounded corners] -- (hashFunction.center |- \x,\y) -- (index\elNum);
+        }
+
         % Label the circle
         \begin{pgfonlayer}{foreground layer}
           \node[text=black, anchor=north east, inner sep=0, outer sep=0] at (\x,\y) {\(k_{\k}\)}; 
@@ -393,8 +399,8 @@ their social security numbers (SSN).
 % \item
 %   Hash Tables solve these problems by using a much smaller array and mapping keys with a hash function.
 % \item
-%   Let universe of keys $U$ and an array of size $m$. A hash function h is a function from $U$ to $0\ldots{}m$, that is:\\
-%   $h : U \to 0\ldots{}m$
+%   Let universe of keys \(U\) and an array of size \(m\). A hash function h is a function from \(U\) to \(0\ldots{}m\), that is:\\
+%   \(h : U \to 0\ldots{}m\)
 % \end{itemize}
 % \begin{figure}
 % \centering
@@ -485,19 +491,19 @@ void insert (int key, itemType item) {
     15 \bmod{5} & = 0
   \end{flalign}
 \item
-  For keys $\bmod{} M$, multiples of $M$ give the same result, $0$.
+  For keys \(\bmod{} M\), multiples of \(M\) give the same result, \(0\).
   \begin{itemize}
   \item<+->
     But multiples of other numbers do not give the same result.
   \item<+->
-    What if $M$ is a prime number such that the keys are rarely multiples of $M$?
+    What if \(M\) is a prime number such that the keys are rarely multiples of \(M\)?
   \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Hash Tables: Insert Example}
-For example, if we hash keys $0\ldots{}1000$ into a hash table\\
-with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence of events.%
+For example, if we hash keys \(0\ldots{}1000\) into a hash table\\
+with \(5\) entries and use \(h (key) = key \bmod 5\), we get the following sequence of events.%
 \vspace{-0.5em}
 \center%
 \begin{columns}[]%
@@ -508,22 +514,22 @@ with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence 
   \node[, name=prev] {key};
 
   % \onslide<-2>{
-  %   \node[, left = 2cm of prev.west] {Insert $2$};
+  %   \node[, left = 2cm of prev.west] {Insert \(2\)};
   % }
   % \onslide<3-4>{
-  %   \node[, left = 2cm of prev.west] {Insert $21$};
+  %   \node[, left = 2cm of prev.west] {Insert \(21\)};
   % }
   % \onslide<5-6>{
-  %   \node[, left = 2cm of prev.west] {Insert $34$};
+  %   \node[, left = 2cm of prev.west] {Insert \(34\)};
   % }
   % \onslide<7->{
-  %   \node[, left = 2cm of prev.west] {Insert $54$};
+  %   \node[, left = 2cm of prev.west] {Insert \(54\)};
   % }
-  \node[, above = 0em of prev.north, anchor=south] {%
-    \alt<-2>{Insert $2$}{%
-      \alt<-4>{Insert $21$}{%
-        \alt<-6>{Insert $34$}{%
-          Insert $54$%
+  \node[, above = 0em of prev.north, anchor=south]{%
+    \alt<-2>{Insert \(2\)}{%
+      \alt<-4>{Insert \(21\)}{%
+        \alt<-6>{Insert \(34\)}{%
+          Insert \(54\)%
         }%
       }%
     }%
@@ -558,7 +564,7 @@ with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence 
 %
 % \begin{columns}[T]%
 %   \column{0.2\textwidth}\center%
-%     Insert $2$\\[0.5em]
+%     Insert \(2\)\\[0.5em]
 %     \small%
 %     \begin{tabular}{c|c|c|}
 %       \multicolumn{1}{c}{} & \multicolumn{1}{c}{key} & \multicolumn{1}{c}{data}\\
@@ -567,7 +573,7 @@ with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence 
 %     \cline{2-3}
 %       \texttt{1} &   & \\
 %     \cline{2-3}
-%       \texttt{2} & \onslide<2->{$2$} & \onslide<2->{$\cdots$}\\
+%       \texttt{2} & \onslide<2->{\(2\)} & \onslide<2->{\(\cdots\)}\\
 %     \cline{2-3}
 %       \texttt{3} &   & \\
 %     \cline{2-3}
@@ -577,16 +583,16 @@ with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence 
 
 %   \onslide<3->{%
 %     \column{0.2\textwidth}\center%
-%       Insert $21$\\[0.5em]
+%       Insert \(21\)\\[0.5em]
 %       \small%
 %       \begin{tabular}{c|c|c|}
 %         \multicolumn{1}{c}{} & \multicolumn{1}{c}{key} & \multicolumn{1}{c}{data}\\
 %       \cline{2-3}
 %         \texttt{0} &   & \\
 %       \cline{2-3}
-%         \texttt{1} & \onslide<4->{$21$} & \onslide<4->{$\cdots$} \\
+%         \texttt{1} & \onslide<4->{\(21\)} & \onslide<4->{\(\cdots\)} \\
 %       \cline{2-3}
-%         \texttt{2} & $2$ & $\cdots$\\
+%         \texttt{2} & \(2\) & \(\cdots\)\\
 %       \cline{2-3}
 %         \texttt{3} &   & \\
 %       \cline{2-3}
@@ -596,39 +602,39 @@ with $5$ entries and use $h (key) = key \bmod 5$, we get the following sequence 
 
 %   \column{0.2\textwidth}\center%
 %     \onslide<5->{%
-%       Insert $34$\\[0.5em]
+%       Insert \(34\)\\[0.5em]
 %       \small%
 %       \begin{tabular}{c|c|c|}
 %         \multicolumn{1}{c}{} & \multicolumn{1}{c}{key} & \multicolumn{1}{c}{data}\\
 %       \cline{2-3}
 %         \texttt{0} &   & \\
 %       \cline{2-3}
-%         \texttt{1} & $21$ & $\cdots$ \\
+%         \texttt{1} & \(21\) & \(\cdots\) \\
 %       \cline{2-3}
-%         \texttt{2} & $2$ & $\cdots$\\
+%         \texttt{2} & \(2\) & \(\cdots\)\\
 %       \cline{2-3}
 %         \texttt{3} &   & \\
 %       \cline{2-3}
-%         \texttt{4} & \onslide<6->{$34$} & \onslide<6->{$\cdots$}\\
+%         \texttt{4} & \onslide<6->{\(34\)} & \onslide<6->{\(\cdots\)}\\
 %       \cline{2-3}
 %       \end{tabular}}
 
 %   \column{0.2\textwidth}\center
 %     \onslide<7->{%
-%       Insert $54$\\[0.5em]
+%       Insert \(54\)\\[0.5em]
 %       \small%
 %       \begin{tabular}{c|c|c|}
 %         \multicolumn{1}{c}{} & \multicolumn{1}{c}{key} & \multicolumn{1}{c}{data}\\
 %       \cline{2-3}
 %         \texttt{0} &   & \\
 %       \cline{2-3}
-%         \texttt{1} & $21$ & $\cdots$ \\
+%         \texttt{1} & \(21\) & \(\cdots\) \\
 %       \cline{2-3}
-%         \texttt{2} & $2$ & $\cdots$\\
+%         \texttt{2} & \(2\) & \(\cdots\)\\
 %       \cline{2-3}
 %         \texttt{3} &   & \\
 %       \cline{2-3}
-%         \texttt{4} & \alt<-7>{$34$}{\color{red!50}\xout{$34$}} \onslide<8->{$54$} & $\cdots$\\
+%         \texttt{4} & \alt<-7>{\(34\)}{\color{red!50}\xout{\(34\)}} \onslide<8->{\(54\)} & \(\cdots\)\\
 %       \cline{2-3}
 %       \end{tabular}}
 % \end{columns}
@@ -690,25 +696,25 @@ Therefore, we have two goals:
 \end{frame}
 
 \begin{frame}{Choosing a Hash Function}
-Some hashing methods that convert a hash code, $f(v)$, \\into an array index:
+Some hashing methods that convert a hash code, \(f(v)\), \\into an array index:
 \begin{itemize}
   \item<2->
     Division/Modulo Method:
     \begin{itemize}
     \item
-      Given: $m$ is the array size, which usually should be \emph{prime number}.\\
+      Given: \(m\) is the array size, which usually should be \emph{prime number}.\\
     \item
-      $h(v) = f(v) \bmod{}m$
+      \(h(v) = f(v) \bmod{}m\)
     \end{itemize}
   \item<3->
     Multiplicative Method:
     \begin{itemize}
     \item
-      Given, $m$ is the array size (usually a power of 2).\\
-      $p$ is a randomly chosen \emph{prime}, greater than $m$ (often $2^{31} - 1$) \\
-      $a$ and $b$ are random positive integers that are less than $m$.\\
+      Given, \(m\) is the array size (usually a power of 2).\\
+      \(p\) is a randomly chosen \emph{prime}, greater than \(m\) (often \(2^{31} - 1\)) \\
+      \(a\) and \(b\) are random positive integers that are less than \(m\).\\
     \item
-      $h(v) = \left(\left(a \cdot f(v) + b\right) \bmod{} p\right) \bmod{} m$
+      \(h(v) = \left(\left(a \cdot f(v) + b\right) \bmod{} p\right) \bmod{} m\)
     \end{itemize}
 \end{itemize}
 \end{frame}
@@ -720,21 +726,21 @@ Some hashing methods that convert a hash code, $f(v)$, \\into an array index:
 For example, assume:
 \begin{itemize}
   \item
-    Key values, $v$, are multiples of $5$ from $5$ to $245$.\\
-    (5$, 10, 15, 20, 25, \ldots, 245$).
+    Key values, \(v\), are multiples of \(5\) from \(5\) to \(245\).\\
+    (5\(, 10, 15, 20, 25, \ldots, 245\)).
   \item
-    The array size (and divisor), $m$, is $7$.
+    The array size (and divisor), \(m\), is \(7\).
   \item
-    Then, the hash values will be evenly distributed from $0$ to $6$ for the keys.
+    Then, the hash values will be evenly distributed from \(0\) to \(6\) for the keys.
   \item
-    If $m$ was $5$, then you would have what kind of distribution?
+    If \(m\) was \(5\), then you would have what kind of distribution?
 \end{itemize}
 \column{0.3\textwidth}%
 \begin{table}\centering\small%
   \begin{tabular}{c c}%
-  \hline%
-    $v \bmod{} m$ & Total\\
-  \hline
+  \toprule%
+    \(v \bmod{} m\) & Total\\
+  \midrule
     0  &  7\\
     1  &  7\\
     2  &  7\\
@@ -743,9 +749,9 @@ For example, assume:
     5  &  7\\
     6  &  7\\
     (blank)  &  \\
-  \hline
+  \midrule
     Grand Total & 49\\
-  \hline
+  \bottomrule
   \end{tabular}
 \end{table}
 \end{columns}
@@ -790,7 +796,7 @@ A problem arises when we have two keys that hash in the same array entry --- thi
 \begin{frame}{Hashing with Chaining}
   \alt<1>{
     \textbf{Problem}: Collisions\\
-    (e.g., the keys $34$ and $54$ both hash to \texttt{4}).
+    (e.g., the keys \(34\) and \(54\) both hash to \texttt{4}).
   }{
     \textbf{Solution}: Place keys that hash in the same hash-table \\
     entry in the same \emph{chain} (linked list) or \emph{bucket} (array).
@@ -801,7 +807,7 @@ A problem arises when we have two keys that hash in the same array entry --- thi
 \onslide<3->
 \begin{figure}
 \centering
-\caption{\onslide<4->{\normalsize Insert \alt<-6>{$54$}{$101$}}\vspace{-0.25em}}\vspace{-0.25em}
+\caption{\onslide<4->{\normalsize Insert \alt<-6>{\(54\)}{\(101\)}}\vspace{-0.25em}}\vspace{-0.25em}
 
 \begin{tikzpicture}[node of array/.append style={minimum height=8.6mm,fill=CSUgold},
     link pointer of list/.append style={minimum height=6mm, minimum width=4mm,},
@@ -861,7 +867,7 @@ A problem arises when we have two keys that hash in the same array entry --- thi
 % % \pause{}
 % \begin{figure}
 % \centering
-% \caption{Insert $101$}\vspace{1.5em}
+% \caption{Insert \(101\)}\vspace{1.5em}
 % \includegraphics[width=0.9\textwidth]{chain-example-insert2}
 \end{figure}
 % \end{columns}
@@ -882,7 +888,7 @@ A problem arises when we have two keys that hash in the same array entry --- thi
 \begin{block}{Running-time performance for hash tables with chaining}
 \begin{itemize}
   \item
-    Insert: It takes $O(1)$ time to compute the hash function and insert at the head of the linked list.
+    Insert: It takes \(O(1)\) time to compute the hash function and insert at the head of the linked list.
   \item
     Search: It is proportional to max length of the linked lists.
   \item
@@ -891,7 +897,7 @@ A problem arises when we have two keys that hash in the same array entry --- thi
 \end{block}
 
 \pause{}
-Therefore, in the unfortunate event that we have a ``bad'' hash function all $n$ keys may hash in the same table entry giving an $O(n)$ run-time!
+Therefore, in the unfortunate event that we have a ``bad'' hash function all \(n\) keys may hash in the same table entry giving an \(O(n)\) run-time!
 
 \pause{}
 So, we must create a ``good'' hash function.
