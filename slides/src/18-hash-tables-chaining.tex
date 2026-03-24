@@ -4,6 +4,7 @@
 \usepackage{arrays}
 \usepackage{linked-lists}
 \usepackage{booktabs}
+\usepackage{tikz-cd}
 \usetikzlibrary{shapes.misc, backgrounds}
 
 \tikzset{
@@ -51,7 +52,7 @@
   \titlepage{}
 \end{frame}
 
-\section*{Intro}
+\section*{Introduction}
 
 \begin{frame}{Maps/Dictionary}
 Map (dictionary) is a relation between a set of keys\\
@@ -94,7 +95,7 @@ We want to implement the map operations:\\
 Insert, Delete, and Search/Find efficiently.
 
 \begin{itemize}
-\item
+\item<2->
   \emph{Arrays}:
   \begin{itemize}
   \item
@@ -102,7 +103,7 @@ Insert, Delete, and Search/Find efficiently.
   \item
     but are not space efficient (assumes we leave empty space for keys not currently in the map).
   \end{itemize}
-\item
+\item<3->
   \emph{Binary search trees}:
   \begin{itemize}
   \item
@@ -110,11 +111,11 @@ Insert, Delete, and Search/Find efficiently.
   \item
     are space efficient.
   \end{itemize}
-\item
+\item<4->
   \emph{Hash Tables}:
   \begin{itemize}
   \item
-    A generalization of an array that under some reasonable assumptions is \(O(1)\) for Insert/Delete/Search of a key.
+    The array concept generalized with \(O(1)\) (with some reasonable assumptions) for Insert, Delete, and Search of keys.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -124,7 +125,7 @@ An application searches for US citizens by\\
 their social security numbers (SSN).
 \begin{itemize}
 \item<2->
-  You can use an array to hold references to all persons.
+  An array can hold references to all persons.
   \begin{itemize}
   \item
     Use an array with range 0 -- 999,999,999
@@ -258,20 +259,22 @@ their social security numbers (SSN).
         \ArrayNodeVertical{}
       }
       
-      \only<2->{
+      \only<2->{%
         \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
           \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {\(k_{\k}\)};
-          \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {\(v_{\k}\)};
+          \node[chain element, anchor=west, name=valval\k, fill=CSUslate, text=white] at ([xshift=-0.4pt] key.east) {\(v_{\k}\)};
         }
 
         \foreach \i [count=\k from 0] in {7,8} {
           \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {\(k_{\i}\)};
-          \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {\(v_{\i}\)};
+          \node[chain element, anchor=west, name=valval\k, fill=CSUslate, text=white] at ([xshift=-0.4pt] key.east) {\(v_{\i}\)};
         }
-      }
+      }%
 
       % \draw[thick, fill=MyPurple,name=hashFunction]
       %   ([xshift=-3cm]elAt0.north west) rectangle ([xshift=-1.5cm]elAt6.south west);
+
+      \onslide<3->{%
       \node[draw, thick, fill=MyPurple,
         fit=(elAt0.north west)(elAt6.south west),
         xshift=-3cm,
@@ -280,6 +283,7 @@ their social security numbers (SSN).
         outer sep=0pt, 
         name=hashFunction] {};
       \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function (\(h\))};
+      }%
 
       % % Curly Braces
       % \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
@@ -307,7 +311,7 @@ their social security numbers (SSN).
         \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
         
         % Draw line
-        \only<3->{
+        \only<4->{
           \draw[-stealth, very thick] (\x, \y)[rounded corners] -- (hashFunction.center |- \x,\y) -- (index\elNum);
         }
 
@@ -432,6 +436,19 @@ their social security numbers (SSN).
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Hash Function}
+  \Large%
+  \[
+    \begin{tikzcd}[
+      %every label/.append style={execute at begin node=\mathsf}
+    ]
+        \mathsf{key} \arrow[d, "hash"] \\
+        \mathsf{hash~code} \arrow[d, "compress"] \\
+        \mathsf{bucket~index}
+    \end{tikzcd}
+  \]
+\end{frame}
+
 \begin{frame}{Generating Hash Codes}
 \begin{itemize}
   \item<2->
@@ -463,7 +480,7 @@ unsigned int hashCode (const std::string& key);
 unsigned int hashCode (const ItemType& item);
 
 template <typename Type>
-unsigned int hash (const Type &key) {
+unsigned int indexFor (const Type &key) {
   return hashCode(key) % TABLE_SIZE; // example
 };
 \end{lstlisting}
@@ -471,7 +488,7 @@ unsigned int hash (const Type &key) {
   An insert method:
   \begin{lstlisting}[basicstyle=\ttfamily\small]
 void insert (int key, itemType item) {
-  const unsigned int HASH_VAL = hash(key);
+  const unsigned int HASH_VAL = indexFor(key);
   table[HASH_VAL] = item; // Incomplete
 }
 \end{lstlisting}
@@ -501,31 +518,22 @@ void insert (int key, itemType item) {
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Hash Tables: Insert Example}
-For example, if we hash keys \(0\ldots{}1000\) into a hash table\\
-with \(5\) entries and use \(h (key) = key \bmod 5\), we get the following sequence of events.%
+\begin{frame}{Hash Collision Example}
+Example: Insert the keys \(2, 21, 34, 54, \ldots{} \) into an array\\
+with capacity \(5\) using \(h (k) = k \bmod 5\), where \(k\) is the key.%
 \vspace{-0.5em}
 \center%
 \begin{columns}[]%
   \column{0.3\textwidth}
   \center%
-\begin{tikzpicture}[node of array/.append style = {minimum height=7mm}]
-  \setcounter{arrayIndex}{0}
-  \node[, name=prev] {key};
+\begin{tikzpicture}[subcomponent of array el/.append style = {node distance=-0.4pt and -0.8pt, minimum width=1.5cm, fill=CSUslate, text=white}]
+  
+  \ArrayLabel{}
+  \ArrayNodeVertical{,}%
+  \node[, above = 0pt of val, text depth=0.2ex] {key};%
+  \node[, above = 0pt of lastElValue, text depth=0.2ex] {value};%
 
-  % \onslide<-2>{
-  %   \node[, left = 2cm of prev.west] {Insert \(2\)};
-  % }
-  % \onslide<3-4>{
-  %   \node[, left = 2cm of prev.west] {Insert \(21\)};
-  % }
-  % \onslide<5-6>{
-  %   \node[, left = 2cm of prev.west] {Insert \(34\)};
-  % }
-  % \onslide<7->{
-  %   \node[, left = 2cm of prev.west] {Insert \(54\)};
-  % }
-  \node[, above = 0em of prev.north, anchor=south]{%
+  \node[, above = 1.5em of prev.north, anchor=south]{%
     \alt<-2>{Insert \(2\)}{%
       \alt<-4>{Insert \(21\)}{%
         \alt<-6>{Insert \(34\)}{%
@@ -535,33 +543,73 @@ with \(5\) entries and use \(h (key) = key \bmod 5\), we get the following seque
     }%
   };
 
-  \foreach \key/\value [count=\i] in {
-    % Key-Value Pairs
-    {~/~},%
-    {\only<4->{21}/\only<4->{\ldots{}}},%
-    {\only<2->{2}/\only<2->{\ldots{}}},%
-    {~/~},%
-    {\only<6-7>{34}\only<8->{54}/\only<6-7>{\ldots{}}\only<8->{\color{red!70!black}\ldots{}}}%
-  }{%
-    \ifnum\i=5 % Last element: Allow it to change colors
-      \alt<-7>{%
-        \node[node of array, anchor=north, name=key] at ([yshift=1pt] prev.south) {\key};%
-      }{%
-        \node[node of array, anchor=north, name=key, fill=red] at ([yshift=1pt] prev.south) {\key};%
-      }%
-    \else % All but the last row
-      \node[node of array, anchor=north, name=key] at ([yshift=1pt] prev.south) {\key};%
-    \fi%
-    \node[node of array, right = of key.east, xshift=-0.8pt, name=valData, minimum width=1.5cm] {\value};%
-    \ifnum\i=1 % First element
-      \node[, above = 2pt of valData] {value};%
-    \fi%
-    \node[array index, anchor=east] at ([xshift=-0.8pt] key.west) {[\thearrayIndex]};%
-    \node[block] (prev) [fit=(key)]{};%
-    \stepcounter{arrayIndex}%
+  \ArrayNodeVertical{\only<4->{21},\only<4->{\ldots{}}}
+  \ArrayNodeVertical{\only<2->{2},\only<2->{\ldots{}}}
+  \ArrayNodeVertical{~,~}
+  \alt<-7>{  
+    \ArrayNodeVertical{\only<6-7>{34},\only<6-7>{\ldots{}}}
+  }{
+    \begin{scope}[node of array/.append style = {fill=red},
+        subcomponent of array el/.append style = {fill=CSUslate!50!red, text=white}
+    ]
+      \ArrayNodeVertical{54,\ldots{}}
+    \end{scope}
   }
+
 \end{tikzpicture}
-%
+% \begin{tikzpicture}[node of array/.append style = {minimum height=7mm}]
+%   \setcounter{arrayIndex}{0}
+%   \node[, name=prev] {key};
+
+%   % \onslide<-2>{
+%   %   \node[, left = 2cm of prev.west] {Insert \(2\)};
+%   % }
+%   % \onslide<3-4>{
+%   %   \node[, left = 2cm of prev.west] {Insert \(21\)};
+%   % }
+%   % \onslide<5-6>{
+%   %   \node[, left = 2cm of prev.west] {Insert \(34\)};
+%   % }
+%   % \onslide<7->{
+%   %   \node[, left = 2cm of prev.west] {Insert \(54\)};
+%   % }
+%   \node[, above = 0em of prev.north, anchor=south]{%
+%     \alt<-2>{Insert \(2\)}{%
+%       \alt<-4>{Insert \(21\)}{%
+%         \alt<-6>{Insert \(34\)}{%
+%           Insert \(54\)%
+%         }%
+%       }%
+%     }%
+%   };
+
+%   \foreach \key/\value [count=\i] in {
+%     % Key-Value Pairs
+%     {~/~},%
+%     {\only<4->{21}/\only<4->{\ldots{}}},%
+%     {\only<2->{2}/\only<2->{\ldots{}}},%
+%     {~/~},%
+%     {\only<6-7>{34}\only<8->{54}/\only<6-7>{\ldots{}}\only<8->{\color{red!70!black}\ldots{}}}%
+%   }{%
+%     \ifnum\i=5 % Last element: Allow it to change colors
+%       \alt<-7>{%
+%         \node[node of array, anchor=north, name=key] at ([yshift=1pt] prev.south) {\key};%
+%       }{%
+%         \node[node of array, anchor=north, name=key, fill=red] at ([yshift=1pt] prev.south) {\key};%
+%       }%
+%     \else % All but the last row
+%       \node[node of array, anchor=north, name=key] at ([yshift=1pt] prev.south) {\key};%
+%     \fi%
+%     \node[node of array, right = of key.east, xshift=-0.8pt, name=valData, minimum width=1.5cm, fill=CSUslate, text=white] {\value};%
+%     \ifnum\i=1 % First element
+%       \node[, above = 2pt of valData] {value};%
+%     \fi%
+%     \node[array index, anchor=east] at ([xshift=-0.8pt] key.west) {[\thearrayIndex]};%
+%     \node[block] (prev) [fit=(key)]{};%
+%     \stepcounter{arrayIndex}%
+%   }
+% \end{tikzpicture}
+
 % \begin{columns}[T]%
 %   \column{0.2\textwidth}\center%
 %     Insert \(2\)\\[0.5em]
@@ -689,8 +737,8 @@ Therefore, we have two goals:
 
 \begin{frame}{Choosing a Hash Function}
   \begin{figure}
-    \centering
-    \caption{Distribution of the people's surname initial letter according to the 2010 US Census.}
+    %\centering
+    \caption{Distribution of the people's surname initial letter according\break to the 2010 US Census.}
     \includegraphics[width=0.9\textwidth]{FirstLetterOfLastNames}
   \end{figure}
 \end{frame}
@@ -711,7 +759,7 @@ Some hashing methods that convert a hash code, \(f(v)\), \\into an array index:
     \begin{itemize}
     \item
       Given, \(m\) is the array size (usually a power of 2).\\
-      \(p\) is a randomly chosen \emph{prime}, greater than \(m\) (often \(2^{31} - 1\)) \\
+      \(p\) is a arbitrary \emph{prime}, greater than \(m\) (often \(2^{31} - 1\)) \\
       \(a\) and \(b\) are random positive integers that are less than \(m\).\\
     \item
       \(h(v) = \left(\left(a \cdot f(v) + b\right) \bmod{} p\right) \bmod{} m\)
@@ -748,7 +796,7 @@ For example, assume:
     4  &  7\\
     5  &  7\\
     6  &  7\\
-    (blank)  &  \\
+    7  &  (blank) \\
   \midrule
     Grand Total & 49\\
   \bottomrule

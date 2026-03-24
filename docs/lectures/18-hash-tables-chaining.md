@@ -4,7 +4,7 @@ Hash Tables with Chaining
 Chapter 5 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/bdgW3jiP954?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/meHnhwiudkg?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Intro
@@ -146,7 +146,7 @@ the search key is their social security numbers (SSN).
   unsigned int hashCode (const ItemType& item);
 
   template <typename Type>
-  unsigned int hash (const Type &key) {
+  unsigned int indexFor (const Type &key) {
 	return hashCode(key) % TABLE_SIZE; // example
   };
   ```
@@ -155,7 +155,7 @@ the search key is their social security numbers (SSN).
 
   ```
   void insert (int key, itemType item) {
-	const unsigned int HASH_VAL = hash(key);
+	const unsigned int HASH_VAL = indexFor(key);
 	table[HASH_VAL] = item; // Incomplete
   }
   ```
@@ -231,7 +231,7 @@ into an array index:
 - Multiplicative Method:
 
   - Given, $m$ is the array size (usually a power of 2).  
-	$p$ is a randomly chosen ***prime***, greater than $m$ (often
+	$p$ is a arbitrary ***prime***, greater than $m$ (often
 	$2^{31} - 1$)  
 	$a$ and $b$ are random positive integers that are less than $m$.  
 
