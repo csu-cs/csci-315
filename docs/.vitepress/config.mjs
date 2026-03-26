@@ -175,7 +175,6 @@ function sidebarNotes() {
 			text: 'More Data Structures',
 			collapsed: true,
 			items: [
-				{ text: "Standard Template Library", link: "/lectures/17-standard-template-library" },
 				{ text: "Hash Tables via Chaining", link: "/lectures/18-hash-tables-chaining" },
 				{ text: "Hash Tables via Open-Addressing", link: "/lectures/19-hash-tables-open-addressing" },
 				{ text: "Priority Queues", link: "/lectures/20-priority-queues" },
