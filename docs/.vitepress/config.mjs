@@ -177,6 +177,7 @@ function sidebarNotes() {
 			items: [
 				{ text: "Hash Tables via Chaining", link: "/lectures/18-hash-tables-chaining" },
 				{ text: "Hash Tables via Open-Addressing", link: "/lectures/19-hash-tables-open-addressing" },
+				{ text: "Project 3: Overview", link: "/lectures/19-project3"},
 				{ text: "Priority Queues", link: "/lectures/20-priority-queues" },
 				{ text: "B-trees", link: "/lectures/21-b-trees" },
 				{ text: "Graphs via Adjacency Matrices", link: "/lectures/22-graphs-adjacency-matrices" },

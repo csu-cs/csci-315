@@ -32,7 +32,7 @@
 
 
 \title{\Huge{}Hashing \& Hash Tables \\with Open Addressing}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 5 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 5 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
 %\author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -68,10 +68,11 @@ and set of values.
 
 \begin{itemize}
 \item
-  We want a data structure in which finds/searches are very fast.
+  We want a data structure in which finds/searches \\
+  are very fast.
   \begin{itemize}
   \item
-    As close to $O(1)$ as possible.
+    As close to \(O(1)\) as possible.
   \item
     With the minimum number of executed instructions per method.
   \end{itemize}
@@ -116,40 +117,45 @@ and set of values.
       \foreach \i in {0,...,6} {
         \ArrayNodeVertical{}
       }
+      
+      \only<2->{%
+        \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
+          \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {\(k_{\k}\)};
+          \node[chain element, anchor=west, name=valval\k, fill=CSUslate, text=white] at ([xshift=-0.4pt] key.east) {\(v_{\k}\)};
+        }
 
-      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3} {
-        \node[chain element, anchor=west, name=key] at ([xshift=3.2pt] elAt\i.west) {$k_{\k}$};
-        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\k}$};
-      }
-
-      \foreach \i [count=\k from 0] in {7,8} {
-        \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {$k_{\i}$};
-        \node[chain element, anchor=west, name=valval\k] at ([xshift=-0.4pt] key.east) {$v_{\i}$};
-      }
+        \foreach \i [count=\k from 0] in {7,8} {
+          \node[chain element, anchor=west, name=key] at ([xshift=2.8pt] valval\k.east) {\(k_{\i}\)};
+          \node[chain element, anchor=west, name=valval\k, fill=CSUslate, text=white] at ([xshift=-0.4pt] key.east) {\(v_{\i}\)};
+        }
+      }%
 
       % \draw[thick, fill=MyPurple,name=hashFunction]
       %   ([xshift=-3cm]elAt0.north west) rectangle ([xshift=-1.5cm]elAt6.south west);
+
+      \onslide<3->{%
       \node[draw, thick, fill=MyPurple,
         fit=(elAt0.north west)(elAt6.south west),
-        xshift=-2.5cm,
+        xshift=-3cm,
         minimum width=1.5cm,
         inner sep=0pt,
         outer sep=0pt, 
         name=hashFunction] {};
-      \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function ($h$)};
+      \node[anchor=south, align=center, inner sep=0] at (hashFunction.north) {Hash Function (\(h\))};
+      }%
 
       % % Curly Braces
       % \draw [decorate, decoration = {brace,raise=5pt,amplitude=8pt}, very thick] ([xshift=-1cm]prev.south west) -- ([xshift=-1cm]firstEl.north west) node [pos=0.5,left=12pt,anchor=south, rotate=90] {hash value / index};
 
       % Keys in Universe
       \node[circle, minimum size=4.2cm, draw=white, fill=CSUgold, thick, name=universe] at (-8.25,-3.75) {};
-      \node[anchor=south, align=center, inner sep=0] at (universe.north) {Universe of Keys ($U$)};
+      \node[anchor=south, align=center, inner sep=0] at (universe.north) {Universe of Keys (\(U\))};
 
       % Seed the random number generator for reproducibility
       \pgfmathsetseed{57}
 
       % Loop to create 10 small circles
-      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3,7,8} {
+      \foreach \i [count=\k from 0] in {4,1,5,0,6,2,3,4,1} {
         % Generate random angle and radius for polar coordinates within the large circle
         \pgfmathsetmacro{\angle}{random(0,360)}
         \pgfmathsetmacro{\radius}{sqrt(random()) * 1.8} % scale radius to stay within the larger circle
@@ -163,8 +169,11 @@ and set of values.
         % Draw the small circle and label it
         \fill[white] (\x,\y) circle (0.1cm); % Small circle with radius 0.3cm
         
-        \draw[-stealth, very thick] (\x, \y) to (index\elNum);
-        
+        % Draw line
+        \only<4->{
+          \draw[-stealth, very thick] (\x, \y)[rounded corners] -- (hashFunction.center |- \x,\y) -- (index\elNum);
+        }
+
         % Label the circle
         \begin{pgfonlayer}{foreground layer}
           \node[text=black, anchor=north east, inner sep=0, outer sep=0] at (\x,\y) {\(k_{\k}\)}; 
@@ -412,17 +421,17 @@ and set of values.
 % \pause
 % \end{frame}
 
-\begin{frame}{Hashing with Open Addressing}
-\begin{itemize}[<+->]
-  \item
-    So far, we have studied hashing with chaining, using a list to store the items that hash to the same location.
-  \item
-    Another option is to store all the items (references to single items) directly in the table.
-  \item
-    \emph{Open addressing}\\
-    Collisions are resolved by systematically examining other table indexes, \(i_0 , i_1 , i_2 , \ldots \) until an empty slot is located.
-\end{itemize}
-\end{frame}
+% \begin{frame}{Hashing with Open Addressing}
+% \begin{itemize}[<+->]
+%   \item
+%     So far, we have studied hashing with chaining, using a list to store the items that hash to the same location.
+%   \item
+%     Another option is to store all the items (references to single items) directly in the table.
+%   \item
+%     \emph{Open addressing}\\
+%     Collisions are resolved by systematically examining other table indexes, \(i_0 , i_1 , i_2 , \ldots \) until an empty slot is located.
+% \end{itemize}
+% \end{frame}
 
 \section{Probing}
 
@@ -462,6 +471,14 @@ Choose the next available array cell.
 If the array is full, you need to throw an exception or, better yet, resize the array.
 
 \end{frame}
+
+\begin{frame}
+  \center%
+  \Large%
+  Let's implement using open-addressing\\ and simple linear probing.
+\end{frame}
+
+
 
 \begin{frame}{Linear Probing: Limitations}
   \begin{itemize}[<+->]
@@ -536,7 +553,7 @@ bool insert(const Type &key) {
     hashed item count to the table size.
 
   \item<+->
-    The expected load factor will is needed to determine the hash table and hash functions' efficiency.
+    The expected load factor will is needed to determine\\ the hash table and hash functions' efficiency.
   
   \item<+->
     For Open Addressing:
@@ -600,7 +617,7 @@ bool insert(const Type &key) {
 \end{tabular}
 %\end{figure}
 \column{0.4\textwidth}
-In large hash tables that far exceed the CPU cache size, linear probing performs better due to better locality of reference. However, linear probing performs poorly as the table gets full.
+Hash tables that far exceed the CPU\\ cache size, linear probing performs better due to better locality of reference. However, linear probing performs poorly as the table gets full.
 \end{columns}
 \end{frame}
 
@@ -646,8 +663,8 @@ In large hash tables that far exceed the CPU cache size, linear probing performs
   }
   \onslide<6-7>{%
     % \node[anchor=west] (where) at ([xshift=0.5em, yshift=4mm] lastElValue.east) {Where is it?};
-    \node (where) [right=of lastElValue.north east] {Where is it?};
-    \draw[link, ->] (where) to[bend left=20] (prev);%
+    \node (where) [right=of lastElValue.north east] {Where is 7?};
+    \draw[link, -stealth] (where) to[bend left=20] (prev);%
   }
   \alt<1>{
     \begin{scope}[node of array/.append style = {fill=CSUslate, text=white!50!CSUslate}]

@@ -114,7 +114,7 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 | 10A  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
 | 10B  | [STL Containers and Iterators](/lectures/17-stl-containers) and [STL Algorithms](/lectures/17-stl-algorithms) | Lab 17                |
 | 11A  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
-| 11B  | [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | Project 3 & Lab 19    |
+| 11B  | [Project 3](/lectures/19-project3) and [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | [Project 3](/lectures/19-project3) & Lab 19    |
 | 12A  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |
 | 12B  | [B-Trees](/lectures/21-b-trees) | Lab 21                |
 | 13A  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |

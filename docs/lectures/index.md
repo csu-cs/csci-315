@@ -59,6 +59,7 @@
 
 - [Hash Tables via Chaining](/lectures/18-hash-tables-chaining)
 - [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing)
+- [Project 3: Overview](/lectures/19-project3)
 - [Priority Queues](/lectures/20-priority-queues)
 - [B-trees](/lectures/21-b-trees)
 - [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices)

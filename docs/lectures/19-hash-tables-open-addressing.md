@@ -3,16 +3,10 @@ Project 3 and Hash Tables with Open Addressing
 
 Chapter 5 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
-### Project 3
-
-<div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/HWznz-PfyVk?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
-</div>
-
 ### Lecture Video on Open Addressing
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/g3ivPTWl-HE?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/esEe8qi2rlM?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -249,3 +243,5 @@ the default hash functions as function objects.
 # Lab 19: Hash Tables with Open Addressing
 
 Let’s take a look at the lab based on today’s lecture.
+
+Also, start working on [Project 3](/lectures/19-project3).
