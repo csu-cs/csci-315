@@ -6,7 +6,7 @@
 \usepackage{tabularx}
 
 \title{\Huge{} Priority Queues}
-\subtitle{CSCI 315: Data Structure Analysis}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -54,20 +54,36 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Popular Priority Queue Uses}
+  \begin{itemize}[<+->]
+  \item
+    \emph{Task scheduling} in operating systems (highest-priority processes run first).
+  \item
+    \emph{Dijkstra's algorithm} for shortest paths (select the next closest node).
+  \item
+    \emph{A* search} and other \emph{graph traversal} techniques (best candidate expansion).
+  \item
+    \emph{Event-driven simulation} (next event by earliest time).
+  \item
+    \emph{Huffman coding} and \emph{compression} (combine nodes by lowest frequency).
+  \end{itemize}
+\end{frame}
 
 % \setbeamercovered{transparent}
 \begin{frame}{A Priority Queue ADT}
 Here is one possible ADT\@:
 \renewcommand{\arraystretch}{1.25}
+\onslide<2->{%
 \begin{tabularx}{1\textwidth}{>{\columncolor{codeBackground}\color{codeVariable}\ttfamily}l >{\raggedright\arraybackslash} X}
-  \onslide<2->{{PriorityQueue{\color{white}()}} & a constructor} \onslide<3->{\\
+  {PriorityQueue{\color{white}()}} & a constructor \onslide<3->{\\
   {{\color{codeKeyword}void} add{\color{white}(}{\color{codeKeyword}const} Type {\color{white}\&}val{\color{white})}} & inserts \texttt{val} into the queue} \onslide<4->{\\
   {Type{\color{white}\&} pop{\color{white}()}} & removes and returns the highest-priority element} \onslide<5->{\\
   \texttt{{\color{codeKeyword}const} Type{\color{white}\&} top{\color{white}()} {\color{codeKeyword}const}} & returns (but does not remove) the highest-priority element} \onslide<6->{\\
   {{\color{codeKeyword}bool} isEmpty{\color{white}()} {\color{codeKeyword}const}} & returns true IFF empty} \onslide<7->{\\
   {{\color{codeKeyword}unsigned int} size{\color{white}()} {\color{codeKeyword}const}} & returns the element count} \onslide<8->{\\
   {{\color{codeKeyword}void} clear{\color{white}()}} & discards all elements}
-\end{tabularx}
+\end{tabularx}%
+}
 \end{frame}
 
 \setbeamercovered{transparent}
@@ -86,7 +102,7 @@ Here is one possible ADT\@:
     If data is loaded once and searched thousands of\\
     times, make searching fast by sorting the array.
   \item
-    If we load a huge data and expect to do only a few searches, we probably \emph{don't} want to spend time sorting.
+    If we plan to perform do only a few searches on a huge\\ data set, we probably \emph{don't} want to spend time sorting.
   \end{itemize}
 \item
   For almost all uses of a queue (including a priority queue), we eventually remove everything.
@@ -101,11 +117,11 @@ Here is one possible ADT\@:
   \pause{}
   \begin{itemize}[<+->]
     \item
-      Adding an element would take $O(1)$ time. (Why?)
+      Adding an element would take \(O(1)\) time. (Why?)
     \item
-      Removing an element would take $O(n)$ time. (Why?)
+      Removing an element would take \(O(n)\) time. (Why?)
     \item
-      Hence, adding and removing an element takes $O(n)$ time.
+      Hence, adding and removing an element takes \(O(n)\) time.
     \item
       This is an inefficient representation.
   \end{itemize}
@@ -116,11 +132,11 @@ Here is one possible ADT\@:
   \pause{}
   \begin{itemize}[<+->]
   \item
-    Adding an element would take $O(n)$ time. (Why?)
+    Adding an element would take \(O(n)\) time. (Why?)
   \item
-    Removing an element would take $O(1)$ time. (Why?)
+    Removing an element would take \(O(1)\) time. (Why?)
   \item
-    Hence, adding and removing an element takes $O(n)$ time.
+    Hence, adding and removing an element takes \(O(n)\) time.
   \item
     Again, this is inefficient.
   \end{itemize}
@@ -133,20 +149,20 @@ Here is one possible ADT\@:
   \emph{Unsorted}:
   \begin{itemize}
   \item
-    Adding an element would take $O(1)$ time (Why?)
+    Adding an element would take \(O(1)\) time (Why?)
   \item
-    Removing an element would take $O(n)$ time (Why?)
+    Removing an element would take \(O(n)\) time (Why?)
   \end{itemize}
 \item
   \emph{Sorted}:
   \begin{itemize}
   \item
-    Adding an element would take $O(n)$ time (Why?)
+    Adding an element would take \(O(n)\) time (Why?)
   \item
-    Removing an element would take $O(1)$ time (Why?)
+    Removing an element would take \(O(1)\) time (Why?)
   \end{itemize}
 \item
-  As with array representations, adding and removing an element takes $O(n)$ time.
+  As with array representations, adding and removing an element takes \(O(n)\) time.
 \item
   Again, these are inefficient implementations.
 \end{itemize}
@@ -158,9 +174,9 @@ Here is one possible ADT\@:
   A priority queue could be represented as an \\unbalanced \emph{binary search tree}.
   \begin{itemize}
   \item<3->
-    Insertion times would range from \alt<-3>{$O(?)$}{$O(\log n)$} to \alt<-3>{$O(?)$}{$O(n)$}
+    Insertion times would range from \alt<-3>{\(O(?)\)}{\(O(\log n)\)} to \alt<-3>{\(O(?)\)}{\(O(n)\)}
   \item<5->
-    Removal times would range from \alt<-5>{$O(?)$}{$O(\log n)$} to \alt<-5>{$O(?)$}{$O(n)$}
+    Removal times would range from \alt<-5>{\(O(?)\)}{\(O(\log n)\)} to \alt<-5>{\(O(?)\)}{\(O(n)\)}
   \end{itemize}
 \item<7->
   A priority queue could be represented as a \emph{balanced} binary search tree.%
@@ -170,7 +186,7 @@ Here is one possible ADT\@:
   \item<9->
     We need an algorithm to rebalance the binary tree.
   \item<10->
-    Good rebalancing algorithms require only $O(\log n)$ time but are complicated.
+    Good rebalancing algorithms require only \(O(\log n)\) time but are complicated.
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -212,13 +228,13 @@ Here is one possible ADT\@:
 \column{0.43\textwidth}
 \begin{itemize}
 \item
-  Left child of node \(i\) is at $2i + 1$; right child is at $2i + 2$.\\[0.25em]
+  Left child of node \(i\) is at \(2i + 1\); right child is at \(2i + 2\).\\[0.25em]
   %\begin{itemize}
   %\item
     {\small If the result is larger than the last index, there is no such child.}
   %\end{itemize}
 \item
-  Parent of node \(i\) is $\frac{1}{2}(i - 1)$, unless \(i\) == $0$.
+  Parent of node \(i\) is \(\frac{1}{2}(i - 1)\), unless \(i\) == \(0\).
 \end{itemize}
 
 \column{0.25\textwidth}\centering
@@ -263,11 +279,11 @@ Here is one possible ADT\@:
         \item
           (a.k.a., \emph{up-heap bubbling} or \emph{percolating up}).
         \item
-          Sifting up requires $O(\log n)$ time.
+          Sifting up requires \(O(\log n)\) time.
       \end{itemize}
   \end{enumerate}
   \onslide<3->{
-  Thus, adding an element takes $O(\log n)$ time.}
+  Thus, adding an element takes \(O(\log n)\) time.}
 \end{frame}
 
 \begin{frame}{Removing Element from the Heap}
@@ -282,11 +298,11 @@ Here is one possible ADT\@:
         \item
           (a.k.a., \emph{down-heap bubbling} or \emph{percolating down}).
         \item
-          Sifting down requires $O(\log n)$ time.
+          Sifting down requires \(O(\log n)\) time.
     \end{itemize}
   \end{enumerate}
   \onslide<4->{
-  Thus, removing an element takes $O(\log n)$ time.}
+  Thus, removing an element takes \(O(\log n)\) time.}
 \end{frame}
 
 \section{STL Heaps}
@@ -592,9 +608,9 @@ std::cout << "The maximum after pop is " << v1.front() << '\n';
 \item
   Efficiency is usually measured as the sum of the \\time it takes to add and remove elements.
 \item
-  Simple implementations take $O(n)$ time.
+  Simple implementations take \(O(n)\) time.
 \item
-  A heap implementation takes $O(\log n)$ time.
+  A heap implementation takes \(O(\log n)\) time.
 \item
   Thus, for any sort of heavy-duty use, a heap implementation is better.
 \end{itemize}

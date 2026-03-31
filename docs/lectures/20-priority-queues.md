@@ -2,7 +2,7 @@ Priority Queues
 ===============
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/wFwL_lrQtyQ?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/s2uOFB5AqLo?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 ## Introduction
@@ -28,6 +28,19 @@ Priority Queues
   - Remove any “largest” element (don’t care which).
 
   - Remove the first one added.
+
+
+### Popular Priority Queue Uses
+
+-   **Task scheduling** in operating systems (highest-priority processes run first).
+
+-   [**Dijkstra's algorithm** for shortest paths](22-graphs-adjacency-matrices#shortest-path-in-a-weighted-graph) (select the next closest node).
+
+-   **A* search** and other **graph traversal** techniques (best candidate expansion).
+
+-   **Event-driven simulation** (next event by earliest time).
+
+-   **Huffman coding** and **compression** (combine nodes by lowest frequency).
 
 ## A Priority Queue ADT
 
