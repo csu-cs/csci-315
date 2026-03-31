@@ -69,13 +69,9 @@ export default {
 			}
 		],
 
-		// algolia: { //docsearch
-		// 	appId: 'US37G3IQE1',
-		// 	apiKey: '4a083944bb4122490cfe21afab9ec84b',
-		// 	indexName: 'csci-315',
-		// 	//container: '### REPLACE ME WITH A CONTAINER (e.g. div) ###'
-		// 	debug: 'false' // Set debug to true if you want to inspect the modal
-		// }
+		search: {
+			provider: 'local'
+		}
 	},
 	vue: {
 		template: {
