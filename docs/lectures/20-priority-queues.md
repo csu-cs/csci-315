@@ -159,9 +159,7 @@ A priority queue can be implemented as a ***heap***, which are…
 
 Heap: All nodes have the heap property.
 
-## Heaps
-
-### Array Representation of a Heap
+## Array Representation of a Heap
 
 ![Mapping of a binary heap into the array representation.](/images/priority-queues/heap_to_array.svg "Mapping of a binary heap into the array representation."){.light-only}
 

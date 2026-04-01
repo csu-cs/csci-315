@@ -43,7 +43,7 @@ figure {
 	margin: 0 auto 1em auto;
 }
 
-figure img {
+.vp-doc figure img {
 	margin: auto;
 	display: block;
 }
