@@ -3,6 +3,7 @@
 \usepackage{csu-theme}
 \usepackage{amsmath}
 \usepackage{booktabs}
+\usepackage[euler]{textgreek}
 
 \usepackage{forest}
 \forestset{
@@ -47,7 +48,7 @@
 \NewDocumentCommand{\BTreeVal}{ sD<>{CSUcyan}m }{%
   \begingroup
   \setlength{\fboxsep}{5.5pt}% make the spacing wider to cover the whole cell
-  \colorbox{#2}{\hspace{-5.5pt}\makebox[1.75em][c]{\vspace{1.5em}#3\vspace{1.5em}}\hspace{-5.5pt}}%
+  \colorbox{#2}{\hspace{-5.5pt}\makebox[1.6em][c]{#3}\hspace{-5.5pt}}%
   \IfBooleanTF #1%
     {}%
     {\BTreeSep}%
@@ -66,13 +67,13 @@
 		\ifnum\i>1%After the first element
       \BTreeSep%
 		\fi%
-      \makebox[1.75em][c]{\vspace{1.5em}\element\vspace{1.5em}}%
+      \makebox[1.6em][c]{\element}%
 	}%
 	\endgroup%
 }
 
 \title{\Huge{} B-Trees\\[-0.5em]{\Large{} External Memory Search}}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 14 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 14 of \href{https://opendatastructures.org/ods-cpp.pdf}{Open Data Structures}}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -98,35 +99,70 @@
   \item
     Index structures for large datasets cannot fit \\in main memory.
   \item
-    Hard drive storage requires a different approach \\to efficiency.
+    Disk and SSD storage require a different approach \\to efficiency.
   \item
-    If a disk spins at 7,200 RPM, one revolution occurs in 1/120 of a second, or 8.33ms.
+    Modern SSDs have random access times of \\approximately 100--200 microseconds.
   \item
-    One disk access takes more time than 200,000 instructions.
+    One SSD access takes more time than 500,000--2,000,000 \\CPU instructions (on modern multi-GHz processors).
   \item
-    One access on a modern SSD is approximately 2,500 times slower than reading from memory.
+    One SSD access is approximately 1,000--10,000 times slower \\than reading from main memory (50--100 ns).
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Motivation for B-Trees}
 \begin{itemize}[<+->]
   \item
-    Suppose an \href{https://en.wikipedia.org/wiki/AVL_tree}{AVL tree} is used to store 20 million \\records.
+    Suppose an \href{https://en.wikipedia.org/wiki/AVL_tree}{AVL tree} is used to store 20 million \\records on an SSD.
   \item
-    This very deep binary tree requires lots of different \\disk accesses;\\
-    \(\log_2{20,000,000} \approx 24\), so this takes about 0.2 seconds.
+    This very deep binary tree requires lots of SSD accesses;\\
+    \(\log_2{20,000,000} \approx 24\) accesses \(\times 150\) \\microseconds per access \(\approx 2.6\) milliseconds.
   \item
     We know we can't improve on the \(\log_2{n}\) lower bound on the search for a binary tree.
   \item
     The solution is to use more branches and, thus, reduce the tree height!
   \begin{itemize}
     \item
-      As branching increases, depth decreases.
+      As branching increases, depth decreases, so fewer expensive storage accesses are needed.
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example B-Tree, Order-5 with 26 Elements}
+\begin{frame}{Realistic Worst-Case Scan}
+You need to scan all records in a 1-billion row table.\\
+Assume each random access is \(150\) microseconds.
+
+\pause{}
+\begin{itemize}[<+->]
+  \item AVL/BST lookup per key: \(\approx 30\) random reads (height \(30\)).
+  \item AVL I/O time: \(1{,}000{,}000{,}000 \times 30 \times 150\mu{}s \approx \mathbf{52}\) \textbf{days}\\ (or \(75\) minutes at \(1{,}000\times{}\) parallelism).
+  \item B-tree (order \(101\)) height: \(\approx 5\); therefore, \(5\) reads/key.
+  \item B-tree I/O time: \(1{,}000{,}000{,}000 \times 5 \times 150\mu{}s \approx \mathbf{9}\) \textbf{days}\\ (or \(12.5\) minutes at \(1{,}000\times{}\) parallelism).
+\end{itemize}
+
+\pause{}
+\textbf{Takeaway}: Even with parallelism, reducing tree height from 30 to 5 saves \(6\times{}\) I/O work. This is why B-Trees dominate for large datasets.
+\end{frame}
+
+\begin{frame}{Web Search Scale}
+Live system: \(10,000\) queries/sec,\\
+each needs one key lookup in \(8.5\)B pages.
+
+\pause{}
+\begin{itemize}[<+->]
+  \item AVL tree depth: \(\approx 33\). \(33\) \\
+    SSD accesses/query = \(4.95\) ms/query at \(150\mu{}s\)/access.
+  \item B-tree height (order \(101\)): \(\approx 4\). \(4\) \\
+    SSD accesses/query = \(0.6\) ms/query.
+  \item 10k q/s: AVL = \(49.5\) seconds of SSD work per second (queueing backlog).\\
+    B-tree = \(6\) seconds of SSD work per second.
+\end{itemize}
+
+\pause{}
+AVL-style access causes user-visible stalls under load,\\
+while a B-tree design maintains low-latency response.
+\end{frame}
+
+\begin{frame}{Example B-Tree, Order-5 with 26 Keys}
   \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{order-5-b-tree-example}
@@ -135,7 +171,7 @@
 \end{frame}
 
 \begin{frame}{Definition of a B-tree}
-  A B-tree of order \(m\) is an \(m\)-way tree (i.e., a tree where \\each node may have up to \(m\) children) in which:\pause{}
+  A B-tree of \emph{order} \(m\) is an \(m\)-way tree (i.e., a tree where \\each node may have up to \(m\) children) in which:\pause{}
 
     \begin{enumerate}
       \item<+->
@@ -154,7 +190,7 @@
     \onslide<+->{The number \(m\) should always be odd.}
 \end{frame}
 
-\begin{frame}{Example B-Tree, Order-5 with 26 Elements}
+\begin{frame}{Example B-Tree, Order-5 with 26 Keys}
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{order-5-b-tree-example}
@@ -166,7 +202,7 @@
 
 \begin{frame}[t]{Constructing a B-Tree}
 Starting with an empty \emph{Order-5} B-tree, let's insert the \\following sequence of keys:\\
-    1, 12, 8, 2, 25, 6, 14, 28, 17, 7, 52, 16, 48, 68, 3, 26, 29, 55, 45.
+    \alert{\textbf{1, 12, 8, 2}}, 25, 6, 14, 28, 17, 7, 52, 16, 48, 68, 3, 26, 29, 55, 45.
 \begin{itemize}\small{}
   \item<2->
     The first four items go into the root:
@@ -225,7 +261,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
   \begin{itemize}\small{}
     \item<2->
       6, 14, and 28 get added to the leaf nodes.
-  \end{itemize}
+  
 
   \begin{figure}\small{}
   \centering
@@ -252,6 +288,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
       ]
     \end{forest}\onslide<5>{}
   \end{figure}
+  \end{itemize}
 \end{frame}
 
 
@@ -310,7 +347,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
             \BTreeNode{12, 14}\alt<-3>{}{\BTreeSep\BTreeVal*{16}}%
           ]
           [
-            \BTreeNode{25, 28}\only<2->{%
+            \BTreeNode{25, 28}\only<3->{%
               \only<5->{\BTreeSep\BTreeVal*{48}}\BTreeSep\BTreeVal*{52}%
             }%
           ]
@@ -482,7 +519,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
       \end{forest}
     \end{figure}
   \item<3->
-    Promote 28 to the root, which causes the root to split.\vspace{-1em}
+    Promote 28 to the root, which causes the root to split.
     \begin{figure}
     \centering
       \begin{forest}
@@ -591,6 +628,7 @@ Starting with an empty \emph{Order-5} B-tree, let's insert the \\following seque
 \end{itemize}
 \end{frame}
 
+\section{Insert Exercise}
 \begin{frame}{Exercise in Inserting a B-Tree }
 \large
 Insert the following keys to a 5-way B-tree:\\
@@ -598,41 +636,506 @@ Insert the following keys to a 5-way B-tree:\\
 \end{frame}
 
 
-\section{Remove}
+\begin{frame}{Insert 3, 7, 9, and 23.}
+\pause{}
+\centerline{%
+	\begin{forest}
+	[%
+    \alt<-2>{\BTreeNode{3}}{%
+      \alt<-3>{\BTreeNode{3, 7}}{%
+        \alt<-4>{\BTreeNode{3, 7, 9}}{%
+          \BTreeNode{3, 7, 9, 23}%
+        }%
+      }%
+    }%
+	]%
+	\end{forest}%
+}
+\onslide<5>{}
+\end{frame}
 
-\begin{frame}{Removal from a B-Tree}
-  \center{}
+\begin{frame}{Insert 45.}
+
+\centerline{
+	
+	\alt<1>{%
+    \begin{forest}
+      [\BTreeNode{3, 7, 9, 23}]
+    \end{forest}
+  }{%
+    \begin{forest}
+      [\BTreeNode{3, 7, 9, 23, 45}, invalid]%
+    \end{forest}
+  }%
+}
+
+\pause{}
+Invalid B-Tree. Too many keys in the root. Promote 9.
+
+\pause{}
+\centerline{%
+	\begin{forest}
+		[\BTreeNode{9}
+			[\BTreeNode{3, 7}]
+			[\BTreeNode{23, 45}]
+		]
+	\end{forest}
+}
+\end{frame}
+
+\begin{frame}{Insert 1, 5, 14, and 25.}
+
+\centerline{%
+  \alt<1>{%
+	\begin{forest}
+		[\BTreeNode{9}
+			[\BTreeNode{3, 7}]
+			[\BTreeNode{23, 45}]
+		]
+	\end{forest}
+  }{%
+    \alt<-2>{%
+      \begin{forest}
+        [\BTreeNode{9}
+          [\BTreeNode{1, 3, 7}]
+          [\BTreeNode{23, 45}]
+        ]
+      \end{forest}
+    }{%
+      \alt<-3>{%
+        \begin{forest}
+          [\BTreeNode{9}
+            [\BTreeNode{1, 3, 5, 7}]
+            [\BTreeNode{23, 45}]
+          ]
+        \end{forest}
+      }{%
+        \alt<-4>{%
+          \begin{forest}
+            [\BTreeNode{9}
+              [\BTreeNode{1, 3, 5, 7}]
+              [\BTreeNode{14, 23, 45}]
+            ]
+          \end{forest}
+        }{%
+          \begin{forest}
+            [\BTreeNode{9}
+              [\BTreeNode{1, 3, 5, 7}]
+              [\BTreeNode{14, 23, 25, 45}]
+            ]
+          \end{forest}
+        }
+      }
+    }
+  }
+}
+\onslide<5>{}
+\end{frame}
+
+\begin{frame}{Insert 24.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+      [\BTreeNode{9}
+        [\BTreeNode{1, 3, 5, 7}]
+        [\BTreeNode{14, 23, 25, 45}]
+      ]
+    \end{forest}
+  }{
+    \begin{forest}
+      [\BTreeNode{9}
+        [\BTreeNode{1, 3, 5, 7}]
+        [\BTreeNode{14, 23, 24, 25, 45}, invalid]
+      ]
+    \end{forest}
+  }
+}
+
+\pause{}
+Too many keys in the right leaf. Promote the middle, 24.
+
+\pause{}
+\centerline{
+	\begin{forest}
+		[\BTreeNode{9, 24}
+			[\BTreeNode{1, 3, 5, 7}]
+			[\BTreeNode{14, 23}]
+			[\BTreeNode{25, 45}]
+		]
+	\end{forest}
+}
+\end{frame}
+
+\begin{frame}{Insert 13 and 11.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+      [\BTreeNode{9, 24}
+        [\BTreeNode{1, 3, 5, 7}]
+        [\BTreeNode{14, 23}]
+        [\BTreeNode{25, 45}]
+      ]
+    \end{forest}
+  }{
+    \alt<-2>{
+      \begin{forest}
+        [\BTreeNode{9, 24}
+          [\BTreeNode{1, 3, 5, 7}]
+          [\BTreeNode{13, 14, 23}]
+          [\BTreeNode{25, 45}]
+        ]
+      \end{forest}
+    }{
+      \begin{forest}
+        [\BTreeNode{9, 24}
+          [\BTreeNode{1, 3, 5, 7}]
+          [\BTreeNode{11, 13, 14, 23}]
+          [\BTreeNode{25, 45}]
+        ]
+      \end{forest}
+    }
+  }
+}
+\onslide<3>{}
+\end{frame}
+
+\begin{frame}{Insert 8.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+        [\BTreeNode{9, 24}
+          [\BTreeNode{1, 3, 5, 7}]
+          [\BTreeNode{11, 13, 14, 23}]
+          [\BTreeNode{25, 45}]
+        ]
+      \end{forest}
+  }{
+    \begin{forest}
+      [\BTreeNode{9, 24}
+        [\BTreeNode{1, 3, 5, 7, 8}, invalid]
+        [\BTreeNode{11, 13, 14, 23}]
+        [\BTreeNode{25, 45}]
+      ]
+    \end{forest}
+  }
+}
+
+\pause{}
+Too many key in the left leaf. Promote the middle, 5.
+
+\pause{}
+\centerline{
+	\begin{forest}
+		[\BTreeNode{5, 9, 24}
+			[\BTreeNode{1, 3}]
+			[\BTreeNode{7, 8}]
+			[\BTreeNode{11, 13, 14, 23}]
+			[\BTreeNode{25, 45}]
+		]
+	\end{forest}
+}
+\end{frame}
+
+
+\begin{frame}{Insert 19.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+      [\BTreeNode{5, 9, 24}
+        [\BTreeNode{1, 3}]
+        [\BTreeNode{7, 8}]
+        [\BTreeNode{11, 13, 14, 23}]
+        [\BTreeNode{25, 45}]
+      ]
+    \end{forest}
+  }{
+    \begin{forest}
+      [\BTreeNode{5, 9, 24}
+        [\BTreeNode{1, 3}]
+        [\BTreeNode{7, 8}]
+        [\BTreeNode{11, 13, 14, 19, 23}, invalid]
+        [\BTreeNode{25, 45}]
+      ]
+    \end{forest}
+  }
+}
+
+\pause{}
+Invalid leaf. Promote the middle, 14.
+
+\pause{}
+\centerline{
+	\begin{forest}
+		[\BTreeNode{5, 9, 14, 24}
+			[\BTreeNode{1, 3}]
+			[\BTreeNode{7, 8}]
+			[\BTreeNode{11, 13}]
+			[\BTreeNode{19, 23}]
+			[\BTreeNode{25, 45}]
+		]
+	\end{forest}
+}
+\end{frame}
+
+\begin{frame}{Insert 4, 31 and 35.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+      [\BTreeNode{5, 9, 14, 24}
+        [\BTreeNode{1, 3}]
+        [\BTreeNode{7, 8}]
+        [\BTreeNode{11, 13}]
+        [\BTreeNode{19, 23}]
+        [\BTreeNode{25, 45}]
+      ]
+    \end{forest}
+  }{
+    \alt<-2>{
+      \begin{forest}
+        [\BTreeNode{5, 9, 14, 24}
+          [\BTreeNode{1, 3, 4}]
+          [\BTreeNode{7, 8}]
+          [\BTreeNode{11, 13}]
+          [\BTreeNode{19, 23}]
+          [\BTreeNode{25, 45}]
+        ]
+      \end{forest}
+    }{
+      \alt<-3>{
+        \begin{forest}
+          [\BTreeNode{5, 9, 14, 24}
+            [\BTreeNode{1, 3, 4}]
+            [\BTreeNode{7, 8}]
+            [\BTreeNode{11, 13}]
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31, 45}]
+          ]
+        \end{forest}
+      }{
+        \begin{forest}
+          [\BTreeNode{5, 9, 14, 24}
+            [\BTreeNode{1, 3, 4}]
+            [\BTreeNode{7, 8}]
+            [\BTreeNode{11, 13}]
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31, 35, 45}]
+          ]
+        \end{forest}
+      }
+    }
+  }
+}
+\onslide<4>{}
+\end{frame}
+
+\begin{frame}{Insert 56.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+      [\BTreeNode{5, 9, 14, 24}
+        [\BTreeNode{1, 3, 4}]
+        [\BTreeNode{7, 8}]
+        [\BTreeNode{11, 13}]
+        [\BTreeNode{19, 23}]
+        [\BTreeNode{25, 31, 35, 45}]
+      ]
+    \end{forest}
+  }{
+    \begin{forest}
+      [\BTreeNode{5, 9, 14, 24}
+        [\BTreeNode{1, 3, 4}]
+        [\BTreeNode{7, 8}]
+        [\BTreeNode{11, 13}]
+        [\BTreeNode{19, 23}]
+        [\BTreeNode{25, 31, 35, 45, 56}, invalid]
+      ]
+    \end{forest}
+  }
+}
+
+\pause{}
+Too many keys in the right leaf. Promote the middle, 35.
+
+\pause{}
+\centerline{
+	\begin{forest}
+		[\BTreeNode{5, 9, 14, 24, 35}, invalid
+			[\BTreeNode{1, 3, 4}]
+			[\BTreeNode{7, 8}]
+			[\BTreeNode{11, 13}]
+			[\BTreeNode{19, 23}]
+			[\BTreeNode{25, 31}]
+			[\BTreeNode{45, 56}]
+		]
+	\end{forest}
+}
+
+\end{frame}
+
+\begin{frame}{Insert 56.}
+
+\centerline{
+  \begin{forest}
+    [\BTreeNode{5, 9, 14, 24, 35}, invalid
+      [\BTreeNode{1, 3, 4}]
+      [\BTreeNode{7, 8}]
+      [\BTreeNode{11, 13}]
+      [\BTreeNode{19, 23}]
+      [\BTreeNode{25, 31}]
+      [\BTreeNode{45, 56}]
+    ]
+  \end{forest}
+}
+
+Too many keys in the root. Promote the middle, 14.
+
+\pause{}
+\centerline{
+	\begin{forest}
+		[\BTreeNode{14}
+			[\BTreeNode{5, 9}
+				[\BTreeNode{1, 3, 4}]
+				[\BTreeNode{7, 8}]
+				[\BTreeNode{11, 13}]
+			]
+			[
+				\BTreeNode{24, 35}
+				[\BTreeNode{19, 23}]
+				[\BTreeNode{25, 31}]
+				[\BTreeNode{45, 56}]
+			]
+		]
+	\end{forest}
+}
+\end{frame}
+
+\begin{frame}{Insert 2, 6, and 12.}
+
+\centerline{
+  \alt<1>{
+    \begin{forest}
+      [\BTreeNode{14}
+        [\BTreeNode{5, 9}
+          [\BTreeNode{1, 3, 4}]
+          [\BTreeNode{7, 8}]
+          [\BTreeNode{11, 13}]
+        ]
+        [
+          \BTreeNode{24, 35}
+          [\BTreeNode{19, 23}]
+          [\BTreeNode{25, 31}]
+          [\BTreeNode{45, 56}]
+        ]
+      ]
+    \end{forest}
+  }{
+    \alt<-2>{
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{5, 9}
+            [\BTreeNode{1, 2, 3, 4}]
+            [\BTreeNode{7, 8}]
+            [\BTreeNode{11, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }{
+      \alt<-3>{
+        \begin{forest}
+          [\BTreeNode{14}
+            [\BTreeNode{5, 9}
+              [\BTreeNode{1, 2, 3, 4}]
+              [\BTreeNode{6, 7, 8}]
+              [\BTreeNode{11, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{19, 23}]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }{
+        \begin{forest}
+          [\BTreeNode{14}
+            [\BTreeNode{5, 9}
+              [\BTreeNode{1, 2, 3, 4}]
+              [\BTreeNode{6, 7, 8}]
+              [\BTreeNode{11, 12, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{19, 23}]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }
+    }
+  }
+}
+\onslide<4>{}
+\end{frame}
+
+\section{Deletion}
+
+\begin{frame}{Deletion from a B-Tree}
+  \center{}\large
 Key are always inserted \emph{into leaves}.
 
-For removal, we wish to remove \emph{from a leaf}.
+For deletion, we wish to remove \emph{from a leaf}.
 
-There are four removal cases to consider in order.
+There are four deletion cases to consider in order.
 \end{frame}
 
-\begin{frame}{Cases for Removal from a B-Tree}
+\begin{frame}{Cases for Deletion from a B-Tree}
 \begin{enumerate}
   \item<+->
-    If the key is already in a leaf node and removing it\\
-    doesn't cause that leaf node to have too few keys, \\
-    then simply remove the key to be deleted.
+    \textbf{Key is in a leaf}:\\ Delete the key.
   \item<+->
-    If the key is \emph{not} in a leaf, then it is guaranteed (by the nature of a B-tree) that its predecessor and successor will be in leaves --- in this case, we can delete the key and promote the predecessor or successor key to the non-leaf deleted key's position.
+    \textbf{Key is not in a leaf}:\\ Its predecessor and successor must be in leaves. Delete the key and promote either the predecessor or successor (implementor's choice) to replace it in the non-leaf position.
 \end{enumerate}
+
+\pause{}
+After performing Case 1 or 2, a leaf node may now have too few keys (\emph{underflow}). We will fix this underflow with Case 3 or 4.
 \end{frame}
 
-\begin{frame}{Cases for Removal from a B-Tree}
-If deleting a key in a leaf with the minimum key count or if Case (2) leads to a leaf node containing fewer than the minimum key count, then:
+\begin{frame}{Cases for Deletion from a B-Tree}
+When removing a key would cause \\
+\textit{underflow} (too few keys), handle it as follows:
 
 \begin{enumerate}
   \setcounter{enumi}{2}
   \item<2->
-    If a sibling leaf has more than the min.\ number of keys, then we can promote one of its keys and move the parent key into the lacking leaf.
+    \textbf{Sibling has spare keys --- Rotate}:
+    \begin{itemize}\small
+      \item Pull a key from a sibling up to the parent.
+      \item Demote the parent key down into the lacking leaf.
+    \end{itemize}
   \item<3->
-    Otherwise, combine the lacking node and one of its neighbors with their shared parent (the opposite of promoting a key). The new node will have the correct number of keys. If the parent now has too few keys, repeat this case (up to the root itself if required).
+    \textbf{Neither sibling has spare keys --- Merge}:
+    \begin{itemize}\small
+      \item Combine the lacking node, sibling, and parent key into one node.
+      \item If the parent now underflows, recursively apply Cases 3 or 4 to it.
+    \end{itemize}
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Type 1: Simple Removal from Leaf}
+\begin{frame}{Type 1: Simple Deletion from Leaf}
 Assuming a 5-way B-Tree (as before), \emph{delete 2}.\\
 
 \begin{figure}
@@ -658,7 +1161,7 @@ Assuming a 5-way B-Tree (as before), \emph{delete 2}.\\
 Because there are enough keys in the node, just delete it.
 \end{frame}
 
-\begin{frame}{Type 2: Simple Removal from Non-Leaf}
+\begin{frame}{Type 2: Simple Deletion from Non-Leaf}
 Assuming a 5-way B-Tree (as before), \emph{delete 52}.\\
 
 \begin{figure}
@@ -797,12 +1300,356 @@ Delete 22
 \end{figure}
 \end{frame}
 
-\begin{frame}{Exercise in Removal a B-Tree }
-\large
-Given a 5-way B-tree created by these data (last exercise):\\
-3, 7, 9, 23, 45, 1, 5, 14, 25, 24, 13, 11, 8, 19, 4, 31, 35, 56, 2, 6, 12\\[2em]
+\section{Delete Exercise}
+\begin{frame}[b]{Exercise in Deletion a B-Tree }
+  \center%
+  Given this order-5 B-tree from the last exercise:\\[1em]
 
-Delete these keys: 4, 5, 7, 3, 14, 45
+  \centerline{%
+    \begin{forest}
+      [\BTreeNode{14}
+        [\BTreeNode{5, 9}
+          [\BTreeNode{1, 2, 3, 4}]
+          [\BTreeNode{6, 7, 8}]
+          [\BTreeNode{11, 12, 13}]
+        ]
+        [
+          \BTreeNode{24, 35}
+          [\BTreeNode{19, 23}]
+          [\BTreeNode{25, 31}]
+          [\BTreeNode{45, 56}]
+        ]
+      ]
+    \end{forest}%
+  }
+
+  Delete these keys: 4, 5, 7, 3, 14, 45
+  \vspace{1.85cm}
+\end{frame}
+
+\begin{frame}[b]{Delete 4.}
+  \center%
+  \centerline{%
+    \alt<-2>{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{5, 9}
+            [\BTreeNode{1, 2, 3, 4}]
+            [\BTreeNode{6, 7, 8}]
+            [\BTreeNode{11, 12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{5, 9}
+            [\BTreeNode{1, 2, 3}]
+            [\BTreeNode{6, 7, 8}]
+            [\BTreeNode{11, 12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }
+}
+\pause{}
+Case 1. Just delete the leaf value.
+\pause{}
+\vspace{1.85cm}
+\end{frame}
+
+\begin{frame}[b]{Delete 5.}
+  \center%
+  \centerline{%
+    \alt<-2>{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{5, 9}
+            [\BTreeNode{1, 2, 3}]
+            [\BTreeNode{6, 7, 8}]
+            [\BTreeNode{11, 12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{6, 9}
+            [\BTreeNode{1, 2, 3}]
+            [\BTreeNode{7, 8}]
+            [\BTreeNode{11, 12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }
+}
+\pause{}
+Case 2; not a leaf. Promote the successor, 6.
+\pause{}
+\vspace{1.85cm}
+\end{frame}
+
+\begin{frame}[b]{Delete 7.}
+  \center%
+  \centerline{%
+    \alt<-2>{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{6, 9}
+            [\BTreeNode{1, 2, 3}]
+            [\BTreeNode{7, 8}]
+            [\BTreeNode{11, 12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }{%
+      \alt<-4>{%
+        \begin{forest}
+          [\BTreeNode{14}
+            [\BTreeNode{6, 9}
+              [\BTreeNode{1, 2, 3}]
+              [\BTreeNode{8}, invalid]
+              [\BTreeNode{11, 12, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{19, 23}]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }{%
+        \begin{forest}
+          [\BTreeNode{14}
+            [\BTreeNode{3, 9}
+              [\BTreeNode{1, 2}]
+              [\BTreeNode{6, 8}]
+              [\BTreeNode{11, 12, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{19, 23}]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }
+    }
+}
+\pause{}
+\alt<-3>{Case 1; delete leaf.}{Case 3; rotate from left sibling.}
+\onslide<5>{}
+\vspace{1.85cm}
+\end{frame}
+
+\begin{frame}[b]{Delete 3.}
+  \center%
+  \centerline{%
+    \alt<-2>{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{3, 9}
+            [\BTreeNode{1, 2}]
+            [\BTreeNode{6, 8}]
+            [\BTreeNode{11, 12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }{%
+      \alt<-4>{%
+        \begin{forest}
+          [\BTreeNode{14}
+            [\BTreeNode{6, 9}
+              [\BTreeNode{1, 2}]
+              [\BTreeNode{8}, invalid]
+              [\BTreeNode{11, 12, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{19, 23}]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }{%
+        \begin{forest}
+          [\BTreeNode{14}
+            [\BTreeNode{6, 11}
+              [\BTreeNode{1, 2}]
+              [\BTreeNode{8, 9}]
+              [\BTreeNode{12, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{19, 23}]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }
+    }
+  }
+\pause{}
+\alt<-3>{Case 2. Replace with successor, 6.}{Case 3; rotate from right sibling.}
+\onslide<5>{}
+\vspace{1.85cm}
+\end{frame}
+
+
+\begin{frame}[b]{Delete 14.}
+  \center%
+  \centerline{%
+    \alt<-2>{%
+      \begin{forest}
+        [\BTreeNode{14}
+          [\BTreeNode{6, 11}
+            [\BTreeNode{1, 2}]
+            [\BTreeNode{8, 9}]
+            [\BTreeNode{12, 13}]
+          ]
+          [
+            \BTreeNode{24, 35}
+            [\BTreeNode{19, 23}]
+            [\BTreeNode{25, 31}]
+            [\BTreeNode{45, 56}]
+          ]
+        ]
+      \end{forest}
+    }{%
+      \alt<-4>{%
+        \begin{forest}
+          [\BTreeNode{19}
+            [\BTreeNode{6, 11}
+              [\BTreeNode{1, 2}]
+              [\BTreeNode{8, 9}]
+              [\BTreeNode{12, 13}]
+            ]
+            [
+              \BTreeNode{24, 35}
+              [\BTreeNode{23}, invalid]
+              [\BTreeNode{25, 31}]
+              [\BTreeNode{45, 56}]
+            ]
+          ]
+        \end{forest}
+      }{%
+        \alt<-6>{%
+          \begin{forest}%
+            [\BTreeNode{19}
+              [\BTreeNode{6, 11}
+                [\BTreeNode{1, 2}]
+                [\BTreeNode{8, 9}]
+                [\BTreeNode{12, 13}]
+              ]
+              [
+                \BTreeNode{35}, invalid
+                [\BTreeNode{23, 24, 25, 31}]
+                [\BTreeNode{45, 56}]
+              ]
+            ]
+          \end{forest}
+        }{%
+          \begin{forest}%
+              [\BTreeNode{6, 11, 19, 35}
+                [\BTreeNode{1, 2}]
+                [\BTreeNode{8, 9}]
+                [\BTreeNode{12, 13}]
+                [\BTreeNode{23, 24, 25, 31}]
+                [\BTreeNode{45, 56}]
+              ]
+          \end{forest}
+        }
+      }
+    }
+  }
+\pause{}
+\alt<-3>{Case 2. Replace with successor, 19.}{Case 4.~\alt<-5>{Merge 23, 24, 25, and 31.}{Merge 6, 11, 19, and 35.}}
+\onslide<7>{}
+\vspace{1.85cm}
+\end{frame}
+
+
+\begin{frame}[b]{Delete 45.}
+  \center%
+  \centerline{%
+    \alt<-2>{%
+      \begin{forest}%
+        [\BTreeNode{6, 11, 19, 35}
+          [\BTreeNode{1, 2}]
+          [\BTreeNode{8, 9}]
+          [\BTreeNode{12, 13}]
+          [\BTreeNode{23, 24, 25, 31}]
+          [\BTreeNode{45, 56}]
+        ]
+      \end{forest}
+    }{%
+      \alt<-4>{
+        \begin{forest}%
+          [\BTreeNode{6, 11, 19, 35}
+            [\BTreeNode{1, 2}]
+            [\BTreeNode{8, 9}]
+            [\BTreeNode{12, 13}]
+            [\BTreeNode{23, 24, 25, 31}]
+            [\BTreeNode{56}, invalid]
+          ]
+        \end{forest}
+      }{%
+        \begin{forest}%
+          [\BTreeNode{6, 11, 19, 31}
+            [\BTreeNode{1, 2}]
+            [\BTreeNode{8, 9}]
+            [\BTreeNode{12, 13}]
+            [\BTreeNode{23, 24, 25}]
+            [\BTreeNode{35, 56}]
+          ]
+        \end{forest}
+      }
+    }
+  }
+\pause{}
+\alt<-3>{Case 1. Delete key in leaf.}{Case 3. Rotate with left sibling.}
+\onslide<7>{}
+\vspace{1.85cm}
 \end{frame}
 
 \section{Analysis}
@@ -815,11 +1662,11 @@ Delete these keys: 4, 5, 7, 3, 14, 45
         \toprule
         Level & Key Count\\
         \midrule
-      root    & $m - 1$\\
-      $1$ & $m^1(m - 1)$\\
-      $2$ & $m^2(m - 1)$\\
-      $\vdots$ & \multicolumn{1}{c}{$\vdots$} \\
-      $h$ & $m^h(m - 1)$\\
+      root    & \(m - 1\)\\
+      \(1\) & \(m^1(m - 1)\)\\
+      \(2\) & \(m^2(m - 1)\)\\
+      \(\vdots\) & \multicolumn{1}{c}{\(\vdots\)} \\
+      \(h\) & \(m^h(m - 1)\)\\
       \bottomrule
       \end{tabular}
   \column{0.7\textwidth}\pause{}
@@ -831,11 +1678,11 @@ Delete these keys: 4, 5, 7, 3, 14, 45
     \end{align*}
   \end{columns}\vspace{1em}
   \pause{}
-  When $m = 5$ and $h = 2$, this gives $5^{2 + 1} - 1 = 125 - 1 = 124$.
+  When \(m = 5\) and \(h = 2\), this gives \(5^{2 + 1} - 1 = 125 - 1 = 124\).
 % \end{itemize}
 \end{frame}
 
-\begin{frame}{Big-$O$ of B-Trees}
+\begin{frame}{Big-\(O\) of B-Trees}
 
 {\center{}
 \begin{table}
@@ -872,15 +1719,16 @@ on the amount of data transferred, especially if \\consecutive items are transfe
     \item
       For example, an order 101 B-tree can transfer each node in one drive read operation.
     \item
-      An order 101 B-tree and height 3 can hold $101^4 - 1$ items (approximately 100 million) and any item can be accessed with 3 drive reads (assuming we hold the root in memory).
+      An order 101 B-tree and height 3 can hold \(101^4 - 1\) items (approximately 100 million) and any item can be accessed with 3 drive reads (assuming we hold the root in memory).
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Reasons for Using B-Trees}
-If we take \(m = 3\), we get a \emph{2--3 Tree}, in which non-leaf nodes have two or three children (i.e., one or two keys).
+If we take \(m = 3\), we get a \emph{2--3 Tree}, in which non-leaf\\
+nodes have two or three children (i.e., one or two keys).
 \begin{itemize}
   \item
-    B-Trees are always balanced (since the leaves are all at the same level), so 2-3 Trees make a good type of balanced tree.
+    B-Trees are always balanced (since the leaves are all at the same level), so 2--3 Trees make a good type of balanced tree.
 \end{itemize}
 \end{frame}
 
@@ -890,7 +1738,7 @@ If we take \(m = 3\), we get a \emph{2--3 Tree}, in which non-leaf nodes have tw
     Binary trees
     \begin{itemize}
       \item
-        Can become \emph{unbalanced} and lose their good time \\complexity (Big $O$).
+        Can become \emph{unbalanced} and lose their good time \\complexity (Big \(O\)).
       \item
         \emph{AVL Trees} are strict binary trees that \emph{overcome the balance problem}.
       \item
@@ -923,10 +1771,51 @@ If we take \(m = 3\), we get a \emph{2--3 Tree}, in which non-leaf nodes have tw
   \end{itemize}
   \end{frame}
 
+\section{Variations}
+
+\begin{frame}{Introduction to B*-Trees}
+  B*-Trees are a B-Tree variant that increases node\\ occupancy for better space utilization.
+
+  \pause{}
+  \begin{itemize}[<+->]
+    \item B*-Trees require non-root nodes to be at least \(2/3\) full\\ (vs. \(1/2\) full in B-Trees).
+    \item Insertions may redistribute keys among siblings before splitting, reducing splits overall.
+    \item This typically yields denser nodes and fewer I/O operations in large storage systems.
+    \item B*-Trees preserve B-Tree search costs while improving storage efficiency.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Introduction to B+Trees}
+  B+Trees are a variant of B-Trees that further optimize for disk-based storage and range queries.
+
+  \pause{}
+  \begin{itemize}[<+->]
+    \item All data (or pointers to data) are stored only in leaf nodes.
+    \item Internal nodes store only keys (no records); therefore, they can hold more keys.
+    \item Leaf nodes are linked sequentially, enabling fast full-range scans and ordered iteration.
+    \item Higher fan-out and fewer disk reads per access make B+Trees popular in databases and file systems.
+    \item Insertion and deletion keep leaves at the same depth, preserving strong balance and performance.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Advanced B-Tree Variations}
+  Beyond B+Trees and B*-Trees, researchers and systems developers have created specialized variants:
+
+  \pause{}
+  \begin{itemize}[<+->]
+    \item \textbf{B\textepsilon{}-Trees}: Write-optimized variants with buffered\\ internal nodes to batch insertions, useful for heavy\\ write workloads in key-value stores.
+    \item \textbf{B-Link Trees}: Concurrency-friendly variants with sibling pointers and latch-free search paths, common in database index implementations.
+    \item \textbf{Cache-aware/Cache-oblivious B-Trees}: Variants optimized for modern memory hierarchies (L1/L2/L3 caches) rather than just disk I/O.
+  \end{itemize}
+\end{frame}
+
 \section*{Lab 21}
 \begin{frame}{Lab 20: B-Trees}
 \begin{center}\Large
   Let's look at the lab based on today's lecture.
 \end{center}
 \end{frame}
+
+
+
 \end{document}

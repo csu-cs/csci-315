@@ -4,7 +4,7 @@ B Trees
 Chapter 14 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/mPs6s-up2nA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/z_wanem1xUo?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -14,42 +14,86 @@ import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
 import remove_case3_diagram from '/images/b-trees/remove_case3_example.svg'
 </script>
 
+## Motivation for B-Trees
 
-## Intro
+-   Index structures for large datasets cannot fit
+    in main memory.
 
-### Motivation for B-Trees
+-   Disk and SSD storage require a different approach
+    to efficiency.
 
-- Index structures for large datasets cannot fit in main memory.
+-   Modern SSDs have random access times of
+    approximately 100--200 microseconds.
 
-- Hard drive storage requires a different approach to efficiency.
+-   One SSD access takes more time than 500,000--2,000,000
+    CPU instructions (on modern multi-GHz processors).
 
-- If a disk spins at 7,200 RPM, one revolution occurs in 1/120 of a
-  second, or 8.33ms.
+-   One SSD access is approximately 1,000--10,000 times slower
+    than reading from main memory (50--100 ns).
 
-- One disk access takes more time than 200,000 instructions.
+-   Suppose an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree) is
+    used to store 20 million\
+    records on an SSD.
 
-- One access on a modern SSD is approximately 2,500 times slower than
-  reading from memory.
+-   This very deep binary tree requires lots of SSD accesses;
+    $\log_2{20,000,000} \approx 24$ accesses $\times 150$\
+    microseconds per access $\approx 2.6$ milliseconds.
 
-- Suppose an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree) is used
-  to store 20 million records.
+-   We know we can't improve on the $\log_2{n}$ lower bound on the
+    search for a binary tree.
 
-- This very deep binary tree requires lots of different disk accesses;  
-  $\log_2{20,000,000} \approx 24$, so this takes about 0.2 seconds.
+-   The solution is to use more branches and, thus, reduce the tree
+    height!
 
-- We know we can’t improve on the $\log_2{n}$ lower bound on the search
-  for a binary tree.
+    -   As branching increases, depth decreases, so fewer expensive
+        storage accesses are needed.
 
-- The solution is to use more branches and, thus, reduce the tree
-  height!
+### Realistic Worst-Case Scan
 
-  - As branching increases, depth decreases.
+You need to scan all records in a 1-billion
+row table.  
+Assume each random access is $150$ microseconds.
+
+-   AVL/BST lookup per key: $\approx 30$ random reads (height $30$).
+
+-   AVL I/O time:
+    $1{,}000{,}000{,}000 \times 30 \times 150\mu{}s \approx \mathbf{52}$
+    **days**\
+    (or $75$ minutes at $1{,}000\times{}$ parallelism).
+
+-   B-tree (order $101$) height: $\approx 5$; therefore, $5$ reads/key.
+
+-   B-tree I/O time:
+    $1{,}000{,}000{,}000 \times 5 \times 150\mu{}s \approx \mathbf{9}$
+    **days**\
+    (or $12.5$ minutes at $1{,}000\times{}$ parallelism).
+
+**Takeaway**: Even with parallelism, reducing tree height from 30 to 5
+saves $6\times{}$ I/O work. This is why B-Trees dominate for large
+datasets.
+
+### Web Search Scale
+
+Live system: $10,000$ queries/sec, each needs one key lookup in $8.5$B pages.
+
+-   AVL tree depth: $\approx 33$. $33$  
+    SSD accesses/query = $4.95$ ms/query at $150\mu{}s$/access.
+
+-   B-tree height (order $101$): $\approx 4$.  
+    $4$ SSD accesses/query = $0.6$ ms/query.
+
+-   10k q/s: AVL = $49.5$ seconds of SSD work per second (queueing
+    backlog).  
+    B-tree = $6$ seconds of SSD work per second.
+
+AVL-style access causes user-visible stalls under load,
+while a B-tree design maintains low-latency response.
 
 ![Example B-Tree, Order-5 with 26 Elements](/images/b-trees/order_5_with_pointers.svg  "Example B-Tree, Order-5 with 26 Elements"){.light-only style="max-width:550px"}
 
 ![Example B-Tree, Order-5 with 26 Elements](/images/b-trees/order_5_with_pointers-dark.svg  "Example B-Tree, Order-5 with 26 Elements"){.dark-only style="max-width:550px"}
 
-### Definition of a B-tree
+## Definition of a B-tree
 
 - A B-tree of order $m$ is an $m$-way tree (i.e., a tree where each node
   may have up to $m$ children) in which:
@@ -273,6 +317,62 @@ have two or three children (i.e., one or two keys).
 - “The more you think about what the ‘B’ in B-trees means, the better
   you understand B-trees.”  
   — Edward M. McCreight (2013)
+
+## Variations
+
+### Introduction to B\*-Trees
+
+B\*-Trees are a B-Tree variant that increases
+node occupancy for better space utilization.
+
+-   B\*-Trees require non-root nodes to be at least $2/3$ full
+    (vs. $1/2$ full in B-Trees).
+
+-   Insertions may redistribute keys among siblings before splitting,
+    reducing splits overall.
+
+-   This typically yields denser nodes and fewer I/O operations in large
+    storage systems.
+
+-   B\*-Trees preserve B-Tree search costs while improving storage
+    efficiency.
+
+### Introduction to B+Trees
+
+B+Trees are a variant of B-Trees that further
+optimize for disk-based storage and range queries.
+
+-   All data (or pointers to data) are stored only in leaf nodes.
+
+-   Internal nodes store only keys (no records); therefore, they can
+    hold more keys.
+
+-   Leaf nodes are linked sequentially, enabling fast full-range scans
+    and ordered iteration.
+
+-   Higher fan-out and fewer disk reads per access make B+Trees popular
+    in databases and file systems.
+
+-   Insertion and deletion keep leaves at the same depth, preserving
+    strong balance and performance.
+
+
+### Advanced B-Tree Variations
+
+Beyond B+Trees and B\*-Trees, researchers and
+systems developers have created specialized variants:
+
+-   **Bε-Trees**: Write-optimized variants with buffered
+    internal nodes to batch insertions, useful for heavy
+    write workloads in key-value stores.
+
+-   **B-Link Trees**: Concurrency-friendly variants with sibling
+    pointers and latch-free search paths, common in database index
+    implementations.
+
+-   **Cache-aware/Cache-oblivious B-Trees**: Variants optimized for
+    modern memory hierarchies (L1/L2/L3 caches) rather than just disk
+    I/O.
 
 ## Lab 20: B-Trees
 
