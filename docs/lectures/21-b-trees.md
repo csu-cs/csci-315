@@ -133,31 +133,24 @@ Insert the following keys to a 5-way B-tree:
 3, 7, 9, 23, 45, 1, 5, 14, 25, 24, 13, 11, 8, 19, 4, 31, 35, 56, 2, 6,
 12.
 
-## Removal from a B-Tree
+## Deletion from a B-Tree
 
-Key are always inserted ***into leaves***. For deletion, we wish  
-to remove ***from a leaf***. There are four cases to consider:
+There are four removal cases to consider in order.
 
-1.  If the key is already in a leaf node and removing it doesn’t cause
-	that leaf node to have too few keys, then simply remove the key to
-	be deleted.
 
-2.  If the key is ***not*** in a leaf, then it is guaranteed (by the
-	nature of a B-tree) that its predecessor and successor will be in
-	leaves — in this case, we can delete the key and promote the
-	predecessor or successor key to the non-leaf deleted key’s position.
+1.  **Key is in a leaf**: Delete the key.
+2.  **Key is not in a leaf**: Its predecessor and successor must be in leaves. Delete the key and promote either the predecessor or successor (implementor's choice) to replace it in the non-leaf position.
 
-If deleting a key in a leaf with the minimum key count or if Case (2)
-leads to a leaf node containing fewer than the minimum key count, then:
+After performing Case 1 or 2, a leaf node may now have too few keys (*underflow*). We will fix this underflow with Case 3 or 4.
 
-1.  If a sibling leaf has more than the min. number of keys, then we can
-	promote one of its keys and move the parent key into the lacking
-	leaf.
+When removing a key would cause *underflow* (too few keys), handle it as follows:
 
-2.  Otherwise, combine the lacking node and one of its neighbors with
-	their shared parent (the opposite of promoting a key). The new node
-	will have the correct number of keys. If the parent now has too few
-	keys, repeat this case (up to the root itself if required).
+3.  **Sibling has spare keys — Rotate**:
+    -   Pull a key from a sibling up to the parent.
+    -   Demote the parent key down into the lacking leaf.
+4.  **Neither sibling has spare keys — Merge**:
+    -   Combine the lacking node, sibling, and parent key into one node.
+    -   If the parent now underflows, recursively apply Cases 3 or 4 to it.
 
 ### Type 1: Simple Removal from Leaf
 
