@@ -10,7 +10,7 @@
 \usepackage{colortbl}
 
 \title{{\Huge{} Graphs}\\{\LARGE{} via Adjacency Matrices}}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 20}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 20}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -52,7 +52,7 @@
 
 \newcommand{\vertMark}[1][CSUgold]{full=#1}
 
-\newcommand{\textInf}{$\infty$}
+\newcommand{\textInf}{\(\infty{}\)}
 
 \newcommand{\arraySubscript}[1]{\texttt{\textcolor{white!75!CSUblue}{[}{#1}\textcolor{white!75!CSUblue}{]}}}
 
@@ -69,8 +69,8 @@
 \end{frame}
 
 \section*{Intro}
-\begin{frame}{K{\"o}nigsberg Bridge Problem}
-The river Pregel flows around the island of Kneiphof\\
+\begin{frame}{The Seven Bridges of K{\"o}nigsberg}
+The Pregel River flows around the island of Kneiphof\\
 and then divides into two branches.
 
 \vspace{0.5em}
@@ -81,7 +81,7 @@ and then divides into two branches.
 Starting at one land area, can you cross all 7 bridges exactly once and return to the start?
 \end{frame}
 
-\begin{frame}{K{\"o}nigsberg Bridge Problem}
+\begin{frame}{The Seven Bridges of K{\"o}nigsberg}
 In 1736, Euler invented graph theory by representing this problem as a graph to solve the problem.
 \begin{columns}
 \column{0.6\textwidth}
@@ -114,15 +114,15 @@ Euler determined that only 0 or 2 vertices (lands) can have an odd number of edg
 \end{frame}
 
 \begin{frame}{Graph Theory}
-Over the past 250 years, graph theory has been applied \\
+Over the past 290 years, graph theory has been applied \\
 to a variety of problems, including:
 \begin{itemize}
+  \item  large language models (AI)
+  \item  linguistics,
   \item  modeling and analysis of electrical circuits,
   \item  chemical compounds,
-  \item  highway maps,
   \item  finding the shortest route,
   \item  project planning,
-  \item  linguistics,
   \item  genetics,
   \item  social science,
   \item  etc.
@@ -134,39 +134,39 @@ to a variety of problems, including:
 \begin{frame}{Set Theory Notation}
 \begin{itemize}
   \item
-    \emph{Member} ($x \in A$): $x$ is an element of the set $X$.
+    \emph{Member} (\(x \in A\)): \(x\) is an element of the set \(A\).
   \item
-    \emph{Subset} ($A \subseteq B$): every element of $A$ that is an\\element of $B$.
+    \emph{Subset} (\(A \subseteq B\)): every element of \(A\) that is an\\element of \(B\).
   \item
-    \emph{Intersection} ($A \cap B$): all the elements in $A$ and $B$.\\
-    $A \cap B = \{x \mid x \in A$ and $x \in B\}$
+    \emph{Intersection} (\(A \cap B\)): all the elements in \(A\) and \(B\).\\
+    \(A \cap B = \{x \mid x \in A\) and \(x \in B\} \)
   \item
-    \emph{Union} ($A \cup B$): all the elements that are in $A$ or in $B$.\\
-    $A \cup B = \{x \mid x \in A$ or $x \in B\}$
+    \emph{Union} (\(A \cup B\)): all the elements that are in \(A\) or in \(B\).\\
+    \(A \cup B = \{x \mid x \in A\) or \(x \in B\} \)
   \item
-    \emph{Ordered Pairs} ($A \times B$): all the ordered pairs of elements of $A$ and $B$.\\
-    $A \times B = \{(a, b) \mid a \in A, b \in B\}$
+    \emph{Ordered Pairs} (\(A \times B\)): all the ordered pairs of elements of \(A\) and \(B\).\\
+    \(A \times B = \{(a, b) \mid a \in A, b \in B\} \)
 
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Graph Definitions and Notations}
-\emph{Graph} $G \mid G = (V, E)$
+\emph{Graph} \(G \mid G = (V, E)\)
 \begin{itemize}
   \item
-    $V$ is a finite nonempty set of \emph{vertices} of $G$.
+    \(V\) is a finite nonempty set of \emph{vertices} of \(G\).
   \item
-    $E \subseteq V \times V$.\\
-    Elements in $E$ are the pairs of elements of $V$.\\
-    $E$ is the set of \emph{edges}.
+    \(E \subseteq V \times V\).\\
+    Elements in \(E\) are the pairs of elements of \(V\).\\
+    \(E\) is the set of \emph{edges}.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Directed Graphs}
-\emph{Directed graph} or \emph{digraph}: elements of \(E(G)\) are ordered pairs.
+\emph{Directed graph} or \emph{digraph}: elements of \(E(G)\) are\\ ordered pairs.
 \begin{itemize}
   \item
-    Pairs ($u$, $v$) and ($v$, $u$) represent different edges.
+    Pairs (\(w\), \(v\)) and (\(v\), \(w\)) represent different edges.
 \end{itemize}
 \begin{columns}
 \column{0.5\textwidth}
@@ -228,7 +228,7 @@ to a variety of problems, including:
     \emph{Undirected graph}: elements are not ordered pairs.
     \begin{itemize}
       \item
-        Pairs ($u$, $v$) and ($v$, $u$) represent the same edge.
+        Pairs (\(w\), \(v\)) and (\(v\), \(w\)) represent the same edge.
     \end{itemize}
 \end{itemize}
 
@@ -285,8 +285,8 @@ to a variety of problems, including:
 \begin{figure}
 \centering
 \begin{tikzpicture}[very thick,font=\bfseries\tiny, node distance=2cm, every state/.style={minimum size=1.25cm, inner sep=2pt, fill=CSUcyan, text=black, very thick}]
-    \node[state] (San Fransisco)           {San\\Fransisco};
-    \node[state] (Denver) [right of=San Fransisco, node distance=4cm] {Denver};
+    \node[state] (San Francisco)           {San\\Francisco};
+    \node[state] (Denver) [right of=San Francisco, node distance=4cm] {Denver};
     \node[state] (Dallas) [below of=Denver, node distance=4cm] {Dallas};
     \node[state] (Nashville) [right of=Denver, node distance=3cm] {Nashville};
     \node[state] (Chicago) [above of=Nashville] {Chicago};
@@ -302,16 +302,16 @@ to a variety of problems, including:
                        edge [bend right=45] (New York)
                        edge (Nashville)
                        edge (Denver)
-                       edge [bend left=10] (San Fransisco)
+                       edge [bend left=10] (San Francisco)
           (Nashville)  edge (Chicago)
                        edge (Baltimore)
-                       edge [bend right](San Fransisco)
+                       edge [bend right](San Francisco)
           (Chicago)    edge (New York)
                        edge (Baltimore)
-          (Dallas)     edge (San Fransisco)
+          (Dallas)     edge (San Francisco)
                        edge (Denver)
                        edge (Orlando)
-          (Denver)     edge (San Fransisco)
+          (Denver)     edge (San Francisco)
                        edge (Chicago);
 \end{tikzpicture}
 \end{figure}
@@ -320,15 +320,15 @@ to a variety of problems, including:
 \begin{frame}{Graph Definitions and Notations}
 \begin{itemize}
   \item
-    \emph{Subgraph} $H$ of $G$: if $V(H) \subseteq V(G)$ and $E(H) \subseteq E(G)$.
+    \emph{Subgraph} \(H\) of \(G\): if \(V(H) \subseteq V(G)\) and \(E(H) \subseteq E(G)\).
     \begin{itemize}
       \item
-        Every vertex and edge of $H$ is in $G$.
+        Every vertex and edge of \(H\) is in \(G\).
     \end{itemize}
   \item
-    \emph{Adjacent}: there is an edge from one vertex to the other; i.e., $(u, v) \in E(G)$
+    \emph{Adjacent}: there is an edge from one vertex to the other; i.e., \((v, w) \in E(G)\)
   \item
-    \emph{Loop}: edge to and from a single vertex, $e = (u, u)$
+    \emph{Loop}: edge to and from a single vertex, \(e = (v, v)\)
   \item
     \emph{Parallel edges}: associated with the same pair of vertices.
   \item
@@ -340,9 +340,9 @@ to a variety of problems, including:
 \begin{frame}{Graph Definitions and Notations}
 \begin{itemize}
   \item
-    \emph{Connected vertices}: there is a path from $u$ to $v$.
+    \emph{Connected vertices}: there is a path from \(w\) to \(v\).
   \item
-    \emph{Path} from $u$ to $v$ is if there is sequence of vertices $u_1, u_2, \ldots, u_n$ such that $u = u_1$, $u_n = v$, and $(u_i, u_i + 1)$ is an edge for all $i = 1, 2, \ldots, n - 1$.
+    \emph{Path} from \(w\) to \(v\) is if there is sequence of vertices \(w_1, w_2, \ldots, w_n\) such that \(w = w_1\), \(w_n = v\), and \((w_i, w_i + 1)\) is an edge for all \(i = 1, 2, \ldots, n - 1\).
   \item
     \emph{Simple path}: path in which all vertices, except possibly the first and last, are distinct.
   \item
@@ -355,9 +355,9 @@ to a variety of problems, including:
   \item
     \emph{Connected}: paths exist from each vertex to all\\other vertices.
   \item
-    If there is an edge from $u$ to $v$ (i.e., $(u, v) \in E(G)$), then $u$ is \emph{adjacent to} $v$ and $v$ is \emph{adjacent from} $u$.
+    If there is an edge from \(w\) to \(v\) (i.e., \((w, v) \in E(G)\)), then \(w\) is \emph{adjacent to} \(v\) and \(v\) is \emph{adjacent from} \(w\).
   \item
-    \emph{Strongly connected}: any two vertices in $G$ are connected.
+    \emph{Strongly connected}: any two vertices in \(G\) are connected.
 \end{itemize}
 \begin{columns}
 \column{0.3\textwidth}\centering
@@ -433,10 +433,10 @@ to a variety of problems, including:
 \section{Adjacency Matrices}
 
 \begin{frame}{Adjacency Matrices}
-Given a graph, $G$, with $n$ vertices $(n > 0)$, \\
+Given a graph, \(G\), with \(n\) vertices \((n > 0)\), \\
 \(V(G) = \{v_1, v_2, \ldots v_n\}\),
 
-the \emph{adjacency matrix}, $A_G$ of $G$, is $n \times n$ matrix such that
+the \emph{adjacency matrix}, \(A_G\) of \(G\), is \(n \times n\) matrix such that
 \begin{align}
 A_G(i, j) =
   \begin{cases}
@@ -577,7 +577,7 @@ A_G(i, j) =
                 (2) edge [bend left] node {3} (0)
                     edge             node {5} (3)
                     edge             node [left] {1} (4)
-                (3)  edge [loop] node [below] {6} ();
+                (3)  edge [loop] node [below] {6} ();S
       \end{tikzpicture}%
     }
     %\end{figure}
@@ -590,15 +590,15 @@ A_G(i, j) =
         & \multicolumn{1}{c}{\arraySubscript{3}}
         & \multicolumn{1}{c}{\arraySubscript{4}}\\\hhline{~|-----|}
       \arraySubscript{0}
-        & \mFal[$\infty$] & \mTru[10] & \mTru[1] & \mFal[$\infty$] & \mFal[$\infty$] \\\hhline{~|-----|}
+        & \mFal[\textInf] & \mTru[10] & \mTru[1] & \mFal[\textInf] & \mFal[\textInf] \\\hhline{~|-----|}
       \arraySubscript{1}
-        & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[2] & \mTru[4] & \mTru[1] \\\hhline{~|-----|}
+        & \mFal[\textInf] & \mFal[\textInf] & \mTru[2] & \mTru[4] & \mTru[1] \\\hhline{~|-----|}
       \arraySubscript{2}
-        & \mTru[3] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[1] & \mTru[5] \\\hhline{~|-----|}
+        & \mTru[3] & \mFal[\textInf] & \mFal[\textInf] & \mTru[1] & \mTru[5] \\\hhline{~|-----|}
       \arraySubscript{3}
-        & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mTru[6] & \mFal[$\infty$] \\\hhline{~|-----|}
+        & \mFal[\textInf] & \mFal[\textInf] & \mFal[\textInf] & \mTru[6] & \mFal[\textInf] \\\hhline{~|-----|}
       \arraySubscript{4}
-        & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] & \mFal[$\infty$] \\\hhline{~|-----|}
+        & \mFal[\textInf] & \mFal[\textInf] & \mFal[\textInf] & \mFal[\textInf] & \mFal[\textInf] \\\hhline{~|-----|}
     \end{tabular}
 
     \vspace{1em}
@@ -650,16 +650,16 @@ A_G(i, j) =
 \end{frame}
 
 \begin{frame}{Depth-First Traversal}
-Recursive depth-first traversal algorithm at a given node, $v$.
+Recursive depth-first traversal algorithm at a given vertex, \(v\).
 \begin{enumerate}
   \item
-    Mark node $v$ as visited.
+    Mark vertex \(v\) as visited.
   \item
-    Visit the node.
+    Visit the vertex.
   \item
-    For each vertex $u$ adjacent to $v$,\\
-    \hspace{1em}If $u$ is not visited,\\
-    \hspace{2em}begin the depth-first traversal at $u$.
+    For each vertex \(w\) adjacent to \(v\),\\
+    \hspace{1em}If \(w\) is not visited,\\
+    \hspace{2em}begin the depth-first traversal at \(w\).
 \end{enumerate}
 \end{frame}
 
@@ -832,7 +832,7 @@ Recursive depth-first traversal algorithm at a given node, $v$.
   \item
     Like traversing a binary tree, level by level.
   \item
-    Nodes at each level are visited one after another.
+    Vertices at each level are visited one after another.
   \item
     Use a queue to implement the breadth-first search algorithm.
 \end{itemize}
@@ -1113,7 +1113,7 @@ We will implement the \emph{greedy algorithm}, developed by Dijkstra.\vspace{-1.
   \item
     For each vertex \lstinline{w} in \lstinline{G}, such that the shortest path from \lstinline{start} to \lstinline{w} has not been determined and an edge (\lstinline{v}, \lstinline{w}) exists, if the weight of the path to \lstinline{w} via \lstinline{v} is smaller than the current weight, update the weight of \lstinline{w} to the weight of \lstinline{v} plus the weight of the edge (\lstinline{v}, \lstinline{w}).
   \end{enumerate}
-Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
+Given \(n\) vertices, repeat steps 3 through 5, \(n - 1\) times.
 \end{frame}
 
 
@@ -1323,10 +1323,11 @@ Given $n$ vertices, repeat steps 3 through 5, $n - 1$ times.
 
 
 \begin{frame}{Shortest Path Algorithm: Enhancements}
-  This demonstrated algorithm keeps track of the total weight of the shortest path.
-  Consider what you would add to record the actual path.
+  This demonstrated algorithm keeps track of the\\
+  total weight of the shortest path. Consider what\\
+  you would add to record the actual path.
 
-  Instead of using a sequence search to find the minimum weight, which is \(O(n)\), a priority queue could be used.
+  Instead of using a sequence search to find the minimum weight, which is \(O(n)\), a \emph{priority queue} could be used.
 \end{frame}
 
 \section*{Lab 22}

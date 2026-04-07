@@ -4,7 +4,7 @@ Graphs via Adjacency Matrices
 Chapter 20
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/SKmRkxxduEY?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/qUFxfggfh5o?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 
@@ -15,9 +15,9 @@ import dijkstra_shortest_path_diagram from '/images/graphs/dijkstra_shortest_pat
 
 ## Intro
 
-### Königsberg Bridge Problem
+### Seven Bridges of Königsberg
 
-The river Pregel flows around the island of Kneiphof and then divides into two branches.
+The Pregel River flows around the island of Kneiphof and then divides into two branches.
 
 ![Euler's first figure of the seven bridges of Königsberg problem from ‘Solutio problematis ad geometriam situs pertinentis.’](/images/graphs/Konigsberg-Euler.png "Euler's first figure of the seven bridges of Königsberg problem from ‘*Solutio problematis ad geometriam situs pertinentis*.’"){.light-only}
 
@@ -35,7 +35,9 @@ there is no solution.
 
 ### Graph Theory
 
-Over the past 250 years, graph theory has been applied to a variety of problems, including:
+Over the past 290 years, graph theory has been applied to a variety of problems, including:
+
+- large language models (AI)
 
 - modeling and analysis of electrical circuits,
 
@@ -57,7 +59,7 @@ Over the past 250 years, graph theory has been applied to a variety of problems,
 
 ## Set Theory Notation
 
-- ***Member*** ($x \in A$): $x$ is an element of the set $X$.
+- ***Member*** ($x \in A$): $x$ is an element of the set $A$.
 
 - ***Subset*** ($A \subseteq B$): every element of $A$ that is an element of
   $B$.
@@ -89,7 +91,7 @@ Over the past 250 years, graph theory has been applied to a variety of problems,
 ***Directed graph*** or ***digraph***: elements of $E(G)$ are ordered
 pairs.
 
-- Pairs ($u$, $v$) and ($v$, $u$) represent different edges.
+- Pairs ($w$, $v$) and ($v$, $w$) represent different edges.
 
 <figure>
 
@@ -103,7 +105,7 @@ pairs.
 
 - ***Undirected graph***: elements are not ordered pairs.
 
-  - Pairs ($u$, $v$) and ($v$, $u$) represent the same edge.
+  - Pairs ($w$, $v$) and ($v$, $w$) represent the same edge.
 
 
 ### Graph Definitions and Notations
@@ -114,18 +116,18 @@ pairs.
   - Every vertex and edge of $H$ is in $G$.
 
 - ***Adjacent***: there is an edge from one vertex to the other; i.e.,
-  $(u, v) \in E(G)$
+  $(w, v) \in E(G)$
 
-- ***Loop***: edge to and from a single vertex, $e = (u, u)$
+- ***Loop***: edge to and from a single vertex, $e = (v, v)$
 
 - ***Parallel edges***: associated with the same pair of vertices.
 
 - ***Simple graph***: has no loops or parallel edges
 
-- ***Connected vertices***: there is a path from $u$ to $v$.
+- ***Connected vertices***: there is a path from $w$ to $v$.
 
-- ***Path*** from $u$ to $v$ is if there is sequence of vertices
-  $u_1, u_2, \ldots, u_n$ such that $u = u_1$, $u_n = v$, and
+- ***Path*** from $w$ to $v$ is if there is sequence of vertices
+  $u_1, u_2, \ldots, u_n$ such that $w = u_1$, $u_n = v$, and
   $(u_i, u_i + 1)$ is an edge for all $i = 1, 2, \ldots, n - 1$.
 
 - ***Simple path***: path in which all vertices, except possibly the
@@ -136,8 +138,8 @@ pairs.
 
 - ***Connected***: paths exist from each vertex to all other vertices.
 
-- If there is an edge from $u$ to $v$ (i.e., $(u, v) \in E(G)$), then
-  $u$ is ***adjacent to*** $v$ and $v$ is ***adjacent from*** $u$.
+- If there is an edge from $w$ to $v$ (i.e., $(w, v) \in E(G)$), then
+  $w$ is ***adjacent to*** $v$ and $v$ is ***adjacent from*** $w$.
 
 - ***Strongly connected***: any two vertices in $G$ are connected.
 
@@ -239,15 +241,15 @@ If the edges have weights, they are stored in the matrix.
 
 ### Depth-First Traversal
 
-Recursive depth-first traversal algorithm at a given node, $v$.
+Recursive depth-first traversal algorithm at a given vertex, $v$.
 
-1.  Mark node $v$ as visited.
+1.  Mark vertex $v$ as visited.
 
-2.  Visit the node.
+2.  Visit the vertex.
 
-3.  For each vertex $u$ adjacent to $v$,  
-	If $u$ is not visited,  
-	begin the depth-first traversal at $u$.
+3.  For each vertex $w$ adjacent to $v$,  
+	If $w$ is not visited,  
+	begin the depth-first traversal at $w$.
 
 ### Depth-First Traversal: Example
 
@@ -258,7 +260,7 @@ Depth-first ordering of vertices (starting at `0`):
 
 - Like traversing a binary tree, level by level.
 
-- Nodes at each level are visited one after another.
+- Vertices at each level are visited one after another.
 
 - Use a queue to implement the breadth-first search algorithm.
 
@@ -320,7 +322,7 @@ This demonstrated algorithm keeps track of the total weight of the
 shortest path. Consider what you would add to record the actual path.
 
 Instead of using a sequence search to find the minimum weight, which is
-$O(n)$, a priority queue could be used.
+$O(n)$, a [priority queue](20-priority-queues) could be used.
 
 ## Lab 22: Graphs via Adjacency Matrix
 
