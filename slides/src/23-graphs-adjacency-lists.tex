@@ -9,7 +9,7 @@
 \usepackage{booktabs}
 
 \title{\Huge Graphs\\\LARGE via Adjacency Lists}
-\subtitle{CSCI 315: Data Structure Analysis\\Chapter 20}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}\\Chapter 20}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -184,9 +184,9 @@
 
 \begin{frame}{Limitations of Adjacency Matrices}
   \begin{enumerate}[<+->]
-    \item Wasted space, $O(n^2)$. It stores a weight for an edge\\
+    \item Wasted space, \(O(n^2)\). It stores a weight for an edge\\
       from every vertex to every other vertex. \\
-      Most graphs are sparse.
+      Most graphs are \textit{sparse}.
     \item Slow iteration over edges.
     \item Slow add/delete of vertices.
     \item \emph{Cannot represent parallel edges.}
@@ -195,7 +195,7 @@
 
 \section{Adjacency Lists}
 \begin{frame}{Adjacency Lists}
-Implemented using a vector of lists. Each node of a list represents an edge (destination and edge pair).\vspace{-2em}
+Implemented as a vector of lists. Each list node represents\\ an edge, storing the destination vertex and edge weight.\vspace{-2em}
 \begin{columns}
 \column{0.33\textwidth}
   \pause%
@@ -230,18 +230,25 @@ Implemented using a vector of lists. Each node of a list represents an edge (des
     \begin{tikzpicture}[node of array/.append style={fill=CSUgold}, node of array/.append style = {minimum width=6mm, minimum height=11mm}, node of list/.append style={minimum width=6mm, minimum height=6.5mm, inner sep=3pt}, additional node of list/.append style={minimum width=7mm}, link pointer of list/.append style={minimum height=6.5mm, minimum width=4.5mm}]
       \ArrayLabel{}
       \ArrayNodeVertical{}
+
+        % Label array index
+        \onslide<4->{%
+          \node[anchor=south west, font={\small}, text depth=.2ex, name=source, inner sep=1pt, text=CSUcyan!50!white] at ([yshift=9pt, xshift=0pt] index0.north west) {source};
+          \draw[link, ->, draw=CSUcyan!50!white] (source) to[bend right=5] (index0);
+        }
+        
         \coordinate (ptr) at (val);
         \fill (val) circle(2pt);
         \LinkedNode{1, 10}
-
-        % Label a node's destination and weight
-        \onslide<4->{
-          \node[anchor=south east, font={\small}, text depth=.2ex, name=dest, inner sep=1pt] at ([yshift=10pt, xshift=-1pt] firstElValue.north east) {destination};
-          \draw[link] (dest) to[bend left=10] (firstElValue);
-          \node[anchor=south west, font={\small}, text depth=.2ex, name=weight, inner sep=1pt] at ([yshift=10pt, xshift=1pt] lastElValue.north west) {weight};
-          \draw[link] (weight) to[bend right=10] (lastElValue);
-        }
         \LinkedNode{2, 1}
+
+        % Label a node components destination and weight
+        \onslide<5->{
+          \node[anchor=south east, font={\small}, text depth=.2ex, name=dest, inner sep=1pt, text=CSUcyan!50!white] at ([yshift=10pt, xshift=-1pt] firstElValue.north east) {destination};
+          \draw[link, ->, draw=CSUcyan!50!white] (dest) to[bend left=5] (firstElValue);
+          \node[anchor=south west, font={\small}, text depth=.2ex, name=weight, inner sep=1pt, text=CSUcyan!50!white] at ([yshift=10pt, xshift=1pt] lastElValue.north west) {weight};
+          \draw[link, ->, draw=CSUcyan!50!white] (weight) to[bend right=5] (lastElValue);
+        }
       \ArrayNodeVertical{}
         \coordinate (ptr) at (val);
         \fill (val) circle(2pt);
@@ -265,6 +272,136 @@ Implemented using a vector of lists. Each node of a list represents an edge (des
     % \caption{(b) Adjacency Lists Representation}
     \end{figure}
 
+\end{columns}
+\end{frame}
+
+\section{Traversal}
+
+\begin{frame}{Example Graph}
+\begin{columns}
+\column{0.33\textwidth}
+  \begin{figure}
+  \centering
+    \begin{tikzpicture}[very thick, -stealth, shorten >=0.5pt]
+
+      % Node 0
+        \node[state] (0)              {0};
+
+      % Node 1
+        \node[state] (1) [right of=0] {1};
+
+      % Node 2
+        \node[state] (2) [right of=1] {2};
+
+      % Node 3
+        \node[state] (3) [below of=0] {3};
+
+      % Node 4
+        \node[state] (4) [right of=3] {4};
+
+      % Node 5
+        \node[state] (5) [right of=4] {5};
+
+      % Node 6
+        \node[state] (6) [below of=3] {6};
+
+      % Node 7
+        \node[state] (7) [right of=6] {7};
+
+      % Node 8
+        \node[state] (8) [right of=7] {8};
+
+      % Node 9
+        \node[state] (9) [below of=7] {9};
+
+      \path (0) edge (1)
+                edge (3)
+            (1) edge (4)
+            (2) edge (5)
+            (3) edge (2)
+                edge (4)
+            (5) edge (7)
+                edge (8)
+            (6) edge [bend left] (0)
+                edge (4)
+                edge (7)
+            (9) edge (7)
+                edge (8);
+    \end{tikzpicture}
+  \end{figure}
+
+\column{0.67\textwidth}
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[node of array/.append style={fill=CSUgold, minimum width=6mm, minimum height=8.5mm}, node of list/.append style={minimum width=6mm, minimum height=5.75mm, inner sep=3pt}, additional node of list/.append style={minimum width=4.5mm}, link pointer of list/.append style={minimum height=5.75mm, minimum width=4.5mm},   span of array/.append style={minimum height=0mm}]
+      \ArrayLabel{}
+
+      % Vertex 0
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{1,}
+        \LinkedNode{3,}
+
+      % Vertex 1
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{4,}
+
+      % Vertex 2
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{5,}
+
+      % Vertex 3
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{2,}
+        \LinkedNode{4,}
+
+      % Vertex 4
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+
+      % Vertex 5
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{7,}
+        \LinkedNode{8,}
+
+      % Vertex 6
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{0,}
+        \LinkedNode{4,}
+        \LinkedNode{7,}
+
+      \ArrayNodeVerticalSpan{2}
+      % % Vertex 7
+      % \ArrayNodeVertical{}
+      %   \coordinate (ptr) at (val);
+      %   \fill (val) circle(2pt);
+
+      % % Vertex 8
+      % \ArrayNodeVertical{}
+      %   \coordinate (ptr) at (val);
+      %   \fill (val) circle(2pt);
+
+      % Vertex 9
+      \ArrayNodeVertical{}
+        \coordinate (ptr) at (val);
+        \fill (val) circle(2pt);
+        \LinkedNode{7,}
+        \LinkedNode{8,}
+    \end{tikzpicture}
+    % \caption{(b) Adjacency Lists Representation}
+  \end{figure}
 \end{columns}
 \end{frame}
 
@@ -599,11 +736,16 @@ Well-known algorithms to find a minimal spanning tree \\of an \emph{undirected} 
 \end{columns}\onslide<25>{}
 \end{frame}
 
+\begin{frame}{Minimal Spanning Tree Algorithms}
+  \large\center%
+To find the edge with the minimum weight, consider using a heap (e.g., \href{https://en.cppreference.com/w/cpp/container/priority_queue.html}{\texttt{std::priority\_queue}}).
+\end{frame}
+
 \begin{frame}{Prim's Algorithm: Pseudo Code}
 Local Variables in \texttt{prims()}:
 \begin{itemize}
   \item
-    \texttt{EDGES\_IN\_MST}: the vertex count.
+    \texttt{vertexCount}: the vertex count. A spanning tree has exactly \lstinline{vertexCount - 1} edges.
   \item
     \emph{Priority} Queue of Edges (initially empty). The Edge type contains from and to vertices and the weight.
   \item
@@ -621,7 +763,7 @@ Local Variables in \texttt{prims()}:
 % \begin{algorithmic}
 % \Function{prims}{startIdx}\\
 % \Call{enqueueEdges}{startIdx, wasVisited, edgeQueue}
-% \While{\!edgeQueue.empty() \&\& edgeCount \< EDGES\_IN\_MST}
+% \While{\!edgeQueue.empty() \&\& edgeCount \< vertexCount}
 % %  \State edge $\gets$ edgeQueue.dequeue()
 % % \If{$N$ is even}
 % %     \State $X \gets X \times X$
@@ -636,42 +778,77 @@ Local Variables in \texttt{prims()}:
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize,]
 Function: prims(startIdx):
   enqueueEdges (startIdx, wasVisited, edgeQueue);
-  while (!edgeQueue.empty() && edgeCount < EDGES_IN_MST)
+  while (!edgeQueue.empty() && edgeCount < vertexCount)
     edge = edgeQueue.dequeue()
     if (!wasVisited[edge.destination])
       mstEdges.enqueue(edge)
       ++edgeCount
     totalCost += edge.weight
     enqueueEdges (edge.destination, wasVisited, edgeQueue)
-  return (edgeCount != EDGES_IN_MST) ? -1 : totalCost
+  return (edgeCount != vertexCount) ? -1 : totalCost
 \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Prim's Algorithm: Pseudo Code}
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize,]
 Function enqueueEdges (fromVertex, wasVisited[], edgeQueue):
-// Mark the current node as visited.
-wasVisited[nodeIdx] = true;
+  // Mark the current node as visited.
+  wasVisited[fromVertex] = true;
 
-// Iterate over all edges going outward from the current node.
-// Add edges to unvisited nodes the queue
-for (const auto &edge : AdjacencyMatrix[nodeIdx])
-  if (!wasVisited[edge.destination])
-    edgeQueue. enqueue({fromVertex, edge.destination, edge.weight});
+  // Iterate over the edges of the current vertex.
+  // Add edges to unvisited nodes the queue
+  for (const auto &edge : mAdjacencyLists[fromVertex])
+    if (!wasVisited[edge.destination])
+      edgeQueue.enqueue({fromVertex, edge.destination, edge.weight});
 \end{lstlisting}
 \end{frame}
 
 \section{Performance}
 
 \begin{frame}{Performance}
-  \begin{center}
-    What operations are faster with an Adjacency Matrix?
+  \large
+  What operations are more efficient with an\\
+  \emph{Adjacency Matrix}?
 
-    What operations are faster with an Adjacency List?
-
-    When would each implementation be more memory efficient?
-  \end{center}
+  \pause{}
+  \begin{itemize}
+    \item
+      Faster for checking if an edge exists between two specific vertices (\(O(1)\) lookup).
+    \item
+      Best for dense graphs where most vertices are connected.
+  \end{itemize}
 \end{frame}
+
+\begin{frame}{Performance}
+  \large
+  What operations are more efficient with an\\
+  \emph{ Adjacency List}?
+
+  \pause{}
+  \begin{itemize}
+  \item
+    Faster for iterating over edges (\(O(V+E)\)),
+  \item
+    Supports parallel edges.
+  \item
+    Allows Prim's algorithm to run in \(O(E \log{E} + V \log{E}) = O((V + E) \log{E})\) time.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Performance}
+  \large
+    When would each implementation be more\\ memory efficient?
+
+    \pause{}
+    \begin{itemize}
+      \item
+        \emph{Adjacency lists} are far more efficient for \textit{sparse} graphs (few edges relative to vertices) with \(O(V+E)\) instead of \(O(V^2)\) memory.
+      \item
+        \emph{Adjacency matrices} always use \(O(V^2)\) space regardless of edge count, but no pointers are required.
+    \end{itemize}
+\end{frame}
+
 
 \section{Summary}
 

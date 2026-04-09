@@ -4,7 +4,7 @@ Graphs via Adjacency Lists
 Chapter 20
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/fzfo-tmQTWI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/GEcDFScObQA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -36,7 +36,7 @@ If the edges have weights, they are stored in the matrix.
 
 1.  Wasted space, $O(n^2)$. It stores a weight for an edge  
     from every vertex to every other vertex.  
-    Most graphs are sparse.
+    Most graphs are *sparse*.
 
 2.  Slow iteration over edges.
 
@@ -46,8 +46,7 @@ If the edges have weights, they are stored in the matrix.
 
 ## Adjacency Lists
 
-Implemented using a vector of lists. Each node of a list represents an
-edge (destination and edge pair).
+Implemented using a vector of lists (e.g., `std::vector<std::list<Edge>>`). Each node in a list represents an edge, storing the destination vertex and edge weight. This representation uses $O(V+E)$ space, far better than $O(V^2)$ for sparse graphs. Unlike adjacency matrices, adjacency lists can represent multiple parallel edges between vertices and support efficient edge iteration during traversals.
 
 ![A graph and it's representation using adjacency lists.](/images/graphs/adjacency_lists.svg "A graph and it's representation using adjacency lists."){.light-only}
 
@@ -109,7 +108,7 @@ of an ***undirected*** and ***connected*** graph.
 
 Local Variables in `prims()`:
 
-- `EDGES_IN_MST`: the vertex count.
+- `vertexCount`: the number of vertices in the graph. A spanning tree has exactly `vertexCount - 1` edges.
 
 - ***Priority*** Queue of Edges (initially empty). The Edge type
   contains from and to vertices and the weight.
@@ -125,35 +124,35 @@ Local Variables in `prims()`:
 ```C++
 Function: prims(startIdx):
   enqueueEdges (startIdx, wasVisited, edgeQueue);
-  while (!edgeQueue.empty() && edgeCount < EDGES_IN_MST)
+  while (!edgeQueue.empty() && edgeCount < vertexCount - 1)
     edge = edgeQueue.dequeue()
     if (!wasVisited[edge.destination])
       mstEdges.enqueue(edge)
       ++edgeCount
     totalCost += edge.weight
     enqueueEdges (edge.destination, wasVisited, edgeQueue)
-  return (edgeCount != EDGES_IN_MST) ? -1 : totalCost
+  return (edgeCount != vertexCount - 1) ? -1 : totalCost
 ```
 
 ```C++
 Function enqueueEdges (fromVertex, wasVisited[], edgeQueue):
-// Mark the current node as visited.
-wasVisited[nodeIdx] = true;
+  // Mark the current node as visited.
+  wasVisited[fromVertex] = true;
 
-// Iterate over all edges going outward from the current node.
-// Add edges to unvisited nodes the queue
-for (const auto &edge : AdjacencyMatrix[nodeIdx])
-  if (!wasVisited[edge.destination])
-    edgeQueue. enqueue({fromVertex, edge.destination, edge.weight});
+  // Iterate over the edges of the current vertex.
+  // Add edges to unvisited nodes the queue
+  for (const auto &edge : mAdjacencyLists[fromVertex])
+    if (!wasVisited[edge.destination])
+      edgeQueue.enqueue({fromVertex, edge.destination, edge.weight});
 ```
 
 ## Performance
 
-What operations are faster with an Adjacency Matrix?
+**Adjacency Matrix:** Faster for checking if an edge exists between two specific vertices (O(1) lookup). Best for dense graphs where most vertices are connected.
 
-What operations are faster with an Adjacency List?
+**Adjacency List:** Faster for iterating over edges (O(V+E)), requires less space for sparse graphs (O(V+E) vs O(V²)), and supports parallel edges. Prim's algorithm runs in O((V + E) log E) time with adjacency lists.
 
-When would each implementation be more memory efficient?
+**Memory Efficiency:** Adjacency lists are far more efficient for sparse graphs (few edges relative to vertices). Adjacency matrices always use O(V²) space regardless of edge count.
 
 ## Summary
 
