@@ -77,6 +77,13 @@
   \stepcounter{arrayIndex}
 }
 
+% Used for \vdot without space above, used for vertical spans
+\makeatletter
+\DeclareRobustCommand%
+  \spaceFreeVdots{\vbox{\baselineskip4\p@ \lineskiplimit\z@
+    \hbox{.}\hbox{.}\hbox{.}}}
+\makeatother
+
 \NewDocumentCommand{\ArrayNodeSpan}{ O{$\cdots$} m }{
   \node[horizontal span of array, anchor=west, name=prev] at ([xshift=-1pt] prev.east) {#1};
   \node[array index, anchor=south] at ([yshift=1pt] prev.north) {$\cdots$};
@@ -84,9 +91,9 @@
   \addtocounter{arrayIndex}{#2}
 }
 
-\NewDocumentCommand{\ArrayNodeVerticalSpan}{ O{$\vdots$} m }{
+\NewDocumentCommand{\ArrayNodeVerticalSpan}{ O{\spaceFreeVdots} m }{
   \node[span of array, anchor=north, name=prev] at ([yshift=1.4pt] prev.south) {#1};
-  \node[array index, anchor=east] at ([xshift=-1pt] prev.west) {$\vdots$};
+  \node[array index, anchor=east] at ([xshift=-1pt] prev.west) {\spaceFreeVdots};
   \node[block] (space) [fit=(prev)]{};
   \addtocounter{arrayIndex}{#2}
 }
