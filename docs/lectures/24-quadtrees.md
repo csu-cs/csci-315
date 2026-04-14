@@ -1,8 +1,8 @@
-Quadtrees
-=========
+Quadtrees (with Smart Pointers)
+===============================
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/Q0tSouzXSbI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/wDc3Qy7Tnpc?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
 <script setup>
@@ -68,6 +68,134 @@ $$\begin{aligned}
       \text{bottom} &< c_y + \frac{1}{2}h\  
     
 \end{aligned}$$
+
+
+## Modern C++ Memory Management
+
+In modern C++, ***smart pointers*** are preferred for dynamic memory
+management, instead of raw `new` and `delete`.
+
+-   `std::unique_ptr` is a smart pointer that owns and manages a
+    dynamically allocated object.
+
+-   It automatically deletes the object when it goes out of scope,
+    preventing memory leaks.
+
+-   Ownership is exclusive: cannot be copied, only moved.
+
+::: info `std::unique_ptr` Example
+
+```cpp
+#include <memory>
+void example() {
+  std::unique_ptr<int> p = std::make_unique<int>();
+  *p = 42;
+  // When example() returns, p is destroyed,
+  // and the int is automatically deleted.
+}
+```
+
+
+-   The object is freed automatically when the smart pointer goes out of
+    scope.
+
+-   No explicit `delete` is required.
+
+:::
+
+### Example Implementation
+
+This is how you might implement `std::unique_ptr` if you needed to. Seeing
+an example implementation shows how simple it is (just a wrapper for a pointer).
+
+```cpp
+// Incomplete Example (doesn't handle move semantics)
+template<typename Type>
+class UniquePointer {
+public:
+  UniquePointer(Type* datum = nullptr) : mDatum{datum}
+  {}
+
+  ~UniquePointer() { delete mDatum; }
+
+  // Remove default copy semantics.
+  UniquePointer(const UniquePointer &)            = delete;
+  UniquePointer& operator=(const UniquePointer &) = delete;
+
+  // Accessors for owned object
+  Type* operator->() const {return mDatum;}
+  Type& operator*()  const {return *mDatum;}
+private:
+  Type* mDatum;
+};
+```
+
+`std::make_unique` vs `new` Preferred form:
+
+    auto p = std::make_unique<Quadtree>();
+
+-   Works well with *type deduction* (`auto`) and is exception-safe.
+
+-   Allocation and ownership transfer happen in one step.
+
+Allowed, but less preferred:  
+`std::unique_ptr<Quadtree> p{new Quadtree()};`
+
+-   More verbose and unsafe if an exception is thrown between `new` and
+    the constructor of `std::unique_ptr`.
+
+### Advantages and Disadvantages **Advantages:**
+
+-   Automatic resource management.\
+    [*Resource Acquisition is Initialization*
+    (RAII)](https://en.cppreference.com/w/cpp/language/raii.html).
+
+-   Prevents memory leaks and dangling pointers.
+
+-   Exception-safe.
+
+-   Cleaner, more readable code.
+
+**Disadvantages:**
+
+-   Ownership semantics restrict copying.
+
+-   Slight performance overhead.
+
+-   Learning curve for ownership rules.
+
+### Other Smart Pointers
+
+-   `std::shared_ptr` --- shared ownership
+
+-   `std::weak_ptr` --- non-owning reference to object managed by
+    `std::shared_ptr`
+
+### Rule of 0
+
+-   **Rule of 3**: If you define any of destructor, copy constructor, or
+    copy assignment operator, define all three.
+
+-   **Rule of 0**: If you don't need to define any special member
+    functions, don't define any.
+
+-   Rely on compiler-generated defaults or use smart pointers for
+    resource management.
+
+### Quadtree Subtree Implementation The 4 subtrees are defined using:
+
+```
+// Replaces:
+// Quadtree* mQuads = new Quadtree[4];
+std::array<std::unique_ptr<Quadtree>, 4> mQuads;
+```
+
+-   `std::array` provides a fixed-size array with compile-time size.
+
+-   Each subtree is a `std::unique_ptr` to a `Quadtree` node.
+
+-   Memory is automatically managed; no manual `delete` needed.
+
 
 ## Types of Quadtrees
 

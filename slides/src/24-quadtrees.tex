@@ -2,8 +2,8 @@
 %\documentclass[12pt,aspectratio=1610,handout]{beamer}
 \usepackage{csu-theme}
 
-\title{\Huge{} Quadtrees}
-\subtitle{CSCI 315: Data Structure Analysis}
+\title{\Huge{} Quadtrees {\Large{}\\[-0.5em](\& Smart Pointers)}}
+\subtitle{CSCI 315: \textit{Data Structure Analysis}}
 \author{Sean T. Hayes, Ph.D.}
 \institute{Charleston Southern University}
 
@@ -61,13 +61,13 @@
     be able to query how many points lie in a particular rectangle.
   }{
     \alt<-4>{
-      A brute force approach would be $O(n)$ in the number of points.\\
+      A brute force approach would be \(O(n)\) in the number of points.\\
     }{
       We want a way to more efficiently count points\\ contained within a rectangular region.
     }
   }
 \end{minipage}
-\center
+\center%
 \begin{tikzpicture}[scale=0.50]
   \onslide<2->{
     \draw[very thick, fill=CSUcyan, draw=CSUgold] (12, 6) rectangle (20, 9);
@@ -151,7 +151,7 @@
 \onslide<5>{}
 \end{frame}
 
-\section {Explanation}
+\section{Explanation}
 \begin{frame}{Explanation}
 \begin{minipage}[t][3em][c]{\textwidth}
 \alt<-3>{
@@ -223,9 +223,9 @@
         Any newly inserted points will be passed along
         to the children since the root node is ``full.''
       }{%
-        Now the southeast child of the root has also reached
-        the 5-point limit, so the node will also subdivide
-        once a new point is added to it.
+        Now the southeast child of the root has also\\
+        reached the 5-point limit, so the node will also\\
+        subdivide once a new point is added to it.
       }
     }
   }
@@ -833,27 +833,179 @@
 \end{columns}
 \end{frame}
 
+\section{Memory Management}
+
+\begin{frame}{Modern C++ Memory Management}
+\begin{minipage}[t][3em][c]{\textwidth}
+  \center{}
+  In modern C++, \emph{smart pointers} are preferred for dynamic memory management, instead of raw \lstinline{new} and \lstinline{delete}.
+\end{minipage}
+
+\pause{}
+\begin{itemize}[<+->]
+  \item \lstinline{std::unique_ptr} is a smart pointer that owns and manages a dynamically allocated object.
+  \item It automatically deletes the object when it goes out of scope, preventing memory leaks.
+  \item Ownership is exclusive: cannot be copied, only moved.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{std::unique\_ptr} Example}
+\begin{lstlisting}
+#include <memory>
+void example() {
+  std::unique_ptr<int> p = std::make_unique<int>();
+  *p = 42;
+  // When example() returns, p is destroyed,
+  // and the int is automatically deleted.
+}
+\end{lstlisting}
+\vspace{-0.5em}
+\begin{itemize}
+  \item The object is freed automatically when the smart pointer goes out of scope.
+  \item No explicit \texttt{delete} is required.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+template<typename T>
+class UniquePointer { // Incomplete Example
+public:
+  UniquePointer(T* datum = nullptr) : mDatum{datum}
+  {}
+
+  ~UniquePointer() { delete mDatum; }
+
+  // Remove default copy semantics.
+  UniquePointer(const UniquePointer &)            = delete;
+  UniquePointer& operator=(const UniquePointer &) = delete;
+
+  // Accessors for owned object
+  T* operator->() const {return mDatum;}
+  T& operator*()  const {return *mDatum;}
+private:
+  T* mDatum;
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{std::make\_unique} vs \texttt{new}}
+Preferred form:
+\begin{lstlisting}
+auto p = std::make_unique<Quadtree>();
+\end{lstlisting}
+\vspace{-1em}
+\begin{itemize}
+  \item Works well with \textit{type deduction} (\lstinline{auto}) and is exception-safe.
+  \item Allocation and ownership transfer happen in one step.
+\end{itemize}
+
+Allowed, but less preferred:
+\begin{lstlisting}
+std::unique_ptr<Quadtree> p{new Quadtree()};
+\end{lstlisting}
+\vspace{-1em}
+\begin{itemize}
+  \item More verbose and unsafe if an exception is thrown between \lstinline{new} and the constructor of \lstinline{std::unique_ptr}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Advantages and Disadvantages}
+%\begin{columns}[T]
+  %\column{0.5\textwidth}
+    \textbf{Advantages:}
+    \vspace{-0.5em}
+    \begin{itemize}
+      \item Automatic resource management.\\
+        \href{https://en.cppreference.com/w/cpp/language/raii.html}{\textit{Resource Acquisition is Initialization} (RAII)}.
+      \item Prevents memory leaks and dangling pointers.
+      \item Exception-safe.
+      \item Cleaner, more readable code.
+    \end{itemize}
+ % \column{0.5\textwidth}
+    \pause{}
+    \textbf{Disadvantages:}
+    \vspace{-0.5em}
+    \begin{itemize}
+      \item Ownership semantics restrict copying.
+      \item Slight performance overhead.
+      \item Learning curve for ownership rules.
+    \end{itemize}
+%\end{columns}
+\end{frame}
+
+\begin{frame}{Other Smart Pointers}
+\begin{itemize}
+  \setlength\itemsep{0.5em}
+  \item \lstinline{std::shared_ptr} --- shared ownership
+  \item \lstinline{std::weak_ptr} --- non-owning reference to object managed by \lstinline{std::shared_ptr}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Rule of 0}
+\begin{itemize}[<+->]
+  \item \textbf{Rule of 3}: If you define any of destructor, copy constructor, or copy assignment operator, define all three.
+  \item \textbf{Rule of 0}: If you don't need to define any special member functions, don't define any.
+  \item Rely on compiler-generated defaults or use smart pointers for resource management.
+\end{itemize}
+
+\onslide<4->{%
+\begin{itemize}
+  \item Benefits: Less code, fewer bugs, automatic resource management via RAII\@.
+  \item Example: Classes with \lstinline{std::unique_ptr} members don't need custom destructors.
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Quadtree Subtree Implementation}
+  The 4 subtrees are defined using:
+
+\begin{lstlisting}
+// Replaces:
+// Quadtree* mQuads = new Quadtree[4];
+std::array<std::unique_ptr<Quadtree>, 4> mQuads;
+\end{lstlisting}
+
+\begin{itemize}
+  \item \lstinline{std::array} provides a fixed-size array with compile-time size.
+  \item Each subtree is a \lstinline{std::unique_ptr} to a \lstinline{Quadtree} node.
+  \item Memory is automatically managed; no manual \lstinline{delete} needed.
+\end{itemize}
+\end{frame}
+
 \section{Variations}
 
 \begin{frame}{Types of Quadtrees}
-  \begin{itemize}[<+->]
-    \item
-      \emph{Region} quadtree -- Divides region into sub-quadrants based on the areas with more detailed information.
+  \pause{}
+  \begin{enumerate}
+    \setlength\itemsep{0.5em}
+    \item<+->
+      \emph{Region} quadtree --- Divides region into sub-quadrants based on the areas with more detailed information.
       \begin{itemize}
-        \item Image processing -- only subdivide if pixels differ in color.
-        \item Variable resolution data field -- each parent has the average value of its children.
+        \item Image processing --- only subdivide if pixels differ in color.
+        \item Variable resolution data field --- each parent has the average value of its children.
       \end{itemize}
+    \item<+->
+      \emph{Point} quadtree --- Divide the region at the point that is inserted (like a binary tree but with 4 pointers).\ \href{https://en.wikipedia.org/wiki/K-d_tree}{$k$-d trees} are preferred.
+    \item<+->
+      \emph{Point-region (PR)} quadtree --- What we implemented.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Types of Quadtrees}
+  \pause{}
+  \begin{enumerate}[<+->]
+    \setlength\itemsep{0.5em}
+    \setcounter{enumi}{3} % Start at 4
     \item
-      \emph{Point} quadtree -- Divide the region at the point that is inserted (like a binary tree but with 4 pointers). \href{https://en.wikipedia.org/wiki/K-d_tree}{$k$-d trees} are preferred.
+      \emph{Point-region (PR)} quadtree --- What we implemented.
     \item
-      \emph{Point-region (PR)} quadtree -- What we implemented.
+      \emph{Edge} quadtree --- Stores lines/curves with approximation.
     \item
-      \emph{Edge} quadtree -- Stores lines/curves with approximation.
+      \emph{Polygonal map (PM)} quadtree --- stores polygons.
     \item
-      \emph{Polygonal map (PM)} quadtree -- stores polygons.
-    \item
-      \emph{Compressed} quadtrees -- only storing subtrees whose leaves have interesting data and removing empty intermediate nodes.
-  \end{itemize}
+      \emph{Compressed} quadtrees --- only storing subtrees whose leaves have interesting data and removing empty intermediate nodes.
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}{Conclusion}
