@@ -146,7 +146,7 @@ Allowed, but less preferred:
 
 ### Advantages and Disadvantages **Advantages:**
 
--   Automatic resource management.\
+-   Automatic resource management.  
     [*Resource Acquisition is Initialization*
     (RAII)](https://en.cppreference.com/w/cpp/language/raii.html).
 
@@ -166,9 +166,9 @@ Allowed, but less preferred:
 
 ### Other Smart Pointers
 
--   `std::shared_ptr` --- shared ownership
+-   `std::shared_ptr` — shared ownership
 
--   `std::weak_ptr` --- non-owning reference to object managed by
+-   `std::weak_ptr` — non-owning reference to object managed by
     `std::shared_ptr`
 
 ### Rule of 0
