@@ -27,24 +27,23 @@ Included Topics
 
 1.  **Data Structures**:
 
-    -   Arrays
+    -   Array and Vector
 
     -   Linked List (singly- and doubly-linked)
 
-    -   Vectors, Stack, Queue, Circular Buffer
+    -   Stack, Queue, Circular Buffer
 
     -   Trees:
-        +   Binary Search Tree (Ordered Sets, Ordered Maps)
-        +   Heaps
-        +   Priority Queues
-        +   B-trees
-        +   Quadtrees
+        +   Binary Search Tree (a.k.a., Ordered Sets, Ordered Maps)
+        +   Binary Heap
+        +   Priority Queue
+        +   B-tree
+        +   Quadtree
 
-    -   Hash Tables implemented via Chaining and Linear Probing: (a.k.a., 
-        Unordered Set, Unordered Map,)
+    -   Hash Table implemented via Chaining and Linear Probing: (a.k.a., 
+        Unordered Set, Unordered Map)
 
-    -   Graphs (Adjacency List, Adjacency Matrix)
-
+    -   Graph (Adjacency List, Adjacency Matrix)
         +   Types: Directed, Undirected, Simple (no loops or parallel edges),
             and Strongly-Connected (all vertices are connected)
 
@@ -55,7 +54,7 @@ Included Topics
     -   Searching: Linear, Binary, Depth-first search (DFS), Breadth-first
         search (BFS)
 
-    -   Traversing: preorder, inorder, postorder
+    -   Traversing trees and graphs: preorder, inorder (for trees), postorder
 
     -   Graphs: DFS, BFS, Dijkstra's Shortest Path, Prim's Minimum Spanning Tree
 
