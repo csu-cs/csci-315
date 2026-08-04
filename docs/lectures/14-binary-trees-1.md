@@ -1,5 +1,5 @@
-Binary Search Trees: Insertion, Search, and Traversal
-=====================================================
+Binary Search Trees: Insertion and Search
+=========================================
 
 Chapter 19
 

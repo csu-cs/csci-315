@@ -2,7 +2,10 @@
 head:
   - - style
     - type: 'text/css'
-    - '#pdf { display: inline-block;position: relative; left: 50%; transform: translateX(-50%);;margin-top:0.5em; padding: 3px 6px; font-size: 14pt; background-color: var(--vp-button-brand-bg); border: var(--vp-button-brand-border) 1px solid; border-radius: 5px; color: var(--vp-button-brand-text);}'
+    - '#pdf { display: inline-block;position: relative; left: 50%; transform: translateX(-50%); margin-top:0.5em; padding: 3px 6px; font-size: 14pt; background-color: var(--vp-button-brand-bg); border: var(--vp-button-brand-border) 1px solid; border-radius: 5px; color: var(--vp-button-brand-text);}'
+schedule_start_date: "2026-08-24"
+start_week: 1
+date: "Fall of 2026"
 ---
 
 Syllabus \| CSCI 315 *Data Structure Analysis*
@@ -17,13 +20,14 @@ Syllabus \| CSCI 315 *Data Structure Analysis*
 General Information
 -------------------
 
-Department: Computer Science  
-Course Name: Data Structure Analysis Course Number: CSCI 315  
-Credit Hours: 4 credit hours; 3 lecture hours & 2 laboratory hours.  
-Approved Major Credit: BS in Computer Science, BS in Cybersecurity, BA in
+**Department**: Computer Science  
+**Course Name**: Data Structure Analysis  
+**Course Number**: CSCI 315  
+**Credit Hours**: 4 credit hours; 3 lecture hours and 2 laboratory hours.  
+**Approved Major Credit**: BS in Computer Science, BS in Cybersecurity, BA in
 Applied Computing, BT in Computer Science, and BT in Cybersecurity  
-LAC Requirement: None  
-Prerequisites: CSCI 325 grade of ‘C’ or better
+**LAC Requirement**: None  
+**Prerequisites**: CSCI 325 with a grade of ‘C’ or better.
 
 Course Description
 ------------------
@@ -63,37 +67,52 @@ the cheaper 7th edition for this course.*
 
 ### Other Required Materials
 
-This class is driven through [GitHub](https://github.com/). Assignments and
+This course relies on [GitHub](https://github.com/). Assignments and
 lectures are located on GitHub at
-<https://github.com/csu-cs/CSCI-315-2026-Spring>. If you are not able to access
-it, please send me an email so I can grant you access.
+<https://github.com/csu-cs/CSCI-315-2026-Fall>. If you cannot access it,
+please email me so I can grant you access.
 
-ABET Learning Outcomes
-----------------------
+Student Learning Outcomes
+-------------------------
 
-Students completing this course will have an ability to:
+By the conclusion of this course, students will be able to:
 
-1.  Analyze a complex computing problem and to apply principles of computing and
-    other relevant disciplines to identify solutions.
+| **#** | **Student Learning Outcome** | **ABET-CAC SLO Alignment** |
+|:-:|:-------------------------------------------------------|:-----------:|
+| 1 | Navigate a Unix/Linux environment using command-line interface tools, compile C++ programs using compiler tools (like GCC/Clang and Makefiles), and manage source code repositories using Git. | 2, 6 |
+| 2 | Allocate, manage, and deallocate memory dynamically in C++, and utilize diagnostic tools to detect and resolve memory leaks, segmentation faults, and pointer errors. | 2, 6 |
+| 3 | Design and execute automated unit tests that cover normal, edge, and failure cases to verify software correctness and prevent regressions. | 2 |
+| 4 | Implement robust software components in C++ using core object-oriented principles, including classes, encapsulation, inheritance, operator overloading, and templates (parametric polymorphism). | 2, 6 |
+| 5 | Quantify and compare the computational efficiency of algorithms and data structures analytically using Big-O notation, recurrence relations, and induction, as well as empirically through execution timing. | 1, 6 |
+| 6 | Implement and manipulate basic linear data structures, including singly-linked lists, doubly-linked lists, stacks, and queues. | 2, 6 |
+| 7 | Implement and manipulate hierarchical and specialized trees, including Binary Search Trees (BST), Heaps, B-Trees, and Quadtrees. | 2, 6 |
+| 8 | Represent graphs using adjacency lists and adjacency matrices, and apply graph search algorithms (Depth-First Search and Breadth-First Search) to solve pathfinding and spatial search problems. | 1, 2, 6 |
+| 9 | Select, implement, and evaluate quadratic (bubble, selection, insertion) and divide-and-conquer (merge, quick) sorting algorithms, along with linear and binary search methods. | 1, 2, 6 |
+| 10 | Design and implement hash tables, analyzing the performance tradeoffs between chaining and open-addressing collision resolution strategies. | 1, 2, 6 |
+| 11 | Appropriately integrate standard containers, iterators, and generic algorithms from the C++ Standard Template Library (STL) to construct efficient software systems. | 2, 6 |
+| 12 | Evaluate the ethical, legal, and professional implications of computing practices, particularly regarding software reliability, testing standards, and academic integrity. | 4 |
 
-2.  Design, implement, and evaluate a computing-based solution to meet a given 
-    set of computing requirements in the context of the program’s discipline.
+### ABET-CAC Student Outcomes Reference
 
-3.  Communicate effectively in a variety of professional contexts.
+The following ABET Computing Accreditation Commission (CAC) student
+outcomes are supported by this course. Students completing this course
+will have the ability to:
 
-4.  Recognize professional responsibilities and make informed judgments in 
-    computing practice based on legal and ethical principles.
-
-6.  Apply computer science theory and software development fundamentals to 
-    produce computing-based solutions.
+| **#** | **Student Learning Outcome**                             |
+|---|------------------------------------------------------|
+| 1 | Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions. |
+| 2 | Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline. |
+| 3 | Communicate effectively in a variety of professional contexts. |
+| 4 | Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles. |
+| 6 | Apply computer science theory and software development fundamentals to produce computing-based solutions. |
 
 Tentative Weekly Schedule
 -------------------------
 
 The weekly schedule is subject to change. **Those who keep up with the work generally do well.**
 
-| Week | Lectures                                    | Related Assignment    |
-|------|---------------------------------------------|-----------------------|
+| Day        | Lectures                                      | Related Assignment |
+|:----------:|-----------------------------------------------|--------------------|
 |  1A  | [Introduction](/lectures/01-introduction) and [Unix/Linux Commands](/lectures/01-basic-unix) | Lab 01                |
 |  1B  | [C++ Compilation is Linux](/lectures/02-unix-compilation)  | Lab 02                |
 |  2A  | [Memory Management](/lectures/03-memory-management) | Lab 03                |
@@ -106,46 +125,47 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 |  5B  | [Search](/lectures/10-search) and [Quadratic Sorting](/lectures/10-quadratic-sort) | Lab 10                |
 |  6A  | [Quick Sort](/lectures/11-quick-sort) and [Merge Sort](/lectures/11-merge-sort) | Lab 11                |
 |  6B  | [Stacks](/lectures/12-stacks), [Queues](/lectures/12-queues), [Midterm Study Guide](/guides/midterm-study-guide) | Lab 12                |
-|  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) and [Project 2](/lectures/13-project2) | [Project 2](/lectures/13-project2) & Lab 13    |
+|  7A  | [Depth- and Breadth-First Search (2D Maze Search)](/lectures/13-2D-search) | [Project 2](/lectures/13-project2) & Lab 13    |
 |  7B  | Midterm Exam                                |                       |
-|  8A  | [Binary Search Trees: Insertion, Search](/lectures/14-binary-trees-1) and [Intro to Traversal](/lectures/14-binary-trees-traversal) | Lab 14                |
-|  8B  | [Binary Search Trees: Deletion](/lectures/15-binary-trees-delete) & [Binary Search Trees: Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |
-|  9   | *Spring Break* (No Class)                     |                       |
-| 10A  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
-| 10B  | [STL Containers and Iterators](/lectures/17-stl-containers) and [STL Algorithms](/lectures/17-stl-algorithms) | Lab 17                |
-| 11A  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
-| 11B  | [Project 3](/lectures/19-project3) and [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | [Project 3](/lectures/19-project3) & Lab 19    |
-| 12A  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |
-| 12B  | [B-Trees](/lectures/21-b-trees) | Lab 21                |
-| 13A  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |
-| 13B  | [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists) | Lab 23                |
-| 14A  | [Quadtrees](/lectures/24-quadtrees) | Lab 24                |
-| 14B  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |  |
+|  8A  | *Fall Break* (No Class)                     |                       |
+|  8B  | Binary Search Trees: [Insertion, Search](/lectures/14-binary-trees-1) and [Intro to Traversal](/lectures/14-binary-trees-traversal) | Lab 14                |
+|  9A  | Binary Search Trees: [Deletion](/lectures/15-binary-trees-delete) and [Generic Traversal](/lectures/15-binary-trees-traversal) | Lab 15                |
+|  9B  | [Heaps & Heapsort](/lectures/16-heaps-heapsort) | Lab 16                |
+| 10A  | [STL Containers and Iterators](/lectures/17-stl-containers) and [STL Algorithms](/lectures/17-stl-algorithms) | Lab 17                |
+| 10B  | [Hash Tables via Chaining](/lectures/18-hash-tables-chaining) | Lab 18                |
+| 11A  | [Project 3](/lectures/19-project3) and [Hash Tables via Open-Addressing](/lectures/19-hash-tables-open-addressing) | [Project 3](/lectures/19-project3) & Lab 19    |
+| 11B  | [Priority Queues](/lectures/20-priority-queues) | Lab 20                |
+| 12A  | [B-Trees](/lectures/21-b-trees) | Lab 21                |
+| 12B  | [Graphs via Adjacency Matrices](/lectures/22-graphs-adjacency-matrices) | Lab 22                |
+| 13A  | [Graphs via Adjacency Lists](/lectures/23-graphs-adjacency-lists) | Lab 23                |
+| 13B  | [Quadtrees](/lectures/24-quadtrees) | Lab 24                |
+| 14A  | [Brainstorm Optimizations for Project 3](/lectures/25-project3) |  |
+| 14B  | *Thanksgiving* (No Class) | |
 | 15A  | [Comparison of Data-Structure Performance](/lectures/26-review)    |        |
 | 15B  | [Final Exam (Part 1)](/guides/final-study-guide)    |           |
-| 16B  | [Final Exam (Part 2)](/guides/final-study-guide) on 4/30 at 8 a.m. [per the Exam Schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
+| 16B  | [Final Exam (Part 2)](/guides/final-study-guide) at 10:30 a.m. [per the official exam schedule](https://www.charlestonsouthern.edu/academics/academic-calendar/) |  |
 
 {#schedule-table}
 
 ### Online Students
 
-Be aware that the lack of scheduled face-to-face communication puts online 
-students at a disadvantage. Therefore, communication is paramount. I will be 
-answer email during office hours. Please keep the timing of due dates in mind 
-because there will likely be a delay as I respond to questions. In short,
-get started early and stay ahead!
+Be aware that the lack of scheduled face-to-face communication puts online
+students at a disadvantage. Therefore, communication is paramount. I will
+answer email during office hours. Please keep assignment due dates in mind,
+because there may be a delay in my response time. In short, get started early
+and stay ahead!
 
 #### Video Recording of Lectures
 
-I will video-record my in-class lectures. After class, I will upload and post a
-link [the course website](https://csu-cs.github.io/csci-315/). The video 
-recordings are for online students so you can review the material. The lecture
-videos from th previous semester are currently posted so you can work ahead.
+I will video-record my in-class lectures and post the links on [the course
+website](https://csu-cs.github.io/csci-315/). These recordings are for online
+students so they can review the material. Lecture videos from the previous
+semester are currently posted so you can work ahead.
 
 Grading
 -------
 
-The assessment categories will be weighted as follows.
+The assessment categories are weighted as follows.
 
 | Task         | Percentage |
 |-------------:|-----------:|
@@ -157,7 +177,7 @@ The assessment categories will be weighted as follows.
 
 ### Grading Scale for Letter Grade
 
-The final letter grades will be calculated from the following ranges.
+Final letter grades will be calculated using the following ranges.
 
 | Letter Grade | Grade Range % | Grade Points per Credit |
 |:-------------|:--------------|:------------------------|
@@ -173,10 +193,10 @@ The final letter grades will be calculated from the following ranges.
 
 ### Late Work
 
-If a lab or project is submitted within 7 days of the deadline (and before the
-last day of class), the work will earn 80% credit. After 7 days, the work will
-earn 0% credit. Late work will **not** be accepted after April 23, 2026. Exams
-and papers may **not** be submitted late.
+If a lab or project is submitted within 7 days of the deadline and before the
+last day of class, the work will earn 80% credit. After 7 days, the work will
+earn 0% credit. Late work will **not** be accepted after the final day of
+class (before finals). Exams and papers may **not** be submitted late.
 
 ### Teamwork and Assistance
 
@@ -198,9 +218,9 @@ Student participation is crucial for academic success. Students are also
 expected to check their BucMail daily and review Blackboard for course
 announcements.
 
-### On-Ground
+### In-Person
 
-Any student who has missed 25% of course meetings will be awarded a grade of FA
+Any student who misses 25% of course meetings will be awarded a grade of FA
 (Failure due to Absences). In this course, **FA is awarded after missing 7 class
 meetings**. Three (3) instances of tardiness or leaving class early are equal to
 one absence. For more information, please see the [CSU Excessive Absence
@@ -228,7 +248,7 @@ Course, Department, and University Policies
 
 All students are expected to adhere to [Charleston Southern University's 
 Academic Integrity 
-Policy](https://www.charlestonsouthern.edu/wp-content/uploads/Policy-R-58-updated-November-2025.pdf) 
+Policy](https://www.charlestonsouthern.edu/wp-content/uploads/CSU-Policy-R-58-updated-April-2026.pdf) 
 and the [Computer Science Departmental 
 Guidelines](/integrity). **All assignments** 
 are individual assignments unless explicitly specified by the professor. Do not 
@@ -265,20 +285,20 @@ you talk to me **beforehand**.
 
 ### AI Policy for CSCI 315
 
-**Level 1. Use of generative AI is *prohibited* in this course.**
+**Level 1: Use of generative AI is *prohibited* in this course.**
 
-To ensure development and mastery of the concepts and skills in this
-course, the use of generative artificial intelligence (AI) tools is
-prohibited. Students who are unsure of this policy or any
-assignment-specific directions, including whether a given technology is
-considered AI, should consult the course instructor before using such
-technology to complete their assignment.
+To ensure mastery of the concepts and skills in this course, the use of
+generative artificial intelligence (AI) tools is prohibited. Students who are
+unsure of this policy or any assignment-specific directions, including whether
+a given technology is considered AI, should consult the course instructor
+before using such technology to complete their assignment.
 
 While proper AI use is an important skill that will be emphasized in
 other courses, AI misuse short-circuits the learning process to give the
 illusion of proficiency without the necessary depth. It is unethical to
 take full credit for work created with the help of AI. This principle is
-the same as using someone else’s idea without citing it. 
+the same as using someone else’s idea without citing it.
+
 [Review the departmental policies for AI use in Computer Science
 coursework.](/integrity#artificial-intelligence-ai)
 
@@ -423,9 +443,12 @@ Handbook](https://www.charlestonsouthern.edu/current-students/student-resources/
 
 <script setup>
 import { onMounted } from 'vue';
+import { useData } from 'vitepress';
 import { appendScheduleDates } from '/.vitepress/theme/appendScheduleDates.js';
 
+const { frontmatter } = useData();
+
 onMounted(() => {
-    appendScheduleDates("2026-01-12");
+    appendScheduleDates(frontmatter.value.schedule_start_date);
 });
 </script>

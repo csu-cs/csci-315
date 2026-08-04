@@ -469,6 +469,35 @@ $if(logo)$
   \usepackage{graphicx}
 $endif$
 
+
+%%% Add custom box
+
+\usepackage{tcolorbox}
+
+\makeatletter
+
+\newenvironment{info}{%
+  \@ifnextchar\bgroup
+    {\info@with}%
+    {\info@without}%
+}{%
+  \end{tcolorbox}%
+}
+\newenvironment{warning}{%
+  \@ifnextchar\bgroup
+    {\info@with}%
+    {\info@without}%
+}{%
+  \end{tcolorbox}%
+}
+\def\info@with#1{%
+  \begin{tcolorbox}[colback=csublue!8,colframe=csublue,title={\color{white}#1},coltitle=black,fonttitle=\bfseries]%
+}
+\def\info@without{%
+  \begin{tcolorbox}[colback=csublue!8,colframe=csublue,coltitle=black]%
+}
+\makeatother
+
 %%% Start Document %%%
 \begin{document}
 
