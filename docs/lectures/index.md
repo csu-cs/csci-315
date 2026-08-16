@@ -3,7 +3,7 @@
 ## Introduction
 - [Course Overview](/lectures/01-introduction)
 - [Basic Unix Commands](/lectures/01-basic-unix)
-- [C++ Compilation is Linux](/lectures/02-unix-compilation)
+- [C++ Compilation in Linux](/lectures/02-unix-compilation)
 
 ## Memory and Pointers
 

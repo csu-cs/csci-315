@@ -114,7 +114,7 @@ The weekly schedule is subject to change. **Those who keep up with the work gene
 | Day        | Lectures                                      | Related Assignment |
 |:----------:|-----------------------------------------------|--------------------|
 |  1A  | [Introduction](/lectures/01-introduction) and [Unix/Linux Commands](/lectures/01-basic-unix) | Lab 01                |
-|  1B  | [C++ Compilation is Linux](/lectures/02-unix-compilation)  | Lab 02                |
+|  1B  | [C++ Compilation in Linux](/lectures/02-unix-compilation)  | Lab 02                |
 |  2A  | [Memory Management](/lectures/03-memory-management) | Lab 03                |
 |  2B  | [Pointers](/lectures/04-pointers) and [Testing](/lectures/04-testing) | Lab 04, 05, & Ethics  |
 |  3A  | [C++ Object-Oriented Programming](/lectures/05-oop) |                       |

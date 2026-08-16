@@ -90,7 +90,7 @@ function sidebarNotes() {
 			items: [
 				{ text: 'Course Overview', link: '/lectures/01-introduction' },
 				{ text: 'Basic Unix Commands', link: '/lectures/01-basic-unix' },
-				{ text: "C++ Compilation is Linux", link: "/lectures/02-unix-compilation" },
+				{ text: "C++ Compilation in Linux", link: "/lectures/02-unix-compilation" },
 			]
 		},
 		{
