@@ -103,16 +103,15 @@ Finalize a solid conceptual foundation for Computer Science.
 
 #### Related Goals
 
--   Analyze a problem: find errors and performance issues.
+-   Diagnose problems by identifying both errors and performance bottlenecks.
 
--   Generate reports explaining performance issues and solutions.
+-   Explain performance issues with asymptotic and empirical analysis.
 
--   Demonstrate a basic understanding of the Unix/Linux environment.
+-   Use the Unix/Linux environment confidently for programming, testing, and debugging.
 
--   Become a competent programmer, who can get a job as a junior
-    programmer.
+-   Develop the skills of a competent junior programmer ready for entry-level software work.
 
-    -   This is the last "programming class".
+    -   This is the last “programming class.”
 
 # New Expectations
 
@@ -225,7 +224,7 @@ See the [Computer Setup Guide](/guides/setup-overview) for more information.
 
 -   Follow the [Official Installation
     Guide](https://docs.microsoft.com/en-us/windows/wsl/install) to
-    install Ubuntu 24.04 or later.
+    install Ubuntu 26.04 or later.
 
 -   For a lab machine, add Ubuntu in WSL from your account (ask for
     help).

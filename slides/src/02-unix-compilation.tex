@@ -269,7 +269,7 @@ g++ -g greeting.cpp -o welcome
 
 The following arguments add additional run-time checking.
 \begin{lstlisting}[language={}, basicstyle=\ttfamily\small\color{codeVariable}]
-g++ -g -fsanitize=return -fsanitize=undefined -fsanitize=address greeting.cpp -o welcome
+g++ -g -fsanitize=return,undefined,address greeting.cpp -o welcome
 \end{lstlisting}\vspace{-0.8em}
 \begin{description}[\texttt{-fsanitize=undefined~~}]
   \item[\colorbox{codeBackground}{-fsanitize=return}]
@@ -421,7 +421,7 @@ g++ main.o a.o b.o -o hello # link files
 \item Variable Definitions -- Define values for variables for reuse.
 \begin{lstlisting}[language=make]
 CPPFLAGS  = -Wall -Wextra -Wconversion -Wshadow -Wpedantic
-CPPFLAGS += -g -fsanitize=return -fsanitize=undefined -fsanitize=address
+CPPFLAGS += -g -fsanitize=return,undefined,address
 SRCS = main.cpp file1.cpp file2.cpp
 CXX = g++
 \end{lstlisting}

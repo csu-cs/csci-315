@@ -211,7 +211,7 @@ g++ -g greeting.cpp -o welcome
 The following arguments add additional run-time checking.
 
 ``` bash
-g++ -g -fsanitize=return -fsanitize=undefined -fsanitize=address greeting.cpp -o welcome
+g++ -g -fsanitize=return,undefined,address greeting.cpp -o welcome
 ```
 
 -   `-fsanitize=return` Shows error when returning without a value from non-void function.

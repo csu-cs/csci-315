@@ -48,8 +48,8 @@ Lightweight with a high learning curve, but *fast* once learned.
 
 |       |                           |
 |:-----:|:--------------------------|
-| `:q`  | to quite from vim         |
-| `:wq` | to write change and quit  |
+| `:q`  | to quit from vim          |
+| `:wq` | to write changes and quit |
 | `:q!` | to quit without saving    |
 | `ESC` | to exit from editing mode |
 |  `i`  | to insert                 |
@@ -525,7 +525,7 @@ Let's look at some examples.
 
 -   In many Linux distributions, the root user is disabled by default.
     Instead, `sudo` can be added to the beginning of a command to
-    temporally grant the command root permissions. This gives admins
+    temporarily grant the command root permissions. This gives admins
     greater control of what has the power to do anything on the system.
 
 ### System Information

@@ -14,7 +14,7 @@ the examples.
 
 Recommendations:
 
--   For Windows, use *Ubuntu 24.04* (or newer) or *Debian* on the [Windows 
+-   For Windows, use *Ubuntu 26.04* (or newer) or *Debian* on the [Windows 
     Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install). 
     See [this video on the setup](https://youtu.be/ID4DNOuGujA).
 
