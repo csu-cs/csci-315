@@ -61,8 +61,8 @@
 
 \begin{frame}{The Linux File Structure}
 \begin{itemize}
-  \item<+-> In Linux, \href{https://en.wikipedia.org/wiki/Everything_is_a_file}{everything is a file}! Well, almost.
-  \item<+-> Drives, ports, and devices (e.g., printers) are file descriptors.
+  \item<+-> In Linux, \href{https://en.wikipedia.org/wiki/Everything_is_a_file}{\emph{everything} is a file}! Well, almost.
+  \item<+-> Drives, ports, and devices (e.g., printers) are files.
 \end{itemize}
 \end{frame}
 
@@ -71,9 +71,8 @@
 \begin{itemize}
   \item<+-> What an \href{https://en.wikipedia.org/wiki/Inode}{\emph{inode}} is:
   \begin{itemize}
-    \item index node
-    \item administrative metadata
-    \item a special block of data in the file system
+    \item index node (``i'' in inode is short for ``index'')
+    \item a filesystem data structure containing metadata about a file.
   \end{itemize}
 
   \item<+-> 
@@ -82,7 +81,7 @@
       \item owner
       \item group
       \item permissions
-      \item timestamps (creation/modification date)
+      \item date/time for access, modification, and status-change
       \item file size
       \item disk locations
     \end{itemize}
@@ -104,9 +103,9 @@
 Files are arranged in directories, which may contain sub-directories.
 
 \begin{tabularx}{1\textwidth}{l X}
-\toprule{}
-  Directory & Description\\
-\midrule{}
+\toprule{}%
+  \emph{Directory} & \emph{Description}\\
+\midrule{}%
   \texttt{/} & Contains all of the system's files in directories.\\
   \texttt{/home} &  Contains a subdirectory for each user's home.\\
   \texttt{/bin}  &  System programs (``binaries'')\\
@@ -283,12 +282,15 @@ g++ -g -fsanitize=return,undefined,address greeting.cpp -o welcome
 \end{frame}
 
 \begin{frame}{Adding Optimizations}
+
+The compiler can help improve the performance of\\ your code via optimizations.
 \begin{itemize}
-\item The compiler can help improve the performance of your code via optimizations.
 \item \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{g++ -O greeting.cpp -o welcome}
 \item The \lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-O} flag tells the compiler to optimize the code.
-\item Define an optimization level by adding a number to the~\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-O} flag.
+\item Define an optimization level by adding a number to the~\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-O} flag. (\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-O2} is a common choice.)
 \end{itemize}
+
+Tip: Don't optimize when debugging (\lstinline[language={}, basicstyle=\ttfamily\color{codeVariable}]{-g}) so the generated code more closely follows the source code.
 \end{frame}
 
 \begin{frame}{Getting Extra Compiler Warnings}
@@ -391,7 +393,7 @@ See all options at \small{\url{https://gcc.gnu.org/onlinedocs/gcc/Warning-Option
 
 \begin{frame}[fragile]{Selective Recompilation After Isolated Changes}
 \begin{itemize}
-\item With the previous command, all source files are always recompiled, even when only one has changed.
+\item With the previous command, all source files are\\ always recompiled, even when only one has changed.
 \item To overcome, we compile in multiple steps.
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\color{codeVariable}]
 g++ -c main.cpp # Create main.o

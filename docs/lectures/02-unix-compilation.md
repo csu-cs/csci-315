@@ -38,7 +38,7 @@ After studying this lecture, students should be able to:
   node)](https://en.wikipedia.org/wiki/Inode) that stores its metadata
   or “administrative information.”
 
-  - creation/modification date
+  - access time, modification time, and status-change time
 
   - permissions
 
@@ -105,6 +105,8 @@ Files are arranged in directories, which may contain sub-directories.
   - `mount /dev/sdc1 /media/usb-drive/`
 
   - `cd /media/usb-drive`
+
+A storage device is represented by a device file, such as `/dev/sdb1`. To use the filesystem on a partition, mount it at a directory in the filesystem hierarchy. The exact device name can vary, so identify it with `lsblk -f` rather than assuming `/dev/sdc1`.
 
 ### `/dev/console`
 
@@ -232,6 +234,14 @@ See all options at
 
 - Define an optimization level by adding a number to
   the `-O` flag.
+
+- For normal builds, `-O2` is a good default: it provides substantial
+  optimization without usually making compilation excessively slow or
+  producing unexpectedly large executables.
+
+- Use `-O0` (the default) with `-g` when debugging so the generated code
+  more closely follows the source code. Consider `-O3` only after
+  measuring a real performance benefit for the program.
 
 ### Getting Extra Compiler Warnings
 
