@@ -19,14 +19,11 @@ After studying this lecture, students should be able to:
 9.  Describe garbage collection; understand smart pointers in C++.
 10. Master terminology: dangling pointers, garbage, memory leaks.
 
-Lecture Video
--------------
+## References & Aliases
 
 <div class="youtube">
-<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/pjRUuX2j8fo?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/Nee4y4zjATI?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
-
-## References & Aliases
 
 ### A Review of C++ References & Aliases
 
@@ -65,18 +62,21 @@ Lecture Video
     std::cout << &score; // score's address.
     ```
 
-## The 3 Memory Sections (for Data Storage)
+## Three Memory Regions (for Data Storage)
 
-- **Static**: storage requirements are known and allocated before
-  execution and remain for the entire program execution.
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/G6kBPaJDb2k?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
+
+- **Static storage**: storage for objects with static storage duration is
+  allocated before program execution and remains for the program's lifetime.
 
 - **Call Stack** (or execution stack): memory associated with active
   functions.
 
   - Structured as ***stack frames*** (i.e., activation records)
 
-- **Heap**: dynamically allocated storage; the least organized and most
-  dynamic storage area.
+- **Heap**: dynamically allocated storage, managed by the runtime allocator.
 
 ![](/images/memory-management/memory_structure.svg "Memory layout for each running process."){width=200px .light-only}
 
@@ -86,14 +86,13 @@ Lecture Video
 
 - The simplest memory to manage.
 
-- Consists of anything that can be completely determined at compile
-  time. For example:
+- Includes objects with static (unchanging) storage duration. For example:
 
   - global variables,
 
   - static variables, and
 
-  - function and class definitions (instructions).
+  - machine code (instructions for function and class definitions).
 
 - Characteristics:
 
@@ -119,9 +118,8 @@ Lecture Video
 - For each function call, a ***stack frame*** stores local variables,
   parameters, and return linkage.
 
-- The size and structure of a stack frame are ***known at compile
-  time***, but its contents and time of allocation are unknown until
-  runtime.
+- Its contents and time of allocation are determined at runtime. Its exact
+  size and layout are **known at compile time**.
 
 - How is variable lifetime affected by stack management techniques?
 
@@ -161,7 +159,7 @@ int main()
 
 ### Stack Overflow
 
-- The call stack and heap grow towards each other as required by program
+- The call stack and heap grow towards each other (in many implementations) as required by program
   events.
 
 - The following relation must hold:  
@@ -175,9 +173,10 @@ int main()
 - Heap objects are *dynamically* allocated/deallocated at runtime (not
   associated with function call/return).
 
-- Dynamic variables are created at runtime instead of at compile-time.
+- Dynamic storage is acquired at runtime, independently of function calls and
+  returns.
 
-- The kind of data found on the heap is language-dependant.
+- The kind of data found on the heap is language-dependent.
 
   - Typically holds strings, dynamic arrays, objects, and linked
     structures
@@ -190,7 +189,7 @@ Heap Memory Example
 code.](https://pythontutor.com/render.html#code=%23include%20%3Ciostream%3E%0A%0Aint%20main%28%29%0A%7B%0A%20%20const%20int%20SIZE%20%3D%203%3B%0A%20%20int%20stackArray%5BSIZE%5D%3B%20//%20Declared%20on%20the%20stack%0A%20%20int*%20heapArray%3B%20//%20Pointer%20to%20memory%20location%0A%20%20heapArray%20%3D%20new%20int%5BSIZE%5D%3B%20//%20Declare%20array%20on%20heap%0A%0A%20%20std%3A%3Acout%20%3C%3C%20%22stackArray%20%20%3D%20%22%20%3C%3C%20stackArray%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20std%3A%3Acout%20%3C%3C%20%22heapArray%20%20%20%3D%20%22%20%3C%3C%20heapArray%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20%0A%20%20stackArray%5B2%5D%20%3D%2020%3B%0A%20%20heapArray%5B2%5D%20%3D%2020%3B%0A%20%20%0A%20%20//%20Free%20up%20the%20memory%20from%20the%20heap%20array%0A%20%20delete%5B%5D%20heapArray%3B%0A%20%20heapArray%20%3D%20nullptr%3B%0A%0A%20%20return%200%3B%0A%7D&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false)
 
 ``` cpp
-##include <iostream>
+#include <iostream>
 
 int main()
 {
@@ -238,34 +237,39 @@ int main()
 - `Point firstCoord = new Point();`  
   requires at least allocated $3 \times 4$ bytes.
 
-### Heap Overflow
+### Heap Allocation Failure
 
-- A **heap overflow** occurs when calling `new` and the heap does not
-  have a big enough block of free contiguous space.
+- An allocation can fail when the program cannot obtain enough storage. By
+  default, `new` throws `std::bad_alloc` exception.
 
-- So, `new` either fails (in the case of heap overflow) or returns a
-  pointer to the new block.
+- Fragmentation can contribute to failure for requests that require a large
+  contiguous block, such as an array allocation.
 
 ### Heap Management Operations
 
-- `delete` release a storage block to the heap.
+- `delete` releases a storage block to the allocator.
 
 - The storage block's status is set to *unused* and is available for
   allocation by future calls to `new`.
 
-- One cause of heap overflow is a failure on the part of the program to
-  release unused storage.
+- Failing to release unused storage can eventually contribute to heap allocation
+  failure.
 
 ## Pointers
+
+<div class="youtube">
+<div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/pjRUuX2j8fo?rel=0&amp;showinfo=0&amp;start=2447" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+</div>
 
 - Pointers are addresses (i.e., the value of a pointer variable is an
   address).
 
-- Memory that is accessed through a pointer is dynamically allocated in
-  the heap.
+- A pointer can point to an object with static, automatic (stack), dynamic
+  (heap), or thread storage duration.
 
-- Java doesn’t have explicit pointers; reference types are heap
-  allocated (although the reference is on the stack).
+- Java does not expose explicit pointer arithmetic. In typical JVM
+  implementations, objects are heap allocated while local reference variables
+  are stored in stack frames.
 
 - This topic is covered well in the textbook’s Chapter 12.
 
@@ -320,15 +324,15 @@ code.](https://pythontutor.com/visualize.html#code=%23include%20%3Ciostream%3E%0
 
 ### Assigning a value to a *dereferenced* pointer.
 
-A pointer must have a value before you can *dereference* it (follow the
-pointer).  
+A pointer must point to a valid object before you can *dereference* it
+(follow the pointer).  
 
 ```cpp
 int *p;
 *p = 3;
 ```
 
-Error! Override the value located in some unknown address.
+Undefined Behavior! `p` holds an indeterminate location.
 
 ```cpp
 int foo;
@@ -390,8 +394,8 @@ Then:
 
 ### Pointers and Arrays
 
-- The identifier of an array on the stack is basically a  
-  ***const pointer*** pointing at the beginning of the array.
+- An array identifier is not a pointer, but in most expressions it converts
+  ("decays") to a pointer to its first element.
 
 - You can use the `[]` operator with pointers!
 
@@ -423,10 +427,11 @@ Then:
 
 ### Pointer Arithmetic
 
-- Integer arithmetic (`+`, `-`, `++`, `–`, `+=`, `-=`) works with
-  pointers.
+- Integer arithmetic (`+`, `-`, `++`, `--`, `+=`, `-=`) can be used with
+  pointers that refer to elements of the same array (or one past its end).
 
-- Increment updates the address to the “next” element.
+- Increment moves a pointer to the next element, scaled by the size of the
+  pointed-to type.
     ```cpp
     int a[5] {-1, -2, -3, -4, -5};
     int *ptr = a;
@@ -464,20 +469,18 @@ delete p;
 *p = 5;
 ```
 
-Using the above statements will result in a *segmentation fault* or
-undefined behavior!
+Each of the above statements has *undefined behavior* and may result in a *segmentation fault*.
 
 ### Memory Leaks
 
-Memory leak is when you remove the reference to the memory block before
-deleting the block itself.
+A memory leak occurs when dynamically allocated storage becomes unreachable
+without first being deallocated.
 
 Example:
 
 ```cpp
-int *p;      // p points somewhere
-p = new int; // p is an int value's address
-p = nullptr; // p points to null.
+int *p = new int; // An int value's address
+p = nullptr; // The allocated int is now unreachable.
 ```
 - Result?
 
@@ -501,7 +504,8 @@ p = nullptr; // p points to null.
 > or [Graphical User
 > Interfaces](https://valgrind.org/downloads/guis.html).
 > 
-> \* This is why the `-g` flag is used when debugging!
+> \* The `-g` flag includes debug information, making Valgrind reports easier
+> to interpret.
 
 
 ### Problem: Multiple Pointers to the Same Address
@@ -509,11 +513,11 @@ p = nullptr; // p points to null.
 - A second problem can occur when multiple pointers are assigned to a
   block of heap memory.
 
-- The block may be deleted and one of the pointers set to *null*, but
-  the other pointers still exist.
+-  Deleting the block does not change any pointer automatically. All
+  pointers to that block must be set to `nullptr` or they are *dangling*.
 
-- If the runtime system reassigns the memory to another object, the
-  original pointers pose a danger.
+- Dereferencing dangling pointers is undefined behavior and
+  the allocator reuses the storage.
 
 ### Dangling Pointer: A pointer that points to an invalid location.
 
@@ -523,9 +527,9 @@ Example:
 int *p, *q;  // Create two pointers
 p = new int; // Allocate an int on the heap.
 q = p;       // Points to the same address.
-*p = 4;      // Sets the on the heap to 4.
+*p = 4;      // Heap-allocated int set to 4.
 delete q;    // Frees the heap memory.
-*p = 3;      // Illegal assignment!
+*p = 3;      // Undefined behavior!
 ```
 
 - `p` and `q` point to the same location.
@@ -551,22 +555,23 @@ objectively true.
 
 ### Garbage Collection
 
-- All inaccessible blocks of storage are identified and returned to the
-  free list.
+- A garbage collector identifies unreachable objects and reclaims their
+  storage.
 
-- The heap may also be **compacted** at this time: allocated space is
-  compressed into one end of the heap, leaving all free space in a large
-  block at the other end.
+- Some garbage collectors also **compact** the heap by moving objects together
+  to reduce fragmentation.
 
-- C & C++ leave it to the programmer — if an unused storage block isn’t
-  explicitly freed, it becomes garbage.
-f
-  - You can use non-standard C++ garbage collectors.
+- C and C++ normally require the programmer to manage dynamic storage. If
+  dynamically allocated storage is not explicitly freed, it can become garbage
+  and cause a memory leak.
 
-- Java, C#, Python, JavaScript, Perl, and most scripting languages perform garbage
-  collection.
+  - Non-standard garbage collectors are available for C++.
 
-  - Have automatic allocation, so the “new” operator is not needed).
+- Java, C#, Python, JavaScript, Perl, and most scripting languages perform
+  garbage collection.
+
+  - Some still use `new` or a similar construct to create objects, but they perform 
+    automatic reclamation.
 
 - Garbage collection was pioneered by languages like
   [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)),
@@ -578,9 +583,9 @@ f
 
 ## Review
 
-- Three types of memory storage:
-  - Static
-  - Stack
+- Three commonly discussed memory regions:
+  - Static storage
+  - Call stack
   - Heap
 
 - Problems with heap storage:
@@ -599,27 +604,25 @@ f
 
 ### Garbage
 
-- ***Garbage***: any block of heap memory that cannot be accessed by the
-  program (i.e., there is no stack pointer to the block) but in which
-  the runtime system thinks is in use.
+- ***Garbage***: dynamically allocated storage that is no longer reachable by
+  the program but has not been reclaimed.
 
 - Garbage is created in several ways:
 
-  - A function ends without returning the space allocated to a local
-    array or other dynamic variable. The pointer is gone.
+  - A function ends while the only pointer to dynamically allocated storage is
+    a local variable. The pointer is gone.
 
-  - A node is deleted from a linked data structure, but isn’t freed.
+  - A node is unlinked from a linked data structure but is not deallocated.
 
   - …
 
 ### Terminology
 
-- A **dangling pointer** (or dangling reference, or widow) is a pointer
-  (reference) that contains the address of previously deallocated/freed
-  heap space.
+- A **dangling pointer** (or dangling reference) is a pointer (reference)
+  that refers to an object whose lifetime has ended.
 
-- An **orphan (or garbage)** is a block of allocated heap memory that is
-  no longer accessible through any pointer.
+- An **orphan (or garbage)** is a dynamically allocated memory block that is no
+  longer accessible through any pointer.
 
 - A **memory leak** is a gradual loss of available memory due to the
   creation of garbage.

@@ -83,20 +83,20 @@ std::cout << &score; // score's address.
 
 \section{Static Data}
 
-\begin{frame}{The 3 Memory Sections (for Data Storage)}
+\begin{frame}{Three Memory Regions (for Data Storage)}
 \begin{columns}
 \column{0.67\textwidth}
 \begin{overlayarea}{\linewidth}{12\baselineskip}
   \begin{itemize}[<+->]
   \item
-    \textbf{Static}: storage requirements are known and allocated before execution and remain for the entire program execution.
+    \textbf{Static storage}: allocated before program execution and remains for the program's lifetime.
   \item
     \textbf{Call Stack} (or execution stack): memory associated with active functions.
     \begin{itemize}
       \item Structured as \emph{stack frames} (i.e., activation records)
     \end{itemize}
   \item
-    \textbf{Heap}: dynamically allocated storage; the least organized and most dynamic storage area.
+    \textbf{Heap}: dynamically allocated storage, managed by the runtime allocator.
   \end{itemize}
 \end{overlayarea}
 \column{0.33\textwidth}
@@ -114,15 +114,14 @@ std::cout << &score; // score's address.
   \item<+->
     The simplest memory to manage.
   \item<+->
-    Consists of anything that can be completely determined at compile
-    time. For example:
+    Includes objects with static (unchanging) storage duration. For example:
     \begin{itemize}
       \item
         global variables,
       \item
         static variables, and
       \item
-        function and class definitions (instructions).
+        machine code (instructions for function and class definitions).
     \end{itemize}
   \item<+->
     Characteristics:
@@ -179,8 +178,8 @@ std::cout << &score; // score's address.
     For each function call, a \emph{stack frame} stores local variables, parameters, and
     return linkage.
   \item
-    The size and structure of a stack frame are \emph{known at compile time}, but its 
-    contents and time of allocation are unknown until runtime.
+    Its contents and time of allocation are determined at runtime. Its exact
+  size and layout are \emph{known at compile time}.
   \item
     How is variable lifetime affected by stack management techniques?
   \end{itemize}
@@ -229,15 +228,15 @@ int main()
   \multicolumn{1}{r}{} & \multicolumn{1}{c}{\textbf{Call Stack}}\\
     \hhline{~|-|}%\cline{2-2}
       & \texttt{main()}\\
-      & total $\rightarrow$ 0\\
+      & total \(\rightarrow{}\) 0\\
     \hhline{~|-|}%\cline{2-2}
       & \texttt{doubleAdd()}\\
-      & int a $\rightarrow$ 3\\
-      & int b $\rightarrow$ 4\\
+      & int a \(\rightarrow{}\) 3\\
+      & int b \(\rightarrow{}\) 4\\
     \hhline{~|-|}%\cline{2-2}
       & \texttt{add()}\\
-      & int a $\rightarrow$ 4 \\
-$sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
+      & int a \(\rightarrow{}\) 4 \\
+\(sp\) \(\rightarrow{}\) & int b \(\rightarrow{}\) 3 \\
   \cline{2-2}
 \end{tabular}
 \end{columns}
@@ -256,10 +255,10 @@ $sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
 
   \begin{itemize}
   \item
-    The call stack and heap grow towards each other as required by program events.
+    The call stack and heap grow towards each other (in many implementations) as required by program events.
   \item
     The following relation must hold:\\
-    $0 \le h \le a \le n$
+    \(0 \le h \le a \le n\)
   \item
     In other words, if the stack top bumps into the heap, or if the beginning of the heap is greater than the end, there are problems!
   \end{itemize}
@@ -280,9 +279,10 @@ $sp$ $\rightarrow$ & int b $\rightarrow$ 3 \\
     Heap objects are \textit{dynamically} allocated/deallocated at runtime
     (not associated with function call/return).
   \item
-    Dynamic variables are created at runtime instead of at compile-time.
+    Dynamic storage is acquired at runtime, independently of function calls and
+  returns.
   \item
-    The kind of data found on the heap is language-dependant.
+    The kind of data found on the heap is language-dependent.
 
     \begin{itemize}
     \item
@@ -381,10 +381,10 @@ int main()
   \item
     \lstinline{new} returns the start address of an unused block from the heap and changes its state from \textit{unused} to \textit{reserved} (and undefined).
   \item
-    Suppose a Point class has three 4-byte data members: $x$, $y$, $z$.\\
+    Suppose a Point class has three 4-byte data members: \(x\), \(y\), \(z\).\\
   \item
     \lstinline[language=Java]{Point firstCoord = new Point();}\\
-    requires at least allocated $3 \times 4$ bytes.
+    requires at least allocated \(3 \times 4\) bytes.
   \end{itemize}
 \column{0.3\textwidth}
   \vspace{1.5em}
@@ -392,16 +392,16 @@ int main()
 \end{columns}
 \end{frame}
 
-\begin{frame}{Heap Overflow}
+\begin{frame}{Heap Allocation Failure}
 \begin{columns}
 \column{0.67\textwidth}
   \begin{itemize}[<+->]
   \item
-    A \textbf{heap overflow} occurs when calling \lstinline{new} and the heap
-    does not have a big enough block of free contiguous space.
+    An allocation can fail when the program cannot obtain enough storage. By
+  default, \lstinline{new} throws \lstinline{std::bad_alloc}; exception.
   \item
-    So, \lstinline{new} either fails (in the case of heap overflow) or returns a
-    pointer to the new block.
+    Fragmentation can contribute to failure for requests that require a large
+  contiguous block, such as an array allocation.
   \end{itemize}
 \column{0.3\textwidth}
   \vspace{1.5em}
@@ -414,13 +414,13 @@ int main()
 \column{0.67\textwidth}
   \begin{itemize}[<+->]
   \item
-    \lstinline{delete} releases a storage block to the heap.
+    \lstinline{delete} releases a storage block to the allocator.
   \item
     The storage block's status is set to \textit{unused} and
     is available for allocation by future calls to \lstinline{new}.
   \item
-    One cause of heap overflow is a failure on the part of the program to
-    release unused storage.
+    Failing to release unused storage can eventually contribute to heap allocation
+  failure.
   \end{itemize}
 \column{0.3\textwidth}
   \vspace{1.5em}
@@ -441,11 +441,12 @@ int main()
 \item
   Pointers are addresses (i.e., the value of a pointer\\ variable is an address).
 \item
-  Memory that is accessed through a pointer is dynamically allocated in
-  the heap.
+  A pointer can point to an object with static, automatic (stack), dynamic
+  (heap), or thread storage duration.
 \item
-  Java doesn't have explicit pointers; reference types are heap allocated
-   (although the reference is on the stack).
+  Java does not expose explicit pointer arithmetic. In typical JVM
+  implementations, objects are heap allocated while local reference variables
+  are stored in stack frames.
 \item
   This topic is covered well in the textbook's Chapter 12.
 \end{itemize}
@@ -517,7 +518,7 @@ True/False:
 
 \begin{frame}[fragile]{Assigning a value to a \textit{dereferenced} pointer.}
 
-A pointer must have a value before you can \textit{dereference}\\ it (follow
+A pointer must point to a valid object before you can \textit{dereference}\\ it (follow
 the pointer).\\[1em]
 
 \begin{columns}[T]
@@ -527,7 +528,7 @@ int *p;
 *p = 3;
 \end{lstlisting}
   \pause%
-  \centering\textbf{Error! Override the value located in some unknown address.}
+  \centering\textbf{Undefined Behavior! \texttt{p} holds an indeterminate location.}
 \column{0.5\textwidth}
   \pause%
 \begin{lstlisting}
@@ -648,8 +649,8 @@ Object[] arr2 = new Object[100];
 
 \begin{itemize}
 \item
-  The identifier of an array on the stack is basically a \\\emph{const pointer}
-  pointing at the beginning of the array.
+  An array identifier is not a pointer, but in most expressions it converts
+  (``decays'') to a pointer to its first element.
 \item
   You can use the \lstinline{\[ \]} operator with pointers!
 \item
@@ -683,14 +684,14 @@ for (int i = 0; i < 3; i++)
 % \begin{tabularx}{0.7\textwidth}{r *{5}{>{\centering\arraybackslash}X}}
 %   & \texttt{a[0]} & \texttt{a[1]} & \texttt{a[2]} & \texttt{a[3]} & \texttt{a[4]}\\
 %   \cline{2-6}
-%     \lstinline{a} $\rightarrow$ &
+%     \lstinline{a} \(\rightarrow\) &
 %     \multicolumn{1}{|c}{-1} &
 %     \multicolumn{1}{|c}{-2} &
 %     \multicolumn{1}{|c}{-3} &
 %     \multicolumn{1}{|c}{-4} &
 %     \multicolumn{1}{|c|}{-5} \\
 %   \cline{2-6}
-%   & & & $\uparrow$ & $\uparrow$ & $\uparrow$\\
+%   & & & \(\uparrow\) & \(\uparrow\) & \(\uparrow\)\\
 %   & & & \texttt{x} \texttt{\&x{[}0{]}} & \texttt{\&x{[}1{]}} & \texttt{\&x{[}2{]}}\\
 % \end{tabularx}
   \centerline{%
@@ -725,7 +726,7 @@ for (int i = 0; i < 3; i++)
 \begin{frame}[fragile]{Pointer Arithmetic}
 \begin{itemize}
 \item
-  Integer arithmetic (\texttt{+}, \texttt{-}, \texttt{++}, \texttt{--}, \texttt{+=}, \texttt{-=}) works with pointers.
+  Integer arithmetic (\texttt{+}, \texttt{-}, \texttt{++}, \texttt{--}, \texttt{+=}, \texttt{-=}) works with array pointers.
 \item
   Increment updates the address to the ``next'' element.
   \begin{lstlisting}
@@ -787,21 +788,20 @@ delete p;
 \end{lstlisting}
 \end{columns}
 
-Using the above statements will result in a \textit{segmentation fault} or undefined behavior!
+Each of the above statements has \emph{undefined behavior} and may result in a \emph{segmentation fault}.
 
 \end{frame}
 
 \begin{frame}[fragile]{Memory Leaks}
 
 
-Memory leak is when you remove the reference to the memory block
-before deleting the block itself.\vspace{1em}
+A memory leak occurs when dynamically allocated storage becomes unreachable
+without first being deallocated.\vspace{1em}
 
 Example:
 \begin{lstlisting}
-int *p;      // p points somewhere
-p = new int; // p is an int value's address
-p = nullptr; // p points to null.
+int *p = new int; // An int value's address
+p = nullptr; // Allocated int is now unreachable.
 \end{lstlisting}
 
 \begin{itemize}[<+->]
@@ -835,7 +835,8 @@ p = nullptr; // p points to null.
   \href{https://valgrind.org/docs/manual/quick-start.html}{The Valgrind Quick Start Guide}, or 
   \href{https://valgrind.org/downloads/guis.html}{Graphical User Interfaces}.
   
-  * This is why the \texttt{-g} flag is used when debugging!
+  * The \lstinline{-g} includes debug information, making Valgrind reports easier
+  to interpret.
 \end{block}
 \end{frame}
 
@@ -846,11 +847,11 @@ p = nullptr; // p points to null.
   A second problem can occur when multiple \\
   pointers are assigned to a block of heap memory.
 \item
-  The block may be deleted and one of the pointers set to \textit{null},
-  but the other pointers still exist.
+  Deleting the block does not change any pointer automatically. All
+  pointers to that block must be set to \lstinline{nullptr} or they are \emph{dangling}.
 \item
-  If the runtime system reassigns the memory to another object, the
-  original pointers pose a danger.
+  Dereferencing dangling pointers is undefined behavior and
+  the allocator reuses the storage.
 \end{itemize}
 \end{frame}
 
@@ -862,9 +863,9 @@ Example:
 int *p, *q;  // Create two pointers
 p = new int; // Allocate an int on the heap.
 q = p;       // Points to the same address.
-*p = 4;      // Sets the on the heap to 4.
+*p = 4;      // Heap-allocated int set to 4.
 delete q;    // Frees the heap memory.
-*p = 3;      // Illegal assignment!
+*p = 3;      // Undefined behavior!
 \end{lstlisting}
 
 \begin{itemize}
@@ -895,12 +896,9 @@ delete q;    // Frees the heap memory.
 
 \begin{itemize}
 \item
-  All inaccessible blocks of storage are identified and returned to the
-  free list.
+  A garbage collector identifies unreachable objects and reclaims their storage.
 \item
-  The heap may also be \textbf{compacted} at this time: allocated space is
-  compressed into one end of the heap, leaving all free space in a large
-  block at the other end.
+  Some garbage collectors also \emph{compact} the heap by moving objects together to reduce fragmentation.
 \end{itemize}
 \end{frame}
 
@@ -908,18 +906,14 @@ delete q;    // Frees the heap memory.
 
 \begin{itemize}[<+->]
 \item
-  C \& C++ leave it to the programmer --- if an unused \\
+  C \& C++ leave it to the programmer. If an unused \\
   storage block isn't explicitly freed, it becomes \\garbage.
   \begin{itemize}
   \item
-    You can use non-standard C++ garbage collectors.
+    Non-standard garbage collectors are available for C++.
   \end{itemize}
 \item
   Java, C\#, Python, JavaScript, Perl, and most scripting languages perform garbage collection.
-  \begin{itemize}
-  \item
-    Have automatic allocation, so the ``new'' operator is not needed.
-  \end{itemize}
 \item
   Garbage collection was pioneered by languages like
   \href{https://en.wikipedia.org/wiki/Lisp_(programming_language)}{Lisp}, which
@@ -941,12 +935,12 @@ Why do you think C/C++ include\\ garbage collection?
 
 \begin{itemize}[<+->]
 \item
-  Three types of memory storage:
+  Three commonly discussed memory regions:
   \begin{itemize}
   \item
-    Static
+    Static Storage
   \item
-    Stack
+    Call Stack
   \item
     Heap
   \end{itemize}
@@ -976,17 +970,16 @@ Why do you think C/C++ include\\ garbage collection?
 
 \begin{itemize}
 \item
-  \emph{Garbage}: any block of heap memory that cannot be accessed by the
-   program (i.e., there is no stack pointer to the block) but in which the 
-   runtime system thinks is in use.
+  \emph{Garbage}: dynamically allocated storage that is no longer reachable by
+  the program but has not been reclaimed.
 \item
   Garbage is created in several ways:
   \begin{itemize}
   \item
-    A function ends without returning the space allocated to a local array
-    or other dynamic variable. The pointer is gone.
+    A function ends while the only pointer to dynamically allocated storage is
+    a local variable. The pointer is gone.
   \item
-    A node is deleted from a linked data structure, but isn't freed.
+    A node is unlinked from a linked data structure, but isn't deallocated.
   \item
     \textellipsis{}
   \end{itemize}
@@ -999,10 +992,10 @@ Why do you think C/C++ include\\ garbage collection?
 
 \begin{itemize}
 \item
-  A \textbf{dangling pointer} (or dangling reference, or widow) is a pointer
-  (reference) that contains the address of previously deallocated/freed heap space.
+  A \textbf{dangling pointer} (or dangling reference) is a pointer (reference)
+  that refers to an object whose lifetime has ended.
 \item
-  An \textbf{orphan (or garbage)} is a block of allocated heap memory that is no
+  An \textbf{orphan (or garbage)} is a dynamically allocated memory block that is no
   longer accessible through any pointer.
 \item
   A \textbf{memory leak} is a gradual loss of available memory due to the
