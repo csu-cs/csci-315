@@ -79,7 +79,7 @@ class ClassIdentifier
     \end{itemize}
   \end{itemize}
 \end{frame}
-
+ 
 \begin{frame}[fragile]{A \textbf{\texttt{struct}} versus a \textbf{\texttt{class}}}
 \begin{itemize}[<+->]
 \item
@@ -105,9 +105,9 @@ class ClassIdentifier
 
 \begin{frame}[fragile]{Example Class}
 \begin{columns}[t]
-\column{0.45\textwidth}
+\column{0.44\textwidth}
 \texttt{AClass.hpp}
-\begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
+\begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt, aboveskip=0.4ex]
 #ifndef A_CLASS
 #define A_CLASS
 class AClass {
@@ -121,9 +121,9 @@ class AClass {
 };
 #endif
 \end{lstlisting}
-\column{0.5\textwidth}
+\column{0.50\textwidth}
 \texttt{AClass.cpp}
-\begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt]
+\begin{lstlisting}[basicstyle=\small\ttfamily, xleftmargin=0pt, aboveskip=0.4ex]
 #include "AClass.hpp"
 int AClass::getSize() const
 {
@@ -186,7 +186,7 @@ void AClass::size(int size)
 \begin{frame}{Types of Member Functions}
 \begin{itemize}
 \item<1->
-  \emph{Instance} methods -- accessible through an instantiated object.
+  \emph{Instance} methods -- accessible through an\\ instantiated object.
 \item<2->
   \emph{Static} methods -- accessible using the class name and the scope resolution operator (\lstinline{::}).
   \begin{itemize}
@@ -201,7 +201,7 @@ void AClass::size(int size)
 \begin{frame}{Types of Member Functions}
   \begin{itemize}
   \item<1->
-    Method \emph{overloading} -- within a class, two methods with the same name but different signatures.
+    Method \emph{overloading} -- within a class, two methods\\ with the same name but different signatures.
   \item<2->
   Method \emph{overriding} -- same signatures across different classes (subclass and superclass).
   \end{itemize}

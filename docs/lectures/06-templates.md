@@ -38,6 +38,14 @@ After completing this lecture and the related lab, students will be able to:
 - We can get the C++ compiler to write code for us, based on a set of
   rules we give it.
 
+- In the broader concept of polymorphism, templates are an example of
+  ***parametric polymorphism***: a single function or class definition is
+  written once and can operate on many types.
+
+- This is different from the inheritance-based polymorphism discussed in
+  the [OOP lecture](05-oop), where behavior is selected at runtime through a class
+  hierarchy. With templates, the type is chosen at compile time.
+
 - ***Template*** – a single code body for a set of related functions
   (***function template***) and related classes (***class template***)
 

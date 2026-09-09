@@ -583,10 +583,15 @@ public:
 
 ### Static vs. Dynamic Polymorphism
 
-- Inheritance provides the ability to change types at runtime (though
-  subclasses).
+- Inheritance provides the ability to change behavior through a class
+  hierarchy at runtime (via virtual functions and dynamic binding).
 
-- ***Templates*** provide the ability to change types at compile time.
+- [***Templates***](06-templates) provide a different kind of polymorphism called
+  ***parametric polymorphism***: one function or class definition can
+  work with many types at compile time.
+
+  - This is sometimes called static polymorphism, because the type is
+    selected during compilation rather than through runtime inheritance.
 
   - [An upcoming lecture](06-templates) will cover templates (Chapter 13).
 
