@@ -30,9 +30,9 @@
   \titlepage{}
 \end{frame}
 
-\section{Intro}
+\section{Why?}
 
-\begin{frame}{Analysis of Algorithms}
+\begin{frame}{The Algorithm-Choice Problem}
   \emph{Dilemma}: You have two (or more) solutions to a\\ problem.\\
   How do you choose the BEST method?
 \begin{itemize}
@@ -52,10 +52,10 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{A Fundamental Computer Science Challenge}
+\begin{frame}{The Cost of an Algorithm}
 \begin{itemize}[<+->]
 \item
-  One of the most fundamental tools for computer scientists to analyze the \emph{cost} of an
+  One of the \textit{most fundamental tools for computer scientists} to analyze the \emph{cost} of an
 algorithm.\\[1em]
 \item
   The cost can be described in terms of time, space (memory usage), electricity, etc.\\[1em]
@@ -85,7 +85,7 @@ algorithm.\\[1em]
 \end{frame}
 
 
-\begin{frame}{Analytical Approach}
+\begin{frame}{Counting Key Operations (Analytical)}
 
 Characterize performance by counting the number of\\ operations.
 
@@ -117,7 +117,7 @@ However, the number of operations is dependent on \\the size and characteristics
 
 \end{frame}
 
-\begin{frame}{Analysis with Varying Results}
+\begin{frame}{Best-Case, Average-Case, and Worst-Case}
 \begin{itemize}
 \item
   Example: some sorting algorithms may require\\ as few as \(n-1\) comparisons and as many as \(\frac{1}{2}n^2\).
@@ -141,14 +141,15 @@ However, the number of operations is dependent on \\the size and characteristics
 What are some examples of domains where you may care more about the \emph{worst case} than the \emph{average case} and vice versa?
 \end{frame}
 
-\begin{frame}{Notice: We Are \textbf{Approximating}}
+\begin{frame}{Why We \textbf{Approximating}}
 \begin{itemize}
 \item We usually \emph{approximate} the an algorithm's performance, assuming it is operating on a very large data set.
 \item Approximating is an important skill to learn and use.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Simpler Question: How many hotdogs\\ tall is the Empire State Building?}
+\begin{frame}{A Simple Approximation Example}
+How many hotdogs tall is the Empire State Building?
 \begin{columns}
 \column{0.670\textwidth}
 \begin{itemize}
@@ -163,7 +164,7 @@ What are some examples of domains where you may care more about the \emph{worst 
 
 \section{Complexity Analysis}
 
-\begin{frame}{Analysis}
+\begin{frame}{What Complexity Analysis Measures}
 \begin{itemize}[<+->]
 \item Utilize an objective way to evaluate the \emph{cost} of an\\ algorithm or code section.
 \item The cost is usually computed in terms of \emph{time} or \emph{space}.
@@ -177,7 +178,7 @@ What are some examples of domains where you may care more about the \emph{worst 
 \end{frame}
 
 
-\begin{frame}{Algorithm Analysis}
+\begin{frame}{Rules for Counting Operations}
 \begin{itemize}[<+->]
 \item Algorithm analysis requires a set of rules to determine how operations are to be counted.
 \item There is no generally accepted set of rules for algorithm analysis.
@@ -187,7 +188,7 @@ What are some examples of domains where you may care more about the \emph{worst 
 \end{frame}
 
 
-\begin{frame}{Rules for Estimation}
+\begin{frame}{Basic Operation Costs}
 \begin{enumerate}
 \item We \emph{assume} an arbitrary time unit.
 \item Execution of one of the following operations takes time 1:
@@ -202,7 +203,7 @@ What are some examples of domains where you may care more about the \emph{worst 
 \end{enumerate}
 \end{frame}
 
-\begin{frame}[fragile]{Example 1}
+\begin{frame}[fragile]{Example: Counting Assignment and Arithmetic Costs}
 \begin{lstlisting}[mathescape]
 count = count + 1;  // Cost: $\color{codeComment}c_1$
 sum = sum + count;  // Cost: $\color{codeComment}c_2$ 
@@ -212,7 +213,7 @@ sum = sum + count;  // Cost: $\color{codeComment}c_2$
 Because we assume the addition costs 1 and assignment costs 1, the total cost is 4 units.
 \end{frame}
 
-\begin{frame}[fragile]{Conditional Cost}
+\begin{frame}[fragile]{Example: Conditional Statements}
 \begin{lstlisting}[mathescape]
 if (n < 0) {     // Cost: $\color{codeComment}c_1 \onslide<2->{= 1}$
     absVal = -n; // Cost: $\color{codeComment}c_2 \onslide<3->{= 2}$
@@ -234,7 +235,7 @@ if (n < 0) {     // Cost: $\color{codeComment}c_1 \onslide<2->{= 1}$
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Example 3}
+\begin{frame}[fragile]{Example: A Linear Loop}
 \begin{lstlisting}[mathescape]
 i = 1;             // Cost: $\color{codeComment}c_1\onslide<2->{= 1}$
 sum = 0;           // Cost: $\color{codeComment}c_2\onslide<3->{= 1}$
@@ -252,7 +253,7 @@ while (i <= n) {   // Cost: $\color{codeComment}c_3\onslide<4->{= 1}$
 \end{itemize}
 \end{frame}
 
-\begin{frame}{More Rules for Estimation}
+\begin{frame}{Rules for Conditionals, Loops, and Function Calls}
 \begin{enumerate}[<+->]
 \setcounter{enumi}{2}
 \item
@@ -265,7 +266,7 @@ while (i <= n) {   // Cost: $\color{codeComment}c_3\onslide<4->{= 1}$
 \end{enumerate}
 \end{frame}
 
-\begin{frame}[fragile]{Nested Example}
+\begin{frame}[fragile]{Example: Nested Loops}
 \begin{columns}[t]
 \column{0.35\textwidth}
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
@@ -325,10 +326,10 @@ while (i <= n) {
 \onslide<5->{\centerline{\textbf{Important Note:} \(n^2\) is the highest (largest) term!}}
 \end{frame}
 
-\section{Big \textit{O} Notation}
+\section{Big-\(O\) Growth Rates}
 % A Notation for Complexity Analysis
 
-\begin{frame}{Comparing Algorithms}
+\begin{frame}{Comparing Cost Functions}
   \begin{itemize}[<+->]
   \item An algorithm's time requirement is a function of the problem size.
   \item The problem size depends on the application (e.g., the number of list elements for a sorting algorithm). % , the number of disks for the \href{https://en.wikipedia.org/wiki/Tower_of_Hanoi}{Towers of Hanoi}
@@ -340,14 +341,14 @@ while (i <= n) {
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Comparing Algorithms}
+\begin{frame}{Comparing Cost Functions}
   \begin{itemize}[<+->]
     \item An algorithm's proportional time requirement\\ is known as the \emph{growth rate}.
     \item We can compare the efficiency of algorithms by comparing their growth rates.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Comparing Algorithms}
+\begin{frame}[fragile]{Comparing Cost Functions}
 \setbeamercolor{block body}{bg=white, fg=black}
 
 %\begin{block}{}
@@ -357,7 +358,7 @@ while (i <= n) {
 
 \end{frame}
 
-\begin{frame}{Example: Which is faster?}
+\begin{frame}{Example: Which Cost Function Grows Faster?}
 % \begin{columns}
 % \column{0.45\textwidth}\(50n^2 + 31n^3 + 24n + 15\)
 % \column{0.5\textwidth}\(3n^2 + n + 21 + 4 \cdot 3^n\)
@@ -384,7 +385,7 @@ while (i <= n) {
 
 \end{frame}
 
-\begin{frame}[t]{One term dominated the others.}
+\begin{frame}[t]{Identifying the Dominant Term}
 %\begin{center}
 \onslide<2->{
   \begin{tabular}{r @{\hskip 0.75cm} r r c }
@@ -411,7 +412,7 @@ while (i <= n) {
 
 \end{frame}
 
-\begin{frame}{As \(n\) Grows, Some Terms Dominate}
+\begin{frame}{Common Growth Rates}
 
 \begin{tabular}{r r r r r r}
   \toprule{}
@@ -440,7 +441,7 @@ while (i <= n) {
 \end{frame}
 
 
-\begin{frame}{Big \(O\)}
+\begin{frame}{Defining Big-\(O\) Notation}
 \begin{itemize}
 \item If  Algorithm A requires time proportional to \(f(n)\),\\ Algorithm A is said to be order \(f(n)\), denoted as\\ \(O(f(n))\).
 \item The function \(f(n)\) is called the algorithm's growth-rate function.
@@ -451,7 +452,7 @@ while (i <= n) {
 \end{frame}
 
 
-\begin{frame}{Example 1}
+\begin{frame}{Example: Classifying a Quadratic Function}
 \begin{itemize}[<+->]
 \item If an algorithm requires \(n^2 - 3n + 10\) seconds to\\ solve a problem size, \(n\).
 \item If constants \(k\) and \(n_0\) exist such that \\
@@ -463,7 +464,7 @@ then the algorithm is order \(n^2\).  (In fact, \(k\) is 3 and \(n_0\) is 2)
 \end{frame}
 
 
-\begin{frame}{More Examples}
+\begin{frame}{Practice: Finding the Dominant Term}
 
   This game of ``spot the highest term'' is usually easy!
 
@@ -480,7 +481,7 @@ then the algorithm is order \(n^2\).  (In fact, \(k\) is 3 and \(n_0\) is 2)
 \end{frame}
 
 
-\begin{frame}{Growth Rate Functions Generalized}
+\begin{frame}{Growth-Rate Classes at a Glance}
 \begin{tabularx}{1\textwidth}{l X}
   \toprule{}
     \textbf{Big O} & \textbf{Time requirement as problem size increase}\\
@@ -568,12 +569,12 @@ T(n)  =&  c_1 (n+1) + c_2 ((n+1) (n+2)) / 2 \\
 %\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Example 4: Recursion can be hard.}
+\begin{frame}[fragile]{Exponential Time: Recursion and the Tower of Hanoi}
   \href{https://en.wikipedia.org/wiki/Tower_of_Hanoi}{The Tower of Hanoi}\\
   \centering\includegraphics[width=0.7\textwidth]{towers-of-hanoi}
 \end{frame}
 
-\begin{frame}[fragile]{Example 4: Recursion can be hard.}
+\begin{frame}[fragile]{Exponential Time: Recursion and the Tower of Hanoi}
 \begin{lstlisting}[mathescape, basicstyle=\scriptsize\ttfamily]
 void hanoi(int n, char source, char dest, char spare) { // Function-call cost
   if (n > 0) {                                     // Cost: $\color{codeComment}c_1$

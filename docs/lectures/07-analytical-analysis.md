@@ -25,9 +25,9 @@ After completing this lecture and the related lab, students will be able to:
 <div><iframe width="853" height="480" src="https://www.youtube-nocookie.com/embed/xlld9VkiMGA?rel=0&amp;showinfo=0" title="CSCI 315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
-## Intro
+## Why Analyze Algorithms?
 
-### Analysis of Algorithms
+### The Algorithm-Choice Problem
 
 *Dilemma*: You have two (or more) methods to solve a problem.  
 How do you choose the BEST method?
@@ -45,7 +45,7 @@ How do you choose the BEST method?
   - Algorithms may perform differently depending on data (e.g., sorting
     often depends on what is being sorted).
 
-### A Fundamental Computer Science Challenge
+### The Cost of an Algorithm
 
 - One of the most fundamental tools for computer scientists to analyze
   the **cost** of an algorithm.  
@@ -56,7 +56,7 @@ How do you choose the BEST method?
 - Ideally, we will develop a simple scheme to rank algorithms from best
   to worst.
 
-### Approaches to Analyzing Performance
+### Empirical and Analytical Analysis
 
 Comment on the “general” performance of the algorithm using one of two
 options:
@@ -78,7 +78,7 @@ options:
 
     - Challenge: It may be difficult to discover a reasonable formula.
 
-### Analytical Approach: Step 1 of 2
+### Counting Key Operations
 
 Characterize performance by counting the number of of key operations.
 
@@ -98,7 +98,7 @@ Characterize performance by counting the number of of key operations.
 
   - Count the number of recursive calls.
 
-### Analysis with Varying Results
+### Best-Case, Average-Case, and Worst-Case
 
 - Example: some sorting algorithms may require as few as $n-1$
   comparisons and as many as $\frac{1}{2}n^2$.
@@ -116,14 +116,14 @@ Characterize performance by counting the number of of key operations.
   - What are some example domains where you may care more about the
     worst case than the average case and vice versa?
 
-### Notice: We Are **Estimating**
+### Why We **Approximating**
 
 - Usually, we approximate or estimate the performance of an algorithm,
   assuming it is operating on a very large data set.
 
 - Estimation is an important skill to learn and use.
 
-### Simpler Question: How many hotdogs tall is the Empire State Building?
+### A Simple Approximation Example
 
 - The ESB is $1,250$ feet tall.
 
@@ -132,9 +132,9 @@ Characterize performance by counting the number of of key operations.
 
 ![Empire State Building](/images/performance/empire-state-building.jpg "The Empire State Building"){width="200px"}
 
-## Complexity Analysis
+## Estimating Algorithm Costs (Complexity Analysis)
 
-### Analysis
+### What Complexity Analysis Measures
 
 - An objective way to evaluate the cost of an algorithm or code section.
 
@@ -143,7 +143,7 @@ Characterize performance by counting the number of of key operations.
 - The goal is to have a meaningful way to compare algorithms based on a
   common measure.
 
-### Algorithm Analysis
+### Rules for Counting Operations
 
 - Algorithm analysis requires a set of rules to determine how operations
   are to be counted.
@@ -156,7 +156,7 @@ Characterize performance by counting the number of of key operations.
 - The following rules are typical of those intended to exactly count
   operations.
 
-### Rules for Estimation
+### Basic Operation Costs
 
 1.  We ***assume*** an arbitrary time unit.
 
@@ -174,7 +174,7 @@ Characterize performance by counting the number of of key operations.
 
     - array index operations, pointer dereferences
 
-### Example 1
+### Example: Counting Assignment and Arithmetic Costs
 
 ```
 count = count + 1;  // Cost: c₁
@@ -185,7 +185,7 @@ sum = sum + count;  // Cost: c₂
 Because we assume the addition costs 1 and assignment costs 1, the total
 cost is 4 units.
 
-### Conditional Cost
+### Example: Conditional Statements
 
 ```
 if (n < 0) {     // Cost: c₁ = 1$
@@ -208,7 +208,7 @@ if (n < 0) {     // Cost: c₁ = 1$
   |:----------:|:---------:|:-------:|
   |    $3$     |    $2$    |  $2.5$  |
 
-### Example 3
+### Example: A Linear Loop
 
 ```cpp
 i = 1;             // Cost: c₁ = 1
@@ -227,7 +227,7 @@ while (i <= n) {   // Cost: c₃ = 1
 - $\mathrm{Total Cost} = c_1 + c_2 + (n+1) c_3 + n \left(c_4 + c_5\right) =$  
   $c_1 + c_2 + c_3 + n\left(c_3 + c_4 + c_5\right)$
 
-### More Rules for Estimation
+### Rules for Conditionals, Loops, and Function Calls
 
 3.  ***Selection statement*** (if, switch) time is the time for the
     condition evaluation, plus the maximum of the running times for the
@@ -242,7 +242,7 @@ while (i <= n) {   // Cost: c₃ = 1
     for any parameter calculations plus the time required for the
     execution of the function body.
 
-### Nested Example
+### Example: Nested Loops
 
 ```cpp
 i = 1;                 // c₁ = 1
@@ -273,9 +273,9 @@ while (i <= n) {       // c₃ = 1
 
 **Important Note: $n^2$ is the highest (largest) term!**
 
-## Big *O* Notation
+## Big-O Growth Rates
 
-### Comparing Algorithms
+### Comparing Cost Functions
 
 - An algorithm’s time requirement is a function of the problem size.
 
@@ -294,7 +294,7 @@ while (i <= n) {       // c₃ = 1
 
   ![Comparing Algorithms by Growth Rate](/images/performance/performance-growth-rate1-dark.svg "Comparing Algorithm A ($5n^2$) with Algorithm B ($7n + 100$)"){.dark-only}
 
-### Comparing Algorithms
+### Growth Rate
 
 - An algorithm’s proportional time requirement is known as the ***growth
   rate***.
@@ -302,9 +302,9 @@ while (i <= n) {       // c₃ = 1
 - We can compare the efficiency of algorithms by comparing their growth
   rates.
 
-### Comparing Algorithms
+### Why the Input Size Matters
 
-### Example: Which is faster?
+### Example: Which Cost Function Grows Faster?
 
 It depends on $n$.  
 
@@ -321,7 +321,7 @@ It depends on $n$.
 |   9 |                     26,880 |                        79,005 |
 |  10 |                     36,255 |                       236,527 |
 
-### One term dominated the others.
+### Identifying the Dominant Term
 
 We only care about the highest-order (dominating) term.
 
@@ -336,7 +336,7 @@ We only care about the highest-order (dominating) term.
 |   9 |                        79,005 |   99.7%
 |  10 |                       236,527 |   99.9%
 
-### As $n$ Grows, Some Terms Dominate
+### Common Growth Rates
 
 |  | n=10 | n=100 | n=1,000 | n=10,000 | n=100,000 |
 |---:|---:|---:|---:|---:|---:|
@@ -355,7 +355,7 @@ $1 < \log_2n < n < n\log_2n < n^2 < n^3 < 2^n < 3^n$
 
 ![General Growth Rates](/images/performance/big-o-growth-rates-dark.svg "Asymptotic growth rates of common complexity functions, from logarithmic to factorial, illustrating their relative scaling for increasing $n$"){.dark-only}
 
-### Big $O$
+### Defining Big-O Notation
 
 - If Algorithm A requires time proportional to $f(n)$,  
   Algorithm A is said to be order $f(n)$, and it is denoted as
@@ -370,7 +370,7 @@ $1 < \log_2n < n < n\log_2n < n^2 < n^3 < 2^n < 3^n$
 
 - If Algorithm A requires time proportional to $n$, it is $O(n)$.
 
-### Example 1
+### Example: Classifying a Quadratic Function
 
 - If an algorithm requires $n^2 - 3n + 10$ seconds to solve a problem
   size, $n$.
@@ -383,7 +383,7 @@ $1 < \log_2n < n < n\log_2n < n^2 < n^3 < 2^n < 3^n$
 
 - So it is $O(n^2)$
 
-### More Examples
+### Practice: Finding the Dominant Term
 
 This game of “spot the highest term” is actually not difficult!
 
@@ -397,7 +397,7 @@ It can get somewhat tricky:
 
 - $n\left(10 + \log_2n\right) + n$ =
 
-### Growth Rate Functions Generalized
+### Growth-Rate Classes at a Glance
 
 | **Big O** | **Time requirement as problem size increase** |
 |:---|:---|
@@ -409,9 +409,9 @@ It can get somewhat tricky:
 | $O(n^3)$ | ***Cubic*** increases more rapidly than a quadratic algorithm. |
 | $O(2^n)$ | ***Exponential*** is impractical. |
 
-## Practice
+## Worked Complexity Examples
 
-### Example 1: $O(n)$
+### Linear Time: $O(n)$
 
 ```cpp
 i = 1;           // Cost: c₁
@@ -430,7 +430,7 @@ $$
 \end{aligned}
 $$
 
-### Example 2: $O(n^2)$
+### Quadratic Time: $O(n^2)$
 
 ```cpp
 i = 1;               // Cost: c₁
@@ -452,7 +452,7 @@ $$
 \end{aligned}
 $$
 
-### Example 3: $O(n^3)$
+### Cubic Time: $O(n^3)$
 
 ```cpp
 for (i = 1; i <= n; i++) {         // Cost: c₁
@@ -476,7 +476,7 @@ $$
 **Notice: We do NOT need to know the exact number of
 iterations to find the Big-$O$.**
 
-### Example 4: Recursion can be hard.
+### Exponential Time: Recursion and the Tower of Hanoi
 
 The [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) is a puzzle consisting of three rods some disks of different diameters, which can slide onto any rod. The goal is to move the disc to a different rode. However, a larger disk cannot be placed on top of a smaller one.
 
@@ -505,7 +505,7 @@ void hanoi(int n, char source, char dest, char spare) { // Function-call cost
 
 - You will learn how to do this in Discrete Math.
 
-#### What is the cost of `hanoi(n, 'A', 'B', 'C')`?
+#### Analyzing the Tower of Hanoi Recurrence
 
 - When $n=0$, $T(0) = c_1$
 
@@ -520,7 +520,7 @@ void hanoi(int n, char source, char dest, char spare) { // Function-call cost
 - This turns out to be $O(2^n)$ because for every $n$ we make $2(n-1)$
   calls.
 
-### Example 5: $O(n)$
+### Linear Time: Constant-Factor Work, $O(n)$
 
 ```cpp
 int bigOExample5(const int N)
@@ -542,7 +542,7 @@ int bigOExample5(const int N)
 }
 ```
 
-### Example 6: $O(n)$
+### Linear Time: Nested Constant Work, $O(n)$
 
 ```cpp
 int bigOExample6(int n)
@@ -563,7 +563,7 @@ int bigOExample6(int n)
 }
 ```
 
-Example 7: $O(n \log n)$
+### Log-Linear Time: $O(n \log n)$
 
 ```cpp
 int bigOExample7(int n) {
