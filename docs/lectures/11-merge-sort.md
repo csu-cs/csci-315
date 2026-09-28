@@ -35,7 +35,7 @@ import listMergeDiagram from '/images/merge-sort/list_merge_example.svg'
 
 - Uses recursion.
 
-- If the list is of assize greater than 1,
+- If the list's size is greater than 1,
 
   1.  Divide the list into two sub-lists.
 
@@ -46,7 +46,7 @@ import listMergeDiagram from '/images/merge-sort/list_merge_example.svg'
   4.  Merge the first sub-list and the second sub-list.
 
 <ProgressiveDiagram :src="mergeSort1Diagram">
-Example of how values will divided repeatedly into smaller lists and then merged back together in sorted order.
+Example of how values will be divided repeatedly into smaller lists and then merged back together in sorted order.
 </ProgressiveDiagram>
 
 
@@ -75,7 +75,7 @@ Sorted sub-lists are merged into one sorted list.
 
 <ProgressiveDiagram :src="listMergeDiagram">
 
-Merging two sorted link list into one (see lecture video for explanation).
+Merging two sorted linked lists into one (see lecture video for explanation).
 
 </ProgressiveDiagram>
 
