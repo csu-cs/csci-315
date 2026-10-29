@@ -47,9 +47,9 @@ Chapter 10 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 
 The heap data structure is a binary tree that maintains two properties, which we will discuss.
 
-1.  **Shape Property**: Left Justified and, therefore, Balanced
+1.  **Shape Property**: Left justified and, therefore, *balanced*
 
-2.  **Heap Property**: The relationship between elements
+2.  **Heap Property**: The relationship between elements (i.e., the *order property*)
 
 ### Balanced Binary Trees
 
@@ -72,7 +72,7 @@ A binary tree is ***left-justified*** if:
   (All leaves at depth $n - 1$ are to the right of all the nodes at
   depth $n$.)
 
-### The Heap Property
+### The Heap Property (Order Property)
 
 - A node has the ***heap property*** if the value in the node  
   is at least as large as its children’s values.
