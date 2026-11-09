@@ -11,6 +11,8 @@ Chapter 14 of [Open Data Structures](https://opendatastructures.org/ods-cpp.pdf)
 import insert_part1_diagram from '/images/b-trees/insert_part1_example.svg'
 import insert_part2_diagram from '/images/b-trees/insert_part2_example.svg'
 import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
+import insert_part4_diagram from '/images/b-trees/insert_part4_example.svg'
+import insert_part5_diagram from '/images/b-trees/insert_part5_example.svg'
 import remove_case3_diagram from '/images/b-trees/remove_case3_example.svg'
 </script>
 
@@ -131,13 +133,15 @@ following sequence of keys:
   <ProgressiveDiagram :src="insert_part2_diagram" />
 
 - 6, 14, and 28 get added to the leaf nodes.
+  <ProgressiveDiagram :src="insert_part3_diagram" />
 
 - Adding 17 to the right leaf node would over-fill it.  
-  <ProgressiveDiagram :src="insert_part3_diagram" />
+  <ProgressiveDiagram :src="insert_part4_diagram" />
 
 - So, the middle key is promoted (to the root), splitting the leaves.
 
 - We can now add 7, 52, 16, 48 to the leaf nodes.
+  <ProgressiveDiagram :src="insert_part5_diagram" />
 
 - Adding 68 to the right leaf node would over-fill it.
 
