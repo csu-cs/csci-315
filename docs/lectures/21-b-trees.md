@@ -13,6 +13,9 @@ import insert_part2_diagram from '/images/b-trees/insert_part2_example.svg'
 import insert_part3_diagram from '/images/b-trees/insert_part3_example.svg'
 import insert_part4_diagram from '/images/b-trees/insert_part4_example.svg'
 import insert_part5_diagram from '/images/b-trees/insert_part5_example.svg'
+import insert_part6_diagram from '/images/b-trees/insert_part6_example.svg'
+import insert_part7_diagram from '/images/b-trees/insert_part7_example.svg'
+import insert_part8_diagram from '/images/b-trees/insert_part8_example.svg'
 import remove_case3_diagram from '/images/b-trees/remove_case3_example.svg'
 </script>
 
@@ -143,16 +146,15 @@ following sequence of keys:
 - We can now add 7, 52, 16, 48 to the leaf nodes.
   <ProgressiveDiagram :src="insert_part5_diagram" />
 
-- Adding 68 to the right leaf node would over-fill it.
-
-- So we split the rightmost leaf, promoting 48 to the root.
-
-- Adding 3 to the left leaf node would over-fill it
+- Adding 68 to the right leaf node would over-fill it. So we split the rightmost leaf, promoting 48 to the root.
+  <ProgressiveDiagram :src="insert_part6_diagram" />
 
 - Adding 3 causes us to split the leftmost leaf, promoting 3 to the
   root.
+  <ProgressiveDiagram :src="insert_part7_diagram" />
 
 - 26, 29, 55 then go into the leaves.
+  <ProgressiveDiagram :src="insert_part8_diagram" />
 
 - Adding 45 causes a split of the 4th leaf.
 
