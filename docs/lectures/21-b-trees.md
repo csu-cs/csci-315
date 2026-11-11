@@ -16,7 +16,11 @@ import insert_part5_diagram from '/images/b-trees/insert_part5_example.svg'
 import insert_part6_diagram from '/images/b-trees/insert_part6_example.svg'
 import insert_part7_diagram from '/images/b-trees/insert_part7_example.svg'
 import insert_part8_diagram from '/images/b-trees/insert_part8_example.svg'
+import insert_part9_diagram from '/images/b-trees/insert_part9_example.svg'
+import remove_case1_diagram from '/images/b-trees/remove_case1_example.svg'
+import remove_case2_diagram from '/images/b-trees/remove_case2_example.svg'
 import remove_case3_diagram from '/images/b-trees/remove_case3_example.svg'
+import remove_case4_diagram from '/images/b-trees/remove_case4_example.svg'
 </script>
 
 ## Motivation for B-Trees
@@ -125,46 +129,63 @@ while a B-tree design maintains low-latency response.
 
 Starting with an empty ***Order-5*** B-tree, let’s insert the  
 following sequence of keys:  
-1, 12, 8, 2, 25, 6, 14, 28, 17, 7, 52, 16, 48, 68, 3, 26, 29, 55, 45.
+> 1, 12, 8, 2, 25, 6, 14, 28, 17, 7, 52, 16, 48, 68, 3, 26, 29, 55, 45.
 
-- The first four items (1, 12, 8, 2) go into the root:  
-  <ProgressiveDiagram :src="insert_part1_diagram" />
+- The 1, 12, 8, and 2 into an empty order-5 B tree; they go into the root. 
+  <ProgressiveDiagram :src="insert_part1_diagram">
+  Insert 1, 12, 8, and 2.
+  </ProgressiveDiagram>
 
-- Putting the fifth item (25) in the root would violate condition 5.
-
-- Therefore, when 25 arrives, pick the middle key to make a new root.  
-  <ProgressiveDiagram :src="insert_part2_diagram" />
+- Putting the fifth item (25) in the root would violate condition 5. Therefore, when 25 arrives, pick the middle key to make a new root.  
+  <ProgressiveDiagram :src="insert_part2_diagram">
+  Insert 25
+  </ProgressiveDiagram>
 
 - 6, 14, and 28 get added to the leaf nodes.
-  <ProgressiveDiagram :src="insert_part3_diagram" />
+  <ProgressiveDiagram :src="insert_part3_diagram">
+  Insert 6, 14, and 28
+  </ProgressiveDiagram>
 
-- Adding 17 to the right leaf node would over-fill it.  
-  <ProgressiveDiagram :src="insert_part4_diagram" />
-
-- So, the middle key is promoted (to the root), splitting the leaves.
+- Adding 17 to the right leaf node would over-fill it. So, the middle key is promoted (to the root), splitting the leaves. 
+  <ProgressiveDiagram :src="insert_part4_diagram">
+  Insert 17
+  </ProgressiveDiagram>
 
 - We can now add 7, 52, 16, 48 to the leaf nodes.
-  <ProgressiveDiagram :src="insert_part5_diagram" />
+  <ProgressiveDiagram :src="insert_part5_diagram">
+  Insert 7, 52, 16, and 48
+  </ProgressiveDiagram>
 
 - Adding 68 to the right leaf node would over-fill it. So we split the rightmost leaf, promoting 48 to the root.
-  <ProgressiveDiagram :src="insert_part6_diagram" />
+  <ProgressiveDiagram :src="insert_part6_diagram">
+  Insert 68
+  </ProgressiveDiagram>
 
 - Adding 3 causes us to split the leftmost leaf, promoting 3 to the
   root.
-  <ProgressiveDiagram :src="insert_part7_diagram" />
+  <ProgressiveDiagram :src="insert_part7_diagram">
+  Insert 3
+  </ProgressiveDiagram>
 
 - 26, 29, 55 then go into the leaves.
-  <ProgressiveDiagram :src="insert_part8_diagram" />
+  <ProgressiveDiagram :src="insert_part8_diagram">
+  Insert 26, 29, and 55
+  </ProgressiveDiagram>
 
 - Adding 45 causes a split of the 4th leaf.
 
-- Promote 28 to the root, which causes the root to split.
+  - Promote 28 to the root, which causes the root to split.
 
-- Promote 28 to the root; doesn’t fit.
+  - Promote 28 to the root; doesn’t fit.
 
-- Promote the 17 as the new root.
+  - Promote the 17 as the new root.
 
+  <ProgressiveDiagram :src="insert_part9_diagram">
+  Insert 45
+  </ProgressiveDiagram>
 - Attempt to insert the new key into a leaf.
+
+### Strategy
 
 - If this would result in that leaf becoming too big, split the leaf
   into two, promoting the middle key to the leaf’s parent.
@@ -179,9 +200,9 @@ following sequence of keys:
 
 ### Exercise in Inserting a B-Tree 
 
-Insert the following keys to a 5-way B-tree:  
-3, 7, 9, 23, 45, 1, 5, 14, 25, 24, 13, 11, 8, 19, 4, 31, 35, 56, 2, 6,
-12.
+Practice by inserting the following keys to a 5-way B-tree:  
+> 3, 7, 9, 23, 45, 1, 5, 14, 25, 24, 13, 11, 8, 19, 4, 31, 35, 56, 2, 6,
+> 12.
 
 ## Deletion from a B-Tree
 
@@ -204,27 +225,29 @@ When removing a key would cause *underflow* (too few keys), handle it as follows
 
 ### Type 1: Simple Removal from Leaf
 
-Assuming a 5-way B-Tree (as before), ***delete 2***.  
-
-
-Because there are enough keys in the node, just delete it.
+<ProgressiveDiagram :src="remove_case1_diagram">
+Assuming a 5-way B-Tree (as before), delete 2. Because there are enough keys in the node, just delete it (case 1).
+</ProgressiveDiagram>
 
 ### Type 2: Simple Removal from Non-Leaf
 
-Assuming a 5-way B-Tree (as before), ***delete 52***.  
+<ProgressiveDiagram :src="remove_case2_diagram">
+Assuming a 5-way B-Tree (as before), delete 52. Replace with the closest value from a leaf with enough values (case 2).
+</ProgressiveDiagram>
 
-Replace with the closest value from a leaf with enough values.
 
 ### Type 4: Too few keys in node and its siblings
 
-Delete 72
+<ProgressiveDiagram :src="remove_case4_diagram">
+Delete 72.
+</ProgressiveDiagram>
 
 
 ### Type 3: Enough siblings
 
-Delete 22
-
-<ProgressiveDiagram :src="remove_case3_diagram" />
+<ProgressiveDiagram :src="remove_case3_diagram">
+Delete 22.
+</ProgressiveDiagram>
 
 
 ### Exercise in Removal a B-Tree 
