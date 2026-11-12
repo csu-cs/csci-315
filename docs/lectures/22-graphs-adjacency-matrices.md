@@ -10,6 +10,7 @@ Chapter 20
 
 
 <script setup>
+import depth_first_traversal_example from '/images/graphs/depth-first_traversal_example.svg'
 import dijkstra_shortest_path_diagram from '/images/graphs/dijkstra_shortest_path_example.svg'
 </script>
 
@@ -253,8 +254,10 @@ Recursive depth-first traversal algorithm at a given vertex, $v$.
 
 ### Depth-First Traversal: Example
 
-Depth-first ordering of vertices (starting at `0`):  
-` 0, 1, 4, 3, 2, 5, 7, 8 `  
+<ProgressiveDiagram :src="depth_first_traversal_example">
+Depth-first ordering of vertices (starting at <code>0</code>):<br />
+<code> 0, 1, 4, 3, 2, 5, 7, 8</code>   
+</ProgressiveDiagram>
 
 ### Breadth-First Traversal of a Graph
 
