@@ -162,7 +162,7 @@ The degree differs from $E$ (the total number of edges in the graph) because $\d
 
 **Adjacency Matrix:** Faster for checking if an edge exists between two specific vertices ($O(1)$ lookup). Best for dense graphs where most vertices are connected.
 
-**Adjacency List:** Faster for iterating over edges ($O(V+E)$), requires less space for sparse graphs ($O(V+E)$ vs $O(V^2)$), and supports parallel edges. Prim's algorithm runs in $O((V + E) log E)$ time with adjacency lists.
+**Adjacency List:** Faster for iterating over edges ($O(V+E)$), requires less space for sparse graphs ($O(V+E)$ vs $O(V^2)$), and supports parallel edges. Prim's algorithm runs in $O((V + E) \log{E})$ time with adjacency lists.
 
 **Memory Efficiency:** Adjacency lists are far more efficient for sparse graphs (few edges relative to vertices). Adjacency matrices always use O(V²) space regardless of edge count.
 
