@@ -849,6 +849,45 @@ Function enqueueEdges (fromVertex, wasVisited[], edgeQueue):
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Degree of a Vertex}
+
+  The \emph{degree} of a vertex \(v\), denoted \(\deg(v)\), is the number of edges \textbf{connected to} that vertex.
+
+  For \emph{directed graphs}:
+  \vspace{-\parskip}
+  \begin{itemize}
+    \item \emph{In-degree}: the number of edges pointing to \(v\)
+    \item \emph{Out-degree}: the number of edges originating from \(v\)
+  \end{itemize}
+
+
+  
+  \pause{}
+  
+  \(\deg(v)\) counts only edges connected to a specific vertex, while \(E\) is the total number of edges in the entire graph.
+  
+  In sparse graphs, \(\deg(v)\) is typically much smaller than \(V\), which is why adjacency list operations are more efficient.
+\end{frame}
+
+\begin{frame}{Performance Comparison Table}
+  \small%
+  \begin{tabular}{lcc}
+    \toprule{}%
+    \textbf{Operation / Property} & \textbf{Adjacency Matrix} & \textbf{Adjacency List}\\%
+    \midrule{}%
+    Space Complexity& \(O(V^2)\) & \(O(V+E)\) \\
+    \addlinespace%
+    Lookup an edge exists & \(O(1)\) & \(O(\deg(v))\) \\
+    \addlinespace%
+    Iterate over a vertex's edges & \(O(V)\) & \(O(\deg(v))\) \\
+    \addlinespace%
+    Iterate over all edges & \(O(V^2)\) & \(O(V+E)\) \\
+    \addlinespace%
+    Parallel edges & No (ordinary matrix) & Yes \\
+    \bottomrule{}%
+  \end{tabular}
+\end{frame}
+
 
 \section{Summary}
 

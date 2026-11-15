@@ -148,11 +148,35 @@ Function enqueueEdges (fromVertex, wasVisited[], edgeQueue):
 
 ## Performance
 
-**Adjacency Matrix:** Faster for checking if an edge exists between two specific vertices (O(1) lookup). Best for dense graphs where most vertices are connected.
+### Degree of a Vertex
 
-**Adjacency List:** Faster for iterating over edges (O(V+E)), requires less space for sparse graphs (O(V+E) vs O(V²)), and supports parallel edges. Prim's algorithm runs in O((V + E) log E) time with adjacency lists.
+The ***degree*** of a vertex $v$, denoted $\deg(v)$, is the number of edges **connected to** that vertex (we say the edges are *incident* to the vertex—meaning they touch or connect to it). In a directed graph, we distinguish between:
+
+- ***In-degree***: the number of edges pointing to $v$
+- ***Out-degree***: the number of edges originating from $v$
+
+The degree differs from $E$ (the total number of edges in the graph) because $\deg(v)$ counts only the edges connected to a specific vertex $v$, whereas $E$ represents all edges in the entire graph. For example, in a graph with 5 vertices and 10 edges total, a single vertex might have $\deg(v) = 3$, meaning only 3 of the 10 total edges are connected to that vertex. This distinction is important for understanding the performance of adjacency list operations: checking for an edge or iterating over edges from a specific vertex takes time proportional to $\deg(v)$, which is typically much smaller than $V$ in sparse graphs.
+
+
+### Comparison
+
+**Adjacency Matrix:** Faster for checking if an edge exists between two specific vertices ($O(1)$ lookup). Best for dense graphs where most vertices are connected.
+
+**Adjacency List:** Faster for iterating over edges ($O(V+E)$), requires less space for sparse graphs ($O(V+E)$ vs $O(V^2)$), and supports parallel edges. Prim's algorithm runs in $O((V + E) log E)$ time with adjacency lists.
 
 **Memory Efficiency:** Adjacency lists are far more efficient for sparse graphs (few edges relative to vertices). Adjacency matrices always use O(V²) space regardless of edge count.
+
+
+| Operation / Property | Adjacency Matrix | Adjacency List |
+|---|---|---|
+| Space | $O(V^2)$ | $O(V+E)$ |
+| Check whether an edge exists | $O(1)$ | $O(\deg(v))$ |
+| Iterate over a vertex's edges | $O(V)$ | $O(\deg(v))$ |
+| Iterate over all edges | $O(V^2)$ | $O(V+E)$ |
+| Parallel edges | No (ordinary matrix) | Yes |
+
+Table: Comparison between adjacency matrix and adjacency list representations.
+
 
 ## Summary
 
